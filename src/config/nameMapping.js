@@ -16,7 +16,7 @@ export const NAME_MAPPINGS = {
   };
   
   export const getSimpleName = (actualName) => {
-    return NAME_MAPPINGS[actualName] || actualName.toLowerCase().replace(/[^a-z0-9]/g, '-');
+    return NAME_MAPPINGS[actualName] || actualName;
   };
   
   export const getActualName = (simpleName) => {

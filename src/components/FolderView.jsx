@@ -5,13 +5,50 @@ import { fetchContents } from '../services/github';
 import { FOLDER_STRUCTURE } from '../config/structure';
 import { getSimpleName, getActualName } from '../config/nameMapping';
 import FileViewer from './FileViewer';
+import { FaDownload } from 'react-icons/fa'; // Import download icon from react-icons
+
+// Add styles for interactive elements
+const styles = {
+  clickableItem: {
+    cursor: 'pointer',
+    transition: 'color 0.2s ease', // Smooth color transition on hover
+    color: '#2c3e50', // Default color
+  },
+  itemHover: {
+    color: '#3498db', // Color when hovering
+  },
+  iconWrapper: {
+    marginRight: '8px',
+    color: '#7f8c8d',
+  },
+  downloadButton: {
+    background: 'none',
+    border: 'none',
+    cursor: 'pointer',
+    color: '#27ae60',
+    padding: '8px',
+    borderRadius: '4px',
+    transition: 'background-color 0.2s ease',
+  },
+  tableHeader: {
+    backgroundColor: '#f8f9fa',
+    borderBottom: '2px solid #e9ecef',
+  },
+  tableRow: {
+    transition: 'background-color 0.2s ease',
+    '&:hover': {
+      backgroundColor: '#f8f9fa',
+    },
+  }
+};
 
 const FolderView = () => {
   // State management for component
   const [contents, setContents] = useState([]);
   const [loading, setLoading] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
-  
+  const [hoveredItem, setHoveredItem] = useState(null); 
+
   // Get URL parameters and navigation function
   const { repoName, '*': path } = useParams();
   const navigate = useNavigate();
@@ -74,20 +111,23 @@ const FolderView = () => {
   // Render repository list at root level
   const renderRepositories = () => (
     contents.map((repo) => (
-      <tr key={repo}>
+      <tr key={repo} style={styles.tableRow}>
         <td>
-          <i className="folder icon"></i>
-          {getSimpleName(repo)}
+          <div
+            onClick={() => handleNavigation(repo, true)}
+            onMouseEnter={() => setHoveredItem(repo)}
+            onMouseLeave={() => setHoveredItem(null)}
+            style={{
+              ...styles.clickableItem,
+              ...(hoveredItem === repo ? styles.itemHover : {})
+            }}
+          >
+            <i className="folder icon" style={styles.iconWrapper}></i>
+            {getSimpleName(repo)}
+          </div>
         </td>
         <td>Repository</td>
-        <td>
-          <button
-            className="ui blue basic button"
-            onClick={() => handleNavigation(repo, true)}
-          >
-            Open
-          </button>
-        </td>
+        <td></td>
       </tr>
     ))
   );
@@ -100,45 +140,53 @@ const FolderView = () => {
     return contents.map((item) => {
       const isDirectory = typeof item === 'string' || item.type === 'dir';
       const name = typeof item === 'string' ? item : item.name;
+      const isHovered = hoveredItem === name;
 
       return (
-        <tr key={name}>
+        <tr 
+          key={name}
+          style={styles.tableRow}
+        >
           <td>
-            <i className={`${isDirectory ? 'folder' : 'file'} icon`}></i>
-            {getSimpleName(name)}
+            <div
+              onClick={() => {
+                if (isDirectory) {
+                  handleNavigation(name);
+                } else {
+                  setSelectedFile(item);
+                }
+              }}
+              onMouseEnter={() => setHoveredItem(name)}
+              onMouseLeave={() => setHoveredItem(null)}
+              style={{
+                ...styles.clickableItem,
+                ...(isHovered ? styles.itemHover : {})
+              }}
+            >
+              <i 
+                className={`${isDirectory ? 'folder' : 'file'} icon`}
+                style={styles.iconWrapper}
+              ></i>
+              {getSimpleName(name)}
+            </div>
           </td>
+          <td>{isDirectory ? 'Folder' : name.split('.').pop().toUpperCase()}</td>
           <td>
-            {isDirectory ? 'Folder' : name.split('.').pop().toUpperCase()}
-          </td>
-          <td>
-            {isDirectory ? (
+            {!isDirectory && (
               <button
-                className="ui blue basic button"
-                onClick={() => handleNavigation(name)}
+                style={styles.downloadButton}
+                onClick={() => window.open(item.download_url, '_blank')}
+                title="Download file"
               >
-                Open
+                <FaDownload />
               </button>
-            ) : (
-              <div className="ui buttons">
-                <button
-                  className="ui blue basic button"
-                  onClick={() => setSelectedFile(item)}
-                >
-                  View
-                </button>
-                <button
-                  className="ui green basic button"
-                  onClick={() => window.open(item.download_url, '_blank')}
-                >
-                  Download
-                </button>
-              </div>
             )}
           </td>
         </tr>
       );
     });
   };
+
 
   // Render back button for navigation
   const renderBackButton = () => {
@@ -163,7 +211,7 @@ const FolderView = () => {
     <div className="ui container" style={{ marginTop: '2rem' }}>
       <table className="ui very basic table">
         <thead>
-          <tr>
+          <tr style={styles.tableHeader}>
             <th>Name</th>
             <th>Type</th>
             <th>Actions</th>
