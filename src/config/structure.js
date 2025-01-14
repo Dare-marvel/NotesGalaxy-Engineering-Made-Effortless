@@ -8,8 +8,3 @@ export const FOLDER_STRUCTURE = {
     // }
     // Add other subjects as needed
   };
-  
-  export const constructGitHubUrl = (subject, directory, filename) => {
-    const baseUrl = "https://raw.githubusercontent.com/dare-marvel";
-    return `${baseUrl}/${subject}/main/${directory}/${filename}`;
-  };

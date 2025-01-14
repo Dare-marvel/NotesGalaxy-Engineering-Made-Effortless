@@ -5,7 +5,18 @@ import { useLocation, Link } from 'react-router-dom';
 
 const Breadcrumbs = () => {
   const location = useLocation();
-  const pathSegments = location.pathname.split('/').filter(segment => segment);
+  // Filter out empty segments and decode URI components
+  const pathSegments = location.pathname
+    .split('/')
+    .filter(segment => segment)
+    .map(segment => decodeURIComponent(segment));
+
+  // Helper function to create pretty display names
+  const formatDisplayName = (name) => {
+    return name.split('-')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+      .join(' ');
+  };
 
   return (
     <Breadcrumb size="large">
@@ -14,6 +25,8 @@ const Breadcrumbs = () => {
       </Breadcrumb.Section>
       {pathSegments.map((segment, index) => {
         const path = `/${pathSegments.slice(0, index + 1).join('/')}`;
+        const displayName = formatDisplayName(segment);
+        
         return (
           <React.Fragment key={path}>
             <Breadcrumb.Divider icon="right angle" />
@@ -22,7 +35,7 @@ const Breadcrumbs = () => {
               to={path}
               active={index === pathSegments.length - 1}
             >
-              {decodeURIComponent(segment)}
+              {displayName}
             </Breadcrumb.Section>
           </React.Fragment>
         );
