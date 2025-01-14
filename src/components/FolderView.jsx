@@ -4,7 +4,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { fetchContents } from '../services/github';
 import { FOLDER_STRUCTURE } from '../config/structure';
 import { getSimpleName, getActualName } from '../config/nameMapping';
-import EnhancedFileViewer from './FileViewer';
+import EnhancedFileViewer from './EnhancedFileViewer';
 import { FaDownload } from 'react-icons/fa'; // Import download icon from react-icons
 
 // Add styles for interactive elements
