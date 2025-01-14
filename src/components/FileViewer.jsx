@@ -1,45 +1,14 @@
-// components/FileViewer.jsx
 import React from 'react';
 import { createPortal } from 'react-dom';
+import FileViewer from 'react-file-viewer';
 
-const FileViewer = ({ file, isOpen, onClose }) => {
+const EnhancedFileViewer = ({ file, isOpen, onClose }) => {
   if (!isOpen) return null;
 
-  const renderContent = () => {
-    const fileExtension = file.name.split('.').pop().toLowerCase();
-    const githubRawUrl = file.download_url.replace('raw.githubusercontent.com', 'github.com');
-    
-    if (fileExtension === 'pdf') {
-      return (
-        <iframe
-          src={`https://docs.google.com/viewer?url=${encodeURIComponent(file.download_url)}&embedded=true`}
-          style={{ width: '100%', height: '80vh', border: 'none' }}
-          title={file.name}
-        />
-      );
-    }
+  const fileExtension = file.name.split('.').pop().toLowerCase();
 
-    if (['jpg', 'jpeg', 'png', 'gif'].includes(fileExtension)) {
-      return (
-        <img
-          src={file.download_url}
-          alt={file.name}
-          style={{ maxWidth: '100%', maxHeight: '80vh' }}
-        />
-      );
-    }
-
-    return (
-      <div className="ui placeholder segment">
-        <div className="ui icon header">
-          <i className="file outline icon"></i>
-          <p>Preview not available for this file type.</p>
-          <a href={githubRawUrl} target="_blank" rel="noopener noreferrer" className="ui blue button">
-            View on GitHub
-          </a>
-        </div>
-      </div>
-    );
+  const handleError = (error) => {
+    console.error('Error in file viewer:', error);
   };
 
   return createPortal(
@@ -70,7 +39,27 @@ const FileViewer = ({ file, isOpen, onClose }) => {
           </div>
         </div>
         <div className="content" style={{ flex: 1, overflow: 'auto' }}>
-          {renderContent()}
+          <FileViewer
+            fileType={fileExtension}
+            filePath={file.download_url}
+            onError={handleError}
+            errorComponent={() => (
+              <div className="ui placeholder segment">
+                <div className="ui icon header">
+                  <i className="file outline icon"></i>
+                  <p>Unable to preview this file</p>
+                  <a 
+                    href={file.download_url} 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="ui blue button"
+                  >
+                    Download File
+                  </a>
+                </div>
+              </div>
+            )}
+          />
         </div>
       </div>
     </div>,
@@ -78,4 +67,4 @@ const FileViewer = ({ file, isOpen, onClose }) => {
   );
 };
 
-export default FileViewer;
+export default EnhancedFileViewer;

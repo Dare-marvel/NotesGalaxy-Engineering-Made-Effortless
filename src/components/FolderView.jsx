@@ -4,7 +4,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { fetchContents } from '../services/github';
 import { FOLDER_STRUCTURE } from '../config/structure';
 import { getSimpleName, getActualName } from '../config/nameMapping';
-import FileViewer from './FileViewer';
+import EnhancedFileViewer from './FileViewer';
 import { FaDownload } from 'react-icons/fa'; // Import download icon from react-icons
 
 // Add styles for interactive elements
@@ -223,7 +223,7 @@ const FolderView = () => {
         </tbody>
       </table>
 
-      <FileViewer
+      <EnhancedFileViewer
         file={selectedFile}
         isOpen={!!selectedFile}
         onClose={() => setSelectedFile(null)}
