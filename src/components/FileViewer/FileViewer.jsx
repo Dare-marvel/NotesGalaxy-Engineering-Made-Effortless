@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { createPortal } from 'react-dom';
-import Modal from './Modal';
+import { Modal, ModalOverlay, ModalContent, ModalHeader, IconButton, ModalBody, ModalFooter, Button, Text, Box } from '@chakra-ui/react';
+import { DownloadIcon, CloseIcon } from '@chakra-ui/icons';
 import DocumentViewer from './DocumentViewer';
 import ImageViewer from './ImageViewer';
 import LoadingSpinner from './LoadingSpinner';
@@ -84,11 +84,21 @@ const FileViewer = ({ file, isOpen, onClose }) => {
         return <UnsupportedFileView fileUrl={fileUrl} />;
     };
 
-    return createPortal(
-        <Modal onClose={onClose} title={file.name} downloadUrl={fileUrl}>
-            {renderContent()}
-        </Modal>,
-        document.body
+    return (
+        <Modal isOpen={isOpen} onClose={onClose} size="full">
+            <ModalOverlay />
+            <ModalContent style={{ height: '90vh', display: 'flex', flexDirection: 'column' }}>
+                <ModalHeader display="flex" justifyContent="space-between" alignItems="center">
+                    <Text>{file.name}</Text>
+                    <Box>
+                        <IconButton as="a" href={fileUrl} download variant="outline" mr={3} icon={<DownloadIcon />} onClick={(e) => e.stopPropagation()} /> <IconButton variant="outline" icon={<CloseIcon />} onClick={onClose} />
+                    </Box>
+                </ModalHeader>
+                <ModalBody flex={1} overflowY="auto">
+                    {renderContent()}
+                </ModalBody>
+            </ModalContent>
+        </Modal>
     );
 };
 

@@ -1,4 +1,3 @@
-// components/Breadcrumbs.jsx
 import React from 'react';
 import {
   Breadcrumb,
@@ -28,9 +27,18 @@ const Breadcrumbs = () => {
       spacing="8px"
       separator={<Icon as={ChevronRightIcon} color="gray.500" />}
       fontSize="lg"
+      pl={4} // Adding padding
+      ml={6}
+      bg="gray.50" // Background color for better visibility
+      borderRadius="md" // Rounded corners
+      boxShadow="sm" // Subtle shadow for depth
     >
       <BreadcrumbItem>
-        <BreadcrumbLink as={RouterLink} to="/">
+        <BreadcrumbLink 
+          as={RouterLink} 
+          to="/"
+          _hover={{ textDecoration: 'underline', color: 'blue.500' }} // Hover effects
+        >
           Home
         </BreadcrumbLink>
       </BreadcrumbItem>
@@ -44,11 +52,13 @@ const Breadcrumbs = () => {
           <BreadcrumbItem
             key={path}
             isCurrentPage={isLast}
+            fontWeight={isLast ? 'bold' : 'normal'} // Embolden active directory
           >
             <BreadcrumbLink
               as={RouterLink}
               to={path}
-              isCurrentPage={isLast}
+              _hover={{ textDecoration: 'underline', color: 'blue.500' }} // Hover effects
+              color={isLast ? 'blue.600' : 'gray.700'} // Different color for active directory
             >
               {displayName}
             </BreadcrumbLink>
