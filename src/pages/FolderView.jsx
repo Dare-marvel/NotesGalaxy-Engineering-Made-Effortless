@@ -20,10 +20,11 @@ import {
 } from '@chakra-ui/react';
 import { FiArrowLeft, FiFolder, FiFile, FiSearch } from 'react-icons/fi';
 import { FaDownload } from 'react-icons/fa';
-import { getSimpleName } from '../../config/nameMapping';
-import FileViewer from '../FileViewer/FileViewer';
-import { useFolderContents } from '../../hooks/useFolderContents';
+import { getSimpleName } from '../config/nameMapping';
+import FileViewer from '../components/FileViewer/FileViewer';
+import { useFolderContents } from '../hooks/useFolderContents';
 import { useParams, useNavigate } from 'react-router-dom';
+import Breadcrumbs from '../components/Breadcrumbs';
 
 const FolderView = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -166,6 +167,7 @@ const FolderView = () => {
 
   return (
     <Container maxW="container.xl" py={5}>
+      <Breadcrumbs />
       {!repoName && (
         <Box mb={6}>
           <InputGroup>

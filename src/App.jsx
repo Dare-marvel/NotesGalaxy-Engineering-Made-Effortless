@@ -1,18 +1,19 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 import { Box } from '@chakra-ui/react';
-import FolderView from './components/FolderView';
+import Navbar from './components/Navbar/Navbar'
+import AppRoutes from './routes/AppRoutes';
 import Breadcrumbs from './components/Breadcrumbs';
 
 function App() {
   return (
     <BrowserRouter>
-      <Box mt="2rem">
-        <Breadcrumbs />
-        <Routes>
-          <Route path="/" element={<FolderView />} />
-          <Route path="/:repoName/*" element={<FolderView />} />
-        </Routes>
+      <Box>
+        <Navbar />
+        <Box mt="80px">
+          {/* <Breadcrumbs /> */}
+          <AppRoutes />
+        </Box>
       </Box>
     </BrowserRouter>
   );

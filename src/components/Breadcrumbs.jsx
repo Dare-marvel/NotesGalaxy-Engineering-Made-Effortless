@@ -27,8 +27,10 @@ const Breadcrumbs = () => {
       spacing="8px"
       separator={<Icon as={ChevronRightIcon} color="gray.500" />}
       fontSize="lg"
-      pl={4} // Adding padding
-      ml={6}
+      pl={2} // Adding padding
+      ml={2}
+      mb={4}
+      pb={2}
       bg="gray.50" // Background color for better visibility
       borderRadius="md" // Rounded corners
       boxShadow="sm" // Subtle shadow for depth
@@ -58,7 +60,7 @@ const Breadcrumbs = () => {
               as={RouterLink}
               to={path}
               _hover={{ textDecoration: 'underline', color: 'blue.500' }} // Hover effects
-              color={isLast ? 'blue.600' : 'gray.700'} // Different color for active directory
+              color={isLast ? 'blue.600' : 'linear(to-r, cyan.400, blue.500, purple.600)'} 
             >
               {displayName}
             </BreadcrumbLink>
