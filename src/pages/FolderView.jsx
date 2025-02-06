@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useMemo } from 'react';
 import {
   Box,
   Table,
@@ -24,7 +24,10 @@ import { getSimpleName } from '../config/nameMapping';
 import FileViewer from '../components/FileViewer/FileViewer';
 import { useFolderContents } from '../hooks/useFolderContents';
 import { useParams, useNavigate } from 'react-router-dom';
+import {useWindowSize} from '../hooks/useWindowSize';
+import {truncateByScreenSize} from '../utils/displayUtils';
 import Breadcrumbs from '../components/Breadcrumbs';
+
 
 const FolderView = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -71,11 +74,32 @@ const FolderView = () => {
     }
   };
 
+  // const truncateText = (text, maxLength) => {
+  //   if (!text || text.length <= maxLength) return text;
+  //   return `${text.substring(0, maxLength)}...`;
+  // };
+
+  const TRUNCATE_CONFIG = {
+    sm: 480,  // mobile breakpoint in pixels
+    md: 768,  // tablet breakpoint in pixels
+    mobileChars: 12,
+    tabletChars: 35,
+    desktopChars: 50
+  };
+  
+
   const RepositoryRow = ({ repo }) => {
-    const simpleName = getSimpleName(repo);
+    const mappedName = getSimpleName(repo);
+    const windowWidth = useWindowSize();
+
+    const truncatedName = React.useMemo(() => 
+      truncateByScreenSize(mappedName, TRUNCATE_CONFIG),
+      [mappedName, windowWidth]
+    );
+
     return (
       <Tr>
-        <Td width="70%">
+        <Td width={["60%", "65%", "70%"]}>
           <Box
             onClick={() => handleNavigation(repo, true)}
             onMouseEnter={() => setHoveredItem(repo)}
@@ -83,20 +107,30 @@ const FolderView = () => {
             display="flex"
             alignItems="center"
             cursor="pointer"
-            p={2}
+            p={[1, 1, 2]}
             transition="all 0.2s"
             borderRadius="md"
             _hover={{
               backgroundColor: bgHover,
               color: hoverTextColor,
-              transform: 'translateX(5px)'
+              transform: ['none', 'none', 'translateX(5px)']
             }}
           >
-            <Icon as={FiFolder} mr={2} color="blue.500" />
-            <Text fontWeight="medium">{simpleName}</Text>
+            <Icon as={FiFolder} mr={[1, 1, 2]} color="blue.500" boxSize={[4, 4, 5]} />
+            <Text
+              fontWeight="medium"
+              fontSize={["sm", "md", "md"]}
+              isTruncated
+              maxWidth={["150px", "250px", "500px"]}
+              title={mappedName}
+            >
+              {truncatedName}
+            </Text>
           </Box>
         </Td>
-        <Td width="30%">Repository</Td>
+        <Td width={["40%", "35%", "30%"]}>
+          <Text fontSize={["sm", "md", "md"]}>Repository</Text>
+        </Td>
       </Tr>
     );
   };
@@ -104,8 +138,21 @@ const FolderView = () => {
   const ContentRow = ({ item }) => {
     const isDirectory = typeof item === 'string' || item?.type === 'dir';
     const name = typeof item === 'string' ? item : item?.name;
+    const windowWidth = useWindowSize();
 
     if (!name) return null;
+
+    const mappedName = getSimpleName(name);
+
+    const truncatedName = React.useMemo(() => 
+      truncateByScreenSize(mappedName, {
+        ...TRUNCATE_CONFIG,
+        mobileChars: 12,   // smaller limits for content rows
+        tabletChars: 35,
+        desktopChars: 50
+      }),
+      [mappedName, windowWidth]
+    );
 
     return (
       <Tr
@@ -113,7 +160,7 @@ const FolderView = () => {
         transition="all 0.2s"
         _hover={{
           backgroundColor: bgHover,
-          transform: 'translateX(5px)'
+          transform: ['none', 'none', 'translateX(5px)']
         }}
         onMouseEnter={() => setHoveredItem(name)}
         onMouseLeave={() => setHoveredItem(null)}
@@ -125,35 +172,44 @@ const FolderView = () => {
           }
         }}
       >
-        <Td width={isDirectory ? "70%" : "60%"}>
-          <Flex align="center" gap={3}>
+        <Td width={isDirectory ? ["60%", "65%", "70%"] : ["50%", "55%", "60%"]}>
+          <Flex align="center" gap={[1, 2, 3]}>
             <Icon
               as={isDirectory ? FiFolder : FiFile}
               color={isDirectory ? 'blue.500' : 'gray.500'}
-              boxSize={5}
+              boxSize={[4, 4, 5]}
             />
-            <Text fontWeight="medium" noOfLines={1} isTruncated>
-              {getSimpleName(name)}
+            <Text fontWeight="medium" noOfLines={1}
+              isTruncated
+              fontSize={["sm", "md", "md"]}
+              title={mappedName}
+            >
+              {truncatedName}
             </Text>
           </Flex>
         </Td>
-        <Td width={isDirectory ? "30%" : "20%"}>
-          <Text>{isDirectory ? 'Folder' : name.split('.').pop().toUpperCase()}</Text>
+        <Td width={isDirectory ? ["40%", "35%", "30%"] : ["30%", "25%", "20%"]}>
+          <Text
+            fontSize={["sm", "md", "md"]}
+            isTruncated
+            maxWidth={["80px", "120px", "200px"]}
+            title={isDirectory ? 'Folder' : name.split('.').pop().toUpperCase()}
+          >{isDirectory ? 'Folder' : name.split('.').pop().toUpperCase()}</Text>
         </Td>
         {!isDirectory && item?.download_url && (
-          <Td width="20%">
+          <Td width={["10%", "20%", "20%"]}>
             <IconButton
               icon={<FaDownload />}
               aria-label="Download file"
               colorScheme="blue"
               variant="ghost"
-              size="sm"
+              size={["xs", "sm", "sm"]}
               onClick={(e) => {
                 e.stopPropagation();
                 window.open(item.download_url, '_blank');
               }}
               _hover={{
-                transform: 'scale(1.1)',
+                transform: ['none', 'scale(1.1)', 'scale(1.1)'],
                 bg: 'blue.50'
               }}
             />
@@ -166,10 +222,10 @@ const FolderView = () => {
   const showActionsColumn = (repoName && contents.some(item => typeof item !== 'string' && item.type === 'file'));
 
   return (
-    <Container maxW="container.xl" py={5}>
+    <Container maxW="container.xl" py={[3, 4, 5]} px={[2, 3, 5]}>
       <Breadcrumbs />
       {!repoName && (
-        <Box mb={6}>
+        <Box mb={[4, 5, 6]}>
           <InputGroup>
             <InputLeftElement pointerEvents="none">
               <Icon as={FiSearch} color="gray.400" />
@@ -180,7 +236,7 @@ const FolderView = () => {
               onChange={(e) => setSearchQuery(e.target.value)}
               bg={inputBg}
               borderRadius="full"
-              size="md"
+              size={["sm", "md", "md"]}
               boxShadow="md"
               _focus={{
                 borderColor: 'teal.500',
@@ -195,20 +251,20 @@ const FolderView = () => {
       <Box
         borderWidth="1px"
         borderColor={borderColor}
-        borderRadius="xl"
-        overflow="hidden"
-        boxShadow="lg"
+        borderRadius={["lg", "xl", "xl"]}
+        overflow={["auto", "hidden", "hidden"]}
+        boxShadow={["md", "lg", "lg"]}
         transition="all 0.2s"
         _hover={{
-          boxShadow: 'xl'
+          boxShadow: ["lg", "xl", "xl"]
         }}
       >
-        <Table variant="simple">
+        <Table variant="simple" size={["sm", "md", "md"]}>
           <Thead>
             <Tr bg={headerBg}>
-              <Th fontSize="md">Name</Th>
-              <Th fontSize="md">Type</Th>
-              {showActionsColumn && <Th fontSize="md">Actions</Th>}
+              <Th fontSize={["sm", "md", "md"]}>Name</Th>
+              <Th fontSize={["sm", "md", "md"]}>Type</Th>
+              {showActionsColumn && <Th fontSize={["sm", "md", "md"]}>Actions</Th>}
             </Tr>
           </Thead>
           <Tbody>

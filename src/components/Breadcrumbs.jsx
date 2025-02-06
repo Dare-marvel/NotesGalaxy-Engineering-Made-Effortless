@@ -24,18 +24,19 @@ const Breadcrumbs = () => {
 
   return (
     <Breadcrumb
-      spacing="8px"
+      spacing={{ base: "4px", sm: "6px", md: "8px", lg: "10px", xl: "12px" }}
       separator={<Icon as={ChevronRightIcon} color="gray.500" />}
-      fontSize="lg"
-      pl={2} // Adding padding
-      ml={2}
-      mb={4}
-      pb={2}
+      fontSize={{ base: "xs", sm: "sm", md: "md", lg: "lg", xl: "xl" }}
+      pl={{ base: 1, sm: 2, md: 3, lg: 4 }}
+      ml={{ base: 1, sm: 2, md: 3, lg: 4 }}
+      mb={{ base: 2, sm: 3, md: 4, lg: 5 }}
+      pb={{ base: 1, sm: 2, md: 3 }}
+      pt={{ base: 7, sm: 7, md: 7, lg: 8 }}
+      mt={{ base: 7, sm: 7, md: 7, lg: 9 }}
       bg="gray.50" // Background color for better visibility
       borderRadius="md" // Rounded corners
       boxShadow="sm" // Subtle shadow for depth
-      pt={5}
-      mt={9}
+      display={{ base: "flex" }}
     >
       <BreadcrumbItem>
         <BreadcrumbLink 
