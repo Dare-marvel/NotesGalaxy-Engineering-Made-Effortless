@@ -56,7 +56,7 @@ const ContactPage = () => {
 
     // Replace with your actual Formspree endpoint
     try {
-      const response = await fetch('https://formspree.io/f/xbldkdar', {
+      const response = await fetch(import.meta.env.VITE_FORMSPREE_URL, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

@@ -100,6 +100,10 @@ export const NAME_MAPPINGS = {
   "Consumer-Electronics--CE--" : "Consumer Electronics(CE)",
   "NOTES/Lecture Notes" : "Lecture Notes",
 
+  // Design Thinking and Innovation and Creativity
+  "Design-Thinking-AND-Innovation-and-Creativity" : "Design Thinking, Innovation and Creativity",
+  "UI-UX-Redesign-Case-Study" : "Design Thinking",
+
 };
 
 export const REVERSE_NAME_MAPPINGS = {
@@ -202,6 +206,12 @@ export const REVERSE_NAME_MAPPINGS = {
   // Consumer Electronics
   "Consumer Electronics(CE)" : "Consumer-Electronics--CE--",
   "Lecture Notes" : "NOTES/Lecture Notes",
+
+  // Extra
+  "Design Thinking, Innovation and Creativity" : 
+  "Design-Thinking-AND-Innovation-and-Creativity",
+  "Design Thinking" : "UI-UX-Redesign-Case-Study"  ,
+
 };
 
 export const getSimpleName = (actualName) => {
