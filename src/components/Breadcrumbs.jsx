@@ -34,6 +34,8 @@ const Breadcrumbs = () => {
       bg="gray.50" // Background color for better visibility
       borderRadius="md" // Rounded corners
       boxShadow="sm" // Subtle shadow for depth
+      pt={5}
+      mt={9}
     >
       <BreadcrumbItem>
         <BreadcrumbLink 

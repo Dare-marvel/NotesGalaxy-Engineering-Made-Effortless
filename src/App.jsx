@@ -10,7 +10,7 @@ function App() {
     <BrowserRouter>
       <Box>
         <Navbar />
-        <Box mt="80px">
+        <Box >
           {/* <Breadcrumbs /> */}
           <AppRoutes />
         </Box>
