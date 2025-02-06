@@ -27,7 +27,7 @@ const Navbar = () => {
   const navigate = useNavigate();
 
   const navItems = [
-    { name: 'FolderView', path: '/' },
+    { name: 'Notes', path: '/' },
     { name: 'Contact Us', path: '/contact' },
   ];
 
@@ -57,7 +57,7 @@ const Navbar = () => {
               bgGradient="linear(to-r, cyan.400, blue.500, purple.600)"
               bgClip="text"
             >
-              NotesFusion
+              NotesGalaxy
             </Text>
           </HStack>
 

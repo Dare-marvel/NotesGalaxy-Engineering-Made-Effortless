@@ -1,15 +1,10 @@
-// theme.js
+import { extendTheme } from '@chakra-ui/react';
 
-// 1. import `extendTheme` function
-import { extendTheme } from "@chakra-ui/react";
-
-// 2. Add your color mode config
-const config = {
-  initialColorMode: "light",
-  useSystemColorMode: true,
-};
-
-// 3. extend the theme
-const theme = extendTheme({ config });
+const theme = extendTheme({
+  fonts: {
+    heading: 'Quantico, sans-serif',
+    body: 'Quantico, sans-serif',
+  },
+});
 
 export default theme;
