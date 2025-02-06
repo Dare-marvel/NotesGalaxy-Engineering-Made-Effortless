@@ -97,68 +97,69 @@ const ContactPage = () => {
   return (
     <Box
       bg="white"
-      minHeight="100vh"
+      minH="100vh"
       display="flex"
       alignItems="center"
       justifyContent="center"
       position="relative"
       overflow="hidden"
-      py={10}
+    // py={{ base: 6, sm: 8, md: 12, lg: 12 }}
+    // px={{ base: 4, sm: 6, md: 10, lg: 6 }}
     >
-      {/* Decorative floating elements */}
+      {/* Floating elements */}
       <FloatingElement
         icon={FaRocket}
         top="15%"
         left="10%"
         delay={0}
-        size="40px"
+        size={{ base: "25px", sm: "25px", md: "35px", lg: "40px" }}
       />
-      <FloatingElement
-        icon={FaSatellite}
-        top="20%"
-        right="15%"
-        delay={1}
-        size="35px"
+      <FloatingElement 
+      icon={FaSatellite} 
+      top={{ base: "15%", sm: "15%", md: "20%", lg: "20%" }}
+      right="15%" 
+      delay={1} 
+      size={{ base: "22px", sm: "25px", md: "30px", lg: "35px" }} 
       />
-      <FloatingElement
-        icon={FaSpaceShuttle}
-        top="75%"
-        left="10%"
-        delay={2}
-        size="30px"
+      <FloatingElement icon={FaSpaceShuttle} 
+      top={{ base: "85%", sm: "85%", md: "75%", lg: "75%" }}
+      left="10%" 
+      delay={2} 
+      size={{ base: "22px", sm: "22px", md: "25px", lg: "30px" }} 
       />
-      <FloatingElement
-        icon={FaStar}
-        top="75%"
-        right="10%"
-        delay={3}
-        size="25px"
+      <FloatingElement 
+      icon={FaStar} 
+      top={{ base: "85%", sm: "85%", md: "75%", lg: "75%" }}
+      right="10%" 
+      delay={3} 
+      size={{ base: "15px", sm: "15px", md: "17px", lg: "20px" }} 
       />
-      <FloatingElement
-        icon={FaStar}
-        top="40%"
-        left="20%"
-        delay={4}
-        size="20px"
+
+      <FloatingElement 
+      icon={FaStar} 
+      top="40%" 
+      left="20%" 
+      delay={4} 
+      size={{ base: "19px", sm: "18px", md: "20px", lg: "23px" }} 
       />
 
       <Container
-        maxW="md"
+        maxW={{ base: "sm", sm: "sm", md: "sm", lg: "md", xl: "md" }}
         bg="white"
         borderRadius="xl"
-        p={4}
-        boxShadow="xl"
+        p={{ base: 3, sm: 2, md: 3, lg: 4 }}
+        boxShadow="2xl"
         border="2px"
-        borderColor="purple.100"
+        borderColor="purple.200"
         position="relative"
         zIndex={2}
       >
-        <VStack spacing={6}>
+        <VStack spacing={{ base: 4, sm: 3, md: 4, lg: 5 }}>
           <Heading
             textAlign="center"
             bgGradient="linear(to-r, purple.500, blue.500)"
             bgClip="text"
-            fontSize="3xl"
+            fontSize={{ base: "xl", sm: "xl", md: "2xl", lg: "3xl" }}
           >
             Contact Us
           </Heading>
@@ -169,9 +170,9 @@ const ContactPage = () => {
             onChange={(e) => setName(e.target.value)}
             variant="filled"
             bg="purple.50"
-            borderColor="purple.200"
-            _hover={{ borderColor: "blue.300" }}
-            size="md"
+            borderColor="purple.300"
+            _hover={{ borderColor: "blue.400" }}
+            size={{ base: "sm", sm: "sm", md: "sm", lg: "md", xl: "md" }}
           />
 
           <Input
@@ -181,9 +182,9 @@ const ContactPage = () => {
             onChange={(e) => setEmail(e.target.value)}
             variant="filled"
             bg="purple.50"
-            borderColor="purple.200"
-            _hover={{ borderColor: "blue.300" }}
-            size="md"
+            borderColor="purple.300"
+            _hover={{ borderColor: "blue.400" }}
+            size={{ base: "sm", sm: "sm", md: "sm", lg: "md", xl: "md" }}
           />
 
           <Textarea
@@ -192,10 +193,10 @@ const ContactPage = () => {
             onChange={(e) => setMessage(e.target.value)}
             variant="filled"
             bg="purple.50"
-            borderColor="purple.200"
-            _hover={{ borderColor: "blue.300" }}
-            size="md"
-            minH="150px"
+            borderColor="purple.300"
+            _hover={{ borderColor: "blue.400" }}
+            size={{ base: "sm", sm: "sm", md: "sm", lg: "md", xl: "md" }}
+            minH={{ base: "120px", sm: "100px", md: "120px", lg: "150px" }}
           />
 
           <Button
@@ -203,14 +204,9 @@ const ContactPage = () => {
             bgGradient="linear(to-r, purple.500, blue.500)"
             color="white"
             rightIcon={<FaPaperPlane />}
-            _hover={{
-              transform: 'scale(1.05)',
-              bgGradient: "linear(to-r, purple.600, blue.600)"
-            }}
-            size="md"
+            _hover={{ transform: "scale(1.05)", bgGradient: "linear(to-r, purple.600, blue.600)" }}
+            size={{ base: "sm", sm: "sm", md: "sm", lg: "md", xl: "md" }}
             w="full"
-            animation={`${colorChange} 2s ease infinite`}
-            bgSize="200% 200%"
           >
             Send Message
           </Button>
