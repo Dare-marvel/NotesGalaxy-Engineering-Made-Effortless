@@ -3,7 +3,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { Box } from '@chakra-ui/react';
 import Navbar from './components/Navbar/Navbar'
 import AppRoutes from './routes/AppRoutes';
-import Breadcrumbs from './components/Breadcrumbs';
+// import Breadcrumbs from './components/Breadcrumbs';
 
 function App() {
   return (
