@@ -311,6 +311,7 @@ const ContactPage = () => {
             variant="filled"
             bg="purple.50"
             borderColor="purple.300"
+            borderRadius="md"
             _hover={{ borderColor: "blue.400" }}
             size={{ base: "sm", sm: "sm", md: "sm", lg: "md", xl: "md" }}
           />
@@ -324,6 +325,7 @@ const ContactPage = () => {
             variant="filled"
             bg="purple.50"
             borderColor="purple.300"
+            borderRadius="md"
             _hover={{ borderColor: "blue.400" }}
             size={{ base: "sm", sm: "sm", md: "sm", lg: "md", xl: "md" }}
           />
@@ -346,6 +348,7 @@ const ContactPage = () => {
                   variant="filled"
                   bg="purple.50"
                   borderColor="purple.300"
+                  borderRadius="md"
                   _hover={{ borderColor: "blue.400" }}
                   size={{ base: "sm", sm: "sm", md: "sm", lg: "md", xl: "md" }}
                 />
@@ -366,13 +369,22 @@ const ContactPage = () => {
                 onChange={(e) => handleFileChange(index, e)}
                 mt={2}
                 p={2}
+                size={{ base: "sm", sm: "sm", md: "sm", lg: "md", xl: "md" }}
+                borderColor="purple.300"
+                borderRadius="md"
                 _hover={{ borderColor: 'blue.400' }}
               />
             </Box>
 
           ))}
 
-          <Button isDisabled={loading} leftIcon={<FaPlus />} colorScheme="purple" onClick={handleAddSubject}>
+          <Button
+            isDisabled={loading}
+            leftIcon={<FaPlus />}
+            colorScheme="purple"
+            onClick={handleAddSubject}
+            size={{ base: "sm", sm: "sm", md: "sm", lg: "md", xl: "md" }}
+          >
             Add Subject
           </Button>
 
@@ -383,6 +395,7 @@ const ContactPage = () => {
             variant="filled"
             bg="purple.50"
             borderColor="purple.300"
+            borderRadius="md"
             isDisabled={loading}
             _hover={{ borderColor: "blue.400" }}
             size={{ base: "sm", sm: "sm", md: "sm", lg: "md", xl: "md" }}
