@@ -18,8 +18,19 @@ import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
 import { motion } from 'framer-motion';
 import NavItem from './NavItem';
 import logo from '../../assets/logo.png';
+import { keyframes } from "@emotion/react";
 
 const MotionImage = motion(Image);
+
+const spaceGlow = keyframes`
+  0% { background-position: 0% 50%; }
+  100% { background-position: 100% 50%; }
+`;
+
+const glitter = keyframes`
+  0% { opacity: 0.5; transform: scale(1); }
+  100% { opacity: 1; transform: scale(1.2); }
+`;
 
 const Navbar = () => {
   const { isOpen, onToggle } = useDisclosure();
@@ -46,7 +57,7 @@ const Navbar = () => {
           <HStack spacing={3} cursor="pointer" onClick={() => navigate('/')}>
             <MotionImage
               src={logo}
-              alt="NotesFusion Logo"
+              alt="NotesGalaxy Logo"
               boxSize="40px"
               whileTap={{ rotate: 20, scale: 1.1 }}
               transition={{ type: 'spring', stiffness: 300 }}
@@ -55,6 +66,7 @@ const Navbar = () => {
               fontSize="xl"
               fontWeight="bold"
               bgGradient="linear(to-r, cyan.400, blue.500, purple.600)"
+              animation={`${spaceGlow} 3s infinite alternate`}
               bgClip="text"
             >
               NotesGalaxy
@@ -97,6 +109,30 @@ const Navbar = () => {
           </VStack>
         </Collapse>
       </Container>
+      <Box
+        position="absolute"
+        bottom="-2px"
+        left="0"
+        width="100%"
+        height="3.5px"
+        bgGradient="linear(to-r, green.200, purple.200, blue.200, cyan.200)"
+        animation={`${spaceGlow} 3s infinite alternate`}
+        sx={{
+          _before: {
+            content: '""',
+            position: "absolute",
+            top: "50%",
+            left: "0",
+            width: "100%",
+            height: "100%",
+            background: "radial-gradient(white, transparent)",
+            backgroundSize: "200% 200%",
+            opacity: 0.7,
+            animation: `${glitter} 3s infinite alternate`,
+          },
+          boxShadow: "0 0 10px rgba(255, 255, 255, 0.3)",
+        }}
+      />
     </Box>
   );
 };
