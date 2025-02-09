@@ -366,8 +366,7 @@ const ContactPage = () => {
                 onChange={(e) => handleFileChange(index, e)}
                 mt={2}
                 p={2}
-                _hover={{ borderColor: 'space.500' }}
-                color="white"
+                _hover={{ borderColor: 'blue.400' }}
               />
             </Box>
 
