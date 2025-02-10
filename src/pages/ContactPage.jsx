@@ -151,7 +151,7 @@ const ContactPage = () => {
         if (subject.files.length > 0) {
           const fileLinks = await uploadFiles(subject.files);
           // console.log("File Links:", fileLinks);
-          await setDoc(doc(db, `subjects/${subject.id}/users/${name}`),
+          await setDoc(doc(db, `subjects/${subject.name}/users/${name}`),
             {
               files: fileLinks,
               emailId: email,
