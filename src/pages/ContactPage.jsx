@@ -150,15 +150,14 @@ const ContactPage = () => {
       for (const subject of subjects) {
         if (subject.files.length > 0) {
           const fileLinks = await uploadFiles(subject.files);
-          console.log("File Links:", fileLinks);
-          await setDoc(doc(db, `${subject.name}/${name}`),
+          // console.log("File Links:", fileLinks);
+          await setDoc(doc(db, `subjects/${subject.id}/users/${name}`),
             {
               files: fileLinks,
               emailId: email,
               user_message: message
             },
             { merge: true });
-
         }
       }
     }
