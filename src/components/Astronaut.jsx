@@ -122,7 +122,7 @@ const Astronaut = () => {
         {/* Astronaut Image */}
         <Box
           as="img"
-          src="http://localhost:5173/src/assets/astronaut.png"
+          src={astronaut}
           alt="Astronaut"
           position={'relative'}
           width="200px"
