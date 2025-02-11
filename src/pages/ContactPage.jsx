@@ -18,6 +18,7 @@ import { FaPaperPlane, FaRocket, FaSatellite, FaSpaceShuttle, FaStar, FaPlus, Fa
 import { getFirestore, doc, setDoc } from 'firebase/firestore';
 import app from '../config/firebaseConfig'
 import { InfoIcon } from "@chakra-ui/icons"
+import axios from 'axios';
 // import { keyframes } from '@emotion/react';
 
 // const colorChange = keyframes`
@@ -89,15 +90,11 @@ const ContactPage = () => {
       formData.append("file", file);
 
       try {
-        const response = await fetch("https://store1.gofile.io/uploadFile", {
-          method: "POST",
-          body: formData,
-        });
+        const response = await axios.post("https://store1.gofile.io/uploadFile", formData);
 
-        const data = await response.json();
-
-        if (data.status === "ok") {
-          return data.data.downloadPage;
+        // console.log("Checking ",response.data)
+        if (response.data.status === "ok") {
+          return response.data.data.downloadPage;
         } else {
           return null;
         }
@@ -176,19 +173,19 @@ const ContactPage = () => {
     }
 
     try {
-      const response = await fetch(import.meta.env.VITE_FORMSPREE_URL, {
-        method: 'POST',
+      const response = await axios.post(import.meta.env.VITE_FORMSPREE_URL, {
+        name,
+        email,
+        message,
+      }, {
         headers: {
           'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          name,
-          email,
-          message
-        }),
+        }
       });
 
-      if (response.ok) {
+      // console.log("Checking ",response.data)
+
+      if (response.data.ok) {
         toast({
           title: "Success",
           description: "Your files and message were sent successfully!",
