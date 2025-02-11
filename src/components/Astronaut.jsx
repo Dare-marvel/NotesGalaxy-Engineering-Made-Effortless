@@ -8,9 +8,7 @@ import './Astronaut.css';
 const Astronaut = () => {
   const { isOpen, onClose } = useDisclosure({ defaultIsOpen: true });
   const navigate = useNavigate();
-  const [hasSeenNotification, setHasSeenNotification] = useState(() => {
-    return localStorage.getItem('hasSeenAstronautNotification') === 'true';
-  });
+  const [isVisible, setIsVisible] = useState(true);
 
   // Color animation for contact button
   const [buttonColorIndex, setButtonColorIndex] = useState(0);
@@ -21,29 +19,24 @@ const Astronaut = () => {
       setButtonColorIndex((prev) => (prev + 1) % buttonColors.length);
     }, 1000);
 
-    if (!hasSeenNotification) {
-      const timer = setTimeout(() => {
-        onClose();
-        setHasSeenNotification(true);
-      //  localStorage.setItem('hasSeenAstronautNotification', 'true');
-      }, 5000);
+    // Timer to hide the component after 10 seconds
+    const timer = setTimeout(() => {
+      onClose();
+      setIsVisible(false);
+    }, 10000);
 
-      return () => {
-        clearTimeout(timer);
-        clearInterval(colorInterval);
-      };
-    }
-    
-    return () => clearInterval(colorInterval);
-  }, [hasSeenNotification, onClose]);
+    return () => {
+      clearTimeout(timer);
+      clearInterval(colorInterval);
+    };
+  }, [onClose]);
 
   const handleClose = () => {
     onClose();
-    setHasSeenNotification(true);
-    //localStorage.setItem('hasSeenAstronautNotification', 'true');
+    setIsVisible(false);
   };
 
-  if (hasSeenNotification) {
+  if (!isVisible) {
     return null;
   }
 
@@ -95,7 +88,7 @@ const Astronaut = () => {
             color="rgba(17, 8, 85, 0.8)"
             _hover={{
               bg: 'rgba(255, 255, 255, 0.1)',
-              color: 'white'
+              color: 'purple'
             }}
           />
           
@@ -113,13 +106,14 @@ const Astronaut = () => {
             size="sm"
             bg={buttonColors[buttonColorIndex]}
             color="black"
-            mr={2}
+            mr={4}
             onClick={() => navigate('/contact')}
             _hover={{
               transform: 'scale(1.05)',
               boxShadow: '0 0 15px currentColor'
             }}
             transition="all 0.3s ease"
+            zIndex={3}
           >
             Contact Us
           </Button>
@@ -128,7 +122,7 @@ const Astronaut = () => {
         {/* Astronaut Image */}
         <Box
           as="img"
-          src={astronaut}
+          src="http://localhost:5173/src/assets/astronaut.png"
           alt="Astronaut"
           position={'relative'}
           width="200px"
@@ -136,7 +130,7 @@ const Astronaut = () => {
           top={10}
           left={12}
           cursor="pointer"
-          onClick={handleClose}
+          // onClick={handleClose}
           filter="drop-shadow(0 0 10px rgba(88, 86, 214, 0.5))"
           transition="transform 0.3s ease"
           _hover={{
@@ -147,7 +141,5 @@ const Astronaut = () => {
     </SlideFade>
   );
 };
-
-
 
 export default Astronaut;
