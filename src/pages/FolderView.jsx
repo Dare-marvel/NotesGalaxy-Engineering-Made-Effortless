@@ -137,35 +137,71 @@ const FolderView = () => {
 
     const downloadRepository = async (e) => {
       e.stopPropagation();
-
+    
       try {
         setIsDownloading(true);
+        
+        // Initial notification
+        toast({
+          title: "Starting Download",
+          description: "Preparing to fetch repository contents...",
+          status: "info",
+          duration: 2000,
+          isClosable: true,
+        });
+    
         let allFiles = [];
-
         const repoStructure = FOLDER_STRUCTURE[repo];
-
+    
         if (!repoStructure || !repoStructure.directories) {
           throw new Error('No directory structure defined for this repository');
         }
-
+    
+        // Notify about fetching files
+        toast({
+          title: "Fetching Files",
+          description: `Processing ${repoStructure.directories.length} directories...`,
+          status: "info",
+          duration: 3000,
+          isClosable: true,
+        });
+    
         for (const dirPath of repoStructure.directories) {
           const files = await fetchDirectoryContents(dirPath);
           allFiles.push(...files);
         }
-
+    
         if (allFiles.length === 0) {
           throw new Error('No files found in the specified directories');
         }
-
+    
+        // Notify about compression starting
+        toast({
+          title: "Creating ZIP File",
+          description: `Compressing ${allFiles.length} files...`,
+          status: "info",
+          duration: 4000,
+          isClosable: true,
+        });
+    
         const JSZip = await import('jszip');
         const zip = new JSZip.default();
-
+    
         allFiles.forEach(file => {
           zip.file(file.path, file.content);
         });
-
+    
+        // Notify about generating the final zip
+        toast({
+          title: "Generating Download",
+          description: "Preparing the final ZIP file...",
+          status: "info",
+          duration: 3000,
+          isClosable: true,
+        });
+    
         const zipContent = await zip.generateAsync({ type: 'blob' });
-
+    
         const url = window.URL.createObjectURL(zipContent);
         const link = document.createElement('a');
         link.href = url;
@@ -174,15 +210,16 @@ const FolderView = () => {
         link.click();
         link.remove();
         window.URL.revokeObjectURL(url);
-
+    
+        // Success notification
         toast({
           title: "Download Complete",
-          description: `Downloaded ${allFiles.length} files from selected directories`,
+          description: `Successfully downloaded ${allFiles.length} files`,
           status: "success",
           duration: 3000,
           isClosable: true,
         });
-
+    
       } catch (error) {
         toast({
           title: "Download Failed",
@@ -191,7 +228,7 @@ const FolderView = () => {
           duration: 5000,
           isClosable: true,
         });
-
+    
         console.error('Error downloading repository:', error);
       } finally {
         setIsDownloading(false);
