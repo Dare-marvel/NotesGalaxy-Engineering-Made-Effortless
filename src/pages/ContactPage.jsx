@@ -55,9 +55,9 @@ const FloatingElement = ({ icon, top, left, right, duration = 5, size = "30px", 
 const db = getFirestore(app);
 
 const ContactPage = () => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [message, setMessage] = useState('');
+ // const [name, setName] = useState('');
+ // const [email, setEmail] = useState('');
+ // const [message, setMessage] = useState('');
   const [subjects, setSubjects] = useState([]);
   const [loading, setLoading] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
@@ -111,6 +111,10 @@ const ContactPage = () => {
     e.preventDefault();
 
     setLoading(true);
+
+    const name = document.getElementById('name').value;
+    const email = document.getElementById('email').value;
+    const message = document.getElementById('message').value;
 
     // Function to validate email format
     const validateEmail = (email) => {
@@ -193,10 +197,13 @@ const ContactPage = () => {
           duration: 5000,
           isClosable: true,
         });
-        setName("");
-        setEmail("");
+        // setName("");
+        // setEmail("");
+        //setMessage("");
+        document.getElementById('name').value = '';
+        document.getElementById('email').value = '';
+        document.getElementById('message').value = '';
         setSubjects([]);
-        setMessage("");
       } else {
         throw new Error();
       }
@@ -305,9 +312,10 @@ const ContactPage = () => {
 
           <Input
             placeholder="Your Name"
-            value={name}
+            id="name"
+            //value={name}
             isDisabled={loading}
-            onChange={(e) => setName(e.target.value)}
+            //onChange={(e) => setName(e.target.value)}
             variant="filled"
             bg="purple.50"
             borderColor="purple.300"
@@ -319,9 +327,10 @@ const ContactPage = () => {
           <Input
             placeholder="Your Email"
             type="email"
-            value={email}
+            id="email"
+           // value={email}
             isDisabled={loading}
-            onChange={(e) => setEmail(e.target.value)}
+          //  onChange={(e) => setEmail(e.target.value)}
             variant="filled"
             bg="purple.50"
             borderColor="purple.300"
@@ -390,8 +399,9 @@ const ContactPage = () => {
 
           <Textarea
             placeholder="Your Message"
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
+           // value={message}
+            id="message"
+           // onChange={(e) => setMessage(e.target.value)}
             variant="filled"
             bg="purple.50"
             borderColor="purple.300"
