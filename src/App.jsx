@@ -6,6 +6,7 @@ import AppRoutes from './routes/AppRoutes';
 import Astronaut from './components/Astronaut'
 import Footer from './components/Footer'; // Import the Footer component
 import { Analytics } from "@vercel/analytics/react"
+import { SpeedInsights } from '@vercel/speed-insights/react'
 // import Breadcrumbs from './components/Breadcrumbs';
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
         <Footer /> {/* Add the Footer component */}
       </Box>
       <Analytics />
+      <SpeedInsights />
     </BrowserRouter>
   );
 }
