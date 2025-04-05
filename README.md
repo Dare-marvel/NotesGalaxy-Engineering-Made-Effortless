@@ -57,7 +57,7 @@ Say goodbye to messy folders and say hello to structured learning!
 ## 💻 Getting Started
 ```bash
 # 1. Clone the repository
-git clone https://github.com/your-username/NotesGalaxy.git
+git clone https://github.com/Dare-marvel/ENGINEERING-NOTES-MACHINE.git
 # 2. Navigate into the project directory
 cd NotesGalaxy
 # 3. Install dependencies
