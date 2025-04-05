@@ -27,7 +27,7 @@ const AnimatedIcon = ({ icon, href }) => {
       >
         <Icon 
           as={icon} 
-          boxSize={6} 
+          boxSize={{ base: 5, sm: 6 }} // Responsive icon size
           color="whiteAlpha.900" 
           filter="drop-shadow(0 0 8px #9F7AEA) drop-shadow(0 0 12px #805AD5)"
           transition="filter 0.3s ease"
@@ -46,11 +46,12 @@ const Footer = () => {
       as="footer"
       position="relative"
       mt={10}
-      py={8}
+      py={{ base: 6, md: 8 }} // Reduced padding on mobile
       borderTop="1px solid"
       borderColor="whiteAlpha.300"
       bg="linear-gradient(180deg, rgba(14, 25, 47, 0) 0%, rgba(19, 2, 50, 0.5) 100%)"
       overflow="hidden"
+      width="100%"
     >
       {/* Animated glowing background line */}
       <motion.div
@@ -78,24 +79,49 @@ const Footer = () => {
         direction={{ base: "column", md: "row" }} 
         maxW="1200px" 
         mx="auto" 
-        px={6}
+        px={{ base: 4, sm: 6 }}
         align="center"
         justify="space-between"
         position="relative"
         zIndex={1}
       >
-        {/* Copyright text - Updated with your name and color */}
+        {/* Copyright text */}
         <Text 
-          fontSize="md" 
-          color="white" /* Purplish-blue color for better visibility */
-          mb={{ base: 6, md: 0 }}
+          fontSize={{ base: "sm", sm: "md" }} // Smaller text on mobile
+          color="white"
+          mb={{ base: 5, md: 0 }} // More space below on mobile
           textShadow="0 0 5px #9F7AEA"
           fontWeight="medium"
+          textAlign={{ base: "center", md: "left" }} // Center on mobile
         >
           © {new Date().getFullYear()} Adwait Purao. All rights reserved.
         </Text>
 
-        {/* Vertical divider for md screens and up - with neon glow */}
+        {/* Horizontal divider for mobile only */}
+        <Box 
+          display={{ base: "block", md: "none" }}
+          w="80%" 
+          mb={5}
+        >
+          <motion.div
+            animate={{
+              opacity: [0.7, 1, 0.7],
+            }}
+            transition={{
+              duration: 2,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }}
+            style={{
+              height: "1px",
+              width: "100%",
+              background: "linear-gradient(90deg, transparent 0%, #9F7AEA 50%, transparent 100%)",
+              boxShadow: "0 0 10px #9F7AEA, 0 0 15px #805AD5",
+            }}
+          />
+        </Box>
+
+        {/* Vertical divider for md screens and up */}
         <Box display={{ base: "none", md: "block" }}>
           <motion.div
             animate={{
@@ -116,7 +142,12 @@ const Footer = () => {
         </Box>
 
         {/* Social icons */}
-        <Flex gap={6} align="center">
+        <Flex 
+          gap={{ base: 4, sm: 6 }} // Reduced spacing on smallest screens
+          align="center"
+          justify="center" // Center icons on mobile
+          width={{ base: "100%", md: "auto" }} // Full width on mobile
+        >
           <AnimatedIcon icon={FaGithub} href="https://github.com/Dare-marvel/" />
           <AnimatedIcon icon={FaTwitter} href="https://x.com/PuraoAdwait" />
           <AnimatedIcon icon={FaLinkedin} href="https://www.linkedin.com/in/adwait-p-04a4a222a/" />
