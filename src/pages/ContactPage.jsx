@@ -18,6 +18,7 @@ import { FaPaperPlane, FaRocket, FaSatellite, FaSpaceShuttle, FaStar, FaPlus, Fa
 import { getFirestore, doc, setDoc } from 'firebase/firestore';
 import app from '../config/firebaseConfig'
 import { InfoIcon } from "@chakra-ui/icons"
+import emailjs from '@emailjs/browser';
 import axios from 'axios';
 // import { keyframes } from '@emotion/react';
 
@@ -55,12 +56,13 @@ const FloatingElement = ({ icon, top, left, right, duration = 5, size = "30px", 
 const db = getFirestore(app);
 
 const ContactPage = () => {
- // const [name, setName] = useState('');
- // const [email, setEmail] = useState('');
- // const [message, setMessage] = useState('');
+  // const [name, setName] = useState('');
+  // const [email, setEmail] = useState('');
+  // const [message, setMessage] = useState('');
   const [subjects, setSubjects] = useState([]);
   const [loading, setLoading] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
+  emailjs.init(import.meta.env.VITE_EMAILJS_USER_ID);
   const toast = useToast();
 
   const handleAddSubject = () => {
@@ -82,6 +84,31 @@ const ContactPage = () => {
   const handleRemoveSubject = (index) => {
     const updatedSubjects = subjects.filter((_, i) => i !== index);
     setSubjects(updatedSubjects);
+  };
+
+  const sendConfirmationEmail = async (recipientEmail, recipientName) => {
+    try {
+      const response = await emailjs.send(
+        import.meta.env.VITE_EMAILJS_SERVICE_ID, // Replace with your EmailJS service ID
+        import.meta.env.VITE_EMAILJS_TEMPLATE_ID, // Replace with your template ID
+        {
+          to_email: recipientEmail,
+          to_name: recipientName,
+          from_name: "Notes Galaxy",
+          message: "Thank you for sharing your notes. We'll make sure you receive proper credit for your contribution."
+        }
+      );
+
+      return response.status === 200;
+    } catch (error) {
+      console.error('Error sending confirmation email:', error);
+      return false;
+    }
+    finally {
+      document.getElementById('name').value = '';
+      document.getElementById('email').value = '';
+      document.getElementById('message').value = '';
+    }
   };
 
   const uploadFiles = async (files) => {
@@ -187,9 +214,14 @@ const ContactPage = () => {
         }
       });
 
+      await sendConfirmationEmail(email, name);
+
       // console.log("Checking ",response.data)
 
       if (response.data.ok) {
+
+        
+
         toast({
           title: "Success",
           description: "Your files and message were sent successfully!",
@@ -200,9 +232,7 @@ const ContactPage = () => {
         // setName("");
         // setEmail("");
         //setMessage("");
-        document.getElementById('name').value = '';
-        document.getElementById('email').value = '';
-        document.getElementById('message').value = '';
+
         setSubjects([]);
       } else {
         throw new Error();
@@ -328,9 +358,9 @@ const ContactPage = () => {
             placeholder="Your Email"
             type="email"
             id="email"
-           // value={email}
+            // value={email}
             isDisabled={loading}
-          //  onChange={(e) => setEmail(e.target.value)}
+            //  onChange={(e) => setEmail(e.target.value)}
             variant="filled"
             bg="purple.50"
             borderColor="purple.300"
@@ -399,9 +429,9 @@ const ContactPage = () => {
 
           <Textarea
             placeholder="Your Message"
-           // value={message}
+            // value={message}
             id="message"
-           // onChange={(e) => setMessage(e.target.value)}
+            // onChange={(e) => setMessage(e.target.value)}
             variant="filled"
             bg="purple.50"
             borderColor="purple.300"
