@@ -59,7 +59,7 @@ Say goodbye to messy folders and say hello to structured learning!
 # 1. Clone the repository
 git clone https://github.com/Dare-marvel/ENGINEERING-NOTES-MACHINE.git
 # 2. Navigate into the project directory
-cd NotesGalaxy
+cd ENGINEERING-NOTES-MACHINE
 # 3. Install dependencies
 npm install
 # 4. Start the dev server
