@@ -50,8 +50,8 @@ Say goodbye to messy folders and say hello to structured learning!
 - ⚛️ React + Vite  
 - 🎨 Chakra UI  
 - ☁️ Firebase + Firestore  
-- 📂 Temporary file hosts (GoFile)  
-
+- 📂 Temporary file hosts (GoFile)
+- 📧 Mail (Formspree,EmailJs)
 
 ---
 ## 💻 Getting Started
@@ -73,10 +73,6 @@ npm run dev
 3. Commit your changes (`git commit -m 'Add some amazing feature'`)
 4. Push to the branch (`git push origin amazing-feature`)
 5. Open a Pull Request
-
----
-## 🌟 Support
-If you like this project, please give it a ⭐ and share it with your friends!
 
 ---
 ## 📝 License
