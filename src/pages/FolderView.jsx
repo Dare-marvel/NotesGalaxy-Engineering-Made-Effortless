@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, Suspense, lazy } from 'react';
 import {
   Box,
   Table,
@@ -18,11 +18,13 @@ import {
   InputGroup,
   useToast,
   InputLeftElement,
+  Center
 } from '@chakra-ui/react';
 import { FiArrowLeft, FiFolder, FiFile, FiSearch } from 'react-icons/fi';
 import { FaDownload } from "react-icons/fa";
 import { getSimpleName, getActualName } from '../config/nameMapping';
-import FileViewer from '../components/FileViewer/FileViewer';
+// import FileViewer from '../components/FileViewer/FileViewer';
+const FileViewer = lazy(() => import('../components/FileViewer/FileViewer'));
 import { useFolderContents } from '../hooks/useFolderContents';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useWindowSize } from '../hooks/useWindowSize';
@@ -594,11 +596,19 @@ const FolderView = () => {
         </Table>
       </Box>
 
-      <FileViewer
-        file={selectedFile}
-        isOpen={!!selectedFile}
-        onClose={() => setSelectedFile(null)}
-      />
+      <Suspense fallback={
+  <Center h="200px">
+    <Spinner size="xl" color="blue.500" />
+  </Center>
+}>
+  {selectedFile && (
+    <FileViewer 
+      file={selectedFile} 
+      isOpen={!!selectedFile} 
+      onClose={() => setSelectedFile(null)} 
+    />
+  )}
+</Suspense>
     </Container>
   );
 };

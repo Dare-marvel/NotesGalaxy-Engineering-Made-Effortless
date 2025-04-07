@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Modal, ModalOverlay, ModalContent, ModalHeader, IconButton, ModalBody, ModalFooter, Button, Text, Box } from '@chakra-ui/react';
+import { Modal, ModalOverlay, ModalContent, ModalHeader, IconButton, ModalBody, Text, Box } from '@chakra-ui/react';
 import { DownloadIcon, CloseIcon } from '@chakra-ui/icons';
 import DocumentViewer from './DocumentViewer';
 import ImageViewer from './ImageViewer';

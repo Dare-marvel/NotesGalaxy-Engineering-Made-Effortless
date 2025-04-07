@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Flex, Link, Text, Icon, Divider } from '@chakra-ui/react';
+import { Box, Flex, Link, Text, Icon} from '@chakra-ui/react';
 import { motion } from 'framer-motion';
 import { FaGithub, FaTwitter, FaLinkedin, FaInstagram, FaEnvelope } from 'react-icons/fa';
 

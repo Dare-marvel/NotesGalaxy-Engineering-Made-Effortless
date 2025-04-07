@@ -99,6 +99,7 @@ const Navbar = () => {
                   w="full"
                   variant="ghost"
                   justifyContent="start"
+                  aria-label={item.name}
                   color={location.pathname === item.path ? 'blue.500' : ''}
                   fontWeight={location.pathname === item.path ? 'semibold' : 'normal'}
                 >
