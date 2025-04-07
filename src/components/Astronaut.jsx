@@ -1,42 +1,83 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, memo } from 'react';
 import { Box, Button, Text, SlideFade, useDisclosure, IconButton } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import { CloseIcon } from '@chakra-ui/icons';
-import astronaut from '../assets/astronaut.png';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
+import 'react-lazy-load-image-component/src/effects/blur.css';
 import './Astronaut.css';
+
+// Custom hook for preference storage
+const usePreferenceStorage = (key, initialValue) => {
+  const [value, setValue] = useState(() => {
+    try {
+      const item = localStorage.getItem(key);
+      return item ? JSON.parse(item) : initialValue;
+    } catch (error) {
+      return initialValue;
+    }
+  });
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(key, JSON.stringify(value));
+    } catch (error) {
+      console.error("Could not save preference:", error);
+    }
+  }, [key, value]);
+
+  return [value, setValue];
+};
 
 const Astronaut = () => {
   const { isOpen, onClose } = useDisclosure({ defaultIsOpen: true });
   const navigate = useNavigate();
-  const [isVisible, setIsVisible] = useState(true);
+  
+  // Store user preference
+  const [hasClosedBefore, setHasClosedBefore] = usePreferenceStorage('astronaut-closed', false);
+  const [shouldRender, setShouldRender] = useState(!hasClosedBefore);
 
-  // Color animation for contact button
+  // Color animation with reduced resources
   const [buttonColorIndex, setButtonColorIndex] = useState(0);
   const buttonColors = ['#00ff88', '#4d4dff', '#ff00ff', '#00ffff'];
 
   useEffect(() => {
+    if (!shouldRender) return;
+    
+    // Reduced timing for color changes to save resources
     const colorInterval = setInterval(() => {
       setButtonColorIndex((prev) => (prev + 1) % buttonColors.length);
-    }, 1000);
+    }, 2000); // Increased to 2s to reduce updates
 
-    // Timer to hide the component after 10 seconds
+    // Timer with respect to user preferences
     const timer = setTimeout(() => {
       onClose();
-      setIsVisible(false);
+      setTimeout(() => setShouldRender(false), 300); // Allow animation to complete
     }, 10000);
 
     return () => {
       clearTimeout(timer);
       clearInterval(colorInterval);
     };
-  }, [onClose]);
+  }, [onClose, shouldRender]);
 
   const handleClose = () => {
     onClose();
-    setIsVisible(false);
+    setHasClosedBefore(true); // Remember user preference
+    setTimeout(() => setShouldRender(false), 300); // Allow animation to complete
   };
 
-  if (!isVisible) {
+  // Respect prefers-reduced-motion
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    if (mediaQuery.matches) {
+      // Skip animations for users who prefer reduced motion
+      if (hasClosedBefore) {
+        setShouldRender(false);
+      }
+    }
+  }, [hasClosedBefore]);
+
+  if (!shouldRender) {
     return null;
   }
 
@@ -49,6 +90,8 @@ const Astronaut = () => {
         zIndex={1000}
         display="flex"
         alignItems="flex-end"
+        width="200px" // Set explicit width to prevent layout shift
+        height="240px" // Set explicit height to prevent layout shift
       >
         {/* Popup Message */}
         <Box
@@ -62,6 +105,8 @@ const Astronaut = () => {
           borderRadius="xl"
           p={6}
           maxWidth="300px"
+          aria-live="polite" // Accessibility improvement
+          role="alert" // Accessibility improvement
           border="2px solid transparent"
           _before={{
             content: '""',
@@ -73,7 +118,7 @@ const Astronaut = () => {
             background: 'linear-gradient(45deg, #00ff88, #4d4dff, #ff00ff, #00ffff)',
             borderRadius: 'xl',
             zIndex: -1,
-            animation: '${borderGlow} 3s linear infinite',
+            animation: 'borderGlow 3s linear infinite',
           }}
         >
           <IconButton
@@ -81,7 +126,7 @@ const Astronaut = () => {
             right="2"
             top="2"
             size="xs"
-            aria-label="Close"
+            aria-label="Close notification"
             icon={<CloseIcon />}
             onClick={handleClose}
             variant="ghost"
@@ -114,32 +159,43 @@ const Astronaut = () => {
             }}
             transition="all 0.3s ease"
             zIndex={3}
+            aria-label="Go to contact page"
           >
             Contact Us
           </Button>
         </Box>
 
-        {/* Astronaut Image */}
+        {/* Astronaut Image with Lazy Loading */}
         <Box
-          as="img"
-          src={astronaut}
-          alt="Astronaut"
-          position={'relative'}
           width="200px"
           height="auto"
+          position="relative"
           top={10}
           left={12}
-          cursor="pointer"
-          // onClick={handleClose}
-          filter="drop-shadow(0 0 10px rgba(88, 86, 214, 0.5))"
-          transition="transform 0.3s ease"
-          _hover={{
-            transform: 'scale(1.05)'
-          }}
-        />
+        >
+          <LazyLoadImage
+            alt="Astronaut"
+            src="/assets/astronaut.png" 
+            effect="blur"
+            width={200}
+            height={200}
+            style={{
+              cursor: "pointer",
+              filter: "drop-shadow(0 0 10px rgba(88, 86, 214, 0.5))",
+              transition: "transform 0.3s ease"
+            }}
+            wrapperProps={{
+              style: {
+                width: '100%',
+                height: '100%'
+              }
+            }}
+          />
+        </Box>
       </Box>
     </SlideFade>
   );
 };
 
-export default Astronaut;
+// Memoize component to prevent unnecessary re-renders
+export default memo(Astronaut);
