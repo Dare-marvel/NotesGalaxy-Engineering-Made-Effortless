@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { CloseIcon } from '@chakra-ui/icons';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/blur.css';
+import astronaut from '../assets/astronaut.png';
 import './Astronaut.css';
 
 // Custom hook for preference storage
@@ -175,7 +176,7 @@ const Astronaut = () => {
         >
           <LazyLoadImage
             alt="Astronaut"
-            src="/assets/astronaut.png" 
+            src={astronaut}
             effect="blur"
             width={200}
             height={200}
