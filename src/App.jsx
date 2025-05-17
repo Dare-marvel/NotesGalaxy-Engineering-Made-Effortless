@@ -7,6 +7,8 @@ import Astronaut from './components/Astronaut'
 import Footer from './components/Footer'; // Import the Footer component
 import { Analytics } from "@vercel/analytics/react"
 import { SpeedInsights } from '@vercel/speed-insights/react'
+import SidebarAdLeft from './components/SidebarAd/SidebarAdLeft';
+import SidebarAdRight from './components/SidebarAd/SidebarAdRight';
 // import Breadcrumbs from './components/Breadcrumbs';
 
 function App() {
@@ -17,9 +19,11 @@ function App() {
         <Box flex="1">
           <Astronaut />
           {/* <Breadcrumbs /> */}
+          <SidebarAdLeft position="left" />
           <AppRoutes />
+          <SidebarAdRight position="right" />
         </Box>
-        <Footer /> {/* Add the Footer component */}
+        <Footer /> 
       </Box>
       <Analytics />
       <SpeedInsights />

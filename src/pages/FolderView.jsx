@@ -88,10 +88,10 @@ const FolderView = () => {
   // };
 
   const TRUNCATE_CONFIG = {
-    sm: 480,  // mobile breakpoint in pixels
-    md: 768,  // tablet breakpoint in pixels
+    sm: 558,  // mobile breakpoint in pixels
+    md: 935,  // tablet breakpoint in pixels
     mobileChars: 12,
-    tabletChars: 35,
+    tabletChars: 30,
     desktopChars: 50
   };
 
@@ -139,10 +139,10 @@ const FolderView = () => {
 
     const downloadRepository = async (e) => {
       e.stopPropagation();
-    
+
       try {
         setIsDownloading(true);
-        
+
         // Initial notification
         toast({
           title: "Starting Download",
@@ -151,14 +151,14 @@ const FolderView = () => {
           duration: 2000,
           isClosable: true,
         });
-    
+
         let allFiles = [];
         const repoStructure = FOLDER_STRUCTURE[repo];
-    
+
         if (!repoStructure || !repoStructure.directories) {
           throw new Error('No directory structure defined for this repository');
         }
-    
+
         // Notify about fetching files
         toast({
           title: "Fetching Files",
@@ -167,16 +167,16 @@ const FolderView = () => {
           duration: 3000,
           isClosable: true,
         });
-    
+
         for (const dirPath of repoStructure.directories) {
           const files = await fetchDirectoryContents(dirPath);
           allFiles.push(...files);
         }
-    
+
         if (allFiles.length === 0) {
           throw new Error('No files found in the specified directories');
         }
-    
+
         // Notify about compression starting
         toast({
           title: "Creating ZIP File",
@@ -185,14 +185,14 @@ const FolderView = () => {
           duration: 4000,
           isClosable: true,
         });
-    
+
         const JSZip = await import('jszip');
         const zip = new JSZip.default();
-    
+
         allFiles.forEach(file => {
           zip.file(file.path, file.content);
         });
-    
+
         // Notify about generating the final zip
         toast({
           title: "Generating Download",
@@ -201,9 +201,9 @@ const FolderView = () => {
           duration: 3000,
           isClosable: true,
         });
-    
+
         const zipContent = await zip.generateAsync({ type: 'blob' });
-    
+
         const url = window.URL.createObjectURL(zipContent);
         const link = document.createElement('a');
         link.href = url;
@@ -212,7 +212,7 @@ const FolderView = () => {
         link.click();
         link.remove();
         window.URL.revokeObjectURL(url);
-    
+
         // Success notification
         toast({
           title: "Download Complete",
@@ -221,7 +221,7 @@ const FolderView = () => {
           duration: 3000,
           isClosable: true,
         });
-    
+
       } catch (error) {
         toast({
           title: "Download Failed",
@@ -230,7 +230,7 @@ const FolderView = () => {
           duration: 5000,
           isClosable: true,
         });
-    
+
         console.error('Error downloading repository:', error);
       } finally {
         setIsDownloading(false);
@@ -272,9 +272,9 @@ const FolderView = () => {
             </Text>
           </Box>
         </Td>
-        <Td width={["40%", "35%", "30%"]}>
-          <Text fontSize={["sm", "md", "md"]}>Repository</Text>
-        </Td>
+        {/* <Td width={["40%", "35%", "30%"]}>
+          <Text fontSize={["sm", "md", "md"]}>Repo</Text>
+        </Td> */}
         <Td width={["10%", "10%", "10%"]}>
           <IconButton
             icon={<FaDownload />}
@@ -292,7 +292,7 @@ const FolderView = () => {
         </Td>
       </Tr>
     );
-};
+  };
 
 
   const ContentRow = ({ item }) => {
@@ -314,7 +314,7 @@ const FolderView = () => {
       // console.log("Checking dir path",dirPath, "Actual Path",getActualName(path));
       const files = [];
       const actualPath = path ? `${getActualName(path)}/${dirPath}` : dirPath;
-    const apiUrl = `https://api.github.com/repos/dare-marvel/${getActualName(repoName)}/contents/${actualPath}`;
+      const apiUrl = `https://api.github.com/repos/dare-marvel/${getActualName(repoName)}/contents/${actualPath}`;
 
       try {
         const response = await axios.get(apiUrl, {
@@ -501,10 +501,14 @@ const FolderView = () => {
   // const showActionsColumn = (repoName && contents.some(item => typeof item !== 'string' && item.type === 'file'));
 
   return (
-    <Container maxW="container.xl" py={[3, 4, 5]} px={[2, 3, 5]}>
+    <Container maxW="container.xl" py={[3, 4, 5]} px={[2, 3, 5]} >
       <Breadcrumbs />
       {!repoName && (
-        <Box mb={[4, 5, 6]}>
+        <Box 
+        mb={[4, 5, 6]}
+        width={["100%", "85%", "85%"]} 
+        marginX={["0", "auto", "auto"]}
+        >
           <InputGroup>
             <InputLeftElement pointerEvents="none">
               <Icon as={FiSearch} color="gray.400" />
@@ -537,12 +541,14 @@ const FolderView = () => {
         _hover={{
           boxShadow: ["lg", "xl", "xl"]
         }}
+        width={["100%", "85%", "85%"]} 
+        marginX={["0", "auto", "auto"]}
       >
         <Table variant="simple" size={["sm", "md", "md"]}>
           <Thead>
             <Tr bg={headerBg}>
               <Th fontSize={["sm", "md", "md"]}>Name</Th>
-              <Th fontSize={["sm", "md", "md"]}>Type</Th>
+              {/* <Th fontSize={["sm", "md", "md"]}>Type</Th> */}
               <Th fontSize={["sm", "md", "md"]}>Actions</Th>
             </Tr>
           </Thead>
@@ -597,18 +603,18 @@ const FolderView = () => {
       </Box>
 
       <Suspense fallback={
-  <Center h="200px">
-    <Spinner size="xl" color="blue.500" />
-  </Center>
-}>
-  {selectedFile && (
-    <FileViewer 
-      file={selectedFile} 
-      isOpen={!!selectedFile} 
-      onClose={() => setSelectedFile(null)} 
-    />
-  )}
-</Suspense>
+        <Center h="200px">
+          <Spinner size="xl" color="blue.500" />
+        </Center>
+      }>
+        {selectedFile && (
+          <FileViewer
+            file={selectedFile}
+            isOpen={!!selectedFile}
+            onClose={() => setSelectedFile(null)}
+          />
+        )}
+      </Suspense>
     </Container>
   );
 };
