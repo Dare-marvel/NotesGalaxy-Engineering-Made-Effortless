@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Flex, Link, Text, Icon} from '@chakra-ui/react';
+import { Box, Flex, Link, Text, Icon } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
 import { FaGithub, FaTwitter, FaLinkedin, FaInstagram, FaEnvelope, FaLaptopCode } from 'react-icons/fa';
 
@@ -7,31 +7,31 @@ import { FaGithub, FaTwitter, FaLinkedin, FaInstagram, FaEnvelope, FaLaptopCode 
 const AnimatedIcon = ({ icon, href }) => {
   return (
     <motion.div
-      whileHover={{ 
+      whileHover={{
         scale: 1.2,
         rotate: 5,
         transition: { duration: 0.2 }
       }}
-      whileTap={{ 
+      whileTap={{
         scale: 0.9,
         rotate: -5,
         transition: { duration: 0.1 }
       }}
     >
-      <Link 
+      <Link
         href={href}
         target="_blank"
         rel="noopener noreferrer"
         display="inline-flex"
         _hover={{ textDecoration: 'none' }}
       >
-        <Icon 
-          as={icon} 
+        <Icon
+          as={icon}
           boxSize={{ base: 5, sm: 6 }} // Responsive icon size
-          color="whiteAlpha.900" 
+          color="whiteAlpha.900"
           filter="drop-shadow(0 0 8px #9F7AEA) drop-shadow(0 0 12px #805AD5)"
           transition="filter 0.3s ease"
-          _hover={{ 
+          _hover={{
             filter: "drop-shadow(0 0 12px #9F7AEA) drop-shadow(0 0 18px #805AD5) drop-shadow(0 0 24px #4299E1)"
           }}
         />
@@ -75,10 +75,10 @@ const Footer = () => {
         }}
       />
 
-      <Flex 
-        direction={{ base: "column", md: "row" }} 
-        maxW="1200px" 
-        mx="auto" 
+      <Flex
+        direction={{ base: "column", md: "row" }}
+        maxW="1200px"
+        mx="auto"
         px={{ base: 4, sm: 6 }}
         align="center"
         justify="space-between"
@@ -86,7 +86,7 @@ const Footer = () => {
         zIndex={1}
       >
         {/* Copyright text */}
-        <Text 
+        <Text
           fontSize={{ base: "sm", sm: "md" }} // Smaller text on mobile
           color="white"
           mb={{ base: 5, md: 0 }} // More space below on mobile
@@ -98,9 +98,9 @@ const Footer = () => {
         </Text>
 
         {/* Horizontal divider for mobile only */}
-        <Box 
+        <Box
           display={{ base: "block", md: "none" }}
-          w="80%" 
+          w="80%"
           mb={5}
         >
           <motion.div
@@ -142,7 +142,7 @@ const Footer = () => {
         </Box>
 
         {/* Social icons */}
-        <Flex 
+        <Flex
           gap={{ base: 4, sm: 6 }} // Reduced spacing on smallest screens
           align="center"
           justify="center" // Center icons on mobile
@@ -154,6 +154,17 @@ const Footer = () => {
           <AnimatedIcon icon={FaInstagram} href="https://www.instagram.com/adwaitpurao/" />
           <AnimatedIcon icon={FaLaptopCode} href="https://adwaitpurao.netlify.app/" />
           <AnimatedIcon icon={FaEnvelope} href="mailto:puraosadwait@gmail.com" />
+          <AnimatedIcon
+            icon={() => (
+              <img
+                src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png"
+                alt="Buy Me A Coffee"
+                style={{ height: '36px', borderRadius: '6px' }}
+              />
+            )}
+            href="https://buymeacoffee.com/aspurao038"
+          />
+
         </Flex>
       </Flex>
     </Box>
