@@ -194,7 +194,7 @@ const AboutUs = () => {
             textAlign="center"
           >
             <Flex align="center" left={{ base: "0", md: "50px", lg: "100px" }} mb={4} justifyContent="center">
-              <Image src={logo} alt="Logo" boxSize={{ base: "40px", md: "50px", lg: "60px" }} />
+              <Image src={logo} alt="Logo" boxSize={{ base: "40px", md: "50px", lg: "60px" }} mr={3}/>
               <Heading
                 fontSize={useBreakpointValue({ base: "3xl", md: "4xl", lg: "5xl" })}
                 fontWeight="bold"
