@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box, Flex, Link, Text, Icon } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
-import { FaGithub, FaTwitter, FaLinkedin, FaInstagram, FaEnvelope, FaLaptopCode } from 'react-icons/fa';
+import { FaGithub, FaTwitter, FaLinkedin, FaInstagram, FaEnvelope, FaLaptopCode,FaMedium } from 'react-icons/fa';
 
 // Animated icon component
 const AnimatedIcon = ({ icon, href }) => {
@@ -153,6 +153,7 @@ const Footer = () => {
           <AnimatedIcon icon={FaLinkedin} href="https://www.linkedin.com/in/adwait-p-04a4a222a/" />
           <AnimatedIcon icon={FaInstagram} href="https://www.instagram.com/adwaitpurao/" />
           <AnimatedIcon icon={FaLaptopCode} href="https://adwaitpurao.netlify.app/" />
+          <AnimatedIcon icon={FaMedium} href="https://medium.com/@adwait.purao" />
           <AnimatedIcon icon={FaEnvelope} href="mailto:puraosadwait@gmail.com" />
           <AnimatedIcon
             icon={() => (

@@ -40,6 +40,7 @@ const Navbar = () => {
   const navItems = [
     { name: 'Notes', path: '/' },
     { name: 'Contact Us', path: '/contact' },
+    { name: 'About', path: '/about' },
   ];
 
   return (

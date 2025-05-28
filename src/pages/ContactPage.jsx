@@ -254,16 +254,7 @@ const ContactPage = () => {
 
 
   return (
-    <Box
-      bg="white"
-      minH="100vh"
-      display="flex"
-      alignItems="flex-start"
-      justifyContent="center"
-      position="relative"
-      overflow="hidden"
-      py={{ base: 6, sm: 8, md: 12, lg: 12 }}
-      px={{ base: 4, sm: 6, md: 10, lg: 6 }}
+    <Container maxW="container.xl" py={[3, 4, 5]} px={[2, 3, 5]} 
     >
       {/* Floating elements */}
       <FloatingElement
@@ -456,7 +447,7 @@ const ContactPage = () => {
           </Button>
         </VStack>
       </Container>
-    </Box>
+    </Container>
   );
 };
 
