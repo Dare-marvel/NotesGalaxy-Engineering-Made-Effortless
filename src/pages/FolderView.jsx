@@ -446,14 +446,14 @@ const FolderView = () => {
             </Text>
           </Flex>
         </Td>
-        <Td width={isDirectory ? ["40%", "35%", "30%"] : ["30%", "25%", "20%"]}>
+        {/* <Td width={isDirectory ? ["40%", "35%", "30%"] : ["30%", "25%", "20%"]}>
           <Text
             fontSize={["sm", "md", "md"]}
             isTruncated
             maxWidth={["80px", "120px", "200px"]}
             title={isDirectory ? 'Folder' : name.split('.').pop().toUpperCase()}
           >{isDirectory ? 'Folder' : name.split('.').pop().toUpperCase()}</Text>
-        </Td>
+        </Td> */}
 
         {/* Third column - download button for directories */}
         {isDirectory && (
