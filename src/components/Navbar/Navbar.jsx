@@ -39,6 +39,7 @@ const Navbar = () => {
 
   const navItems = [
     { name: 'Notes', path: '/' },
+    { name: 'YT Channels', path: '/ytchannels' },
     { name: 'Contact Us', path: '/contact' },
     { name: 'About', path: '/about' },
   ];

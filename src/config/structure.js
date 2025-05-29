@@ -10,6 +10,9 @@ export const FOLDER_STRUCTURE = {
   "Digital-System-and-Microprocessors--DSM--" : {
     directories : ["DSM Notes","DSM EXPERMENTS"]
   },
+  "Basic-Electrical-Engineering-BEE-":{
+    directories : ["NOTES","PRACTICE PROBLEMS","BOOKS"]
+  },
 
   // Semester - 2
   "Object-Oriented-Programming-with-JAVA" : {
