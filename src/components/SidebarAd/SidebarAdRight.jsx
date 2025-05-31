@@ -44,9 +44,10 @@ const SidebarAdRight = ({ position = 'right' }) => {
         '&::-webkit-scrollbar': {
           display: 'none',
         },
-        'scrollbarWidth': 'none', /* Firefox */
-        '-ms-overflow-style': 'none',  /* IE and Edge */
+        scrollbarWidth: 'none', // Firefox
+        msOverflowStyle: 'none',  // IE and Edge
       }}
+
     >
       <VStack spacing={4} align="stretch">
         <Text fontSize="sm" color="gray.500" textAlign="center">

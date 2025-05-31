@@ -44,9 +44,10 @@ const SidebarAdLeft = ({ position = 'left' }) => {
         '&::-webkit-scrollbar': {
           display: 'none',
         },
-        'scrollbarWidth': 'none', /* Firefox */
-        '-ms-overflow-style': 'none',  /* IE and Edge */
+        scrollbarWidth: 'none', // Firefox
+        msOverflowStyle: 'none',  // IE and Edge
       }}
+
     >
       <VStack spacing={4} align="stretch">
         {/* Google AdSense Ad Unit */}
