@@ -46,6 +46,8 @@ import {
 } from '@chakra-ui/react';
 
 import { keyframes } from '@emotion/react';
+// getUserId.js
+import FingerprintJS from '@fingerprintjs/fingerprintjs';
 
 // Import Firebase (you'll need to install: npm install firebase)
 import app from '../config/firebaseConfig'
@@ -130,28 +132,26 @@ const db = getFirestore(app);
 
 // Helper function to get user's unique identifier (IP-based or device fingerprint)
 const getUserId = async () => {
+  const localKey = 'user_id';
+
+  // Step 1: Check localStorage
+  const cached = localStorage.getItem(localKey);
+  if (cached) return cached;
+
+  // Step 2: Try to use FingerprintJS
   try {
-    // In a real app, you might use a more sophisticated method
-    // For now, we'll create a simple device fingerprint
-    const canvas = document.createElement('canvas');
-    const ctx = canvas.getContext('2d');
-    ctx.textBaseline = 'top';
-    ctx.font = '14px Arial';
-    ctx.fillText('Device fingerprint', 2, 2);
-    const fingerprint = canvas.toDataURL();
+    const fp = await FingerprintJS.load();
+    const result = await fp.get();
+    const visitorId = result.visitorId;
 
-    // Create a simple hash
-    let hash = 0;
-    for (let i = 0; i < fingerprint.length; i++) {
-      const char = fingerprint.charCodeAt(i);
-      hash = ((hash << 5) - hash) + char;
-      hash = hash & hash; // Convert to 32-bit integer
-    }
-
-    return `user_${Math.abs(hash)}`;
-  } catch (error) {
-    // Fallback to timestamp + random
-    return `user_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    // Cache it for future use
+    localStorage.setItem(localKey, visitorId);
+    return visitorId;
+  } catch (e) {
+    // Step 3: Fingerprinting failed — use UUID fallback
+    const fallbackId = `user_${crypto.randomUUID()}`;
+    localStorage.setItem(localKey, fallbackId);
+    return fallbackId;
   }
 };
 
