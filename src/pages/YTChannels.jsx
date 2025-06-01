@@ -286,67 +286,67 @@ const subjectsData = {
   // ]
 };
 
-const SpaceBackground = () => (
-  <Box
-    position="fixed"
-    top="0"
-    left="0"
-    right="0"
-    bottom="0"
-    zIndex="-1"
-    bg="white"
-  >
-    {/* Stars */}
-    {[...Array(50)].map((_, i) => (
-      <Box
-        key={i}
-        position="absolute"
-        w="2px"
-        h="2px"
-        bg="blue.300"
-        borderRadius="50%"
-        top={`${Math.random() * 100}%`}
-        left={`${Math.random() * 100}%`}
-        opacity={Math.random() * 0.8 + 0.2}
-        animation={`twinkle ${Math.random() * 3 + 2}s infinite`}
-      />
-    ))}
+// const SpaceBackground = () => (
+//   <Box
+//     position="fixed"
+//     top="0"
+//     left="0"
+//     right="0"
+//     bottom="0"
+//     zIndex="-1"
+//     bg="white"
+//   >
+//     {/* Stars */}
+//     {[...Array(50)].map((_, i) => (
+//       <Box
+//         key={i}
+//         position="absolute"
+//         w="2px"
+//         h="2px"
+//         bg="blue.300"
+//         borderRadius="50%"
+//         top={`${Math.random() * 100}%`}
+//         left={`${Math.random() * 100}%`}
+//         opacity={Math.random() * 0.8 + 0.2}
+//         animation={`twinkle ${Math.random() * 3 + 2}s infinite`}
+//       />
+//     ))}
 
-    {/* Larger stars */}
-    {[...Array(20)].map((_, i) => (
-      <Icon
-        key={i}
-        as={StarIcon}
-        position="absolute"
-        w="3"
-        h="3"
-        color="purple.300"
-        top={`${Math.random() * 100}%`}
-        left={`${Math.random() * 100}%`}
-        opacity={Math.random() * 0.6 + 0.4}
-        animation={`pulse ${Math.random() * 4 + 3}s infinite`}
-      />
-    ))}
+//     {/* Larger stars */}
+//     {[...Array(20)].map((_, i) => (
+//       <Icon
+//         key={i}
+//         as={StarIcon}
+//         position="absolute"
+//         w="3"
+//         h="3"
+//         color="purple.300"
+//         top={`${Math.random() * 100}%`}
+//         left={`${Math.random() * 100}%`}
+//         opacity={Math.random() * 0.6 + 0.4}
+//         animation={`pulse ${Math.random() * 4 + 3}s infinite`}
+//       />
+//     ))}
 
-    <style jsx>{`
-      @keyframes twinkle {
-        0%, 100% { opacity: 0.2; }
-        50% { opacity: 1; }
-      }
-      @keyframes pulse {
-        0%, 100% { transform: scale(1); opacity: 0.4; }
-        50% { transform: scale(1.2); opacity: 1; }
-      }
-    `}</style>
-  </Box>
-);
+//     <style jsx>{`
+//       @keyframes twinkle {
+//         0%, 100% { opacity: 0.2; }
+//         50% { opacity: 1; }
+//       }
+//       @keyframes pulse {
+//         0%, 100% { transform: scale(1); opacity: 0.4; }
+//         50% { transform: scale(1.2); opacity: 1; }
+//       }
+//     `}</style>
+//   </Box>
+// );
 
 const ChannelLink = ({ channel }) => (
   <Link
     href={channel.url}
     isExternal
-    p={3}
-    borderRadius="lg"
+    p={{ base: 2, sm: 3 }}
+    borderRadius={{ base: "md", md: "lg" }}
     bg="whiteAlpha.800"
     backdropFilter="blur(10px)"
     border="1px solid"
@@ -361,11 +361,22 @@ const ChannelLink = ({ channel }) => (
     display="flex"
     alignItems="center"
     justifyContent="space-between"
+    minH={{ base: "44px", md: "auto" }} // Ensure touch-friendly height on mobile
   >
-    <Text fontWeight="medium" color="gray.700">
+    <Text 
+      fontWeight="medium" 
+      color="gray.700"
+      fontSize={{ base: "sm", md: "md" }}
+      noOfLines={2} // Prevent text overflow
+      pr={2}
+    >
       {channel.name}
     </Text>
-    <ExternalLinkIcon color="blue.500" />
+    <ExternalLinkIcon 
+      color="blue.500" 
+      boxSize={{ base: "16px", md: "20px" }}
+      flexShrink={0}
+    />
   </Link>
 );
 
@@ -373,32 +384,48 @@ const SubjectAccordion = ({ subject }) => (
   <AccordionItem
     border="1px solid"
     borderColor="blue.200"
-    borderRadius="xl"
+    borderRadius={{ base: "lg", md: "xl" }}
     bg="whiteAlpha.900"
     backdropFilter="blur(15px)"
-    mb={3}
+    mb={{ base: 2, md: 3 }}
     overflow="hidden"
     _hover={{
       borderColor: "purple.300",
-      boxShadow: "0 8px 25px rgba(128, 90, 213, 0.2)"
+      boxShadow: { 
+        base: "0 4px 15px rgba(128, 90, 213, 0.15)", 
+        md: "0 8px 25px rgba(128, 90, 213, 0.2)" 
+      }
     }}
     transition="all 0.3s ease"
   >
     <AccordionButton
-      p={4}
+      p={{ base: 3, md: 4 }}
       _hover={{ bg: "blue.50" }}
       _expanded={{ bg: "purple.50", borderColor: "purple.300" }}
       transition="all 0.3s ease"
+      minH={{ base: "56px", md: "auto" }} // Touch-friendly height
     >
       <Box flex="1" textAlign="left">
-        <Text fontWeight="bold" fontSize="lg" color="gray.800">
+        <Text 
+          fontWeight="bold" 
+          fontSize={{ base: "md", sm: "lg", md: "xl" }}
+          color="gray.800"
+          noOfLines={2}
+        >
           {subject.name}
         </Text>
       </Box>
-      <AccordionIcon color="purple.500" />
+      <AccordionIcon 
+        color="purple.500" 
+        boxSize={{ base: "20px", md: "24px" }}
+      />
     </AccordionButton>
-    <AccordionPanel pb={4} bg="gray.50">
-      <VStack spacing={3} align="stretch">
+    <AccordionPanel 
+      pb={{ base: 3, md: 4 }} 
+      px={{ base: 3, md: 4 }}
+      bg="gray.50"
+    >
+      <VStack spacing={{ base: 2, md: 3 }} align="stretch">
         {subject.channels.map((channel, idx) => (
           <ChannelLink key={idx} channel={channel} />
         ))}
@@ -408,26 +435,33 @@ const SubjectAccordion = ({ subject }) => (
 );
 
 const SemesterSection = ({ semester, subjects }) => (
-  <Box mb={2} px={{ base: 4, md: 6, lg: 8 }}>
-    <Flex align="center" mb={4}>
+  <Box mb={{ base: 4, md: 6 }} px={{ base: 3, sm: 4, md: 6, lg: 8 }}>
+    <Flex 
+      align="center" 
+      mb={{ base: 3, md: 4 }}
+      direction={{ base: "column", sm: "row" }}
+      gap={{ base: 2, sm: 0 }}
+    >
       <Heading
-        size="lg"
+        size={{ base: "md", sm: "lg", md: "xl" }}
         color="purple.700"
         fontWeight="bold"
-        mr={3}
+        mr={{ base: 0, sm: 3 }}
         textShadow="0 2px 4px rgba(128, 90, 213, 0.3)"
+        textAlign={{ base: "center", sm: "left" }}
+        mb={{ base: 1, sm: 0 }}
       >
         {semester}
       </Heading>
       <Badge
         colorScheme="blue"
         variant="subtle"
-        px={3}
+        px={{ base: 2, md: 3 }}
         py={1}
         borderRadius="full"
-        fontSize="sm"
+        fontSize={{ base: "xs", md: "sm" }}
       >
-        {subjects.length} subjects
+        {subjects.length} subject{subjects.length !== 1 ? 's' : ''}
       </Badge>
     </Flex>
 
@@ -461,31 +495,45 @@ export default function YouTubeChannelsPage() {
   }, [searchTerm]);
 
   return (
-
     <Box bg="white" minH="100vh">
       {/* <SpaceBackground /> */}
-      <Container maxW="6xl" py={8} position="relative" zIndex="1">
-        <VStack spacing={8} align="stretch">
+      <Container 
+        maxW={{ base: "full", sm: "container.sm", md: "container.md", lg: "6xl" }}
+        py={{ base: 4, sm: 6, md: 8 }}
+        px={{ base: 3, sm: 4, md: 6 }}
+        position="relative" 
+        zIndex="1"
+      >
+        <VStack spacing={{ base: 6, md: 8 }} align="stretch">
           {/* Header */}
-          <Box textAlign="center" mb={8}>
+          <Box textAlign="center" mb={{ base: 4, md: 8 }}>
             <Heading
-              size="2xl"
+              size={{ base: "lg", sm: "xl", md: "xl", lg: "2xl" }}
               bgGradient="linear(to-r, blue.600, purple.600)"
               bgClip="text"
               fontWeight="extrabold"
-              mt={7}
-              py={7}
-              mb={4}
+              mt={{ base: 7, md: 7 }}
+              py={{ base: 5, md: 7 }}
+              mb={{ base: 3, md: 4 }}
               textShadow="0 4px 8px rgba(0,0,0,0.1)"
+              lineHeight={{ base: "shorter", md: "short" }}
+              px={{ base: 2, md: 0 }}
             >
               🚀 Best Youtube Playlists for each subject
             </Heading>
 
             {/* Search Bar */}
-            <Box maxW="full" mx="auto" px={{ base: 4, md: 6, lg: 8 }}>
-              <InputGroup size="lg">
-                <InputLeftElement pointerEvents="none">
-                  <SearchIcon color="gray.400" />
+            <Box 
+              maxW={{ base: "full", md: "full", lg : "full" }}
+              mx="auto" 
+              px={{ base: 2, sm: 4, md: 6, lg: 8 }}
+            >
+              <InputGroup size={{ base: "md", md: "lg" }}>
+                <InputLeftElement pointerEvents="none" h={{ base: "40px", md: "48px" }}>
+                  <SearchIcon 
+                    color="gray.400" 
+                    boxSize={{ base: "16px", md: "20px" }}
+                  />
                 </InputLeftElement>
                 <Input
                   placeholder="Search for subjects..."
@@ -495,14 +543,23 @@ export default function YouTubeChannelsPage() {
                   backdropFilter="blur(10px)"
                   border="2px solid"
                   borderColor="blue.300"
-                  borderRadius="full"
-                  fontSize={{ base: "md", sm: "lg" }}
+                  borderRadius={{ base: "xl", md: "full" }}
+                  fontSize={{ base: "sm", sm: "md", md: "lg" }}
+                  h={{ base: "40px", md: "48px" }}
+                  pl={{ base: "40px", md: "48px" }}
                   _hover={{
                     borderColor: "purple.400"
                   }}
                   _focus={{
                     borderColor: "purple.500",
-                    boxShadow: "0 0 0 3px rgba(128, 90, 213, 0.1)"
+                    boxShadow: {
+                      base: "0 0 0 2px rgba(128, 90, 213, 0.1)",
+                      md: "0 0 0 3px rgba(128, 90, 213, 0.1)"
+                    }
+                  }}
+                  _placeholder={{
+                    fontSize: { base: "sm", md: "md" },
+                    color: "gray.500"
                   }}
                 />
               </InputGroup>
@@ -513,28 +570,41 @@ export default function YouTubeChannelsPage() {
           {Object.keys(filteredData).length === 0 ? (
             <Box
               textAlign="center"
-              p={12}
+              p={{ base: 6, sm: 8, md: 12 }}
               bg="whiteAlpha.800"
               backdropFilter="blur(10px)"
-              borderRadius="xl"
+              borderRadius={{ base: "lg", md: "xl" }}
               border="1px solid"
               borderColor="blue.200"
+              mx={{ base: 2, sm: 0 }}
             >
-              <Text fontSize="xl" color="gray.600" fontWeight="medium">
+              <Text 
+                fontSize={{ base: "lg", sm: "xl", md: "2xl" }}
+                color="gray.600" 
+                fontWeight="medium"
+                mb={{ base: 2, md: 3 }}
+              >
                 No subjects found matching "{searchTerm}"
               </Text>
-              <Text fontSize="md" color="gray.500" mt={2}>
+              <Text 
+                fontSize={{ base: "sm", md: "md" }}
+                color="gray.500"
+                maxW={{ base: "full", md: "md" }}
+                mx="auto"
+              >
                 Try searching with different keywords
               </Text>
             </Box>
           ) : (
-            Object.entries(filteredData).map(([semester, subjects]) => (
-              <SemesterSection
-                key={semester}
-                semester={semester}
-                subjects={subjects}
-              />
-            ))
+            <Box>
+              {Object.entries(filteredData).map(([semester, subjects]) => (
+                <SemesterSection
+                  key={semester}
+                  semester={semester}
+                  subjects={subjects}
+                />
+              ))}
+            </Box>
           )}
         </VStack>
       </Container>

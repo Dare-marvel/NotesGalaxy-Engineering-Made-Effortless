@@ -18,8 +18,8 @@ const AppRoutes = () => {
       <Route path="/:repoName/*" element={<FolderView />} />
       <Route path="/ytchannels" element={<YouTubeChannelsPage />} />
       <Route path="/community" element={<Community />} />
-      <Route path="/blogs/" element={<Blogs />} />
-      <Route path="/blogs/*" element={<Blogs />} />
+      <Route path="/blogs" element={<Blogs />} />
+      {/* <Route path="/blogs/*" element={<Blogs />} /> */}
     </Routes>
   );
 };
