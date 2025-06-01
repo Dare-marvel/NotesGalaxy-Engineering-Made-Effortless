@@ -6,6 +6,8 @@ import ContactPage from '../pages/ContactPage';
 import FolderView from '../pages/FolderView';
 import AboutUs from '../pages/About';
 import YouTubeChannelsPage from '../pages/YTChannels';
+import Blogs from '../pages/Blogs';
+
 
 const AppRoutes = () => {
   return (
@@ -16,6 +18,8 @@ const AppRoutes = () => {
       <Route path="/:repoName/*" element={<FolderView />} />
       <Route path="/ytchannels" element={<YouTubeChannelsPage />} />
       <Route path="/community" element={<Community />} />
+      <Route path="/blogs/" element={<Blogs />} />
+      <Route path="/blogs/*" element={<Blogs />} />
     </Routes>
   );
 };
