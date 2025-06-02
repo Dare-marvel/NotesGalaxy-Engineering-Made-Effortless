@@ -23,6 +23,8 @@ import logo from '../assets/logo.png';
 
 import adwait from '../assets/adwait-purao.png';
 
+import SidebarAdLeft from '../components/SidebarAd/SidebarAdLeft';
+import SidebarAdRight from '../components/SidebarAd/SidebarAdRight';
 
 import { keyframes } from '@emotion/react';
 
@@ -50,18 +52,18 @@ const pulse = keyframes`
 `;
 
 // Star component
-const Star = ({ size = "2px", top, left, delay = "0s" }) => (
-  <Box
-    position="absolute"
-    width={size}
-    height={size}
-    backgroundColor="purple.300"
-    borderRadius="50%"
-    top={top}
-    left={left}
-    animation={`${twinkle} 2s ease-in-out ${delay} infinite`}
-  />
-);
+// const Star = ({ size = "2px", top, left, delay = "0s" }) => (
+//   <Box
+//     position="absolute"
+//     width={size}
+//     height={size}
+//     backgroundColor="purple.300"
+//     borderRadius="50%"
+//     top={top}
+//     left={left}
+//     animation={`${twinkle} 2s ease-in-out ${delay} infinite`}
+//   />
+// );
 
 // Enhanced floating planet component
 const FloatingPlanet = ({ size, type, top, left, right = "0%", duration = "20s" }) => {
@@ -161,6 +163,7 @@ const AboutUs = () => {
   return (
     <Container maxW="container.xl" width={["100%", "85%", "85%"]} py={[3, 4, 5]} px={[2, 3, 5]}
     >
+      <SidebarAdLeft position="left" />
       {/* Animated Background Elements */}
       {/* <Star size="3px" top="10%" left="15%" delay="0s" />
       <Star size="2px" top="25%" left="85%" delay="1s" />
@@ -194,7 +197,7 @@ const AboutUs = () => {
             textAlign="center"
           >
             <Flex align="center" left={{ base: "0", md: "50px", lg: "100px" }} mb={4} justifyContent="center">
-              <Image src={logo} alt="Logo" boxSize={{ base: "40px", md: "50px", lg: "60px" }} mr={3}/>
+              <Image src={logo} alt="Logo" boxSize={{ base: "40px", md: "50px", lg: "60px" }} mr={3} />
               <Heading
                 fontSize={useBreakpointValue({ base: "3xl", md: "4xl", lg: "5xl" })}
                 fontWeight="bold"
@@ -433,7 +436,7 @@ const AboutUs = () => {
                 textAlign={useBreakpointValue({ base: "center", lg: "left" })}
               >
                 I'm a curious and creative tech enthusiast currently pursuing Computer Engineering at SPIT, Mumbai.
-                From building an machine learning models to AI powered web applications, 
+                From building an machine learning models to AI powered web applications,
                 I love solving real-world problems through code. My journey includes hands-on experience with full-stack
                 development and data analysis.
               </Text>
@@ -471,6 +474,7 @@ const AboutUs = () => {
           </Flex>
         </Box>
       </Container>
+      <SidebarAdRight position="right" />
     </Container>
   );
 };

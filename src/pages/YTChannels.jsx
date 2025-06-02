@@ -20,6 +20,9 @@ import {
 } from '@chakra-ui/react';
 import { ExternalLinkIcon, StarIcon, SearchIcon } from '@chakra-ui/icons';
 
+import SidebarAdLeft from '../components/SidebarAd/SidebarAdLeft';
+import SidebarAdRight from '../components/SidebarAd/SidebarAdRight';
+
 // Mock YouTube channel data - replace with actual links
 const subjectsData = {
   "Semester 1": [
@@ -497,6 +500,7 @@ export default function YouTubeChannelsPage() {
   return (
     <Box bg="white" minH="100vh">
       {/* <SpaceBackground /> */}
+      <SidebarAdLeft position="left" />
       <Container 
         maxW={{ base: "full", sm: "container.sm", md: "container.md", lg: "6xl" }}
         py={{ base: 4, sm: 6, md: 8 }}
@@ -608,6 +612,7 @@ export default function YouTubeChannelsPage() {
           )}
         </VStack>
       </Container>
+      <SidebarAdRight position="right" />
     </Box>
   );
 }

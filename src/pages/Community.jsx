@@ -67,6 +67,9 @@ import {
   setDoc
 } from 'firebase/firestore';
 
+import SidebarAdLeft from '../components/SidebarAd/SidebarAdLeft';
+import SidebarAdRight from '../components/SidebarAd/SidebarAdRight';
+
 // React Icons
 import {
   FaTrophy,
@@ -896,6 +899,7 @@ export default function SpaceCommunityPage() {
   return (
     <Container maxW="container.xl" py={[8, 9, 9]} mt={[2, 2, 3]} px={[2, 3, 5]}
     >
+    <SidebarAdLeft position="left" />
       <FloatingStars />
 
       <Container maxW="7xl" py={10}>
@@ -971,6 +975,7 @@ export default function SpaceCommunityPage() {
 
         </VStack>
       </Container>
+      <SidebarAdRight position="right" />
     </Container>
   );
 }

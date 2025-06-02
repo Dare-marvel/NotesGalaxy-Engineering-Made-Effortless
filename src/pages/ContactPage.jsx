@@ -20,6 +20,9 @@ import app from '../config/firebaseConfig'
 import { InfoIcon } from "@chakra-ui/icons"
 import emailjs from '@emailjs/browser';
 import axios from 'axios';
+
+import SidebarAdLeft from '../components/SidebarAd/SidebarAdLeft';
+import SidebarAdRight from '../components/SidebarAd/SidebarAdRight';
 // import { keyframes } from '@emotion/react';
 
 // const colorChange = keyframes`
@@ -220,7 +223,7 @@ const ContactPage = () => {
 
       if (response.data.ok) {
 
-        
+
 
         toast({
           title: "Success",
@@ -254,8 +257,9 @@ const ContactPage = () => {
 
 
   return (
-    <Container maxW="container.xl" py={[3, 4, 5]} px={[2, 3, 5]} 
+    <Container maxW="container.xl" py={[3, 4, 5]} px={[2, 3, 5]}
     >
+      <SidebarAdLeft position="left" />
       {/* Floating elements */}
       <FloatingElement
         icon={FaRocket}
@@ -447,6 +451,7 @@ const ContactPage = () => {
           </Button>
         </VStack>
       </Container>
+      <SidebarAdRight position="right" />
     </Container>
   );
 };

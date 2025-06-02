@@ -33,6 +33,9 @@ import Breadcrumbs from '../components/Breadcrumbs';
 import axios from 'axios';
 import { FOLDER_STRUCTURE } from '../config/structure';
 
+import SidebarAdLeft from '../components/SidebarAd/SidebarAdLeft';
+import SidebarAdRight from '../components/SidebarAd/SidebarAdRight';
+
 const FolderView = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedFile, setSelectedFile] = useState(null);
@@ -502,6 +505,7 @@ const FolderView = () => {
 
   return (
     <Container maxW="container.xl" py={[3, 4, 5]} px={[2, 3, 5]} >
+    <SidebarAdLeft position="left" />
       <Breadcrumbs />
       {!repoName && (
         <Box 
@@ -615,6 +619,7 @@ const FolderView = () => {
           />
         )}
       </Suspense>
+      <SidebarAdRight position="right" />
     </Container>
   );
 };
