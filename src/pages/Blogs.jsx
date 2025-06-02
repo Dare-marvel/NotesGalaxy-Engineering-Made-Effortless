@@ -16,7 +16,8 @@ import {
     useToast,
     Spinner,
     IconButton,
-    Badge,
+    Grid,
+    GridItem,
     Divider,
     useBreakpointValue
 } from '@chakra-ui/react';
@@ -37,6 +38,8 @@ import { marked } from 'marked';
 import { getFirestore, doc, getDoc, getDocs, collection, updateDoc, increment, arrayUnion, arrayRemove } from 'firebase/firestore';
 import app from '../config/firebaseConfig';
 import { useNavigate, useSearchParams } from "react-router-dom";
+import SidebarAdLeft from '../components/SidebarAd/SidebarAdLeft';
+import SidebarAdRight from '../components/SidebarAd/SidebarAdRight';
 
 import { keyframes } from '@emotion/react';
 
@@ -224,23 +227,23 @@ const BlogCard = ({ blog, onClick }) => {
         >
             <CardHeader pb={2} pt={6}>
                 <VStack align="start" spacing={3}>
-                    <Heading 
-                        size={cardSize} 
-                        color="gray.800" 
+                    <Heading
+                        size={cardSize}
+                        color="gray.800"
                         noOfLines={2}
                         lineHeight="1.3"
                         fontWeight="bold"
                     >
                         {blog.title}
                     </Heading>
-                    
+
                     <HStack spacing={2}>
                         <Icon as={IoStarOutline} w={4} h={4} color="purple.500" />
                         <Text fontSize="sm" color="purple.600" fontWeight="medium">
                             By {blogContentData?.author}
                         </Text>
                     </HStack>
-                    
+
                     <HStack spacing={2}>
                         <Icon as={IoCalendar} w={4} h={4} color="blue.500" />
                         <Text fontSize="sm" color="gray.600">
@@ -253,7 +256,7 @@ const BlogCard = ({ blog, onClick }) => {
                     </HStack>
                 </VStack>
             </CardHeader>
-            
+
             <CardBody pt={0}>
                 <Divider mb={4} borderColor="purple.100" />
                 <HStack spacing={3} justify="space-between" flexWrap="wrap">
@@ -264,7 +267,7 @@ const BlogCard = ({ blog, onClick }) => {
                                 {readingTime} min read
                             </Text>
                         </HStack>
-                        
+
                         <HStack spacing={1}>
                             <Icon as={IoEye} w={4} h={4} color="gray.500" />
                             <Text fontSize="sm" color="gray.500">
@@ -272,7 +275,7 @@ const BlogCard = ({ blog, onClick }) => {
                             </Text>
                         </HStack>
                     </HStack>
-                    
+
                     <HStack spacing={1}>
                         <Icon as={IoHeart} w={4} h={4} color="red.400" />
                         <Text fontSize="sm" color="red.500" fontWeight="medium">
@@ -293,7 +296,7 @@ const BlogView = ({ blogId, onBack }) => {
     const [userId, setUserId] = useState(null);
     const toast = useToast();
 
-    const titleSize = useBreakpointValue({ base: 'xl', md: '2xl', lg: '3xl' });
+    // const titleSize = useBreakpointValue({ base: 'xl', md: '2xl', lg: '3xl' });
     const containerMaxW = useBreakpointValue({ base: 'full', md: '4xl', lg: '5xl' });
     const buttonSize = useBreakpointValue({ base: 'sm', md: 'md' });
 
@@ -356,13 +359,13 @@ const BlogView = ({ blogId, onBack }) => {
 
         try {
             await toggleLike(blogId, userId, isLiked);
-            
+
             setBlogMeta(prev => {
                 const currentLikedBy = prev.likedBy || [];
-                const newLikedBy = isLiked 
+                const newLikedBy = isLiked
                     ? currentLikedBy.filter(id => id !== userId)
                     : [...currentLikedBy, userId];
-                
+
                 return { ...prev, likedBy: newLikedBy };
             });
 
@@ -389,8 +392,8 @@ const BlogView = ({ blogId, onBack }) => {
                 <Box animation={`${float} 3s ease-in-out infinite`} mb={4}>
                     <Icon as={IoRocket} w={12} h={12} color="purple.400" />
                 </Box>
-                <Spinner 
-                    size="xl" 
+                <Spinner
+                    size="xl"
                     color="purple.500"
                     thickness="4px"
                     speed="0.8s"
@@ -410,9 +413,9 @@ const BlogView = ({ blogId, onBack }) => {
                 <Text color="gray.600" textAlign="center" maxW="md">
                     This cosmic adventure seems to have drifted into a black hole.
                 </Text>
-                <Button 
-                    onClick={onBack} 
-                    leftIcon={<IoArrowBack />} 
+                <Button
+                    onClick={onBack}
+                    leftIcon={<IoArrowBack />}
                     bg="linear-gradient(135deg, #667eea 0%, #764ba2 100%)"
                     color="white"
                     _hover={{ transform: 'scale(1.05)' }}
@@ -430,14 +433,14 @@ const BlogView = ({ blogId, onBack }) => {
     const likesCount = likedBy.length;
 
     return (
-        <Box bg="white" minH="100vh" pt={{ base: 3, md: 3 , lg: 1 }} mt={{ base: 4, md: 3 ,lg: 2 }}>
-            <Box 
+        <Box bg="white" minH="100vh" pt={{ base: 6, md: 3, lg: 7 }} mt={{ base: 10, md: 12, lg: 8 }} px={{ base: 0,sm: 0, md: 12, lg: 12 }} >
+            <Box
                 bg="linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%)"
-                py={4} 
-                borderBottom="1px solid" 
+                py={2}
+                borderBottom="1px solid"
                 borderColor="purple.100"
             >
-                <Container maxW={containerMaxW} px={{ base: 4, md: 8 , lg: 6}}>
+                <Container maxW={containerMaxW} px={{ base: 4, md: 8, lg: 6 }}>
                     <HStack justify="space-between" align="center" mb={4} flexWrap="wrap" gap={4}>
                         <Button
                             leftIcon={<IoArrowBack />}
@@ -445,7 +448,7 @@ const BlogView = ({ blogId, onBack }) => {
                             variant="outline"
                             borderColor="purple.300"
                             color="purple.600"
-                            _hover={{ 
+                            _hover={{
                                 bg: 'purple.50',
                                 borderColor: 'purple.400',
                                 transform: 'translateX(-5px)'
@@ -502,7 +505,7 @@ const BlogView = ({ blogId, onBack }) => {
                                 size="sm"
                                 bg="linear-gradient(135deg, #667eea 0%, #764ba2 100%)"
                                 color="white"
-                                _hover={{ 
+                                _hover={{
                                     transform: 'scale(1.05)',
                                     boxShadow: '0 8px 25px rgba(139, 92, 246, 0.4)'
                                 }}
@@ -516,52 +519,54 @@ const BlogView = ({ blogId, onBack }) => {
                     </HStack>
 
                     <VStack align="start" spacing={4}>
-                        <Heading 
-                            size={titleSize} 
+                        <Heading
+                            fontSize={{ base: "md", sm: "xl", md: "3xl", lg: "3xl", xl: "4xl" }}
                             color="gray.800"
                             lineHeight="1.2"
                             fontWeight="bold"
                         >
                             {blog.title}
                         </Heading>
-                        
-                        <HStack spacing={4} flexWrap="wrap">
-                            <Text color="purple.600" fontWeight="medium">By {blog.author}</Text>
-                            <Text color="gray.400">•</Text>
-                            <Text color="gray.600">{new Date(blog.date).toLocaleDateString()}</Text>
-                            <Text color="gray.400">•</Text>
-                            <Text color="gray.600">{calculateReadingTime(blog.content)} min read</Text>
-                        </HStack>
 
-                        <HStack spacing={4} pt={2} flexWrap="wrap">
-                            <Button
-                                leftIcon={<IoHeart />}
-                                onClick={handleLike}
-                                bg={isLiked ? "linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%)" : "transparent"}
-                                color={isLiked ? "white" : "gray.600"}
-                                border="2px solid"
-                                borderColor={isLiked ? "transparent" : "gray.300"}
-                                _hover={{ 
-                                    transform: 'scale(1.05)',
-                                    boxShadow: isLiked ? '0 8px 25px rgba(255, 107, 107, 0.4)' : '0 8px 25px rgba(0,0,0,0.1)'
-                                }}
-                                transition="all 0.2s"
-                                size="sm"
-                                borderRadius="full"
-                                animation={isLiked ? `${pulse} 0.6s ease-out` : 'none'}
-                            >
-                                {likesCount} Likes
-                            </Button>
-                            <HStack spacing={1}>
-                                <Icon as={IoEye} color="gray.500" />
-                                <Text color="gray.500">{blogMeta.views || 0} views</Text>
+                        <HStack justify="space-between" align="center" w="full" spacing={6} >
+                            <HStack spacing={4} flexWrap="wrap">
+                                <Text color="purple.600" fontWeight="medium">By {blog.author}</Text>
+                                <Text color="gray.400">•</Text>
+                                <Text color="gray.600">{new Date(blog.date).toLocaleDateString()}</Text>
+                                <Text color="gray.400">•</Text>
+                                <Text color="gray.600">{calculateReadingTime(blog.content)} min read</Text>
+                            </HStack>
+
+                            <HStack spacing={4} flexWrap="wrap">
+                                <Button
+                                    leftIcon={<IoHeart />}
+                                    onClick={handleLike}
+                                    bg={isLiked ? "linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%)" : "transparent"}
+                                    color={isLiked ? "white" : "gray.600"}
+                                    border="2px solid"
+                                    borderColor={isLiked ? "transparent" : "gray.300"}
+                                    _hover={{
+                                        transform: 'scale(1.05)',
+                                        boxShadow: isLiked ? '0 8px 25px rgba(255, 107, 107, 0.4)' : '0 8px 25px rgba(0,0,0,0.1)'
+                                    }}
+                                    transition="all 0.2s"
+                                    size="sm"
+                                    borderRadius="full"
+                                    animation={isLiked ? `${pulse} 0.6s ease-out` : 'none'}
+                                >
+                                    {likesCount} Likes
+                                </Button>
+                                <HStack spacing={1}>
+                                    <Icon as={IoEye} color="gray.500" />
+                                    <Text color="gray.500">{blogMeta.views || 0} views</Text>
+                                </HStack>
                             </HStack>
                         </HStack>
                     </VStack>
                 </Container>
             </Box>
 
-            <Container maxW={containerMaxW} py={8} px={{ base: 4, md: 6 }}>
+            <Container maxW={containerMaxW} py={2} px={{ base: 4, md: 12, lg: 12 }} mt={0}>
                 <Box
                     dangerouslySetInnerHTML={{ __html: marked(blog.content) }}
                     sx={{
@@ -572,8 +577,8 @@ const BlogView = ({ blogId, onBack }) => {
                             fontWeight: 'bold',
                             lineHeight: '1.3'
                         },
-                        'h1': { fontSize: { base: '2xl', md: '3xl' } },
-                        'h2': { fontSize: { base: 'xl', md: '2xl' } },
+                        'h1': { fontSize: { base: 'lg', md: 'xl' } },
+                        'h2': { fontSize: { base: 'md', md: 'lg' } },
                         'p': {
                             marginBottom: '1rem',
                             lineHeight: { base: '1.6', md: '1.8' },
@@ -627,8 +632,8 @@ const Blogs = () => {
     const [loading, setLoading] = useState(true);
     const blogId = searchParams.get('blogid');
 
-    const titleSize = useBreakpointValue({ base: 'xl', md: '2xl', lg: '3xl' });
-    const gridColumns = useBreakpointValue({ base: 1, md: 2, lg: 3 });
+    // const titleSize = useBreakpointValue({ base: 'xl', md: '2xl', lg: '3xl' });
+    // const gridColumns = useBreakpointValue({ base: 1, md: 2, lg: 3 });
 
     useEffect(() => {
         const handleRouteChange = async () => {
@@ -672,8 +677,8 @@ const Blogs = () => {
                     <Box animation={`${float} 3s ease-in-out infinite`} mb={4}>
                         <Icon as={IoRocket} w={12} h={12} color="purple.400" />
                     </Box>
-                    <Spinner 
-                        size="xl" 
+                    <Spinner
+                        size="xl"
                         color="purple.500"
                         thickness="4px"
                         speed="0.8s"
@@ -687,17 +692,18 @@ const Blogs = () => {
     }
 
     return (
-        <Box bg="white" minH="100vh" pt={{ base: 6, md: 8 , lg: 9 }} mt={{ base: 3, md: 4 , lg : 10 }}>
+        <Box bg="white" minH="100vh" px={{ base: 0, md: 12, lg: 12 }} >
+            <SidebarAdLeft position="left" />
             {currentView === 'list' ? (
-                <Container maxW="6xl" px={{ base: 4, md: 6 }}>
+                <Container maxW="6xl" pt={{ base: 6, md: 8, lg: 8 }} mt={{ base: 3, md: 4, lg: 10 }}>
                     <VStack spacing={{ base: 6, md: 8 }} align="center" mb={{ base: 8, md: 12 }}>
                         {/* <Box animation={`${float} 4s ease-in-out infinite`}>
                             <Icon as={IoRocket} w={{ base: 12, md: 16 }} h={{ base: 12, md: 16 }} color="purple.400" />
                         </Box> */}
-                        
-                        <Heading 
-                            size={titleSize}
-                            color="gray.800" 
+
+                        <Heading
+                            size={{ base: "md", sm: "lg", md: "xl", lg: "2xl", xl: "3xl" }}
+                            color="gray.800"
                             textAlign="center"
                             fontWeight="bold"
                             background="linear-gradient(135deg, #667eea 0%, #764ba2 100%)"
@@ -707,11 +713,11 @@ const Blogs = () => {
                         >
                             🚀 My Blog
                         </Heading>
-                        
-                        <Text 
+
+                        <Text
                             fontSize={{ base: 'md', md: 'lg' }}
-                            color="gray.600" 
-                            textAlign="center" 
+                            color="gray.600"
+                            textAlign="center"
                             maxW={{ base: 'full', md: '2xl' }}
                             lineHeight="1.6"
                             px={{ base: 4, md: 0 }}
@@ -720,25 +726,53 @@ const Blogs = () => {
                         </Text>
                     </VStack>
 
-                    <SimpleGrid 
-                        columns={gridColumns} 
-                        spacing={{ base: 6, md: 8 }}
-                        pb={{ base: 8, md: 16 }}
-                    >
-                        {blogs.map((blog, index) => (
-                            <Box
-                                key={blog.id}
-                                style={{
-                                    animationDelay: `${index * 0.1}s`
-                                }}
-                            >
-                                <BlogCard
-                                    blog={blog}
-                                    onClick={() => handleBlogClick(blog.id)}
-                                />
-                            </Box>
-                        ))}
-                    </SimpleGrid>
+                    <Box w="full"  >
+                        {/* <SimpleGrid
+                            columns={gridColumns}
+                            spacing={{ base: 6, md: 8 }}
+                            pb={{ base: 8, md: 16 }}
+                        >
+                            {blogs.map((blog, index) => (
+                                <Box
+                                    key={blog.id}
+                                    style={{
+                                        animationDelay: `${index * 0.1}s`
+                                    }}
+                                >
+                                    <BlogCard
+                                        blog={blog}
+                                        onClick={() => handleBlogClick(blog.id)}
+                                    />
+                                </Box>
+                            ))}
+                        </SimpleGrid> */}
+
+                        <Grid
+                            templateColumns={{
+                                base: "1fr",                  // Stack vertically on small screens
+                                md: "repeat(2, 250px)",       // 2 fixed-width columns on medium screens
+                                lg: "repeat(3, 280px)"        // 4 fixed-width columns on large screens
+                            }}
+                            gap={6}
+                            justifyContent="center"
+                            w="full">
+                            {blogs.map((blog, index) => (
+                                <GridItem key={index}>
+                                    <Box
+                                        key={blog.id}
+                                        style={{
+                                            animationDelay: `${index * 0.1}s`
+                                        }}
+                                    >
+                                        <BlogCard
+                                            blog={blog}
+                                            onClick={() => handleBlogClick(blog.id)}
+                                        />
+                                    </Box>
+                                </GridItem>
+                            ))}
+                        </Grid>
+                    </Box>
                 </Container>
             ) : (
                 <BlogView
@@ -746,6 +780,7 @@ const Blogs = () => {
                     onBack={handleBackToList}
                 />
             )}
+            <SidebarAdRight position="right" />
         </Box>
     );
 };

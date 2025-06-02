@@ -19,9 +19,9 @@ function App() {
         <Box flex="1">
           <Astronaut />
           {/* <Breadcrumbs /> */}
-          <SidebarAdLeft position="left" />
+          {/* <SidebarAdLeft position="left" /> */}
           <AppRoutes />
-          <SidebarAdRight position="right" />
+          {/* <SidebarAdRight position="right" /> */}
         </Box>
         <Footer /> 
       </Box>
