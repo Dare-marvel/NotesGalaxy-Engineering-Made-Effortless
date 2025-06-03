@@ -907,7 +907,7 @@ export default function SpaceCommunityPage() {
           {/* Header */}
           <Box textAlign="center" position="relative">
             <Heading
-              size="2xl"
+              size={{ base: "lg", sm: "xl", md: "xl", lg: "2xl", xl: "3xl" }}
               bgGradient="linear(to-r, #667eea, #764ba2)"
               bgClip="text"
               mb={4}

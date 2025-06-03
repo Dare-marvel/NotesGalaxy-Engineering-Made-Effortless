@@ -123,8 +123,8 @@ const FloatingPlanet = ({ size, type, top, left, right = "0%", duration = "20s" 
 
 const AboutUs = () => {
   const [isVisible, setIsVisible] = useState(false);
-  const isMobile = useBreakpointValue({ base: true, md: false });
-  const containerPadding = useBreakpointValue({ base: 4, md: 8, lg: 12 });
+  // const isMobile = useBreakpointValue({ base: true, md: false });
+  // const containerPadding = useBreakpointValue({ base: 4, md: 8, lg: 12 });
 
   const orbitSize = useBreakpointValue({ base: "100px", md: "125px", lg: "127px" });
 
@@ -189,7 +189,7 @@ const AboutUs = () => {
       left={{ base: "70%", md: "25%", lg: "32%" }} 
       duration="35s" /> */}
 
-      <Container maxWidth="1200px" px={containerPadding}>
+      <Container maxWidth="1200px" px={{ base: 4, md: 8, lg: 12 }}>
         {/* Header Section */}
         <VStack spacing={8} py={16}>
           <Box

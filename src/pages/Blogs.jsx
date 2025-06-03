@@ -195,7 +195,7 @@ const BlogCard = ({ blog, onClick }) => {
     const blogContentData = blogContent[blog.id];
     const readingTime = calculateReadingTime(blogContentData?.content || '');
     const likesCount = blog.likedBy ? blog.likedBy.length : 0;
-    const cardSize = useBreakpointValue({ base: 'sm', md: 'md', lg: 'lg' });
+    // const cardSize = useBreakpointValue({ base: 'sm', md: 'md', lg: 'lg' });
 
     return (
         <Card
@@ -225,10 +225,10 @@ const BlogCard = ({ blog, onClick }) => {
             }}
             h="full"
         >
-            <CardHeader pb={2} pt={6}>
+            <CardHeader pb={2} pt={5}>
                 <VStack align="start" spacing={3}>
                     <Heading
-                        size={cardSize}
+                        size={{ base: 'sm', md: 'sm', lg: 'md' }}
                         color="gray.800"
                         noOfLines={2}
                         lineHeight="1.3"
@@ -258,7 +258,7 @@ const BlogCard = ({ blog, onClick }) => {
             </CardHeader>
 
             <CardBody pt={0}>
-                <Divider mb={4} borderColor="purple.100" />
+                <Divider mb={3} borderColor="purple.100" />
                 <HStack spacing={3} justify="space-between" flexWrap="wrap">
                     <HStack spacing={3}>
                         <HStack spacing={1}>
@@ -695,14 +695,16 @@ const Blogs = () => {
         <Box bg="white" minH="100vh" px={{ base: 0, md: 12, lg: 12 }} >
             <SidebarAdLeft position="left" />
             {currentView === 'list' ? (
-                <Container maxW="6xl" pt={{ base: 6, md: 8, lg: 8 }} mt={{ base: 3, md: 4, lg: 10 }}>
+                <Container maxW="6xl" pt={{ base: 6, md: 8, lg: 8 }} mt={{ base: 3, md: 4, lg: 10 }}
+                
+                >
                     <VStack spacing={{ base: 6, md: 8 }} align="center" mb={{ base: 8, md: 12 }}>
                         {/* <Box animation={`${float} 4s ease-in-out infinite`}>
                             <Icon as={IoRocket} w={{ base: 12, md: 16 }} h={{ base: 12, md: 16 }} color="purple.400" />
                         </Box> */}
 
                         <Heading
-                            size={{ base: "md", sm: "lg", md: "xl", lg: "2xl", xl: "3xl" }}
+                            size={{ base: "lg", sm: "xl", md: "xl", lg: "2xl", xl: "2xl" }}
                             color="gray.800"
                             textAlign="center"
                             fontWeight="bold"
@@ -726,7 +728,7 @@ const Blogs = () => {
                         </Text>
                     </VStack>
 
-                    <Box w="full"  >
+                    <Box w="full" px={{ base: 4, md: 12, lg: 12 }} >
                         {/* <SimpleGrid
                             columns={gridColumns}
                             spacing={{ base: 6, md: 8 }}
@@ -750,8 +752,8 @@ const Blogs = () => {
                         <Grid
                             templateColumns={{
                                 base: "1fr",                  // Stack vertically on small screens
-                                md: "repeat(2, 250px)",       // 2 fixed-width columns on medium screens
-                                lg: "repeat(3, 280px)"        // 4 fixed-width columns on large screens
+                                md: "repeat(2, 1fr)",       // 2 fixed-width columns on medium screens
+                                lg: "repeat(3, 1fr)"        // 4 fixed-width columns on large screens
                             }}
                             gap={6}
                             justifyContent="center"

@@ -510,18 +510,18 @@ export default function YouTubeChannelsPage() {
       >
         <VStack spacing={{ base: 6, md: 8 }} align="stretch">
           {/* Header */}
-          <Box textAlign="center" mb={{ base: 4, md: 8 }}>
+          <Box textAlign="center" mb={{ base: 4, md: 8 }} >
             <Heading
-              size={{ base: "lg", sm: "xl", md: "xl", lg: "2xl" }}
+              size={{ base: "lg", sm: "xl", md: "xl", lg: "2xl", xl: "2xl" }}
               bgGradient="linear(to-r, blue.600, purple.600)"
               bgClip="text"
               fontWeight="extrabold"
               mt={{ base: 7, md: 7 }}
               py={{ base: 5, md: 7 }}
               mb={{ base: 3, md: 4 }}
+              px={{ base: 2, sm: 4, md: 6, lg: 12 }}
               textShadow="0 4px 8px rgba(0,0,0,0.1)"
               lineHeight={{ base: "shorter", md: "short" }}
-              px={{ base: 2, md: 0 }}
             >
               🚀 Best Youtube Playlists for each subject
             </Heading>
@@ -529,10 +529,10 @@ export default function YouTubeChannelsPage() {
             {/* Search Bar */}
             <Box 
               maxW={{ base: "full", md: "full", lg : "full" }}
-              mx="auto" 
-              px={{ base: 2, sm: 4, md: 6, lg: 8 }}
+              px={{ base: 2, sm: 4, md: 6, lg: 12 }}
+              mx={{ base: 2, sm: 4, md: 6, lg: 12 }}
             >
-              <InputGroup size={{ base: "md", md: "lg" }}>
+              <InputGroup size={{ base: "md", md: "lg" }} >
                 <InputLeftElement pointerEvents="none" h={{ base: "40px", md: "48px" }}>
                   <SearchIcon 
                     color="gray.400" 
@@ -550,7 +550,7 @@ export default function YouTubeChannelsPage() {
                   borderRadius={{ base: "xl", md: "full" }}
                   fontSize={{ base: "sm", sm: "md", md: "lg" }}
                   h={{ base: "40px", md: "48px" }}
-                  pl={{ base: "40px", md: "48px" }}
+                  // pl={{ base: "40px", md: "48px" }}
                   _hover={{
                     borderColor: "purple.400"
                   }}
@@ -600,7 +600,7 @@ export default function YouTubeChannelsPage() {
               </Text>
             </Box>
           ) : (
-            <Box>
+            <Box px={{ base: 4, md: 10, lg: 12 }}>
               {Object.entries(filteredData).map(([semester, subjects]) => (
                 <SemesterSection
                   key={semester}
