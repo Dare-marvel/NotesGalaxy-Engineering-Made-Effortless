@@ -18,6 +18,7 @@ import {
     IconButton,
     Grid,
     GridItem,
+    Spacer,
     Divider,
     useBreakpointValue
 } from '@chakra-ui/react';
@@ -433,7 +434,7 @@ const BlogView = ({ blogId, onBack }) => {
     const likesCount = likedBy.length;
 
     return (
-        <Box bg="white" minH="100vh" pt={{ base: 6, md: 3, lg: 7 }} mt={{ base: 10, md: 12, lg: 8 }} px={{ base: 0,sm: 0, md: 12, lg: 12 }} >
+        <Box bg="white" minH="100vh" pt={{ base: 6, md: 3, lg: 7 }} mt={{ base: 10, md: 12, lg: 8 }} px={{ base: 0, sm: 0, md: 12, lg: 12 }} >
             <Box
                 bg="linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%)"
                 py={2}
@@ -695,41 +696,42 @@ const Blogs = () => {
         <Box bg="white" minH="100vh" px={{ base: 0, md: 12, lg: 12 }} >
             <SidebarAdLeft position="left" />
             {currentView === 'list' ? (
-                <Container maxW="6xl" pt={{ base: 6, md: 8, lg: 8 }} mt={{ base: 3, md: 4, lg: 10 }}
-                
-                >
-                    <VStack spacing={{ base: 6, md: 8 }} align="center" mb={{ base: 8, md: 12 }}>
-                        {/* <Box animation={`${float} 4s ease-in-out infinite`}>
+                <Flex direction="column" minH="100vh">
+                    <Container maxW="6xl" pt={{ base: 6, md: 8, lg: 8 }} mt={{ base: 3, md: 4, lg: 10 }}
+
+                    >
+                        <VStack spacing={{ base: 6, md: 8 }} align="center" mb={{ base: 8, md: 12 }}>
+                            {/* <Box animation={`${float} 4s ease-in-out infinite`}>
                             <Icon as={IoRocket} w={{ base: 12, md: 16 }} h={{ base: 12, md: 16 }} color="purple.400" />
                         </Box> */}
 
-                        <Heading
-                            size={{ base: "lg", sm: "xl", md: "xl", lg: "2xl", xl: "2xl" }}
-                            color="gray.800"
-                            textAlign="center"
-                            fontWeight="bold"
-                            background="linear-gradient(135deg, #667eea 0%, #764ba2 100%)"
-                            backgroundClip="text"
-                            animation={`${shimmer} 2s infinite linear`}
-                            backgroundSize="200px 100%"
-                        >
-                            🚀 My Blog
-                        </Heading>
+                            <Heading
+                                size={{ base: "lg", sm: "xl", md: "xl", lg: "2xl", xl: "2xl" }}
+                                color="gray.800"
+                                textAlign="center"
+                                fontWeight="bold"
+                                background="linear-gradient(135deg, #667eea 0%, #764ba2 100%)"
+                                backgroundClip="text"
+                                animation={`${shimmer} 2s infinite linear`}
+                                backgroundSize="200px 100%"
+                            >
+                                🚀 My Blog
+                            </Heading>
 
-                        <Text
-                            fontSize={{ base: 'md', md: 'lg' }}
-                            color="gray.600"
-                            textAlign="center"
-                            maxW={{ base: 'full', md: '2xl' }}
-                            lineHeight="1.6"
-                            px={{ base: 4, md: 0 }}
-                        >
-                            Discover articles, insights, and stories from our collection of thought-provoking content. Journey through the infinite expanse of knowledge.
-                        </Text>
-                    </VStack>
+                            <Text
+                                fontSize={{ base: 'md', md: 'lg' }}
+                                color="gray.600"
+                                textAlign="center"
+                                maxW={{ base: 'full', md: '2xl' }}
+                                lineHeight="1.6"
+                                px={{ base: 4, md: 0 }}
+                            >
+                                Discover articles, insights, and stories from our collection of thought-provoking content. Journey through the infinite expanse of knowledge.
+                            </Text>
+                        </VStack>
 
-                    <Box w="full" px={{ base: 4, md: 12, lg: 12 }} >
-                        {/* <SimpleGrid
+                        <Box w="full" px={{ base: 4, md: 12, lg: 12 }} >
+                            {/* <SimpleGrid
                             columns={gridColumns}
                             spacing={{ base: 6, md: 8 }}
                             pb={{ base: 8, md: 16 }}
@@ -749,33 +751,61 @@ const Blogs = () => {
                             ))}
                         </SimpleGrid> */}
 
-                        <Grid
-                            templateColumns={{
-                                base: "1fr",                  // Stack vertically on small screens
-                                md: "repeat(2, 1fr)",       // 2 fixed-width columns on medium screens
-                                lg: "repeat(3, 1fr)"        // 4 fixed-width columns on large screens
+                            <Grid
+                                templateColumns={{
+                                    base: "1fr",                  // Stack vertically on small screens
+                                    md: "repeat(2, 1fr)",       // 2 fixed-width columns on medium screens
+                                    lg: "repeat(3, 1fr)"        // 4 fixed-width columns on large screens
+                                }}
+                                gap={6}
+                                justifyContent="center"
+                                w="full">
+                                {blogs.map((blog, index) => (
+                                    <GridItem key={index}>
+                                        <Box
+                                            key={blog.id}
+                                            style={{
+                                                animationDelay: `${index * 0.1}s`
+                                            }}
+                                        >
+                                            <BlogCard
+                                                blog={blog}
+                                                onClick={() => handleBlogClick(blog.id)}
+                                            />
+                                        </Box>
+                                    </GridItem>
+                                ))}
+                            </Grid>
+                        </Box>
+                    </Container>
+
+                    <Spacer />
+
+                    <Box textAlign="center" mt={16} mb={1}>
+                        <Button
+                            as="a"
+                            href="https://docs.google.com/forms/d/e/1FAIpQLScZ_AeyPEWBOFszZLkZqsmv5m0qWh3do5wTHEhwCHNifTgzeA/viewform?usp=header"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            bgGradient="linear(to-r, blue.400, purple.500)"
+                            color="white"
+                            _hover={{
+                                bgGradient: "linear(to-r, purple.600, blue.700)",
+                                boxShadow: "0 0 20px rgba(173, 216, 230, 0.8)",
                             }}
-                            gap={6}
-                            justifyContent="center"
-                            w="full">
-                            {blogs.map((blog, index) => (
-                                <GridItem key={index}>
-                                    <Box
-                                        key={blog.id}
-                                        style={{
-                                            animationDelay: `${index * 0.1}s`
-                                        }}
-                                    >
-                                        <BlogCard
-                                            blog={blog}
-                                            onClick={() => handleBlogClick(blog.id)}
-                                        />
-                                    </Box>
-                                </GridItem>
-                            ))}
-                        </Grid>
+                            _active={{
+                                bgGradient: "linear(to-r, purple.800, blue.800)",
+                            }}
+                            padding="1.5rem"
+                            borderRadius="lg"
+                            fontWeight="bold"
+                            fontSize={["sm", "md", "lg"]}
+                            boxShadow="0 0 10px rgba(173, 216, 230, 0.5)"
+                        >
+                            🚀 Publish your blog here
+                        </Button>
                     </Box>
-                </Container>
+                </Flex>
             ) : (
                 <BlogView
                     blogId={currentView}

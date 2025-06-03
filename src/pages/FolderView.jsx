@@ -4,7 +4,10 @@ import {
   Table,
   Thead,
   Tbody,
+  Tooltip,
+  Button,
   Td,
+  Spacer,
   Tr,
   Th,
   Container,
@@ -32,6 +35,7 @@ import { truncateByScreenSize } from '../utils/displayUtils';
 import Breadcrumbs from '../components/Breadcrumbs';
 import axios from 'axios';
 import { FOLDER_STRUCTURE } from '../config/structure';
+import { FiGithub } from "react-icons/fi";
 
 import SidebarAdLeft from '../components/SidebarAd/SidebarAdLeft';
 import SidebarAdRight from '../components/SidebarAd/SidebarAdRight';
@@ -106,7 +110,7 @@ const FolderView = () => {
   };
 
 
-  const RepositoryRow = ({ repo,index }) => {
+  const RepositoryRow = ({ repo, index }) => {
     const [isDownloading, setIsDownloading] = useState(false);
     const toast = useToast();
     const mappedName = getSimpleName(repo);
@@ -253,8 +257,8 @@ const FolderView = () => {
     );
 
     return (
-      <Tr 
-      animation={`${slideInUp} 0.5s ease-out ${index * 0.1}s both`}
+      <Tr
+        animation={`${slideInUp} 0.5s ease-out ${index * 0.1}s both`}
       >
         <Td width={["60%", "65%", "70%"]}>
           <Box
@@ -513,125 +517,160 @@ const FolderView = () => {
   // const showActionsColumn = (repoName && contents.some(item => typeof item !== 'string' && item.type === 'file'));
 
   return (
-    <Container maxW="container.xl" py={[3, 4, 5]} px={[2, 3, 5]} >
-    <SidebarAdLeft position="left" />
-      <Breadcrumbs />
-      {!repoName && (
-        <Box 
-        mb={[4, 5, 6]}
-        width={["100%", "85%", "85%"]} 
-        marginX={["0", "auto", "auto"]}
-        px={{ base: 2, sm: 4, md: 6, lg: 0 }}
+    <Flex direction="column" minH="100vh">
+      <Container maxW="container.xl" py={[3, 4, 5]} px={[2, 3, 5]} >
+        <SidebarAdLeft position="left" />
+        <Breadcrumbs />
+        {!repoName && (
+          <Box
+            mb={[4, 5, 6]}
+            width={["100%", "85%", "85%"]}
+            marginX={["0", "auto", "auto"]}
+            px={{ base: 2, sm: 4, md: 6, lg: 0 }}
+          >
+            <InputGroup>
+              <InputLeftElement pointerEvents="none">
+                <Icon as={FiSearch} color="gray.400" />
+              </InputLeftElement>
+              <Input
+                placeholder="Search repositories..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                bg={inputBg}
+                borderRadius="full"
+                size={["sm", "md", "md"]}
+                boxShadow="md"
+                _focus={{
+                  borderColor: 'teal.500',
+                  boxShadow: 'lg'
+                }}
+              />
+            </InputGroup>
+          </Box>
+
+        )}
+
+        <Box
+          borderWidth="1px"
+          borderColor={borderColor}
+          borderRadius={["lg", "xl", "xl"]}
+          overflow={["auto", "hidden", "hidden"]}
+          boxShadow={["md", "lg", "lg"]}
+          transition="all 0.2s"
+          _hover={{
+            boxShadow: ["lg", "xl", "xl"]
+          }}
+          width={["100%", "85%", "85%"]}
+          marginX={["0", "auto", "auto"]}
+          px={{ base: 4, md: 12, lg: 12 }}
         >
-          <InputGroup>
-            <InputLeftElement pointerEvents="none">
-              <Icon as={FiSearch} color="gray.400" />
-            </InputLeftElement>
-            <Input
-              placeholder="Search repositories..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              bg={inputBg}
-              borderRadius="full"
-              size={["sm", "md", "md"]}
-              boxShadow="md"
-              _focus={{
-                borderColor: 'teal.500',
-                boxShadow: 'lg'
-              }}
-            />
-          </InputGroup>
+          <Table variant="simple" size={["sm", "md", "md"]}>
+            <Thead>
+              <Tr bg={headerBg}>
+                <Th fontSize={["sm", "md", "md"]}>Name</Th>
+                {/* <Th fontSize={["sm", "md", "md"]}>Type</Th> */}
+                <Th fontSize={["sm", "md", "md"]}>Actions</Th>
+              </Tr>
+            </Thead>
+            <Tbody>
+              {repoName && path && (
+                <Tr>
+                  <Td colSpan={3}>
+                    <Flex
+                      align="center"
+                      gap={2}
+                      cursor="pointer"
+                      color="blue.500"
+                      onClick={() => navigate(-1)}
+                      p={2}
+                      borderRadius="md"
+                      width="fit-content"
+                      _hover={{
+                        color: 'blue.600',
+                        bg: 'blue.50'
+                      }}
+                    >
+                      <Icon as={FiArrowLeft} />
+                      <Text>Back</Text>
+                    </Flex>
+                  </Td>
+                </Tr>
+              )}
+              {loading ? (
+                <Tr>
+                  <Td colSpan={3}>
+                    <Flex justify="center" py={8}>
+                      <Spinner size="lg" color="blue.500" />
+                    </Flex>
+                  </Td>
+                </Tr>
+              ) : (
+                <>
+                  {!repoName
+                    ? filteredContents.map((repo, index) => (
+                      <RepositoryRow key={`repo-${index}`} repo={repo} index={index} />
+                    ))
+                    : contents.map((item, index) => (
+                      <ContentRow
+                        key={`content-${typeof item === 'string' ? item : item?.name}-${index}`}
+                        item={item}
+                      />
+                    ))}
+                </>
+              )}
+            </Tbody>
+          </Table>
         </Box>
 
-      )}
+        <Suspense fallback={
+          <Center h="200px">
+            <Spinner size="xl" color="blue.500" />
+          </Center>
+        }>
+          {selectedFile && (
+            <FileViewer
+              file={selectedFile}
+              isOpen={!!selectedFile}
+              onClose={() => setSelectedFile(null)}
+            />
+          )}
+        </Suspense>
+        <SidebarAdRight position="right" />
+      </Container>
 
-      <Box
-        borderWidth="1px"
-        borderColor={borderColor}
-        borderRadius={["lg", "xl", "xl"]}
-        overflow={["auto", "hidden", "hidden"]}
-        boxShadow={["md", "lg", "lg"]}
-        transition="all 0.2s"
-        _hover={{
-          boxShadow: ["lg", "xl", "xl"]
-        }}
-        width={["100%", "85%", "85%"]} 
-        marginX={["0", "auto", "auto"]}
-        px={{ base: 4, md: 12, lg: 12 }}
-      >
-        <Table variant="simple" size={["sm", "md", "md"]}>
-          <Thead>
-            <Tr bg={headerBg}>
-              <Th fontSize={["sm", "md", "md"]}>Name</Th>
-              {/* <Th fontSize={["sm", "md", "md"]}>Type</Th> */}
-              <Th fontSize={["sm", "md", "md"]}>Actions</Th>
-            </Tr>
-          </Thead>
-          <Tbody>
-            {repoName && path && (
-              <Tr>
-                <Td colSpan={3}>
-                  <Flex
-                    align="center"
-                    gap={2}
-                    cursor="pointer"
-                    color="blue.500"
-                    onClick={() => navigate(-1)}
-                    p={2}
-                    borderRadius="md"
-                    width="fit-content"
-                    _hover={{
-                      color: 'blue.600',
-                      bg: 'blue.50'
-                    }}
-                  >
-                    <Icon as={FiArrowLeft} />
-                    <Text>Back</Text>
-                  </Flex>
-                </Td>
-              </Tr>
-            )}
-            {loading ? (
-              <Tr>
-                <Td colSpan={3}>
-                  <Flex justify="center" py={8}>
-                    <Spinner size="lg" color="blue.500" />
-                  </Flex>
-                </Td>
-              </Tr>
-            ) : (
-              <>
-                {!repoName
-                  ? filteredContents.map((repo, index) => (
-                    <RepositoryRow key={`repo-${index}`} repo={repo} index={index}/>
-                  ))
-                  : contents.map((item, index) => (
-                    <ContentRow
-                      key={`content-${typeof item === 'string' ? item : item?.name}-${index}`}
-                      item={item}
-                    />
-                  ))}
-              </>
-            )}
-          </Tbody>
-        </Table>
+      <Box mt={12} />
+
+      <Box textAlign="center" mb={4}>
+        <Tooltip label="For knowledge-hungry users, there's more on my GitHub! Click this link to explore my repositories." fontSize="md" hasArrow>
+          <Button
+            as="a"
+            href="https://github.com/dare-marvel" // Replace with your GitHub URL
+            target="_blank"
+            rel="noopener noreferrer"
+            leftIcon={<FiGithub />}
+            bgGradient="linear(to-r,blue.500,green.500)"
+            color="white"
+            _hover={{
+              bgGradient: "linear(to-r, #43e97b,blue.300)",
+              transform: "scale(1.05)",
+              boxShadow: "0 0 25px rgba(56, 249, 215, 0.6)",
+            }}
+            _active={{
+              boxShadow: "0 0 10px rgba(0, 255, 200, 0.4)",
+              transform: "scale(0.98)",
+            }}
+            transition="all 0.3s ease-in-out"
+            px={{ base: 2, md: 8, lg: 10 }}
+            borderRadius="xl"
+            fontWeight="semibold"
+            fontSize={["sm", "md", "lg"]}
+            boxShadow="lg"
+          >
+            Visit Github for more content
+          </Button>
+        </Tooltip>
       </Box>
-
-      <Suspense fallback={
-        <Center h="200px">
-          <Spinner size="xl" color="blue.500" />
-        </Center>
-      }>
-        {selectedFile && (
-          <FileViewer
-            file={selectedFile}
-            isOpen={!!selectedFile}
-            onClose={() => setSelectedFile(null)}
-          />
-        )}
-      </Suspense>
-      <SidebarAdRight position="right" />
-    </Container>
+    </Flex>
   );
 };
 
