@@ -36,6 +36,13 @@ import { FOLDER_STRUCTURE } from '../config/structure';
 import SidebarAdLeft from '../components/SidebarAd/SidebarAdLeft';
 import SidebarAdRight from '../components/SidebarAd/SidebarAdRight';
 
+import { keyframes } from '@emotion/react';
+
+const slideInUp = keyframes`
+  from { transform: translateY(50px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+`;
+
 const FolderView = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedFile, setSelectedFile] = useState(null);
@@ -99,7 +106,7 @@ const FolderView = () => {
   };
 
 
-  const RepositoryRow = ({ repo }) => {
+  const RepositoryRow = ({ repo,index }) => {
     const [isDownloading, setIsDownloading] = useState(false);
     const toast = useToast();
     const mappedName = getSimpleName(repo);
@@ -246,7 +253,9 @@ const FolderView = () => {
     );
 
     return (
-      <Tr>
+      <Tr 
+      animation={`${slideInUp} 0.5s ease-out ${index * 0.1}s both`}
+      >
         <Td width={["60%", "65%", "70%"]}>
           <Box
             ref={hoverRef}
@@ -512,6 +521,7 @@ const FolderView = () => {
         mb={[4, 5, 6]}
         width={["100%", "85%", "85%"]} 
         marginX={["0", "auto", "auto"]}
+        px={{ base: 2, sm: 4, md: 6, lg: 0 }}
         >
           <InputGroup>
             <InputLeftElement pointerEvents="none">
@@ -547,6 +557,7 @@ const FolderView = () => {
         }}
         width={["100%", "85%", "85%"]} 
         marginX={["0", "auto", "auto"]}
+        px={{ base: 4, md: 12, lg: 12 }}
       >
         <Table variant="simple" size={["sm", "md", "md"]}>
           <Thead>
@@ -592,7 +603,7 @@ const FolderView = () => {
               <>
                 {!repoName
                   ? filteredContents.map((repo, index) => (
-                    <RepositoryRow key={`repo-${index}`} repo={repo} />
+                    <RepositoryRow key={`repo-${index}`} repo={repo} index={index}/>
                   ))
                   : contents.map((item, index) => (
                     <ContentRow
