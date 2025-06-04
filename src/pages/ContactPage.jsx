@@ -257,202 +257,234 @@ const ContactPage = () => {
 
 
   return (
-    <Container maxW="container.xl" py={[3, 4, 5]} px={[2, 3, 5]}
-    >
-      <SidebarAdLeft position="left" />
-      {/* Floating elements */}
-      <FloatingElement
-        icon={FaRocket}
-        top="15%"
-        left="10%"
-        delay={0}
-        size={{ base: "25px", sm: "25px", md: "35px", lg: "40px" }}
-      />
-      <FloatingElement
-        icon={FaSatellite}
-        top={{ base: "15%", sm: "15%", md: "20%", lg: "20%" }}
-        right="15%"
-        delay={1}
-        size={{ base: "22px", sm: "25px", md: "30px", lg: "35px" }}
-      />
-      <FloatingElement icon={FaSpaceShuttle}
-        top={{ base: "85%", sm: "85%", md: "75%", lg: "75%" }}
-        left="10%"
-        delay={2}
-        size={{ base: "22px", sm: "22px", md: "25px", lg: "30px" }}
-      />
-      <FloatingElement
-        icon={FaStar}
-        top={{ base: "85%", sm: "85%", md: "75%", lg: "75%" }}
-        right="10%"
-        delay={3}
-        size={{ base: "15px", sm: "15px", md: "17px", lg: "20px" }}
-      />
-
-      <FloatingElement
-        icon={FaStar}
-        top="40%"
-        left="20%"
-        delay={4}
-        size={{ base: "19px", sm: "18px", md: "20px", lg: "23px" }}
-      />
-
-      <Container
-        maxW={{ base: "sm", sm: "sm", md: "sm", lg: "md", xl: "md" }}
-        bg="white"
-        borderRadius="xl"
-        p={{ base: 3, sm: 2, md: 3, lg: 4 }}
-        boxShadow="2xl"
-        border="2px"
-        borderColor="purple.200"
-        position="relative"
-        overflow={"auto"}
-        zIndex={2}
-        mt={{ base: 200, sm: 20, md: 14, lg: 16 }}
+    <Flex direction="column" minH="100vh">
+      <Container maxW="container.xl" py={[3, 4, 5]} px={[2, 3, 5]}
       >
-        <VStack spacing={{ base: 4, sm: 3, md: 4, lg: 5 }}>
-          <Flex justify="center" align="center">
-            <Heading
-              textAlign="center"
-              bgGradient="linear(to-r, purple.500, blue.500)"
-              bgClip="text"
-              fontSize={{ base: "xl", sm: "xl", md: "2xl", lg: "3xl" }}
-            >
-              Contact Us
-            </Heading>
-            <Tooltip
-              label="🚀 If you want to help your fellow classmates, you can upload your notes here. Also, if you want to suggest any changes, you can do so here. 🌌 Don't worry, you will be given credit for your contributions. 🪐"
-              isOpen={isHovered}
-              placement="top-start"
-            >
-              <IconButton
-                icon={<InfoIcon />}
-                variant="ghost"
-                onMouseEnter={() => setIsHovered(true)}
-                onMouseLeave={() => setIsHovered(false)}
-                aria-label="Info"
-              />
-            </Tooltip>
-          </Flex>
+        <SidebarAdLeft position="left" />
+        {/* Floating elements */}
+        <FloatingElement
+          icon={FaRocket}
+          top="15%"
+          left="10%"
+          delay={0}
+          size={{ base: "25px", sm: "25px", md: "35px", lg: "40px" }}
+        />
+        <FloatingElement
+          icon={FaSatellite}
+          top={{ base: "15%", sm: "15%", md: "20%", lg: "20%" }}
+          right="15%"
+          delay={1}
+          size={{ base: "22px", sm: "25px", md: "30px", lg: "35px" }}
+        />
+        <FloatingElement icon={FaSpaceShuttle}
+          top={{ base: "85%", sm: "85%", md: "75%", lg: "75%" }}
+          left="10%"
+          delay={2}
+          size={{ base: "22px", sm: "22px", md: "25px", lg: "30px" }}
+        />
+        <FloatingElement
+          icon={FaStar}
+          top={{ base: "85%", sm: "85%", md: "75%", lg: "75%" }}
+          right="10%"
+          delay={3}
+          size={{ base: "15px", sm: "15px", md: "17px", lg: "20px" }}
+        />
 
-          <Input
-            placeholder="Your Name"
-            id="name"
-            //value={name}
-            isDisabled={loading}
-            //onChange={(e) => setName(e.target.value)}
-            variant="filled"
-            bg="purple.50"
-            borderColor="purple.300"
-            borderRadius="md"
-            _hover={{ borderColor: "blue.400" }}
-            size={{ base: "sm", sm: "sm", md: "sm", lg: "md", xl: "md" }}
-          />
+        <FloatingElement
+          icon={FaStar}
+          top="40%"
+          left="20%"
+          delay={4}
+          size={{ base: "19px", sm: "18px", md: "20px", lg: "23px" }}
+        />
 
-          <Input
-            placeholder="Your Email"
-            type="email"
-            id="email"
-            // value={email}
-            isDisabled={loading}
-            //  onChange={(e) => setEmail(e.target.value)}
-            variant="filled"
-            bg="purple.50"
-            borderColor="purple.300"
-            borderRadius="md"
-            _hover={{ borderColor: "blue.400" }}
-            size={{ base: "sm", sm: "sm", md: "sm", lg: "md", xl: "md" }}
-          />
+        <Container
+          maxW={{ base: "sm", sm: "sm", md: "sm", lg: "md", xl: "md" }}
+          bg="white"
+          borderRadius="xl"
+          p={{ base: 3, sm: 2, md: 3, lg: 4 }}
+          boxShadow="2xl"
+          border="2px"
+          borderColor="purple.200"
+          position="relative"
+          overflow={"auto"}
+          zIndex={2}
+          mt={{ base: 200, sm: 20, md: 14, lg: 16 }}
+        >
+          <VStack spacing={{ base: 4, sm: 3, md: 4, lg: 5 }}>
+            <Flex justify="center" align="center">
+              <Heading
+                textAlign="center"
+                bgGradient="linear(to-r, purple.500, blue.500)"
+                bgClip="text"
+                fontSize={{ base: "xl", sm: "xl", md: "2xl", lg: "3xl" }}
+              >
+                Contact Us
+              </Heading>
+              <Tooltip
+                label="🚀 If you want to help your fellow classmates, you can upload your notes here. Also, if you want to suggest any changes, you can do so here. 🌌 Don't worry, you will be given credit for your contributions. 🪐"
+                isOpen={isHovered}
+                placement="top-start"
+              >
+                <IconButton
+                  icon={<InfoIcon />}
+                  variant="ghost"
+                  onMouseEnter={() => setIsHovered(true)}
+                  onMouseLeave={() => setIsHovered(false)}
+                  aria-label="Info"
+                />
+              </Tooltip>
+            </Flex>
 
-          {subjects.map((subject, index) => (
-            <Box key={index}
-              w="full"
-              p={3}
-              border="2px"
-              borderColor="purple.300"
+            <Input
+              placeholder="Your Name"
+              id="name"
+              //value={name}
+              isDisabled={loading}
+              //onChange={(e) => setName(e.target.value)}
+              variant="filled"
               bg="purple.50"
-              borderRadius="md">
-              <Flex align="center">
+              borderColor="purple.300"
+              borderRadius="md"
+              _hover={{ borderColor: "blue.400" }}
+              size={{ base: "sm", sm: "sm", md: "sm", lg: "md", xl: "md" }}
+            />
+
+            <Input
+              placeholder="Your Email"
+              type="email"
+              id="email"
+              // value={email}
+              isDisabled={loading}
+              //  onChange={(e) => setEmail(e.target.value)}
+              variant="filled"
+              bg="purple.50"
+              borderColor="purple.300"
+              borderRadius="md"
+              _hover={{ borderColor: "blue.400" }}
+              size={{ base: "sm", sm: "sm", md: "sm", lg: "md", xl: "md" }}
+            />
+
+            {subjects.map((subject, index) => (
+              <Box key={index}
+                w="full"
+                p={3}
+                border="2px"
+                borderColor="purple.300"
+                bg="purple.50"
+                borderRadius="md">
+                <Flex align="center">
+                  <Input
+                    placeholder="Subject Name"
+                    value={subject.name}
+                    isDisabled={loading}
+                    onChange={(e) => handleSubjectChange(index, e.target.value)}
+                    mr={2}
+                    variant="filled"
+                    bg="purple.50"
+                    borderColor="purple.300"
+                    borderRadius="md"
+                    _hover={{ borderColor: "blue.400" }}
+                    size={{ base: "sm", sm: "sm", md: "sm", lg: "md", xl: "md" }}
+                  />
+                  <IconButton
+                    size="sm"
+                    colorScheme="red"
+                    icon={<FaTrash />}
+                    onClick={() => handleRemoveSubject(index)}
+                    isDisabled={loading}
+                    _hover={{ bg: 'red.800' }}
+                  >
+                  </IconButton>
+                </Flex>
                 <Input
-                  placeholder="Subject Name"
-                  value={subject.name}
                   isDisabled={loading}
-                  onChange={(e) => handleSubjectChange(index, e.target.value)}
-                  mr={2}
-                  variant="filled"
-                  bg="purple.50"
+                  type="file"
+                  multiple
+                  onChange={(e) => handleFileChange(index, e)}
+                  mt={2}
+                  p={2}
+                  size={{ base: "sm", sm: "sm", md: "sm", lg: "md", xl: "md" }}
                   borderColor="purple.300"
                   borderRadius="md"
-                  _hover={{ borderColor: "blue.400" }}
-                  size={{ base: "sm", sm: "sm", md: "sm", lg: "md", xl: "md" }}
+                  _hover={{ borderColor: 'blue.400' }}
                 />
-                <IconButton
-                  size="sm"
-                  colorScheme="red"
-                  icon={<FaTrash />}
-                  onClick={() => handleRemoveSubject(index)}
-                  isDisabled={loading}
-                  _hover={{ bg: 'red.800' }}
-                >
-                </IconButton>
-              </Flex>
-              <Input
-                isDisabled={loading}
-                type="file"
-                multiple
-                onChange={(e) => handleFileChange(index, e)}
-                mt={2}
-                p={2}
-                size={{ base: "sm", sm: "sm", md: "sm", lg: "md", xl: "md" }}
-                borderColor="purple.300"
-                borderRadius="md"
-                _hover={{ borderColor: 'blue.400' }}
-              />
-            </Box>
+              </Box>
 
-          ))}
+            ))}
 
-          <Button
-            isDisabled={loading}
-            leftIcon={<FaPlus />}
-            colorScheme="purple"
-            onClick={handleAddSubject}
-            size={{ base: "sm", sm: "sm", md: "sm", lg: "md", xl: "md" }}
-          >
-            Add Subject
-          </Button>
+            <Button
+              isDisabled={loading}
+              leftIcon={<FaPlus />}
+              colorScheme="purple"
+              onClick={handleAddSubject}
+              size={{ base: "sm", sm: "sm", md: "sm", lg: "md", xl: "md" }}
+            >
+              Add Subject
+            </Button>
 
-          <Textarea
-            placeholder="Your Message"
-            // value={message}
-            id="message"
-            // onChange={(e) => setMessage(e.target.value)}
-            variant="filled"
-            bg="purple.50"
-            borderColor="purple.300"
-            borderRadius="md"
-            isDisabled={loading}
-            _hover={{ borderColor: "blue.400" }}
-            size={{ base: "sm", sm: "sm", md: "sm", lg: "md", xl: "md" }}
-            minH={{ base: "120px", sm: "100px", md: "120px", lg: "150px" }}
-          />
+            <Textarea
+              placeholder="Your Message"
+              // value={message}
+              id="message"
+              // onChange={(e) => setMessage(e.target.value)}
+              variant="filled"
+              bg="purple.50"
+              borderColor="purple.300"
+              borderRadius="md"
+              isDisabled={loading}
+              _hover={{ borderColor: "blue.400" }}
+              size={{ base: "sm", sm: "sm", md: "sm", lg: "md", xl: "md" }}
+              minH={{ base: "120px", sm: "100px", md: "120px", lg: "150px" }}
+            />
 
-          <Button
-            onClick={handleSubmit}
-            bgGradient="linear(to-r, purple.500, blue.500)"
-            isLoading={loading}
-            color="white"
-            rightIcon={<FaPaperPlane />}
-            _hover={{ transform: "scale(1.05)", bgGradient: "linear(to-r, purple.600, blue.600)" }}
-            size={{ base: "sm", sm: "sm", md: "sm", lg: "md", xl: "md" }}
-            w="full"
-          >
-            Send Message
-          </Button>
-        </VStack>
+            <Button
+              onClick={handleSubmit}
+              bgGradient="linear(to-r, purple.500, blue.500)"
+              isLoading={loading}
+              color="white"
+              rightIcon={<FaPaperPlane />}
+              _hover={{ transform: "scale(1.05)", bgGradient: "linear(to-r, purple.600, blue.600)" }}
+              size={{ base: "sm", sm: "sm", md: "sm", lg: "md", xl: "md" }}
+              w="full"
+            >
+              Send Message
+            </Button>
+          </VStack>
+        </Container>
+        <SidebarAdRight position="right" />
       </Container>
-      <SidebarAdRight position="right" />
-    </Container>
+
+      <Box textAlign="center" mt={8} mb={1}>
+        <Button
+          as="a"
+          href="https://docs.google.com/forms/d/e/1FAIpQLSc1OFPSYn-FlRLqvHZwPUz02tcwWQKxgVP5Ps5S7pGX9KL47g/viewform?usp=sharing&ouid=103476457106170452616"
+          target="_blank"
+          rel="noopener noreferrer"
+          bgGradient="linear(to-r,rgb(82, 82, 182),rgb(143, 51, 209))"
+          color="white"
+          _hover={{
+            bgGradient: "linear(to-r, #4b0082, #800080)",
+            boxShadow: "0px 0px 30px rgba(137, 207, 240, 0.9)",
+            transform: "scale(1.05)",
+          }}
+          _active={{
+            bgGradient: "linear(to-r, #800080, #1a1a40)",
+            boxShadow: "0px 0px 40px rgba(173, 216, 230, 1)",
+          }}
+          padding="1.5rem"
+          borderRadius="lg"
+          fontWeight="bold"
+          fontSize={["sm", "md", "lg"]}
+          boxShadow="0px 0px 20px rgba(137, 207, 240, 0.7)"
+          transition="all 0.3s ease-in-out"
+        >
+          🚀 Feedback Form
+        </Button>
+
+      </Box>
+
+    </Flex>
   );
 };
 

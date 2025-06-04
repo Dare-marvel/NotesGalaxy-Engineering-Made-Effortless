@@ -7,6 +7,7 @@ import FolderView from '../pages/FolderView';
 import AboutUs from '../pages/About';
 import YouTubeChannelsPage from '../pages/YTChannels';
 import Blogs from '../pages/Blogs';
+import EducationalSnakeGame from '../pages/SnakeGame';
 
 
 const AppRoutes = () => {
@@ -19,6 +20,7 @@ const AppRoutes = () => {
       <Route path="/ytchannels" element={<YouTubeChannelsPage />} />
       <Route path="/community" element={<Community />} />
       <Route path="/blogs" element={<Blogs />} />
+      {/* <Route path="/snake-game" element={<EducationalSnakeGame />} /> */}
       {/* <Route path="/blogs/*" element={<Blogs />} /> */}
     </Routes>
   );

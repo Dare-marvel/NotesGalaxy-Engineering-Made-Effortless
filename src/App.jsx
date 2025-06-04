@@ -7,8 +7,9 @@ import Astronaut from './components/Astronaut'
 import Footer from './components/Footer'; // Import the Footer component
 import { Analytics } from "@vercel/analytics/react"
 import { SpeedInsights } from '@vercel/speed-insights/react'
-import SidebarAdLeft from './components/SidebarAd/SidebarAdLeft';
-import SidebarAdRight from './components/SidebarAd/SidebarAdRight';
+// import SidebarAdLeft from './components/SidebarAd/SidebarAdLeft';
+// import SidebarAdRight from './components/SidebarAd/SidebarAdRight';
+
 // import Breadcrumbs from './components/Breadcrumbs';
 
 function App() {

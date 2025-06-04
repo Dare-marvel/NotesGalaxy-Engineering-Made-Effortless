@@ -279,6 +279,36 @@ const NotesModal = ({ isOpen, onClose, user }) => {
     }
   };
 
+  const handleNoteView = async (noteId) => {
+    try {
+      const noteRef = doc(db, 'notes', noteId);
+
+      // Increment the views count in Firestore
+      await updateDoc(noteRef, {
+        views: increment(1)
+      });
+
+      // Update local state
+      setNotes(prev =>
+        prev.map(note =>
+          note.id === noteId
+            ? { ...note, views: (note.views || 0) + 1 }
+            : note
+        )
+      );
+    } catch (error) {
+      console.error('Failed to increment views:', error);
+      toast({
+        title: 'Error',
+        description: 'Failed to record view',
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      });
+    }
+  };
+
+
   const handleNoteLike = async (noteId, currentLikes, likedBy = []) => {
     if (!userId) return;
 
@@ -368,10 +398,19 @@ const NotesModal = ({ isOpen, onClose, user }) => {
                           {note.title || `Note #${index + 1}`}
                         </Heading>
                         <Link href={note.link} isExternal>
-                          <Button size="sm" variant="ghost" colorScheme="blue">
+                          <Button
+                            size="sm"
+                            variant="ghost"
+                            colorScheme="blue"
+                            onClick={() => {
+                              // window.open(note.link, '_blank', 'noopener,noreferrer');
+                              handleNoteView(note.id);
+                            }}
+                          >
                             <Icon as={FaExternalLinkAlt} mr={1} />
                             View
                           </Button>
+
                         </Link>
                       </HStack>
 
@@ -423,11 +462,11 @@ const NotesModal = ({ isOpen, onClose, user }) => {
             </Alert>
           )}
         </ModalBody>
-        <ModalFooter>
+        {/* <ModalFooter>
           <Button colorScheme="purple" mr={3} onClick={onClose}>
             Close
           </Button>
-        </ModalFooter>
+        </ModalFooter> */}
       </ModalContent>
     </Modal>
   );
@@ -561,7 +600,7 @@ const UserRow = ({ user, rank, index, sortBy }) => {
                 display={{ base: "none", md: "block" }}
                 noOfLines={1}
               >
-                Contributor from {user.joinedDays} days
+                Contributor from {user.createdAt}
               </Text>
               {/* Mobile-only compact info */}
               <HStack
@@ -796,25 +835,91 @@ export default function SpaceCommunityPage() {
     // });
   }, []);
 
+  // const fetchUsers = async () => {
+  //   try {
+  //     setLoading(true);
+  //     const usersRef = collection(db, "users");
+  //     const querySnapshot = await getDocs(usersRef);
+
+  //     const usersList = [];
+  //     querySnapshot.forEach((doc) => {
+  //       const userData = doc.data();
+
+  //       usersList.push({
+  //         id: doc.id,
+  //         ...userData,
+  //         createdAt: userData.createdAt?.toDate().toLocaleDateString("en-US", {
+  //           year: "numeric",
+  //           month: "long",
+  //           day: "numeric",
+  //         }),
+  //       });
+  //     });
+
+  //     setUsers(usersList);
+  //   } catch (error) {
+  //     console.error("Error fetching users:", error);
+  //     setError("Failed to load users");
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+
   const fetchUsers = async () => {
     try {
       setLoading(true);
-      const usersRef = collection(db, 'users');
+
+      // Fetch users
+      const usersRef = collection(db, "users");
       const querySnapshot = await getDocs(usersRef);
+
+      // Fetch all notes once
+      const notesSnapshot = await getDocs(collection(db, "notes"));
+      const notes = [];
+      notesSnapshot.forEach((doc) => {
+        notes.push({ id: doc.id, ...doc.data() });
+      });
 
       const usersList = [];
       querySnapshot.forEach((doc) => {
-        usersList.push({ id: doc.id, ...doc.data() });
+        const userData = doc.data();
+        const userId = doc.id;
+
+        // Filter notes authored by this user
+        const userNotes = notes.filter(note => note.authorId === userId);
+
+        // Sum up likes
+        const totalLikes = userNotes.reduce((sum, note) => {
+          return sum + (note.likedBy?.length || 0);
+        }, 0);
+
+        // Count contributions (number of notes)
+        const contributions = userNotes.length;
+
+        usersList.push({
+          id: userId,
+          ...userData,
+          createdAt: userData.createdAt?.toDate().toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          }),
+          totalLikes,
+          contributions, 
+        });
       });
 
       setUsers(usersList);
     } catch (error) {
-      console.error('Error fetching users:', error);
-      setError('Failed to load users');
+      console.error("Error fetching users:", error);
+      setError("Failed to load users");
     } finally {
       setLoading(false);
     }
   };
+
+
+
 
   const fetchStats = async () => {
     try {
@@ -899,7 +1004,7 @@ export default function SpaceCommunityPage() {
   return (
     <Container maxW="container.xl" py={[8, 9, 9]} mt={[2, 2, 3]} px={[2, 3, 5]}
     >
-    <SidebarAdLeft position="left" />
+      <SidebarAdLeft position="left" />
       <FloatingStars />
 
       <Container maxW="7xl" py={10}>
