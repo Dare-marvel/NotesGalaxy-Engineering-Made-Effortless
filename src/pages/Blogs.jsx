@@ -7,7 +7,8 @@ import {
     Card,
     CardBody,
     CardHeader,
-    SimpleGrid,
+    // SimpleGrid,
+    Center,
     Button,
     Flex,
     Icon,
@@ -30,7 +31,8 @@ import {
     IoShareSocial,
     IoLogoFacebook,
     IoLogoInstagram,
-    IoLogoGithub,
+    // IoLogoGithub,
+    IoLogoMedium,
     IoCalendar,
     IoRocket,
     IoStarOutline
@@ -41,6 +43,7 @@ import app from '../config/firebaseConfig';
 import { useNavigate, useSearchParams } from "react-router-dom";
 import SidebarAdLeft from '../components/SidebarAd/SidebarAdLeft';
 import SidebarAdRight from '../components/SidebarAd/SidebarAdRight';
+import { blogContent } from '../config/blogContent';
 
 import { keyframes } from '@emotion/react';
 
@@ -68,46 +71,6 @@ const pulse = keyframes`
   50% { transform: scale(1.05); }
   100% { transform: scale(1); }
 `;
-
-// Mock blog content data
-const blogContent = {
-    "SDsP7ejWQ7hGir4DHN3U": {
-        title: "Exploring Space",
-        content: `# Exploring Space
-
-Space exploration has always fascinated humanity. From the first moon landing to modern Mars missions, we continue to push boundaries.
-
-## The Journey Continues
-
-Every discovery brings new questions and possibilities for the future of human exploration beyond Earth.`,
-        date: "2024-03-15",
-        author: "Alex Johnson"
-    },
-    "blog-2": {
-        title: "Future of AI",
-        content: `# Future of AI
-
-Artificial Intelligence is reshaping our world in unprecedented ways. From healthcare to transportation, AI applications are everywhere.
-
-## What Lies Ahead
-
-The next decade promises revolutionary advances in machine learning and autonomous systems.`,
-        date: "2024-03-10",
-        author: "Sarah Chen"
-    },
-    "blog-3": {
-        title: "Ocean Mysteries",
-        content: `# Ocean Mysteries
-
-Our oceans hold countless secrets. Deep sea exploration reveals new species and ecosystems we never knew existed.
-
-## Diving Deeper
-
-Each expedition uncovers more about the vast underwater world that covers most of our planet.`,
-        date: "2024-03-08",
-        author: "Mike Rodriguez"
-    }
-};
 
 // Firebase functions
 const getBlogMetadata = async (blogId) => {
@@ -235,7 +198,7 @@ const BlogCard = ({ blog, onClick }) => {
                         lineHeight="1.3"
                         fontWeight="bold"
                     >
-                        {blog.title}
+                        {blogContentData?.title}
                     </Heading>
 
                     <HStack spacing={2}>
@@ -389,20 +352,22 @@ const BlogView = ({ blogId, onBack }) => {
 
     if (loading) {
         return (
-            <Flex justify="center" align="center" minH="50vh" direction="column">
-                <Box animation={`${float} 3s ease-in-out infinite`} mb={4}>
-                    <Icon as={IoRocket} w={12} h={12} color="purple.400" />
-                </Box>
-                <Spinner
-                    size="xl"
-                    color="purple.500"
-                    thickness="4px"
-                    speed="0.8s"
-                />
-                <Text mt={4} color="gray.600" fontWeight="medium">
-                    Navigating through the cosmos...
-                </Text>
-            </Flex>
+            <Center mt={20}>
+                <Flex justify="center" align="center" minH="50vh" direction="column" >
+                    <Box animation={`${float} 3s ease-in-out infinite`} mb={4}>
+                        <Icon as={IoRocket} w={12} h={12} color="purple.400" />
+                    </Box>
+                    <Spinner
+                        size="xl"
+                        color="purple.500"
+                        thickness="4px"
+                        speed="0.8s"
+                    />
+                    <Text mt={4} color="gray.600" fontWeight="medium">
+                        Navigating through the cosmos...
+                    </Text>
+                </Flex>
+            </Center>
         );
     }
 
@@ -471,7 +436,7 @@ const BlogView = ({ blogId, onBack }) => {
                                 transition="all 0.2s"
                                 borderRadius="full"
                                 as="a"
-                                href="https://facebook.com"
+                                href={blog.facebook}
                                 target="_blank"
                             />
                             <IconButton
@@ -484,12 +449,12 @@ const BlogView = ({ blogId, onBack }) => {
                                 transition="all 0.2s"
                                 borderRadius="full"
                                 as="a"
-                                href="https://instagram.com"
+                                href={blog.insta}
                                 target="_blank"
                             />
                             <IconButton
-                                icon={<IoLogoGithub />}
-                                aria-label="GitHub"
+                                icon={<IoLogoMedium />}
+                                aria-label="Medium"
                                 size="sm"
                                 bg="gray.700"
                                 color="white"
@@ -497,7 +462,7 @@ const BlogView = ({ blogId, onBack }) => {
                                 transition="all 0.2s"
                                 borderRadius="full"
                                 as="a"
-                                href="https://github.com"
+                                href={blog.medium}
                                 target="_blank"
                             />
                             <Button
@@ -673,8 +638,8 @@ const Blogs = () => {
 
     if (loading) {
         return (
-            <Box bg="white" minH="100vh">
-                <Flex justify="center" align="center" minH="100vh" direction="column">
+            <Center mt={20}>
+                <Flex justify="center" align="center" minH="50vh" direction="column" >
                     <Box animation={`${float} 3s ease-in-out infinite`} mb={4}>
                         <Icon as={IoRocket} w={12} h={12} color="purple.400" />
                     </Box>
@@ -688,7 +653,7 @@ const Blogs = () => {
                         Navigating through the cosmos...
                     </Text>
                 </Flex>
-            </Box>
+            </Center>
         );
     }
 
