@@ -693,7 +693,7 @@ const Blogs = () => {
             <SidebarAdLeft position="left" />
             {currentView === 'list' ? (
                 <Flex direction="column" minH="100vh">
-                    <Container maxW="6xl" pt={{ base: 6, md: 8, lg: 8 }} mt={{ base: 3, md: 4, lg: 10 }}
+                    <Container maxW="6xl" pt={{ base: 7, md: 8, lg: 8 }} mt={{ base: 9, md: 9, lg: 10 }}
 
                     >
                         <VStack spacing={{ base: 6, md: 8 }} align="center" mb={{ base: 8, md: 12 }}>
@@ -711,7 +711,7 @@ const Blogs = () => {
                                 animation={`${shimmer} 2s infinite linear`}
                                 backgroundSize="200px 100%"
                             >
-                                🚀 My Blog
+                                🚀 Blogs
                             </Heading>
 
                             <Text

@@ -83,8 +83,8 @@ $\\begin{pmatrix} a & b \\\\ c & d \\end{pmatrix} \\begin{pmatrix} e & f \\\\ g 
     date: "2024-06-04",
     author: "Adwait Purao",
     insta: "https://www.instagram.com/adwaitpurao/",
-    facebook: "https://www.facebook.com/adwait.purao",
-    medium: "https://medium.com/@adwaitpurao",
+    facebook: "https://www.facebook.com/adwait.purao.1/",
+    medium: "https://medium.com/@adwait.purao",
   },
   "rsa-blog": {
     title: "Understanding RSA Encryption",
@@ -126,8 +126,8 @@ Despite being secure, RSA is computationally intensive and typically used to enc
     date: "2024-06-04",
     author: "Adwait Purao",
     insta: "https://www.instagram.com/adwaitpurao/",
-    facebook: "https://www.facebook.com/adwait.purao",
-    medium: "https://medium.com/@adwaitpurao",
+    facebook: "https://www.facebook.com/adwait.purao.1/",
+    medium: "https://medium.com/@adwait.purao",
   },
 
   "diffie-hellman-blog": {
@@ -171,8 +171,8 @@ The security lies in the **difficulty of computing $a$** given $g^a \\bmod p$ â€
     date: "2024-06-04",
     author: "Adwait Purao",
     insta: "https://www.instagram.com/adwaitpurao/",
-    facebook: "https://www.facebook.com/adwait.purao",
-    medium: "https://medium.com/@adwaitpurao",
+    facebook: "https://www.facebook.com/adwait.purao.1/",
+    medium: "https://medium.com/@adwait.purao",
   },
 
   "hash-functions-blog": {
@@ -216,8 +216,8 @@ Unlike encryption, **hashing is one-way** â€” you can't decrypt a hash back to t
     date: "2024-06-04",
     author: "Adwait Purao",
     insta: "https://www.instagram.com/adwaitpurao/",
-    facebook: "https://www.facebook.com/adwait.purao",
-    medium: "https://medium.com/@adwaitpurao",
+    facebook: "https://www.facebook.com/adwait.purao.1/",
+    medium: "https://medium.com/@adwait.purao",
   },
 
   
@@ -366,8 +366,8 @@ $\\frac{d}{dz}\\sigma(z) = \\sigma(z)(1 - \\sigma(z))$
     date: "2024-06-05",
     author: "Adwait Purao",
     insta: "https://www.instagram.com/adwaitpurao/",
-    facebook: "https://www.facebook.com/adwait.purao",
-    medium: "https://medium.com/@adwaitpurao"
+    facebook: "https://www.facebook.com/adwait.purao.1/",
+    medium: "https://medium.com/@adwait.purao"
   },
   
   "algorithms-data-structures": {
@@ -638,7 +638,7 @@ From $T(n) = 2^n$ to $T(n) = O(n)$
     date: "2024-06-06",
     author: "Adwait Purao",
     insta: "https://www.instagram.com/adwaitpurao/",
-    facebook: "https://www.facebook.com/adwait.purao",
-    medium: "https://medium.com/@adwaitpurao"
+    facebook: "https://www.facebook.com/adwait.purao.1/",
+    medium: "https://medium.com/@adwait.purao"
   }
 };
