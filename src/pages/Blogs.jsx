@@ -38,7 +38,6 @@ import {
     IoStarOutline
 } from 'react-icons/io5';
 import { IoMdDownload } from "react-icons/io";
-// import { marked } from 'marked';
 import { getFirestore, doc, getDoc, getDocs, collection, updateDoc, increment, arrayUnion, arrayRemove } from 'firebase/firestore';
 import app from '../config/firebaseConfig';
 import { useNavigate, useSearchParams } from "react-router-dom";
