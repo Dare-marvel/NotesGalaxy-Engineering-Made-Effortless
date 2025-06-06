@@ -37,7 +37,8 @@ import {
     IoRocket,
     IoStarOutline
 } from 'react-icons/io5';
-import { marked } from 'marked';
+import { IoMdDownload } from "react-icons/io";
+// import { marked } from 'marked';
 import { getFirestore, doc, getDoc, getDocs, collection, updateDoc, increment, arrayUnion, arrayRemove } from 'firebase/firestore';
 import app from '../config/firebaseConfig';
 import { useNavigate, useSearchParams } from "react-router-dom";
@@ -46,6 +47,8 @@ import SidebarAdRight from '../components/SidebarAd/SidebarAdRight';
 import { blogContent } from '../config/blogContent';
 
 import { keyframes } from '@emotion/react';
+
+import { MarkdownRenderer } from '../components/MarkdownRenderer';
 
 const db = getFirestore(app);
 
@@ -394,6 +397,22 @@ const BlogView = ({ blogId, onBack }) => {
         );
     }
 
+    const downloadMarkdown = (content, filename = "blog.md") => {
+        const blob = new Blob([content], { type: "text/markdown" });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+
+        link.href = url;
+        link.download = filename;
+        document.body.appendChild(link);
+        link.click();
+
+        // Clean up
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+    };
+
+
     const likedBy = blogMeta.likedBy || [];
     const isLiked = userId && likedBy.includes(userId);
     const likesCount = likedBy.length;
@@ -465,6 +484,17 @@ const BlogView = ({ blogId, onBack }) => {
                                 href={blog.medium}
                                 target="_blank"
                             />
+                            <IconButton
+                                icon={<IoMdDownload />}
+                                aria-label="Download Markdown"
+                                size="sm"
+                                bg="blue.500"
+                                color="white"
+                                _hover={{ bg: 'blue.600', transform: 'scale(1.1)' }}
+                                transition="all 0.2s"
+                                borderRadius="full"
+                                onClick={() => downloadMarkdown(blog.content, "blog-post.md")}
+                            />
                             <Button
                                 leftIcon={<IoShareSocial />}
                                 onClick={handleShare}
@@ -533,7 +563,9 @@ const BlogView = ({ blogId, onBack }) => {
             </Box>
 
             <Container maxW={containerMaxW} py={2} px={{ base: 4, md: 12, lg: 12 }} mt={0}>
-                <Box
+                <MarkdownRenderer
+                    content={blog.content} />
+                {/* <Box
                     dangerouslySetInnerHTML={{ __html: marked(blog.content) }}
                     sx={{
                         'h1, h2, h3, h4, h5, h6': {
@@ -583,7 +615,7 @@ const BlogView = ({ blogId, onBack }) => {
                             boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
                         }
                     }}
-                />
+                /> */}
             </Container>
         </Box>
     );
