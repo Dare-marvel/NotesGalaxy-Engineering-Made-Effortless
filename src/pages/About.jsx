@@ -156,7 +156,7 @@ const AboutUs = () => {
     },
     {
       question: "Is there a community aspect?",
-      answer: "Currently you can share notes with your friends and peers. Community engagement features are in development, and we plan to introduce forums and discussion boards soon."
+      answer: "Yes! Our community lets you share notes, earn likes, and see rankings based on contributions. Plus, you can write blogs and connect with others. More exciting features are coming soon!"
     }
   ];
 
