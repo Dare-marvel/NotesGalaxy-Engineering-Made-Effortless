@@ -2,7 +2,7 @@ export const blogContent = {
   "how-to-write-a-blog-here": {
     title: "Format for writing a blog here",
     content: `
-# Advanced Mathematical Concepts in Computer Science
+# Format for all important notations used in blogs are given below, download this blog to understand how to write a blog on my website
 
 ## Introduction
 
@@ -90,7 +90,7 @@ $\\begin{pmatrix} a & b \\\\ c & d \\end{pmatrix} \\begin{pmatrix} e & f \\\\ g 
     title: "Understanding RSA Encryption",
     content: `# Understanding RSA Encryption
 
-RSA (Rivest–Shamir–Adleman) is one of the most widely used public-key cryptosystems. It enables secure communication over untrusted networks using a pair of keys: a **public key** for encryption and a **private key** for decryption.
+RSA (Rivest-Shamir-Adleman) is one of the most widely used public-key cryptosystems. It enables secure communication over untrusted networks using a pair of keys: a **public key** for encryption and a **private key** for decryption.
 
 ## Key Generation
 
