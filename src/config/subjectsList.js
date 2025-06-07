@@ -1,8 +1,14 @@
-export default subjects = [
+const subjects = [
     "C Programming(PSIPL)",
     "Digital Systems and Microprocessors(DSM)",
     "OOPS in Java",
     "Probability and Statistics",
+    "Basic electrical engineering(BEE)",
+    "Chemistry",
+    "Engineering Physics(EP)",
+    "Engineering Graphics(EG)",
+    "Biology for Engineers(BFE)",
+    "Engineering Mechanics(EM)",
     "Computer Organization and Architecture(COA)",
     "Database Management System(DBMS)",
     "Data Structures and Competitive Programming(DS-CP)",
@@ -25,6 +31,8 @@ export default subjects = [
     "Artificial Intelligence for Healthcare Analytics(AIH)",
     "Advanced Data Visualization(ADV)",
     "Consumer Electronics(CE)",
-    "Design Thinking, Innovation and Creativity"
+    "Design Thinking, Innovation and Creativity",
+    "Other"
   ];
   
+  export default subjects;

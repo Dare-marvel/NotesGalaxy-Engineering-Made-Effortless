@@ -4,6 +4,7 @@ import {
   VStack,
   Heading,
   Input,
+  Select,
   Textarea,
   Button,
   Container,
@@ -23,6 +24,7 @@ import axios from 'axios';
 
 import SidebarAdLeft from '../components/SidebarAd/SidebarAdLeft';
 import SidebarAdRight from '../components/SidebarAd/SidebarAdRight';
+import subjectsList from '../config/subjectsList';
 // import { keyframes } from '@emotion/react';
 
 // const colorChange = keyframes`
@@ -56,6 +58,20 @@ const FloatingElement = ({ icon, top, left, right, duration = 5, size = "30px", 
   </Box>
 );
 
+const predefinedSubjects = [
+  "Mathematics",
+  "Physics",
+  "Chemistry",
+  "Biology",
+  "Computer Science",
+  "English Literature",
+  "History",
+  "Geography",
+  "Economics",
+  "Psychology",
+  "Other"
+];
+
 const db = getFirestore(app);
 
 const ContactPage = () => {
@@ -69,7 +85,19 @@ const ContactPage = () => {
   const toast = useToast();
 
   const handleAddSubject = () => {
-    setSubjects([...subjects, { name: "", files: [] }]);
+    setSubjects([...subjects, { name: "", files: [], showCustomInput: false }]);
+  };
+
+  const handleSubjectSelect = (index, selectedValue) => {
+    const updatedSubjects = [...subjects];
+    if (selectedValue === "Other") {
+      updatedSubjects[index].name = "";
+      updatedSubjects[index].showCustomInput = true;
+    } else {
+      updatedSubjects[index].name = selectedValue;
+      updatedSubjects[index].showCustomInput = false;
+    }
+    setSubjects(updatedSubjects);
   };
 
   const handleSubjectChange = (index, value) => {
@@ -374,7 +402,7 @@ const ContactPage = () => {
                 bg="purple.50"
                 borderRadius="md">
                 <Flex align="center">
-                  <Input
+                  {/* <Input
                     placeholder="Subject Name"
                     value={subject.name}
                     isDisabled={loading}
@@ -386,7 +414,26 @@ const ContactPage = () => {
                     borderRadius="md"
                     _hover={{ borderColor: "blue.400" }}
                     size={{ base: "sm", sm: "sm", md: "sm", lg: "md", xl: "md" }}
-                  />
+                  /> */}
+                  <Select
+                    placeholder="Select Subject"
+                    value={subject.showCustomInput ? "Other" : subject.name}
+                    isDisabled={loading}
+                    onChange={(e) => handleSubjectSelect(index, e.target.value)}
+                    mr={2}
+                    variant="filled"
+                    bg="purple.50"
+                    borderColor="purple.300"
+                    borderRadius="md"
+                    _hover={{ borderColor: "blue.400" }}
+                    size={{ base: "sm", sm: "sm", md: "sm", lg: "md", xl: "md" }}
+                  >
+                    {subjectsList.map((subjectName) => (
+                      <option key={subjectName} value={subjectName}>
+                        {subjectName}
+                      </option>
+                    ))}
+                  </Select>
                   <IconButton
                     size="sm"
                     colorScheme="red"
@@ -397,6 +444,21 @@ const ContactPage = () => {
                   >
                   </IconButton>
                 </Flex>
+                {subject.showCustomInput && (
+                  <Input
+                    placeholder="Enter custom subject name"
+                    value={subject.name}
+                    isDisabled={loading}
+                    onChange={(e) => handleSubjectChange(index, e.target.value)}
+                    mt={2}
+                    variant="filled"
+                    bg="purple.50"
+                    borderColor="purple.300"
+                    borderRadius="md"
+                    _hover={{ borderColor: "blue.400" }}
+                    size={{ base: "sm", sm: "sm", md: "sm", lg: "md", xl: "md" }}
+                  />
+                )}
                 <Input
                   isDisabled={loading}
                   type="file"
