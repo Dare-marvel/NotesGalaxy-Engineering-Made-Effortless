@@ -43,7 +43,8 @@ Say goodbye to messy folders and say hello to structured learning!
 - 📥 Instant download support  
 - 🧠 Neatly formatted explanations  
 - 🔍 Search and filter capability  
-- 🔄 Continuous updates 
+- 🔄 Continuous updates
+- 🌐 Community Support
 
 ---
 ## 🛠 Tech Stack
