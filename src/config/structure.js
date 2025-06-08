@@ -13,6 +13,9 @@ export const FOLDER_STRUCTURE = {
   "Basic-Electrical-Engineering-BEE-":{
     directories : ["NOTES","PRACTICE PROBLEMS","BOOKS"]
   },
+  "Engineering-Chemistry":{
+    directories : ["NOTES","PPTS"]
+  },
 
   // Semester - 2
   "Object-Oriented-Programming-with-JAVA" : {
