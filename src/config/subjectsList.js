@@ -1,10 +1,10 @@
 const subjects = [
-    "C Programming(PSIPL)",
+    "Problem Solving through Imperative Programming Lab in C (PSIPL)",
     "Digital Systems and Microprocessors(DSM)",
-    "OOPS in Java",
+    "Problem Solving through Object Oriented Programming in Java (PSOOP)",
     "Probability and Statistics",
     "Basic electrical engineering(BEE)",
-    "Chemistry",
+    "Engineering Chemistry(EC)",
     "Engineering Physics(EP)",
     "Engineering Graphics(EG)",
     "Biology for Engineers(BFE)",
