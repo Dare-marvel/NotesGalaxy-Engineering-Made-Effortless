@@ -640,5 +640,793 @@ From $T(n) = 2^n$ to $T(n) = O(n)$
     insta: "https://www.instagram.com/adwaitpurao/",
     facebook: "https://www.facebook.com/adwait.purao.1/",
     medium: "https://medium.com/@adwait.purao"
-  }
+  },
+
+  "process-management": {
+    title: "Process and Process Management in Operating Systems",
+    content: `
+## Introduction
+
+Process management is one of the fundamental responsibilities of an operating system. Understanding how processes work and how they are managed is crucial for anyone studying computer science or working with systems programming. Let's dive deep into the world of processes and explore how operating systems efficiently manage them.
+
+### What is a Process?
+
+A process is simply a program in execution. When you double-click on an application, the operating system creates a process for that program. The relationship can be expressed as:
+
+$Process = Program + Execution Context$
+
+Where execution context includes CPU registers, memory space, open files, and other resources.
+
+### Process States
+
+A process transitions through various states during its lifetime. The fundamental states are:
+
+$States = \{New, Ready, Running, Waiting, Terminated\}$
+
+The state transition probability can be modeled as:
+
+$P(State_{t+1} = s_j | State_t = s_i) = p_{ij}$
+
+## Process Control Block (PCB)
+
+The Process Control Block is a data structure that contains all information about a process. The memory overhead for PCB can be calculated as:
+
+$PCB_{size} = \\sum_{i=1}^{n} field_i$
+
+Where each field represents different process attributes like process ID, program counter, CPU registers, memory management information, accounting information, and I/O status.
+
+### Key PCB Components
+
+The PCB typically contains:
+- Process identification number (PID)
+- Process state information
+- CPU scheduling information with priority $P_i$ where $0 \\leq P_i \\leq {MAX\\_PRIORITY}$
+- Memory management data
+- I/O status information
+
+## Process Scheduling
+
+Process scheduling determines which process gets CPU time. The goal is to maximize CPU utilization while minimizing response time.
+
+### Scheduling Metrics
+
+The average waiting time for n processes is:
+
+$Average\\_Waiting\\_Time = \\frac{1}{n} \\sum_{i=1}^{n} W_i$
+
+The turnaround time for process i:
+
+$Turnaround\\_Time_i = Completion\\_Time_i - Arrival\\_Time_i$
+
+### Common Scheduling Algorithms
+
+First-Come-First-Served (FCFS) has an average waiting time of:
+
+$W_{avg} = \\frac{\\sum_{i=1}^{n-1} \\sum_{j=1}^{i} BT_j}{n}$
+
+Where $BT_j$ is the burst time of process j.
+
+## Code Example
+
+Here's a simple process management simulation in Python:
+
+\`\`\`python
+class Process:
+    def __init__(self, pid, arrival_time, burst_time, priority=0):
+        self.pid = pid
+        self.arrival_time = arrival_time
+        self.burst_time = burst_time
+        self.priority = priority
+        self.waiting_time = 0
+        self.turnaround_time = 0
+        self.completion_time = 0
+    
+    def calculate_times(self, start_time):
+        self.waiting_time = start_time - self.arrival_time
+        self.completion_time = start_time + self.burst_time
+        self.turnaround_time = self.completion_time - self.arrival_time
+
+class ProcessScheduler:
+    def __init__(self):
+        self.processes = []
+        self.current_time = 0
+    
+    def add_process(self, process):
+        self.processes.append(process)
+    
+    def fcfs_schedule(self):
+        # Sort by arrival time
+        self.processes.sort(key=lambda p: p.arrival_time)
+        
+        current_time = 0
+        for process in self.processes:
+            if current_time < process.arrival_time:
+                current_time = process.arrival_time
+            
+            process.calculate_times(current_time)
+            current_time = process.completion_time
+    
+    def calculate_averages(self):
+        n = len(self.processes)
+        avg_waiting = sum(p.waiting_time for p in self.processes) / n
+        avg_turnaround = sum(p.turnaround_time for p in self.processes) / n
+        return avg_waiting, avg_turnaround
+
+# Example usage
+scheduler = ProcessScheduler()
+scheduler.add_process(Process(1, 0, 5))
+scheduler.add_process(Process(2, 1, 3))
+scheduler.add_process(Process(3, 2, 8))
+
+scheduler.fcfs_schedule()
+avg_wait, avg_turn = scheduler.calculate_averages()
+print(f"Average Waiting Time: {avg_wait:.2f}")
+print(f"Average Turnaround Time: {avg_turn:.2f}")
+\`\`\`
+
+## Inter-Process Communication (IPC)
+
+Processes often need to communicate and synchronize. The communication overhead can be modeled as:
+
+$Communication\\_Cost = \\alpha + \\beta \\times Message\\_Size$
+
+Where $\\alpha$ is the startup cost and $\\beta$ is the per-byte transmission cost.
+
+### Synchronization Primitives
+
+Critical section problem requires three conditions:
+1. Mutual Exclusion: $\\forall i,j: i \\neq j \\Rightarrow \\neg(in\\_CS_i \\land in\\_CS_j)$
+2. Progress: If no process is in CS, selection cannot be postponed indefinitely
+3. Bounded Waiting: Limit on number of times other processes enter CS
+
+## Memory Management for Processes
+
+Each process has its own virtual memory space. The memory layout typically includes:
+
+$Virtual\\_Address\\_Space = Text + Data + Heap + Stack$
+
+The page fault rate can be expressed as:
+
+$Page\\_Fault\\_Rate = \\frac{Number\\_of\\_Page\\_Faults}{Total\\_Memory\\_References}$
+
+## Performance Analysis
+
+| Scheduling Algorithm | Time Complexity | Space Complexity | Context Switch Overhead |
+|---------------------|----------------|------------------|------------------------|
+| FCFS | $O(n)$ | $O(1)$ | Low |
+| SJF | $O(n \log n)$ | $O(1)$ | Low |
+| Round Robin | $O(n)$ | $O(1)$ | High |
+| Priority | $O(n \log n)$ | $O(1)$ | Medium |
+
+## Advanced Process Management Concepts
+
+### Process Creation and Termination
+
+Process creation involves several steps:
+1. Allocate PID: $PID = next\\_available\\_id()$
+2. Allocate memory: $Memory\\_required = Code\\_size + Data\\_size + Stack\\_size$
+3. Initialize PCB
+4. Add to ready queue
+
+### Process Hierarchies
+
+In Unix-like systems, processes form a tree structure where:
+$Parent\\_Process \\rightarrow Child\\_Process_1, Child\\_Process_2, ..., Child\\_Process_n$
+
+The total number of processes in a system at time t:
+$N(t) = N_0 + \\int_0^t (Birth\\_Rate(\\tau) - Death\\_Rate(\\tau)) d\\tau$
+
+---
+
+*Process management is the heart of operating system design. Understanding these concepts is essential for system programming and performance optimization!*
+`,
+    date: "2025-06-25",
+    author: "Adwait Purao",
+    insta: "https://www.instagram.com/adwaitpurao/",
+    facebook: "https://www.facebook.com/adwait.purao.1/",
+    medium: "https://medium.com/@adwait.purao"
+  },
+
+  "threads": {
+    title: "Concept of Threads in Operating Systems",
+    content: `
+## Introduction
+
+Threads represent one of the most important concepts in modern operating systems and concurrent programming. While processes provide the fundamental unit of resource allocation, threads offer a lighter-weight mechanism for achieving parallelism and concurrent execution. Understanding threads is crucial for developing efficient, responsive applications in today's multi-core world.
+
+### What is a Thread?
+
+A thread is often called a "lightweight process" because it shares most resources with other threads in the same process. The relationship can be expressed as:
+
+$Thread = Execution\\_Context + Shared\\_Resources$
+
+Where execution context includes program counter, register set, and stack, while shared resources include code, data, and files.
+
+### Thread vs Process
+
+The key difference in resource overhead:
+
+$Process\\_Overhead = PCB + Memory\\_Space + File\\_Descriptors + Security\\_Context$
+
+$Thread\\_Overhead = TCB + Stack + Registers$
+
+Where $Thread\\_Overhead << Process\\_Overhead$
+
+## Thread Models
+
+### User-Level Threads (ULT)
+
+In user-level threading, the thread management is handled entirely by the application:
+
+$Context\\_Switch\\_Time_{ULT} = O(1)$ (very fast)
+
+The mapping relationship is:
+$N_{user\\_threads} : 1_{kernel\\_thread}$
+
+### Kernel-Level Threads (KLT)
+
+Kernel-level threads are managed directly by the operating system:
+
+$Context\\_Switch\\_Time_{KLT} = O(k)$ where k > 1 (slower but more flexible)
+
+The mapping relationship is:
+$1_{user\\_thread} : 1_{kernel\\_thread}$
+
+### Hybrid Model
+
+The hybrid model combines both approaches:
+$M_{user\\_threads} : N_{kernel\\_threads}$ where M > N
+
+## Thread States and Lifecycle
+
+Thread states can be modeled as a finite state machine:
+
+$Thread\\_States = \\{Created, Ready, Running, Blocked, Terminated\\}$
+
+The transition probability matrix:
+$P = \\begin{pmatrix} 
+0 & 1 & 0 & 0 & 0 \\\\
+0 & p_{rr} & p_{ru} & p_{rb} & p_{rt} \\\\
+0 & 1 & 0 & 0 & 0 \\\\
+0 & 1 & 0 & 0 & 0 \\\\
+0 & 0 & 0 & 0 & 1
+\\end{pmatrix}$
+
+## Code Example
+
+Here's a comprehensive threading example in Python:
+
+\`\`\`python
+import threading
+import time
+import queue
+from concurrent.futures import ThreadPoolExecutor
+import logging
+
+# Configure logging for thread safety
+logging.basicConfig(level=logging.INFO, 
+                  format='%(asctime)s - %(threadName)s - %(message)s')
+
+class ThreadSafeCounter:
+   def __init__(self):
+       self._value = 0
+       self._lock = threading.Lock()
+   
+   def increment(self):
+       with self._lock:
+           current = self._value
+           # Simulate some processing time
+           time.sleep(0.001)
+           self._value = current + 1
+   
+   def get_value(self):
+       with self._lock:
+           return self._value
+
+class ProducerConsumerExample:
+   def __init__(self, buffer_size=5):
+       self.buffer = queue.Queue(maxsize=buffer_size)
+       self.running = True
+   
+   def producer(self, producer_id, num_items):
+       for i in range(num_items):
+           if not self.running:
+               break
+           
+           item = f"Item-{producer_id}-{i}"
+           self.buffer.put(item, timeout=1)
+           logging.info(f"Producer {producer_id} produced: {item}")
+           time.sleep(0.1)
+       
+       logging.info(f"Producer {producer_id} finished")
+   
+   def consumer(self, consumer_id):
+       while self.running:
+           try:
+               item = self.buffer.get(timeout=1)
+               logging.info(f"Consumer {consumer_id} consumed: {item}")
+               # Simulate processing time
+               time.sleep(0.2)
+               self.buffer.task_done()
+           except queue.Empty:
+               continue
+       
+       logging.info(f"Consumer {consumer_id} finished")
+   
+   def stop(self):
+       self.running = False
+
+# Thread synchronization example
+class BankAccount:
+   def __init__(self, initial_balance=0):
+       self.balance = initial_balance
+       self.lock = threading.RLock()  # Reentrant lock
+       self.condition = threading.Condition(self.lock)
+   
+   def deposit(self, amount):
+       with self.condition:
+           self.balance += amount
+           logging.info(f"Deposited {amount}, Balance: {self.balance}")
+           self.condition.notify_all()  # Wake up waiting threads
+   
+   def withdraw(self, amount):
+       with self.condition:
+           while self.balance < amount:
+               logging.info(f"Insufficient funds. Waiting...")
+               self.condition.wait()  # Wait for deposit
+           
+           self.balance -= amount
+           logging.info(f"Withdrew {amount}, Balance: {self.balance}")
+           return amount
+
+# Example usage functions
+def basic_threading_example():
+   counter = ThreadSafeCounter()
+   threads = []
+   
+   def worker():
+       for _ in range(1000):
+           counter.increment()
+   
+   # Create multiple threads
+   for i in range(5):
+       t = threading.Thread(target=worker, name=f"Worker-{i}")
+       threads.append(t)
+       t.start()
+   
+   # Wait for all threads to complete
+   for t in threads:
+       t.join()
+   
+   print(f"Final counter value: {counter.get_value()}")
+\`\`\`
+
+## Thread Synchronization
+
+### Critical Section Problem for Threads
+
+When multiple threads access shared resources, we need synchronization. The critical section requirement:
+
+$\\forall i,j: i \\neq j \\Rightarrow \\neg(in\\_CS_i \\land in\\_CS_j)$
+
+### Synchronization Primitives
+
+The effectiveness of different synchronization mechanisms:
+
+$Mutex\\_Overhead = Acquisition\\_Time + Critical\\_Section\\_Time + Release\\_Time$
+
+$Semaphore\\_Value: S = S_0 + \\sum_{i=1}^{n} (V_i - P_i)$
+
+Where $V_i$ represents signal operations and $P_i$ represents wait operations.
+
+## Thread Performance Analysis
+
+### Amdahl's Law for Threading
+
+The speedup achievable with n threads:
+
+$Speedup = \\frac{1}{(1-P) + \\frac{P}{n}}$
+
+Where P is the fraction of the program that can be parallelized.
+
+### Thread Pool Optimization
+
+The optimal number of threads in a pool:
+
+$N_{optimal} = N_{CPU} \\times (1 + \\frac{W}{C})$
+
+Where:
+- $N_{CPU}$ = Number of CPU cores
+- W = Wait time per task
+- C = Compute time per task
+
+## Memory Model and Thread Safety
+
+### Thread Memory Layout
+
+Each thread has its own stack but shares heap memory:
+
+$Thread\\_Memory = Private\\_Stack + Shared\\_(Heap + Code + Data)$
+
+The stack size per thread:
+$Stack\\_Size = Default\\_Size + Dynamic\\_Growth$
+
+Typically: $Stack\\_Size \\approx 1MB$ to $8MB$
+
+### Data Race Detection
+
+A data race occurs when:
+$\\exists i,j: (Access_i \\parallel Access_j) \\land (Write_i \\lor Write_j) \\land \\neg Synchronized(i,j)$
+
+## Performance Comparison
+
+| Thread Model | Creation Time | Context Switch | Memory Usage | Scalability |
+|-------------|---------------|----------------|--------------|-------------|
+| User-Level | $O(1)$ | $O(1)$ | Low | Limited |
+| Kernel-Level | $O(k)$ | $O(k)$ | Medium | High |
+| Hybrid | $O(k)$ | $O(1)$ to $O(k)$ | Medium | Very High |
+| Green Threads | $O(1)$ | $O(1)$ | Very Low | Medium |
+
+## Advanced Threading Concepts
+
+### Thread Pools and Work Queues
+
+Thread pool efficiency can be measured as:
+
+$Efficiency = \\frac{Useful\\_Work\\_Time}{Total\\_Thread\\_Time}$
+
+The queue length optimization:
+$Queue\\_Length_{optimal} = \\lambda \\times Service\\_Time$
+
+Where $\\lambda$ is the arrival rate of tasks.
+
+### Lock-Free Programming
+
+In lock-free algorithms, the progress guarantee is:
+$\\forall operation: \\exists finite\\_steps: operation\\_completes$
+
+Compare-and-swap (CAS) operation success probability:
+$P_{CAS\\_success} = \\frac{1}{1 + Contention\\_Level}$
+
+### Thread Local Storage
+
+Thread-local variables eliminate synchronization overhead:
+$Access\\_Time_{TLS} = O(1)$ with no synchronization cost
+
+The memory overhead:
+$TLS\\_Overhead = N_{threads} \\times TLS\\_Size_{per\\_thread}$
+
+---
+
+*Threading is essential for modern software development. Mastering these concepts enables you to build scalable, efficient, and responsive applications!*    
+
+`,
+    date: "2025-06-25",
+    author: "Adwait Purao",
+    insta: "https://www.instagram.com/adwaitpurao/",
+    facebook: "https://www.facebook.com/adwait.purao.1/",
+    medium: "https://medium.com/@adwait.purao"
+  },
+
+    "interprocess-communication": {
+    title: "Interprocess Communication in Operating Systems",
+    content: `
+## Introduction
+
+Interprocess Communication (IPC) is a fundamental mechanism that allows processes to exchange data and synchronize their actions. In modern operating systems, processes need to collaborate, share resources, and coordinate their activities to accomplish complex tasks. Understanding IPC is crucial for developing distributed systems, parallel applications, and efficient system software.
+
+### What is Interprocess Communication?
+
+IPC refers to the mechanisms provided by an operating system to allow processes to manage shared data and coordinate execution. The communication complexity can be expressed as:
+
+$IPC\\_{Complexity} = Communication\\_{overhead} + Synchronization\\_{cost} + Data\\_{transfer}$
+
+Where each component contributes to the overall system performance.
+
+### IPC Requirements
+
+For effective interprocess communication, we need:
+- Data transfer capability: $Transfer\\_{rate} = \\frac{Data\\_{size}}{Time\\_{elapsed}}$
+- Synchronization mechanisms
+- Process naming and identification
+- Protection and security
+
+## Classification of IPC Mechanisms
+
+### Direct vs Indirect Communication
+
+Direct communication requires explicit naming:
+$Send(P, message)$ and $Receive(Q, message)$
+
+Indirect communication uses mailboxes or ports:
+$Send(A, message)$ and $Receive(A, message)$ where A is a mailbox
+
+The addressing overhead:
+$Addressing\\_{cost} = Direct\\_{naming} + Indirect\\_{lookup}$
+
+### Synchronous vs Asynchronous Communication
+
+Synchronous communication blocking time:
+$T_{sync} = T_{send} + T_{network} + T_{receive} + T_{process}$
+
+Asynchronous communication allows:
+$T_{async} = max(T_{send}, T_{receive})$ with buffering
+
+## Shared Memory IPC
+
+Shared memory provides the fastest IPC mechanism by allowing processes to access the same memory region.
+
+### Shared Memory Model
+
+The shared memory space can be modeled as:
+$SharedMemory = \\{Address_{start}, Size, Permissions, Processes\\}$
+
+Access time complexity: $O(1)$ for direct memory access
+
+### Code Example
+
+Here's a comprehensive shared memory implementation:
+
+\`\`\`python
+import multiprocessing
+import time
+import threading
+from multiprocessing import shared_memory, Process, Lock
+import numpy as np
+
+class SharedCounter:
+   def __init__(self, initial_value=0):
+       self.lock = multiprocessing.Lock()
+       # Create shared memory for counter
+       self.counter_memory = shared_memory.SharedMemory(
+           create=True, size=4, name='counter_shm'
+       )
+       # Initialize counter value
+       counter_array = np.ndarray((1,), dtype=np.int32, buffer=self.counter_memory.buf)
+       counter_array[0] = initial_value
+   
+   def increment(self):
+       with self.lock:
+           counter_array = np.ndarray((1,), dtype=np.int32, buffer=self.counter_memory.buf)
+           counter_array[0] += 1
+   
+   def get_value(self):
+       counter_array = np.ndarray((1,), dtype=np.int32, buffer=self.counter_memory.buf)
+       return counter_array[0]
+   
+   def cleanup(self):
+       self.counter_memory.close()
+       self.counter_memory.unlink()
+
+class SharedBuffer:
+   def __init__(self, buffer_size=1024):
+       self.buffer_size = buffer_size
+       self.lock = multiprocessing.Lock()
+       self.not_empty = multiprocessing.Condition(self.lock)
+       self.not_full = multiprocessing.Condition(self.lock)
+       
+       # Create shared memory buffer
+       self.buffer_memory = shared_memory.SharedMemory(
+           create=True, size=buffer_size + 12, name='buffer_shm'
+       )
+       
+       # Initialize buffer metadata (read_pos, write_pos, count)
+       metadata = np.ndarray((3,), dtype=np.int32, buffer=self.buffer_memory.buf[:12])
+       metadata[0] = 0  # read_pos
+       metadata[1] = 0  # write_pos
+       metadata[2] = 0  # count
+   
+   def put(self, data):
+       with self.not_full:
+           while self._is_full():
+               self.not_full.wait()
+           
+           self._write_data(data)
+           self.not_empty.notify()
+   
+   def get(self):
+       with self.not_empty:
+           while self._is_empty():
+               self.not_empty.wait()
+           
+           data = self._read_data()
+           self.not_full.notify()
+           return data
+   
+   def _is_full(self):
+       metadata = np.ndarray((3,), dtype=np.int32, buffer=self.buffer_memory.buf[:12])
+       return metadata[2] >= self.buffer_size - 12
+   
+   def _is_empty(self):
+       metadata = np.ndarray((3,), dtype=np.int32, buffer=self.buffer_memory.buf[:12])
+       return metadata[2] == 0
+   
+   def _write_data(self, data):
+       data_bytes = data.encode() if isinstance(data, str) else data
+       metadata = np.ndarray((3,), dtype=np.int32, buffer=self.buffer_memory.buf[:12])
+       
+       write_pos = metadata[1]
+       data_len = len(data_bytes)
+       
+       # Write data to buffer
+       buffer_data = self.buffer_memory.buf[12:]
+       buffer_data[write_pos:write_pos + data_len] = data_bytes
+       
+       # Update metadata
+       metadata[1] = (write_pos + data_len) % (self.buffer_size - 12)
+       metadata[2] += data_len
+   
+   def _read_data(self, size=10):
+       metadata = np.ndarray((3,), dtype=np.int32, buffer=self.buffer_memory.buf[:12])
+       read_pos = metadata[0]
+       
+       buffer_data = self.buffer_memory.buf[12:]
+       data = bytes(buffer_data[read_pos:read_pos + size])
+       
+       # Update metadata
+       metadata[0] = (read_pos + size) % (self.buffer_size - 12)
+       metadata[2] -= size
+       
+       return data.decode().rstrip('\\x00')
+   
+   def cleanup(self):
+       self.buffer_memory.close()
+       self.buffer_memory.unlink()
+
+def producer_process(buffer, items):
+   for i in range(items):
+       data = f"Item_{i:03d}"
+       buffer.put(data)
+       print(f"Produced: {data}")
+       time.sleep(0.1)
+
+def consumer_process(buffer, items):
+   for i in range(items):
+       data = buffer.get()
+       print(f"Consumed: {data}")
+       time.sleep(0.15)
+\`\`\`
+
+## Message Passing IPC
+
+Message passing provides a structured way for processes to exchange data without sharing memory space.
+
+### Message Passing Models
+
+The message passing throughput:
+$Throughput = \\frac{Message\\_{size}}{Message\\_{latency} + Processing\\_{time}}$
+
+Buffering strategies affect performance:
+- Zero capacity: $Buffer\\_{size} = 0$ (synchronous)
+- Bounded capacity: $0 < Buffer\\_{size} < \\infty$
+- Unbounded capacity: $Buffer\\_{size} = \\infty$
+
+### Communication Patterns
+
+Point-to-point communication cost:
+$Cost_{p2p} = Setup\\_{cost} + Message\\_{size} \\times Bandwidth^{-1}$
+
+Broadcast communication cost:
+$Cost_{broadcast} = Setup\\_{cost} + N \\times (Message_{size} \\times Bandwidth^{-1})$
+
+Where N is the number of receiving processes.
+
+## Pipes and Named Pipes
+
+### Ordinary Pipes
+
+Ordinary pipes provide unidirectional communication between parent and child processes:
+$Pipe\\_{capacity} = Buffer\\_{size}$ (typically 4KB to 64KB)
+
+### Named Pipes (FIFOs)
+
+Named pipes allow communication between unrelated processes:
+$FIFO\\_{throughput} = min(Writer\\_{rate}, Reader\\_{rate})$
+
+## Sockets and Network IPC
+
+### Socket Communication
+
+Socket communication overhead:
+$Socket\\_{overhead} = Connection\\_{setup} + Data\\_{transmission} + Connection\\_{teardown}$
+
+The network latency model:
+$Latency = Propagation_{delay} + Transmission_{delay} + Processing_{delay}$
+
+### Socket Types Performance
+
+| Socket Type | Latency | Throughput | Reliability | Use Case |
+|-------------|---------|------------|-------------|----------|
+| TCP | High | High | Reliable | $O(n)$ connection setup |
+| UDP | Low | Very High | Unreliable | $O(1)$ datagram |
+| Unix Domain | Very Low | Very High | Reliable | Local IPC |
+| Raw | Very Low | Maximum | Custom | Network protocols |
+
+## Synchronization in IPC
+
+### Semaphores
+
+Semaphore operations follow:
+$P(S): S = S - 1$ (wait operation)
+$V(S): S = S + 1$ (signal operation)
+
+The semaphore invariant:
+$S = S_0 + \\sum_{i=1}^{n} (V_i - P_i) \\geq 0$
+
+### Monitors
+
+Monitor synchronization ensures:
+$\\forall t: |Processes_{in\\_monitor}(t)| \\leq 1$
+
+The condition variable operations:
+- $wait(c)$: Release monitor lock and wait
+- $signal(c)$: Wake up one waiting process
+- $broadcast(c)$: Wake up all waiting processes
+
+## Performance Analysis
+
+### IPC Mechanism Comparison
+
+The communication efficiency can be measured as:
+$Efficiency = \\frac{Useful\\_{data}}{Total\\_{overhead}} \\times 100\\%$
+
+Latency comparison:
+$Latency_{shared} < Latency_{pipe} < Latency_{socket} < Latency_{network}$
+
+### Throughput Analysis
+
+For different message sizes, throughput varies:
+$Throughput(size) = \\frac{size}{\\alpha + \\beta \\times size}$
+
+Where $\\alpha$ is fixed overhead and $\\beta$ is per-byte cost.
+
+## Advanced IPC Concepts
+
+### Memory-Mapped Files
+
+Memory-mapped files provide efficient file I/O:
+$Access\\_{time} = Memory\\_{access} + Page\\_{fault} \\times Disk\\_{access}$
+
+The page fault probability:
+$P_{fault} = \\frac{Working\\_{set} - Physical\\_{memory}}{Working\\_{set}}$
+
+### Remote Procedure Calls (RPC)
+
+RPC call overhead:
+$RPC_{overhead} = Marshalling + Network\\_{transmission} + Unmarshalling$
+
+The transparency equation:
+$RPC_{call} \\approx Local\\_{call} + Network\\_{latency}$
+
+### Signal Handling
+
+Signal delivery time:
+$Signal\\_{delivery} = Detection\\_{time} + Context\\_{switch} + Handler\\_{execution}$
+
+Signal masking affects timing:
+$Effective\\_{signals} = All\\_{signals} - Masked\\_{signals}$
+
+---
+
+*Interprocess Communication is the backbone of modern distributed systems. Mastering these mechanisms is essential for building scalable and efficient applications!*
+`,
+    date: "2024-06-05",
+    author: "Adwait Purao",
+    insta: "https://www.instagram.com/adwaitpurao/",
+    facebook: "https://www.facebook.com/adwait.purao.1/",
+    medium: "https://medium.com/@adwait.purao"
+  },
+
+
+//   "replace": {
+//     title: "",
+//     content: `
+
+// `,
+//     date: "2024-06-05",
+//     author: "Adwait Purao",
+//     insta: "https://www.instagram.com/adwaitpurao/",
+//     facebook: "https://www.facebook.com/adwait.purao.1/",
+//     medium: "https://medium.com/@adwait.purao"
+//   },
 };
