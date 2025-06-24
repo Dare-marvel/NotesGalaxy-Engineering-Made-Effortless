@@ -1,7 +1,7 @@
 export const blogContent = {
-  "how-to-write-a-blog-here": {
-    title: "Format for writing a blog here",
-    content: `
+    "how-to-write-a-blog-here": {
+        title: "Format for writing a blog here",
+        content: `
 # Format for all important notations used in blogs are given below, download this blog to understand how to write a blog on my website
 
 ## Introduction
@@ -80,15 +80,15 @@ $\\begin{pmatrix} a & b \\\\ c & d \\end{pmatrix} \\begin{pmatrix} e & f \\\\ g 
 > Click on the download button at the top right of the screen to download this blog and understand how to write a blog on my website.
 
 `,
-    date: "2024-06-04",
-    author: "Adwait Purao",
-    insta: "https://www.instagram.com/adwaitpurao/",
-    facebook: "https://www.facebook.com/adwait.purao.1/",
-    medium: "https://medium.com/@adwait.purao",
-  },
-  "rsa-blog": {
-    title: "Understanding RSA Encryption",
-    content: `# Understanding RSA Encryption
+        date: "2024-06-04",
+        author: "Adwait Purao",
+        insta: "https://www.instagram.com/adwaitpurao/",
+        facebook: "https://www.facebook.com/adwait.purao.1/",
+        medium: "https://medium.com/@adwait.purao",
+    },
+    "rsa-blog": {
+        title: "Understanding RSA Encryption",
+        content: `# Understanding RSA Encryption
 
 RSA (Rivest-Shamir-Adleman) is one of the most widely used public-key cryptosystems. It enables secure communication over untrusted networks using a pair of keys: a **public key** for encryption and a **private key** for decryption.
 
@@ -123,16 +123,16 @@ RSA is commonly used for:
 Despite being secure, RSA is computationally intensive and typically used to encrypt small payloads like symmetric keys.
 
 `,
-    date: "2024-06-04",
-    author: "Adwait Purao",
-    insta: "https://www.instagram.com/adwaitpurao/",
-    facebook: "https://www.facebook.com/adwait.purao.1/",
-    medium: "https://medium.com/@adwait.purao",
-  },
+        date: "2024-06-04",
+        author: "Adwait Purao",
+        insta: "https://www.instagram.com/adwaitpurao/",
+        facebook: "https://www.facebook.com/adwait.purao.1/",
+        medium: "https://medium.com/@adwait.purao",
+    },
 
-  "diffie-hellman-blog": {
-    title: "Diffie-Hellman Key Exchange Explained",
-    content: `# Diffie-Hellman Key Exchange Explained
+    "diffie-hellman-blog": {
+        title: "Diffie-Hellman Key Exchange Explained",
+        content: `# Diffie-Hellman Key Exchange Explained
 
 The **Diffie-Hellman Key Exchange** is a cryptographic protocol that enables two parties to establish a shared secret key over an insecure channel.
 
@@ -168,16 +168,16 @@ Shared key:
 The security lies in the **difficulty of computing $a$** given $g^a \\bmod p$ — a hard problem when $p$ is large.
 
 `,
-    date: "2024-06-04",
-    author: "Adwait Purao",
-    insta: "https://www.instagram.com/adwaitpurao/",
-    facebook: "https://www.facebook.com/adwait.purao.1/",
-    medium: "https://medium.com/@adwait.purao",
-  },
+        date: "2024-06-04",
+        author: "Adwait Purao",
+        insta: "https://www.instagram.com/adwaitpurao/",
+        facebook: "https://www.facebook.com/adwait.purao.1/",
+        medium: "https://medium.com/@adwait.purao",
+    },
 
-  "hash-functions-blog": {
-    title: "Hash Functions in Cryptography",
-    content: `# Hash Functions in Cryptography
+    "hash-functions-blog": {
+        title: "Hash Functions in Cryptography",
+        content: `# Hash Functions in Cryptography
 
 **Hash functions** play a critical role in cryptographic systems by mapping data of arbitrary size to fixed-size strings — called **hash values** or **digests**.
 
@@ -213,17 +213,17 @@ Output:
 Unlike encryption, **hashing is one-way** — you can't decrypt a hash back to the original data. That's why it's used for **data verification** and not data confidentiality.
 
 `,
-    date: "2024-06-04",
-    author: "Adwait Purao",
-    insta: "https://www.instagram.com/adwaitpurao/",
-    facebook: "https://www.facebook.com/adwait.purao.1/",
-    medium: "https://medium.com/@adwait.purao",
-  },
+        date: "2024-06-04",
+        author: "Adwait Purao",
+        insta: "https://www.instagram.com/adwaitpurao/",
+        facebook: "https://www.facebook.com/adwait.purao.1/",
+        medium: "https://medium.com/@adwait.purao",
+    },
 
-  
-  "machine-learning-fundamentals": {
-    title: "Machine Learning Fundamentals: From Theory to Implementation",
-    content: `
+
+    "machine-learning-fundamentals": {
+        title: "Machine Learning Fundamentals: From Theory to Implementation",
+        content: `
 # Machine Learning Fundamentals: From Theory to Implementation
 
 ## Introduction
@@ -363,16 +363,16 @@ $\\frac{d}{dz}\\sigma(z) = \\sigma(z)(1 - \\sigma(z))$
 *Machine learning is where mathematics meets practical problem-solving!*
 
 `,
-    date: "2024-06-05",
-    author: "Adwait Purao",
-    insta: "https://www.instagram.com/adwaitpurao/",
-    facebook: "https://www.facebook.com/adwait.purao.1/",
-    medium: "https://medium.com/@adwait.purao"
-  },
-  
-  "algorithms-data-structures": {
-    title: "Essential Algorithms and Data Structures: A Complete Guide",
-    content: `
+        date: "2024-06-05",
+        author: "Adwait Purao",
+        insta: "https://www.instagram.com/adwaitpurao/",
+        facebook: "https://www.facebook.com/adwait.purao.1/",
+        medium: "https://medium.com/@adwait.purao"
+    },
+
+    "algorithms-data-structures": {
+        title: "Essential Algorithms and Data Structures: A Complete Guide",
+        content: `
 # Essential Algorithms and Data Structures: A Complete Guide
 
 ## Introduction
@@ -635,16 +635,16 @@ From $T(n) = 2^n$ to $T(n) = O(n)$
 *Efficient algorithms are the foundation of scalable software systems!*
 
 `,
-    date: "2024-06-06",
-    author: "Adwait Purao",
-    insta: "https://www.instagram.com/adwaitpurao/",
-    facebook: "https://www.facebook.com/adwait.purao.1/",
-    medium: "https://medium.com/@adwait.purao"
-  },
+        date: "2024-06-06",
+        author: "Adwait Purao",
+        insta: "https://www.instagram.com/adwaitpurao/",
+        facebook: "https://www.facebook.com/adwait.purao.1/",
+        medium: "https://medium.com/@adwait.purao"
+    },
 
-  "process-management": {
-    title: "Process and Process Management in Operating Systems",
-    content: `
+    "process-management": {
+        title: "Process and Process Management in Operating Systems",
+        content: `
 ## Introduction
 
 Process management is one of the fundamental responsibilities of an operating system. Understanding how processes work and how they are managed is crucial for anyone studying computer science or working with systems programming. Let's dive deep into the world of processes and explore how operating systems efficiently manage them.
@@ -820,16 +820,16 @@ $N(t) = N_0 + \\int_0^t (Birth\\_Rate(\\tau) - Death\\_Rate(\\tau)) d\\tau$
 
 *Process management is the heart of operating system design. Understanding these concepts is essential for system programming and performance optimization!*
 `,
-    date: "2025-06-25",
-    author: "Adwait Purao",
-    insta: "https://www.instagram.com/adwaitpurao/",
-    facebook: "https://www.facebook.com/adwait.purao.1/",
-    medium: "https://medium.com/@adwait.purao"
-  },
+        date: "2025-06-25",
+        author: "Adwait Purao",
+        insta: "https://www.instagram.com/adwaitpurao/",
+        facebook: "https://www.facebook.com/adwait.purao.1/",
+        medium: "https://medium.com/@adwait.purao"
+    },
 
-  "threads": {
-    title: "Concept of Threads in Operating Systems",
-    content: `
+    "threads": {
+        title: "Concept of Threads in Operating Systems",
+        content: `
 ## Introduction
 
 Threads represent one of the most important concepts in modern operating systems and concurrent programming. While processes provide the fundamental unit of resource allocation, threads offer a lighter-weight mechanism for achieving parallelism and concurrent execution. Understanding threads is crucial for developing efficient, responsive applications in today's multi-core world.
@@ -1101,16 +1101,16 @@ $TLS\\_Overhead = N\\_{threads} \\times TLS\\_Size\\_{per\\_thread}$
 *Threading is essential for modern software development. Mastering these concepts enables you to build scalable, efficient, and responsive applications!*    
 
 `,
-    date: "2025-06-25",
-    author: "Adwait Purao",
-    insta: "https://www.instagram.com/adwaitpurao/",
-    facebook: "https://www.facebook.com/adwait.purao.1/",
-    medium: "https://medium.com/@adwait.purao"
-  },
+        date: "2025-06-25",
+        author: "Adwait Purao",
+        insta: "https://www.instagram.com/adwaitpurao/",
+        facebook: "https://www.facebook.com/adwait.purao.1/",
+        medium: "https://medium.com/@adwait.purao"
+    },
 
     "interprocess-communication": {
-    title: "Interprocess Communication in Operating Systems",
-    content: `
+        title: "Interprocess Communication in Operating Systems",
+        content: `
 ## Introduction
 
 Interprocess Communication (IPC) is a fundamental mechanism that allows processes to exchange data and synchronize their actions. In modern operating systems, processes need to collaborate, share resources, and coordinate their activities to accomplish complex tasks. Understanding IPC is crucial for developing distributed systems, parallel applications, and efficient system software.
@@ -1410,16 +1410,16 @@ $Effective\\_{signals} = All\\_{signals} - Masked\\_{signals}$
 
 *Interprocess Communication is the backbone of modern distributed systems. Mastering these mechanisms is essential for building scalable and efficient applications!*
 `,
-    date: "2024-06-05",
-    author: "Adwait Purao",
-    insta: "https://www.instagram.com/adwaitpurao/",
-    facebook: "https://www.facebook.com/adwait.purao.1/",
-    medium: "https://medium.com/@adwait.purao"
-  },
+        date: "2024-06-05",
+        author: "Adwait Purao",
+        insta: "https://www.instagram.com/adwaitpurao/",
+        facebook: "https://www.facebook.com/adwait.purao.1/",
+        medium: "https://medium.com/@adwait.purao"
+    },
 
     "scheduling": {
-    title: "Process Scheduling in Operating Systems",
-    content: `
+        title: "Process Scheduling in Operating Systems",
+        content: `
 ## Introduction
 
 Process scheduling is the heart of multitasking operating systems, determining which process gets access to the CPU and for how long. Effective scheduling algorithms ensure optimal system performance, fair resource allocation, and responsive user experience. Understanding scheduling is crucial for system performance optimization and designing efficient operating systems.
@@ -1815,23 +1815,1199 @@ $Gang\\_{efficiency} = \\frac{Parallel\\_{execution\\_time}}{Sequential\\_{execu
 
 *Process scheduling is fundamental to operating system performance. Understanding these algorithms helps in designing efficient systems and optimizing application performance!*
 `,
-    date: "2025-06-25",
-    author: "Adwait Purao",
-    insta: "https://www.instagram.com/adwaitpurao/",
-    facebook: "https://www.facebook.com/adwait.purao.1/",
-    medium: "https://medium.com/@adwait.purao"
-  },
+        date: "2025-06-25",
+        author: "Adwait Purao",
+        insta: "https://www.instagram.com/adwaitpurao/",
+        facebook: "https://www.facebook.com/adwait.purao.1/",
+        medium: "https://medium.com/@adwait.purao"
+    },
+
+    "basics-of-computer-networks": {
+        title: "Basics of Computer Networks",
+        content: `# Basics of Computer Networks
+
+Computer networks form the backbone of modern digital communication, enabling devices to share resources, data, and services across local and global distances.
+
+## What is a Computer Network?
+
+A **computer network** is a collection of interconnected devices that can communicate and share resources with each other. These devices include computers, servers, routers, switches, and mobile devices.
+
+### Types of Networks by Size
+
+Networks are classified based on their geographical coverage:
+
+**Local Area Network (LAN)**: Covers a small area like a home, office, or building. Typical range: up to 1 km.
+
+**Metropolitan Area Network (MAN)**: Spans a city or large campus. Range: 1-100 km.
+
+**Wide Area Network (WAN)**: Covers large geographical areas, countries, or continents. Range: beyond 100 km.
+
+## Network Topologies
+
+The physical and logical arrangement of network devices defines the topology:
+
+### Common Topologies
+
+- **Bus Topology**: All devices connected to a single cable
+- **Star Topology**: All devices connected to a central hub/switch  
+- **Ring Topology**: Devices connected in a circular chain
+- **Mesh Topology**: Multiple connections between devices for redundancy
+
+## OSI Model Layers
+
+The **Open Systems Interconnection (OSI)** model defines network communication in 7 layers:
+
+| Layer | Name | Function |
+|-------|------|----------|
+| 7 | Application | User interface (HTTP, FTP, SMTP) |
+| 6 | Presentation | Data formatting, encryption |
+| 5 | Session | Managing connections |
+| 4 | Transport | End-to-end delivery (TCP, UDP) |
+| 3 | Network | Routing (IP) |
+| 2 | Data Link | Frame formatting, error detection |
+| 1 | Physical | Electrical signals, cables |
+
+## Network Protocols
+
+Protocols define rules for communication:
+
+### Key Protocols
+
+**TCP/IP**: Foundation of internet communication
+- **TCP** (Transmission Control Protocol): Reliable, connection-oriented
+- **IP** (Internet Protocol): Addressing and routing
+
+**HTTP/HTTPS**: Web communication protocols
+
+**FTP**: File transfer protocol
+
+**SMTP**: Email transmission
+
+## IP Addressing
+
+Every device needs a unique identifier:
+
+### IPv4 Format
+An IPv4 address consists of 4 octets: $192.168.1.1$
+
+### Subnetting
+Networks can be divided into smaller subnets using subnet masks:
+- Network: $192.168.1.0/24$
+- Subnet mask: $255.255.255.0$
+- Available hosts: $2^8 - 2 = 254$
+
+## Network Devices
+
+### Essential Components
+
+**Router**: Connects different networks, forwards packets based on IP addresses
+
+**Switch**: Connects devices within a LAN, operates at Data Link layer
+
+**Hub**: Basic connectivity device (largely obsolete)
+
+**Access Point**: Provides wireless connectivity
+
+**Firewall**: Security device controlling network traffic
+
+## Network Performance Metrics
+
+Key measurements for network efficiency:
+
+### Important Metrics
+- **Bandwidth**: Maximum data transfer rate (measured in bps)
+- **Latency**: Time delay in data transmission
+- **Throughput**: Actual data transfer rate achieved
+- **Packet Loss**: Percentage of lost data packets
+
+Formula for network utilization:
+$Utilization = \\frac{Actual Throughput}{Available Bandwidth} \\times 100\\%$
+
+## Applications of Computer Networks
+
+### Modern Use Cases
+- **Resource Sharing**: Printers, files, internet connection
+- **Communication**: Email, video conferencing, messaging
+- **Distributed Computing**: Cloud services, load balancing
+- **Entertainment**: Streaming, gaming, social media
+- **E-commerce**: Online shopping, digital payments
+
+---
+
+*Computer networks have revolutionized how we communicate, work, and access information in the digital age!*
+
+`,
+        date: "2024-06-04",
+        author: "Adwait Purao",
+        insta: "https://www.instagram.com/adwaitpurao/",
+        facebook: "https://www.facebook.com/adwait.purao.1/",
+        medium: "https://medium.com/@adwait.purao",
+    },
+
+    "collision-domain-broadcast-domain": {
+        title: "Collision Domain and Broadcast Domain in Computer Networks",
+        content: `# Collision Domain and Broadcast Domain in Computer Networks
+
+Understanding collision domains and broadcast domains is crucial for network design and troubleshooting. These concepts determine how data collisions occur and how broadcast traffic propagates through networks.
+
+## Collision Domain
+
+A **collision domain** is a network segment where data collisions can occur when two or more devices attempt to transmit simultaneously on the same medium.
+
+### Characteristics of Collision Domains
+
+**CSMA/CD Protocol**: Ethernet uses Carrier Sense Multiple Access with Collision Detection to handle collisions.
+
+**Half-Duplex Communication**: Traditional Ethernet operates in half-duplex mode where devices can either send or receive, but not both simultaneously.
+
+### Collision Detection Process
+
+When a collision occurs:
+1. Devices detect the collision
+2. Send a jam signal to notify other devices
+3. Wait for a random backoff time: $T = random(0, 2^{min(n,10)}) \\times 512 \\text{ bit times}$
+4. Retry transmission
+
+Where $n$ is the number of previous collisions for this frame.
+
+## Broadcast Domain
+
+A **broadcast domain** is a logical division of a network where all devices can receive broadcast messages from any device within that domain.
+
+### Broadcast Traffic Types
+
+**Layer 2 Broadcasts**: MAC address $FF:FF:FF:FF:FF:FF$
+- ARP requests
+- DHCP discovery
+- NetBIOS name resolution
+
+**Layer 3 Broadcasts**: IP address ending in $.255$ (for most subnets)
+- Network announcements
+- Service advertisements
+
+## Network Devices and Domain Segmentation
+
+### Hub (Largely Obsolete)
+
+| Property | Effect |
+|----------|--------|
+| Collision Domain | Single large collision domain |
+| Broadcast Domain | Single broadcast domain |
+| Duplex | Half-duplex only |
+| Bandwidth | Shared among all ports |
+
+**Formula for collision probability with $n$ devices:**
+$P(collision) = 1 - (1 - p)^n$
+
+Where $p$ is the probability of transmission per device.
+
+### Switch (Modern Standard)
+
+**Collision Domain**: Each port creates its own collision domain
+**Broadcast Domain**: All ports in the same VLAN share one broadcast domain
+**Duplex**: Full-duplex capable
+**Bandwidth**: Dedicated per port
+
+### Router
+
+**Collision Domain**: Each interface is a separate collision domain
+**Broadcast Domain**: Each interface represents a different broadcast domain
+**Layer 3 Boundary**: Stops broadcast traffic by default
+
+## VLAN and Domain Segmentation
+
+**Virtual LANs (VLANs)** allow logical segmentation:
+
+### VLAN Benefits
+- **Broadcast Domain Control**: Each VLAN is a separate broadcast domain
+- **Security**: Traffic isolation between VLANs
+- **Flexibility**: Logical grouping independent of physical location
+
+### VLAN Configuration Example
+
+\`\`\`
+Switch(config)# vlan 10
+Switch(config-vlan)# name Sales
+Switch(config)# vlan 20  
+Switch(config-vlan)# name Engineering
+
+Switch(config)# interface fa0/1
+Switch(config-if)# switchport mode access
+Switch(config-if)# switchport access vlan 10
+\`\`\`
+
+## Performance Impact
+
+### Collision Domain Size Effects
+
+**Small Collision Domains**:
+- Fewer collisions
+- Better performance
+- Higher throughput
+
+**Large Collision Domains**:
+- More collisions
+- Increased latency
+- Reduced effective bandwidth
+
+### Broadcast Domain Size Effects
+
+**Small Broadcast Domains**:
+- Reduced broadcast traffic
+- Better security
+- Improved performance
+
+**Large Broadcast Domains**:
+- More broadcast overhead
+- Potential security risks
+- Network congestion
+
+## Practical Network Design
+
+### Best Practices
+
+1. **Minimize Collision Domains**: Use switches instead of hubs
+2. **Control Broadcast Domains**: Implement VLANs for logical segmentation
+3. **Strategic Router Placement**: Use routers to separate broadcast domains
+4. **Monitor Broadcast Traffic**: Keep broadcast traffic under 10% of total traffic
+
+### Calculation Example
+
+For a network with 100 devices in one broadcast domain:
+- Each ARP request reaches all 100 devices
+- DHCP broadcasts affect entire domain
+- Network announcements consume bandwidth across all devices
+
+**Optimal broadcast domain size**: $20-50$ devices for most environments.
+
+## Troubleshooting Common Issues
+
+### Collision-Related Problems
+- **Symptoms**: High collision rates, poor performance
+- **Solutions**: Replace hubs with switches, check cable integrity
+
+### Broadcast Storm Issues
+- **Symptoms**: Network slowdown, high CPU usage on devices
+- **Solutions**: Implement VLANs, configure broadcast storm control
+
+Formula for broadcast storm threshold:
+$Threshold = \\frac{Total Bandwidth \\times 0.1}{Frame Size}$ packets per second
+
+---
+
+*Understanding domains is essential for designing efficient, scalable networks that perform well under various traffic conditions!*
+
+`,
+        date: "2024-06-04",
+        author: "Adwait Purao",
+        insta: "https://www.instagram.com/adwaitpurao/",
+        facebook: "https://www.facebook.com/adwait.purao.1/",
+        medium: "https://medium.com/@adwait.purao",
+    },
+
+    "basic-network-troubleshooting": {
+  title: "Basic Network Troubleshooting",
+  content: `# Basic Network Troubleshooting
+
+Network troubleshooting is a systematic approach to identifying, diagnosing, and resolving network connectivity issues. Effective troubleshooting requires understanding network protocols, tools, and methodologies.
+
+## Troubleshooting Methodology
+
+### The OSI Model Approach
+
+Troubleshooting follows the **OSI model** layers, typically using bottom-up or top-down approaches:
+
+**Bottom-Up**: Start from Physical layer (Layer 1) and work upward
+**Top-Down**: Start from Application layer (Layer 7) and work downward
+**Divide-and-Conquer**: Start from middle layers (Network/Transport)
+
+### Systematic Steps
+
+1. **Define the Problem**: Clearly identify symptoms and scope
+2. **Gather Information**: Collect relevant data and error messages
+3. **Consider Possibilities**: List potential causes
+4. **Create Action Plan**: Prioritize troubleshooting steps
+5. **Implement Solution**: Apply fixes systematically
+6. **Test Results**: Verify the problem is resolved
+7. **Document**: Record the issue and solution
+
+## Essential Network Commands
+
+### Windows Commands
+
+**PING**: Tests basic connectivity using ICMP Echo Request/Reply
+\`\`\`cmd
+ping 8.8.8.8
+ping google.com
+ping -t 192.168.1.1  # Continuous ping
+\`\`\`
+
+**TRACERT**: Traces the path packets take to destination
+\`\`\`cmd
+tracert google.com
+tracert -h 15 8.8.8.8  # Maximum 15 hops
+\`\`\`
+
+**NSLOOKUP**: DNS troubleshooting tool
+\`\`\`cmd
+nslookup google.com
+nslookup google.com 8.8.8.8  # Use specific DNS server
+\`\`\`
+
+**IPCONFIG**: Display and manage IP configuration
+\`\`\`cmd
+ipconfig /all           # Detailed configuration
+ipconfig /release       # Release IP address
+ipconfig /renew         # Renew IP address
+ipconfig /flushdns      # Clear DNS cache
+\`\`\`
+
+**NETSTAT**: Display network connections and statistics
+\`\`\`cmd
+netstat -an            # All connections and ports
+netstat -r             # Routing table
+netstat -s             # Protocol statistics
+\`\`\`
+
+### Linux/Unix Commands
+
+**PING**: Similar to Windows but with different options
+\`\`\`bash
+ping -c 4 8.8.8.8      # Send 4 packets
+ping -i 0.5 google.com # 0.5 second interval
+\`\`\`
+
+**TRACEROUTE**: Path tracing utility
+\`\`\`bash
+traceroute google.com
+traceroute -n 8.8.8.8  # Show IP addresses only
+\`\`\`
+
+**DIG**: Advanced DNS lookup tool
+\`\`\`bash
+dig google.com
+dig @8.8.8.8 google.com MX  # Query MX records
+\`\`\`
+
+## Common Network Problems
+
+### Layer 1 (Physical) Issues
+
+**Cable Problems**:
+- Damaged or loose cables
+- Wrong cable type (crossover vs straight-through)
+- Cable length exceeding standards
+
+**Port Issues**:
+- Faulty network interface cards
+- Bad switch/hub ports
+- Speed/duplex mismatches
+
+### Layer 2 (Data Link) Issues
+
+**MAC Address Problems**:
+- Duplicate MAC addresses
+- MAC address table overflow
+- VLAN misconfigurations
+
+**Switching Issues**:
+- Spanning Tree Protocol (STP) loops
+- Port security violations
+- Trunk configuration errors
+
+### Layer 3 (Network) Issues
+
+**IP Configuration Problems**:
+- Incorrect IP addresses: $192.168.1.100/24$ vs $192.168.2.100/24$
+- Wrong subnet masks
+- Duplicate IP addresses
+- Missing default gateway
+
+**Routing Issues**:
+- Missing routes in routing table
+- Incorrect next-hop addresses
+- Route loops
+
+### Layer 4-7 (Upper Layer) Issues
+
+**DNS Problems**:
+- DNS server unavailable
+- Incorrect DNS configuration
+- DNS cache poisoning
+
+**Application Issues**:
+- Service not running
+- Firewall blocking ports
+- Authentication failures
+
+## Troubleshooting Tools and Techniques
+
+### Network Analyzers
+
+**Wireshark**: Packet capture and analysis
+- Capture network traffic
+- Analyze protocols
+- Identify communication issues
+
+**TCPdump**: Command-line packet analyzer
+\`\`\`bash
+tcpdump -i eth0 port 80
+tcpdump -w capture.pcap
+\`\`\`
+
+### Performance Monitoring
+
+**Bandwidth Utilization Formula**:
+$Utilization\\% = \\frac{Current Traffic}{Maximum Bandwidth} \\times 100$
+
+**Round Trip Time (RTT) Analysis**:
+$RTT = T_{send} + T_{propagation} + T_{processing} + T_{return}$
+
+### Network Scanning Tools
+
+**NMAP**: Network discovery and security scanning
+\`\`\`bash
+nmap -sn 192.168.1.0/24    # Ping scan
+nmap -p 1-1000 192.168.1.1 # Port scan
+\`\`\`
+
+## Specific Troubleshooting Scenarios
+
+### Cannot Access Internet
+
+**Step-by-step approach**:
+
+1. **Check Physical Connection**:
+   - Verify cable connections
+   - Check link lights on NIC and switch
+
+2. **Verify IP Configuration**:
+   \`\`\`cmd
+   ipconfig /all
+   \`\`\`
+   - IP address in correct subnet?
+   - Subnet mask correct?
+   - Default gateway configured?
+
+3. **Test Local Connectivity**:
+   \`\`\`cmd
+   ping 127.0.0.1     # Loopback test
+   ping [local IP]    # Self test
+   ping [gateway IP]  # Gateway test
+   \`\`\`
+
+4. **Test DNS Resolution**:
+   \`\`\`cmd
+   nslookup google.com
+   ping 8.8.8.8       # Test without DNS
+   \`\`\`
+
+### Slow Network Performance
+
+**Performance metrics to check**:
+
+| Metric | Normal Range | Problem Threshold |
+|--------|--------------|-------------------|
+| Latency | < 50ms LAN | > 100ms |
+| Packet Loss | < 0.1% | > 1% |
+| Bandwidth Utilization | < 70% | > 85% |
+| Collision Rate | < 1% | > 5% |
+
+### Intermittent Connectivity
+
+**Common causes and solutions**:
+
+**Physical Issues**:
+- Loose connections
+- Electromagnetic interference
+- Cable degradation
+
+**Network Congestion**:
+- High broadcast traffic
+- Bandwidth saturation
+- Buffer overflows
+
+**Configuration Issues**:
+- DHCP lease problems
+- Routing table changes
+- Load balancing issues
+
+## Advanced Troubleshooting Techniques
+
+### Protocol Analysis
+
+**TCP Connection States**:
+- ESTABLISHED: Active connection
+- TIME_WAIT: Connection closing
+- SYN_SENT: Connection attempt
+
+**Error Rate Calculations**:
+$Error Rate = \\frac{Error Packets}{Total Packets} \\times 100\\%$
+
+### Network Baseline Creation
+
+**Key metrics to monitor**:
+- Peak usage times
+- Normal traffic patterns
+- Application response times
+- Error rates by protocol
+
+### Documentation Best Practices
+
+**Troubleshooting logs should include**:
+- Problem description and symptoms
+- Steps taken to resolve
+- Commands used and outputs
+- Final solution implemented
+- Lessons learned
+
+---
+
+*Effective network troubleshooting combines systematic methodology with the right tools and thorough documentation!*
+
+`,
+  date: "2025-06-04",
+  author: "Adwait Purao",
+  insta: "https://www.instagram.com/adwaitpurao/",
+  facebook: "https://www.facebook.com/adwait.purao.1/",
+  medium: "https://medium.com/@adwait.purao",
+},
+
+"router-switch-basic-configuration": {
+  title: "Router and Switch Basic Configuration",
+  content: `# Router and Switch Basic Configuration
+
+Understanding router and switch configuration is fundamental for network administration. This guide covers essential commands and configurations for Cisco devices, which form the industry standard.
+
+## Cisco Command Line Interface (CLI)
+
+### Access Modes
+
+**User EXEC Mode**: Limited access for basic monitoring
+\`\`\`
+Router>
+\`\`\`
+
+**Privileged EXEC Mode**: Full access to show commands
+\`\`\`
+Router> enable
+Router#
+\`\`\`
+
+**Global Configuration Mode**: Modify running configuration
+\`\`\`
+Router# configure terminal
+Router(config)#
+\`\`\`
+
+**Interface Configuration Mode**: Configure specific interfaces
+\`\`\`
+Router(config)# interface fastethernet 0/0
+Router(config-if)#
+\`\`\`
+
+### Basic Navigation Commands
+
+| Command | Function |
+|---------|----------|
+| \`?\` | Help and command options |
+| \`exit\` | Return to previous mode |
+| \`end\` | Return to privileged mode |
+| \`show running-config\` | Display current configuration |
+| \`show startup-config\` | Display saved configuration |
+
+## Basic Router Configuration
+
+### Initial Router Setup
+
+**Set hostname and passwords**:
+\`\`\`
+Router> enable
+Router# configure terminal
+Router(config)# hostname R1
+R1(config)# enable secret cisco123
+R1(config)# enable password cisco
+R1(config)# line console 0
+R1(config-line)# password console123
+R1(config-line)# login
+R1(config-line)# exit
+\`\`\`
+
+### Interface Configuration
+
+**Configure FastEthernet interface**:
+\`\`\`
+R1(config)# interface fastethernet 0/0
+R1(config-if)# ip address 192.168.1.1 255.255.255.0
+R1(config-if)# description "LAN Interface"
+R1(config-if)# no shutdown
+R1(config-if)# exit
+\`\`\`
+
+**Configure Serial interface with clock rate**:
+\`\`\`
+R1(config)# interface serial 0/0/0
+R1(config-if)# ip address 10.1.1.1 255.255.255.252
+R1(config-if)# description "WAN to R2"
+R1(config-if)# clock rate 128000
+R1(config-if)# no shutdown
+R1(config-if)# exit
+\`\`\`
+
+### Static Routing Configuration
+
+**Add static route**:
+\`\`\`
+R1(config)# ip route 192.168.2.0 255.255.255.0 10.1.1.2
+R1(config)# ip route 0.0.0.0 0.0.0.0 10.1.1.2
+\`\`\`
+
+**Route format**: $destination\_network$ $subnet\_mask$ $next\_hop\_IP$
+
+### Dynamic Routing (RIP)
+
+**Configure RIP version 2**:
+\`\`\`
+R1(config)# router rip
+R1(config-router)# version 2
+R1(config-router)# network 192.168.1.0
+R1(config-router)# network 10.1.1.0
+R1(config-router)# no auto-summary
+R1(config-router)# exit
+\`\`\`
+
+### OSPF Configuration
+
+**Configure OSPF with process ID and area**:
+\`\`\`
+R1(config)# router ospf 1
+R1(config-router)# router-id 1.1.1.1
+R1(config-router)# network 192.168.1.0 0.0.0.255 area 0
+R1(config-router)# network 10.1.1.0 0.0.0.3 area 0
+R1(config-router)# exit
+\`\`\`
+
+**OSPF wildcard mask calculation**:
+$Wildcard = 255.255.255.255 - Subnet\_Mask$
+
+For /24 network: $255.255.255.255 - 255.255.255.0 = 0.0.0.255$
+
+## Basic Switch Configuration
+
+### Initial Switch Setup
+
+**Configure hostname and management**:
+\`\`\`
+Switch> enable
+Switch# configure terminal
+Switch(config)# hostname SW1
+SW1(config)# enable secret switch123
+SW1(config)# line console 0
+SW1(config-line)# password console123
+SW1(config-line)# login
+SW1(config-line)# exit
+\`\`\`
+
+### Management IP Configuration
+
+**Configure management VLAN**:
+\`\`\`
+SW1(config)# interface vlan 1
+SW1(config-if)# ip address 192.168.1.10 255.255.255.0
+SW1(config-if)# no shutdown
+SW1(config-if)# exit
+SW1(config)# ip default-gateway 192.168.1.1
+\`\`\`
+
+### Port Configuration
+
+**Configure access port**:
+\`\`\`
+SW1(config)# interface fastethernet 0/1
+SW1(config-if)# switchport mode access
+SW1(config-if)# switchport access vlan 10
+SW1(config-if)# description "User PC"
+SW1(config-if)# spanning-tree portfast
+SW1(config-if)# exit
+\`\`\`
+
+**Configure trunk port**:
+\`\`\`
+SW1(config)# interface fastethernet 0/24
+SW1(config-if)# switchport mode trunk
+SW1(config-if)# switchport trunk allowed vlan 1,10,20,30
+SW1(config-if)# description "Trunk to SW2"
+SW1(config-if)# exit
+\`\`\`
+
+## VLAN Configuration
+
+### Creating and Managing VLANs
+
+**Create VLANs**:
+\`\`\`
+SW1(config)# vlan 10
+SW1(config-vlan)# name Sales
+SW1(config-vlan)# exit
+SW1(config)# vlan 20
+SW1(config-vlan)# name Engineering
+SW1(config-vlan)# exit
+SW1(config)# vlan 30
+SW1(config-vlan)# name Management
+SW1(config-vlan)# exit
+\`\`\`
+
+### VLAN Assignment
+
+**Assign ports to VLANs**:
+\`\`\`
+SW1(config)# interface range fastethernet 0/1-10
+SW1(config-if-range)# switchport mode access
+SW1(config-if-range)# switchport access vlan 10
+SW1(config-if-range)# exit
+
+SW1(config)# interface range fastethernet 0/11-20
+SW1(config-if-range)# switchport mode access  
+SW1(config-if-range)# switchport access vlan 20
+SW1(config-if-range)# exit
+\`\`\`
+
+### Inter-VLAN Routing (Router-on-a-Stick)
+
+**Configure subinterfaces on router**:
+\`\`\`
+R1(config)# interface fastethernet 0/0.10
+R1(config-subif)# encapsulation dot1q 10
+R1(config-subif)# ip address 192.168.10.1 255.255.255.0
+R1(config-subif)# exit
+
+R1(config)# interface fastethernet 0/0.20
+R1(config-subif)# encapsulation dot1q 20
+R1(config-subif)# ip address 192.168.20.1 255.255.255.0
+R1(config-subif)# exit
+\`\`\`
+
+## Security Configuration
+
+### Port Security
+
+**Configure port security on switch**:
+\`\`\`
+SW1(config)# interface fastethernet 0/1
+SW1(config-if)# switchport port-security
+SW1(config-if)# switchport port-security maximum 2
+SW1(config-if)# switchport port-security mac-address sticky
+SW1(config-if)# switchport port-security violation shutdown
+SW1(config-if)# exit
+\`\`\`
+
+### Access Control Lists (ACLs)
+
+**Standard ACL example**:
+\`\`\`
+R1(config)# access-list 10 deny 192.168.10.0 0.0.0.255
+R1(config)# access-list 10 permit any
+R1(config)# interface fastethernet 0/1
+R1(config-if)# ip access-group 10 out
+R1(config-if)# exit
+\`\`\`
+
+**Extended ACL example**:
+\`\`\`
+R1(config)# access-list 100 deny tcp 192.168.10.0 0.0.0.255 any eq 80
+R1(config)# access-list 100 permit ip any any
+R1(config)# interface fastethernet 0/0
+R1(config-if)# ip access-group 100 in
+R1(config-if)# exit
+\`\`\`
+
+## Verification Commands
+
+### Router Verification
+
+| Command | Purpose |
+|---------|---------|
+| \`show ip interface brief\` | Interface status and IP |
+| \`show ip route\` | Routing table |
+| \`show running-config\` | Current configuration |
+| \`show protocols\` | Routed protocol status |
+| \`show ip ospf neighbor\` | OSPF neighbors |
+
+### Switch Verification
+
+| Command | Purpose |
+|---------|---------|
+| \`show vlan brief\` | VLAN information |
+| \`show mac address-table\` | MAC address table |
+| \`show interfaces trunk\` | Trunk port status |
+| \`show spanning-tree\` | STP information |
+| \`show port-security\` | Port security status |
+
+## Configuration Management
+
+### Save Configuration
+
+**Save running config to startup config**:
+\`\`\`
+Router# copy running-config startup-config
+Router# write memory
+Router# wr
+\`\`\`
+
+### Backup and Restore
+
+**Copy config to TFTP server**:
+\`\`\`
+Router# copy running-config tftp
+Address or name of remote host []? 192.168.1.100
+Destination filename [router-confg]? R1-backup
+\`\`\`
+
+**Restore from TFTP**:
+\`\`\`
+Router# copy tftp running-config
+Address or name of remote host []? 192.168.1.100
+Source filename []? R1-backup
+\`\`\`
+
+### Password Recovery
+
+**Router password recovery process**:
+1. Power cycle and press Ctrl+Break during boot
+2. Change configuration register: \`confreg 0x2142\`
+3. Boot and enter global config mode
+4. Reset passwords and save configuration
+5. Reset configuration register: \`config-register 0x2102\`
+
+---
+
+*Mastering basic router and switch configuration provides the foundation for building and managing enterprise networks!*
+
+`,
+  date: "2025-06-04",
+  author: "Adwait Purao",
+  insta: "https://www.instagram.com/adwaitpurao/",
+  facebook: "https://www.facebook.com/adwait.purao.1/",
+  medium: "https://medium.com/@adwait.purao",
+},
+
+"wireless-networking": {
+  title: "Wireless Networking",
+  content: `# Wireless Networking
+
+Wireless networking has revolutionized how we connect devices and access information. Understanding wireless technologies, protocols, and security is essential for modern network administrators.
+
+## Wireless Fundamentals
+
+### Radio Frequency Basics
+
+Wireless networks use **electromagnetic waves** to transmit data. Key properties include:
+
+**Frequency**: Number of wave cycles per second, measured in Hertz (Hz)
+**Wavelength**: Distance between wave peaks, calculated as:
+$$\\lambda = \\frac{c}{f}$$
+
+Where $c$ is the speed of light ($3 \\times 10^8$ m/s) and $f$ is frequency.
+
+**Amplitude**: Wave height, determines signal strength
+**Phase**: Wave position relative to reference point
+
+### Wireless Spectrum
+
+**ISM Bands** (Industrial, Scientific, Medical):
+- **2.4 GHz**: 2.400-2.485 GHz (unlicensed)
+- **5 GHz**: 5.150-5.825 GHz (unlicensed)  
+- **6 GHz**: 5.925-7.125 GHz (newer band)
+
+**Licensed vs Unlicensed Spectrum**:
+- Licensed: Exclusive use, requires FCC authorization
+- Unlicensed: Shared use, follows power and emission rules
+
+## IEEE 802.11 Standards
+
+### Evolution of Wi-Fi Standards
+
+| Standard | Year | Frequency | Max Speed | Range |
+|----------|------|-----------|-----------|-------|
+| 802.11 | 1997 | 2.4 GHz | 2 Mbps | 100m |
+| 802.11b | 1999 | 2.4 GHz | 11 Mbps | 150m |
+| 802.11a | 1999 | 5 GHz | 54 Mbps | 75m |
+| 802.11g | 2003 | 2.4 GHz | 54 Mbps | 150m |
+| 802.11n | 2009 | 2.4/5 GHz | 600 Mbps | 175m |
+| 802.11ac | 2013 | 5 GHz | 3.5 Gbps | 100m |
+| 802.11ax (Wi-Fi 6) | 2019 | 2.4/5/6 GHz | 9.6 Gbps | 200m |
+
+### 802.11 Frame Structure
+
+**Management Frames**: Association, authentication, beacons
+**Control Frames**: RTS, CTS, ACK
+**Data Frames**: Actual user data transmission
+
+### CSMA/CA Protocol
+
+Unlike Ethernet's CSMA/CD, wireless uses **Carrier Sense Multiple Access with Collision Avoidance**:
+
+1. **Listen Before Talk**: Check if medium is idle
+2. **Random Backoff**: Wait random time if busy
+3. **RTS/CTS**: Optional handshake for hidden node problem
+4. **ACK**: Acknowledgment confirms successful transmission
+
+**Backoff calculation**:
+$$Backoff = Random(0, CW) \\times SlotTime$$
+
+Where $CW$ (Contention Window) doubles after each collision: $CW = 2^n - 1$
+
+## Wireless Network Topologies
+
+### Infrastructure Mode
+
+**Basic Service Set (BSS)**: Single access point with associated stations
+- **BSSID**: MAC address of the access point
+- **SSID**: Network name (up to 32 characters)
+
+**Extended Service Set (ESS)**: Multiple APs with same SSID
+- Enables roaming between access points
+- Distribution System (DS) connects APs
+
+### Ad Hoc Mode
+
+**Independent Basic Service Set (IBSS)**:
+- Direct device-to-device communication
+- No access point required
+- Limited range and functionality
+
+### Mesh Networks
+
+**802.11s Standard**: Self-forming, self-healing networks
+- Each node acts as router and endpoint
+- Automatic path discovery and maintenance
+- High reliability and coverage
+
+## Wireless Access Point Configuration
+
+### Basic AP Setup
+
+**SSID Configuration**:
+\`\`\`
+AP(config)# dot11 ssid "CompanyWiFi"
+AP(config-ssid)# authentication open
+AP(config-ssid)# exit
+\`\`\`
+
+**Radio Interface Configuration**:
+\`\`\`
+AP(config)# interface dot11radio 0
+AP(config-if)# ssid "CompanyWiFi"
+AP(config-if)# channel 6
+AP(config-if)# power local maximum
+AP(config-if)# no shutdown
+\`\`\`
+
+### Channel Planning
+
+**2.4 GHz Non-Overlapping Channels**: 1, 6, 11 (North America)
+
+**Channel spacing formula**:
+For 20 MHz channels: $Channel\_Spacing = 5 \\times (Channel\_Number - 1)$ MHz
+
+**5 GHz Advantages**:
+- More available channels (23 vs 3)
+- Less interference
+- Higher data rates
+- Better for high-density deployments
+
+### Power Management
+
+**Transmit Power Control**:
+\`\`\`
+AP(config-if)# power local 50
+AP(config-if)# power client 30
+\`\`\`
+
+**Coverage calculation**:
+$$RSSI = P_t + G_t - L_{path} - L_{misc} + G_r$$
+
+Where:
+- $P_t$ = Transmit power (dBm)
+- $G_t$ = Transmit antenna gain (dBi)
+- $L_{path}$ = Path loss (dB)
+- $L_{misc}$ = Miscellaneous loss (dB)
+- $G_r$ = Receive antenna gain (dBi)
+
+## Wireless Security
+
+### Security Evolution
+
+**WEP (Wired Equivalent Privacy)**:
+- 64-bit or 128-bit encryption
+- **Fatal flaws**: Weak IV, RC4 vulnerabilities
+- Easily cracked in minutes
+
+**WPA (Wi-Fi Protected Access)**:
+- TKIP (Temporal Key Integrity Protocol)
+- Dynamic key generation
+- Message Integrity Check (MIC)
+
+**WPA2 (802.11i)**:
+- AES encryption with CCMP
+- Strong authentication methods
+- Current industry standard
+
+**WPA3**:
+- Enhanced security features
+- SAE (Simultaneous Authentication of Equals)
+- Forward secrecy
+- Protection against offline attacks
+
+### Authentication Methods
+
+**Personal Mode (PSK)**:
+\`\`\`
+AP(config)# wpa-psk ascii "SecurePassword123"
+AP(config)# encryption mode ciphers aes-ccmp
+\`\`\`
+
+**Enterprise Mode (802.1X)**:
+\`\`\`
+AP(config)# aaa new-model
+AP(config)# radius-server host 192.168.1.100 key radiuskey
+AP(config)# dot1x system-auth-control
+\`\`\`
+
+### 802.1X Authentication Process
+
+1. **Supplicant** (client) requests access
+2. **Authenticator** (AP) forwards to RADIUS server
+3. **Authentication Server** validates credentials
+4. **Success**: Keys distributed, access granted
+5. **Failure**: Access denied
+
+**EAP Methods**:
+- **EAP-TLS**: Certificate-based, most secure
+- **EAP-PEAP**: Password-based with TLS tunnel
+- **EAP-FAST**: Cisco proprietary, fast authentication
+
+## Advanced Wireless Technologies
+
+### MIMO (Multiple Input Multiple Output)
+
+**Spatial Streams**: Independent data paths
+**Antenna Configuration**: $N_t \\times N_r$ (transmit × receive)
+
+**Capacity improvement**:
+$$C = \\sum_{i=1}^{min(N_t,N_r)} \\log_2(1 + SNR_i)$$
+
+### Beamforming
+
+**Technique**: Focus RF energy toward specific clients
+**Benefits**: Increased range, reduced interference
+**Types**: Explicit vs Implicit feedback
+
+### MU-MIMO (Multi-User MIMO)
+
+**Downlink MU-MIMO**: AP transmits to multiple clients simultaneously
+**Uplink MU-MIMO**: Multiple clients transmit to AP simultaneously
+**Efficiency gain**: Up to 4x improvement in Wi-Fi 6
+
+### OFDMA (Orthogonal Frequency Division Multiple Access)
+
+**Wi-Fi 6 feature**: Divide channels into Resource Units (RUs)
+**Benefits**: Better efficiency for small packets
+**Latency reduction**: Up to 75% improvement
+
+## Wireless Network Design
+
+### Site Survey
+
+**RF Survey Types**:
+- **Predictive**: Computer modeling
+- **Passive**: Measure existing signals
+- **Active**: Test with actual equipment
+
+**Key Measurements**:
+- **RSSI**: Received Signal Strength Indicator
+- **SNR**: Signal-to-Noise Ratio
+- **Interference**: Co-channel and adjacent channel
+
+**Coverage requirements**:
+$$Coverage\_Area = \\pi \\times (\\frac{Range}{2})^2$$
+
+### Capacity Planning
+
+**User density calculation**:
+$$Users\_per\_AP = \\frac{Available\_Bandwidth}{Per\_User\_Requirement}$$
+
+**Typical requirements**:
+- Voice: 100 Kbps
+- Data: 1-2 Mbps
+- Video: 2-5 Mbps
+
+### Interference Mitigation
+
+**Co-channel Interference**: Same channel, different APs
+**Adjacent Channel Interference**: Overlapping channels
+**Non-Wi-Fi Interference**: Microwaves, Bluetooth, cordless phones
+
+**Mitigation strategies**:
+- Proper channel planning
+- Power control
+- AP placement optimization
+- Shielding and filtering
+
+## Troubleshooting Wireless Networks
+
+### Common Issues and Solutions
+
+**Poor Signal Strength**:
+- Check AP placement and power settings
+- Verify antenna orientation
+- Identify interference sources
+
+**Authentication Failures**:
+- Verify credentials and certificates
+- Check RADIUS server connectivity
+- Review security settings
+
+**Roaming Problems**:
+- Optimize AP coverage overlap (15-20%)
+- Configure consistent security settings
+- Implement fast roaming (802.11r)
+
+### Wireless Analysis Tools
+
+**Spectrum Analyzers**: Identify RF interference
+**Protocol Analyzers**: Capture and analyze 802.11 frames
+**Site Survey Tools**: Measure coverage and performance
+
+**Key metrics to monitor**:
+- Signal strength (RSSI > -67 dBm)
+- Signal quality (SNR > 20 dB)
+- Retry rates (< 10%)
+- Association success rate (> 95%)
+
+---
+
+*Wireless networking continues to evolve with new standards and technologies, making it essential to stay current with best practices and security measures!*
+
+`,
+  date: "2025-06-04",
+  author: "Adwait Purao",
+  insta: "https://www.instagram.com/adwaitpurao/",
+  facebook: "https://www.facebook.com/adwait.purao.1/",
+  medium: "https://medium.com/@adwait.purao",
+},
 
 
-//   "replace": {
-//     title: "",
-//     content: `
 
-// `,
-//     date: "2024-06-05",
-//     author: "Adwait Purao",
-//     insta: "https://www.instagram.com/adwaitpurao/",
-//     facebook: "https://www.facebook.com/adwait.purao.1/",
-//     medium: "https://medium.com/@adwait.purao"
-//   },
+    //   "replace": {
+    //     title: "",
+    //     content: `
+
+    // `,
+    //     date: "2024-06-05",
+    //     author: "Adwait Purao",
+    //     insta: "https://www.instagram.com/adwaitpurao/",
+    //     facebook: "https://www.facebook.com/adwait.purao.1/",
+    //     medium: "https://medium.com/@adwait.purao"
+    //   },
 };
