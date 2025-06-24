@@ -6013,6 +6013,1040 @@ $Overhead = k \\times (Register\\_area + Register\\_power)$
         insta: "https://www.instagram.com/adwaitpurao/",
         facebook: "https://www.facebook.com/adwait.purao.1/",
         medium: "https://medium.com/@adwait.purao",
+    },
+
+    "entity-relationship-model": {
+        title: "Entity Relationship Model in Database Management Systems",
+        content: `# Entity Relationship Model in Database Management Systems
+
+The Entity Relationship (ER) Model is a high-level conceptual data model that provides a graphical representation of database structure. It serves as a blueprint for designing relational databases by modeling real-world entities and their relationships.
+
+## Introduction to ER Model
+
+The ER Model was introduced by Peter Chen in 1976 as a way to represent database schemas at a conceptual level. It abstracts the logical structure of databases using entities, attributes, and relationships.
+
+### Key Components
+
+The ER Model consists of three fundamental components:
+
+- **Entities:** Real-world objects or concepts
+- **Attributes:** Properties that describe entities
+- **Relationships:** Associations between entities
+
+### ER Model Benefits
+
+**Design Clarity:** Provides visual representation of database structure
+**Communication:** Facilitates discussion between designers and stakeholders
+**Documentation:** Serves as permanent record of design decisions
+**Implementation Independence:** Abstract model independent of specific DBMS
+
+## Entities and Entity Sets
+
+### Entity Definition
+
+An **entity** is a distinguishable object in the real world. An **entity set** is a collection of similar entities.
+
+**Mathematical representation:**
+$E = \\{e_1, e_2, e_3, ..., e_n\\}$
+
+Where $E$ is an entity set and $e_i$ are individual entities.
+
+### Types of Entities
+
+#### Strong Entities
+
+Entities that can exist independently and have a primary key.
+
+**Example:** STUDENT entity with StudentID as primary key
+
+#### Weak Entities
+
+Entities that cannot exist without another entity (owner entity).
+
+**Characteristics:**
+- Depends on strong entity for existence
+- Has partial key (discriminator)
+- Connected to owner entity via identifying relationship
+
+**Example:** DEPENDENT entity depending on EMPLOYEE
+
+### Entity Representation
+
+**Strong Entity:** Rectangle
+**Weak Entity:** Double rectangle
+
+\`\`\`
+┌─────────────┐     ╔═════════════╗
+│   STUDENT   │     ║  DEPENDENT  ║
+└─────────────┘     ╚═════════════╝
+Strong Entity        Weak Entity
+\`\`\`
+
+## Attributes and Domain
+
+### Attribute Types
+
+#### Simple Attributes
+
+Cannot be divided into smaller parts.
+
+**Examples:** StudentName, Age, Salary
+
+#### Composite Attributes
+
+Can be divided into smaller sub-parts.
+
+**Example:** Address = {Street, City, State, ZipCode}
+
+**Hierarchical representation:**
+$Address = Street \\cup City \\cup State \\cup ZipCode$
+
+#### Single-Valued Attributes
+
+Have single value for each entity.
+
+**Example:** StudentID, BirthDate
+
+#### Multi-Valued Attributes
+
+Can have multiple values for single entity.
+
+**Example:** PhoneNumbers, Skills
+
+**Notation:** $\\{PhoneNumbers\\}$ (curly braces)
+
+#### Derived Attributes
+
+Computed from other attributes.
+
+**Example:** Age derived from BirthDate
+
+**Calculation:** $Age = CurrentDate - BirthDate$
+
+### Key Attributes
+
+#### Primary Key
+
+Uniquely identifies each entity in entity set.
+
+**Properties:**
+- Unique: No two entities have same key value
+- Non-null: Must have value for every entity
+- Minimal: No proper subset is also a key
+
+**Mathematical property:**
+$\\forall e_i, e_j \\in E: e_i \\neq e_j \\Rightarrow PK(e_i) \\neq PK(e_j)$
+
+#### Candidate Keys
+
+All possible keys that can serve as primary key.
+
+#### Partial Key
+
+Used in weak entities; unique only within entities related to same owner.
+
+### Attribute Representation
+
+**Simple Attribute:** Oval
+**Composite Attribute:** Oval with connected sub-attributes
+**Multi-valued Attribute:** Double oval
+**Derived Attribute:** Dashed oval
+**Key Attribute:** Underlined
+
+## Relationships and Relationship Sets
+
+### Relationship Definition
+
+A **relationship** is an association between entities. A **relationship set** is a collection of similar relationships.
+
+**Mathematical definition:**
+$R \\subseteq E_1 \\times E_2 \\times ... \\times E_n$
+
+Where $R$ is relationship set and $E_i$ are entity sets.
+
+### Relationship Degree
+
+#### Unary (Recursive) Relationship
+
+Relationship between entities of same entity set.
+
+**Example:** EMPLOYEE manages EMPLOYEE
+
+#### Binary Relationship
+
+Most common; between two entity sets.
+
+**Example:** STUDENT enrolls in COURSE
+
+#### Ternary Relationship
+
+Among three entity sets.
+
+**Example:** STUDENT takes COURSE with INSTRUCTOR
+
+### Relationship Cardinality
+
+#### One-to-One (1:1)
+
+Each entity in first set relates to at most one entity in second set.
+
+**Mathematical constraint:**
+$|\\{e_2 \\in E_2 : (e_1, e_2) \\in R\\}| \\leq 1$ for all $e_1 \\in E_1$
+
+**Example:** PERSON has PASSPORT
+
+#### One-to-Many (1:N)
+
+Each entity in first set can relate to multiple entities in second set.
+
+**Example:** DEPARTMENT has multiple EMPLOYEES
+
+#### Many-to-One (N:1)
+
+Multiple entities in first set relate to single entity in second set.
+
+**Example:** Multiple STUDENTS belong to one DEPARTMENT
+
+#### Many-to-Many (M:N)
+
+Entities in both sets can relate to multiple entities in other set.
+
+**Example:** STUDENT enrolls in multiple COURSES, COURSE has multiple STUDENTS
+
+### Participation Constraints
+
+#### Total Participation
+
+Every entity must participate in relationship.
+
+**Notation:** Double line connecting entity to relationship
+
+**Mathematical constraint:**
+$\\forall e \\in E : \\exists r \\in R$ such that $e$ participates in $r$
+
+#### Partial Participation
+
+Some entities may not participate in relationship.
+
+**Notation:** Single line
+
+### Relationship Attributes
+
+Relationships can have attributes describing the association.
+
+**Example:** STUDENT enrolls in COURSE with Grade attribute
+
+## ER Diagram Construction
+
+### Design Process
+
+#### Step 1: Identify Entities
+
+Determine major objects/concepts in domain.
+
+**Guidelines:**
+- Nouns in requirements often indicate entities
+- Should have multiple instances
+- Should have attributes of interest
+
+#### Step 2: Identify Attributes
+
+Determine properties of each entity.
+
+**Guidelines:**
+- Adjectives often indicate attributes
+- Include only relevant attributes
+- Identify key attributes
+
+#### Step 3: Identify Relationships
+
+Determine associations between entities.
+
+**Guidelines:**
+- Verbs often indicate relationships
+- Consider cardinality constraints
+- Include relationship attributes if needed
+
+#### Step 4: Determine Cardinalities
+
+Specify participation and cardinality constraints.
+
+### Example ER Diagram
+
+Consider a university database:
+
+\`\`\`
+STUDENT ──(enrolls)── COURSE ──(taught_by)── INSTRUCTOR
+   │                     │                      │
+   │                     │                      │
+Attributes:         Attributes:            Attributes:
+- StudentID (PK)    - CourseID (PK)       - InstructorID (PK)
+- Name              - Title               - Name
+- Email             - Credits             - Department
+- {PhoneNumbers}    - Department          - Salary
+\`\`\`
+
+## Advanced ER Concepts
+
+### Specialization and Generalization
+
+#### Specialization
+
+Process of defining subclasses of entity set.
+
+**Example:** EMPLOYEE specializes into MANAGER and TECHNICIAN
+
+**Inheritance:** Subclasses inherit attributes from superclass
+
+**Notation:** Triangle with "ISA" relationship
+
+#### Generalization
+
+Process of defining generalized entity from specialized entities.
+
+**Bottom-up approach:** Combine similar entities into general entity
+
+### Specialization Constraints
+
+#### Disjoint vs Overlapping
+
+**Disjoint:** Entity can belong to at most one subclass
+$Subclass_1 \\cap Subclass_2 = \\emptyset$
+
+**Overlapping:** Entity can belong to multiple subclasses
+$Subclass_1 \\cap Subclass_2 \\neq \\emptyset$
+
+#### Total vs Partial
+
+**Total:** Every superclass entity must belong to some subclass
+$Superclass = Subclass_1 \\cup Subclass_2 \\cup ... \\cup Subclass_n$
+
+**Partial:** Some superclass entities may not belong to any subclass
+
+### Aggregation
+
+Treat relationship as higher-level entity.
+
+**Use case:** When relationship needs to participate in another relationship
+
+**Example:** (STUDENT, COURSE, INSTRUCTOR) relationship aggregated to participate with PROJECT
+
+## Code Example
+
+Here's a simple ER model implementation:
+
+\`\`\`python
+class Entity:
+    def __init__(self, name, attributes, key_attributes):
+        self.name = name
+        self.attributes = attributes
+        self.key_attributes = key_attributes
+        self.is_weak = False
+    
+    def add_attribute(self, attr_name, attr_type="simple"):
+        self.attributes[attr_name] = attr_type
+    
+    def set_weak_entity(self, owner_entity, partial_key):
+        self.is_weak = True
+        self.owner_entity = owner_entity
+        self.partial_key = partial_key
+
+class Relationship:
+    def __init__(self, name, entities, cardinality):
+        self.name = name
+        self.entities = entities  # List of participating entities
+        self.cardinality = cardinality  # Dictionary of cardinalities
+        self.attributes = {}
+    
+    def add_attribute(self, attr_name):
+        self.attributes[attr_name] = True
+
+class ERModel:
+    def __init__(self):
+        self.entities = {}
+        self.relationships = {}
+    
+    def add_entity(self, entity):
+        self.entities[entity.name] = entity
+    
+    def add_relationship(self, relationship):
+        self.relationships[relationship.name] = relationship
+    
+    def validate_model(self):
+        """Validate ER model constraints"""
+        errors = []
+        
+        # Check if all entities have primary keys
+        for entity_name, entity in self.entities.items():
+            if not entity.key_attributes and not entity.is_weak:
+                errors.append(f"Entity {entity_name} has no primary key")
+        
+        # Check relationship cardinalities
+        for rel_name, rel in self.relationships.items():
+            if len(rel.entities) < 2:
+                errors.append(f"Relationship {rel_name} needs at least 2 entities")
+        
+        return errors
+
+# Example usage
+er_model = ERModel()
+
+# Create entities
+student = Entity("STUDENT", 
+                {"student_id": "simple", "name": "simple", "email": "simple"},
+                ["student_id"])
+
+course = Entity("COURSE",
+               {"course_id": "simple", "title": "simple", "credits": "simple"},
+               ["course_id"])
+
+# Create relationship
+enrollment = Relationship("ENROLLS", 
+                         [student, course], 
+                         {"STUDENT": "N", "COURSE": "M"})
+enrollment.add_attribute("grade")
+
+# Add to model
+er_model.add_entity(student)
+er_model.add_entity(course)
+er_model.add_relationship(enrollment)
+
+# Validate model
+errors = er_model.validate_model()
+print(f"Validation errors: {errors}")
+\`\`\`
+
+## ER to Relational Mapping
+
+### Mapping Rules
+
+#### Rule 1: Strong Entity Sets
+
+Each strong entity becomes a relation.
+
+**Entity:** STUDENT(StudentID, Name, Email)
+**Relation:** STUDENT(StudentID, Name, Email)
+
+#### Rule 2: Weak Entity Sets
+
+Create relation including owner's primary key.
+
+**Weak Entity:** DEPENDENT(Name, Relationship, EmployeeID)
+**Primary Key:** (EmployeeID, Name)
+
+#### Rule 3: Binary 1:1 Relationships
+
+**Option 1:** Merge relations
+**Option 2:** Foreign key approach
+**Option 3:** Cross-reference relation
+
+#### Rule 4: Binary 1:N Relationships
+
+Add foreign key to "N" side relation.
+
+**Example:** DEPARTMENT(1) ↔ EMPLOYEE(N)
+**Result:** EMPLOYEE(EmpID, Name, DeptID)
+
+#### Rule 5: Binary M:N Relationships
+
+Create separate relation with foreign keys from both entities.
+
+**Example:** STUDENT ↔ COURSE
+**Result:** ENROLLMENT(StudentID, CourseID, Grade)
+
+#### Rule 6: Multi-valued Attributes
+
+Create separate relation.
+
+**Attribute:** Employee.Skills
+**Result:** EMPLOYEE_SKILLS(EmpID, Skill)
+
+### Mapping Example
+
+**ER Model:**
+- STUDENT(StudentID, Name, {PhoneNumbers})
+- COURSE(CourseID, Title, Credits)
+- ENROLLS(Student, Course, Grade) [M:N]
+
+**Relational Schema:**
+\`\`\`sql
+STUDENT(StudentID, Name)
+STUDENT_PHONES(StudentID, PhoneNumber)  
+COURSE(CourseID, Title, Credits)
+ENROLLMENT(StudentID, CourseID, Grade)
+\`\`\`
+
+## Design Guidelines
+
+### Entity vs Attribute Decision
+
+**Use Entity when:**
+- Object has multiple attributes
+- Object participates in relationships
+- Object has independent existence
+
+**Use Attribute when:**
+- Simple property of entity
+- Not referenced by other entities
+- Atomic value
+
+### Relationship vs Entity Decision
+
+**Use Relationship when:**
+- Simple association between entities
+- No additional attributes needed
+
+**Use Entity when:**
+- Association has many attributes
+- Association participates in other relationships
+
+### Performance Considerations
+
+#### Normalization Trade-offs
+
+**Over-normalization:** Too many small relations
+**Under-normalization:** Large relations with redundancy
+
+**Optimal design balance:**
+$Design\\_Quality = f(Access\\_Patterns, Update\\_Frequency, Storage\\_Cost)$
+
+#### Index Design
+
+Consider access patterns when designing ER model:
+- Frequent join paths
+- Query selectivity
+- Update patterns
+
+## ER Model Extensions
+
+### Enhanced ER (EER) Model
+
+Adds concepts for advanced modeling:
+
+**Specialization/Generalization:** ISA hierarchies
+**Union Types:** Entity can be from multiple entity sets
+**Higher-order Relationships:** Relationships among relationships
+
+### Temporal ER Model
+
+Incorporates time dimension:
+
+**Temporal Entities:** Entities with lifespan
+**Temporal Relationships:** Relationships with time validity
+**Temporal Attributes:** Attributes that change over time
+
+---
+
+*The Entity Relationship Model provides a powerful foundation for database design, enabling clear visualization and systematic development of complex database systems!*
+
+> Mastering ER modeling is essential for creating well-structured, maintainable database designs that accurately reflect real-world requirements.
+
+`,
+        date: "2025-05-24",
+        author: "Adwait Purao",
+        insta: "https://www.instagram.com/adwaitpurao/",
+        facebook: "https://www.facebook.com/adwait.purao.1/",
+        medium: "https://medium.com/@adwait.purao",
+    },
+
+    "relational-model-functional-dependencies": {
+        title: "Relational Model and Functional Dependencies in DBMS",
+        content: `# Relational Model and Functional Dependencies in DBMS
+
+The Relational Model is the foundation of modern database systems, providing a mathematical framework for organizing and querying data. Functional Dependencies are crucial for understanding data relationships and designing efficient database schemas through normalization.
+
+## Introduction to Relational Model
+
+The Relational Model, introduced by Edgar F. Codd in 1970, represents data as relations (tables) and provides a solid mathematical foundation for database operations.
+
+### Core Concepts
+
+**Relation:** A table with rows and columns
+**Tuple:** A row in a relation
+**Attribute:** A column in a relation
+**Domain:** Set of allowable values for an attribute
+
+### Mathematical Foundation
+
+A relation $R$ is a subset of the Cartesian product of domains:
+
+$R \\subseteq D_1 \\times D_2 \\times ... \\times D_n$
+
+Where $D_i$ are domains and $n$ is the degree of relation.
+
+**Cardinality:** Number of tuples in relation
+**Degree:** Number of attributes in relation
+
+## Relational Schema
+
+### Schema Definition
+
+A **relational schema** $R(A_1, A_2, ..., A_n)$ specifies:
+- Relation name $R$
+- Set of attributes $\\{A_1, A_2, ..., A_n\\}$
+- Domain for each attribute
+
+### Database Schema
+
+Collection of relational schemas:
+$Database\\_Schema = \\{R_1, R_2, ..., R_m\\}$
+
+### Schema Instance
+
+Actual data stored in database at specific time.
+
+**Example:**
+\`\`\`
+STUDENT(StudentID, Name, Major, GPA)
+Instance:
+(101, 'Alice', 'CS', 3.8)
+(102, 'Bob', 'Math', 3.6)
+(103, 'Carol', 'CS', 3.9)
+\`\`\`
+
+## Keys in Relational Model
+
+### Superkey
+
+Set of attributes that uniquely identifies tuples.
+
+**Mathematical definition:**
+$SK$ is superkey if $\\forall t_1, t_2 \\in R: t_1 \\neq t_2 \\Rightarrow t_1[SK] \\neq t_2[SK]$
+
+### Candidate Key
+
+Minimal superkey - no proper subset is also a superkey.
+
+**Properties:**
+- **Uniqueness:** No two tuples have same key value
+- **Minimality:** No proper subset satisfies uniqueness
+
+### Primary Key
+
+Chosen candidate key for relation.
+
+**Selection criteria:**
+- Stability: Values don't change frequently
+- Simplicity: Preferably single attribute
+- Non-null: Must have value for every tuple
+
+### Foreign Key
+
+Attribute(s) referencing primary key of another relation.
+
+**Referential Integrity:** $\\forall t \\in R_1: t[FK] \\in \\pi_{PK}(R_2) \\cup \\{null\\}$
+
+## Relational Algebra
+
+### Basic Operations
+
+#### Selection (σ)
+
+Selects tuples satisfying condition.
+
+$\\sigma_{condition}(R) = \\{t \\in R : condition(t) = true\\}$
+
+**Example:** $\\sigma_{Major='CS'}(STUDENT)$
+
+#### Projection (π)
+
+Selects specified attributes.
+
+$\\pi_{A_1, A_2, ..., A_k}(R) = \\{t[A_1, A_2, ..., A_k] : t \\in R\\}$
+
+**Example:** $\\pi_{Name, GPA}(STUDENT)$
+
+#### Union (∪)
+
+Combines tuples from compatible relations.
+
+$R_1 \\cup R_2 = \\{t : t \\in R_1 \\lor t \\in R_2\\}$
+
+**Compatibility:** Same degree and compatible domains
+
+#### Intersection (∩)
+
+Common tuples from compatible relations.
+
+$R_1 \\cap R_2 = \\{t : t \\in R_1 \\land t \\in R_2\\}$
+
+#### Difference (-)
+
+Tuples in first relation but not in second.
+
+$R_1 - R_2 = \\{t : t \\in R_1 \\land t \\notin R_2\\}$
+
+#### Cartesian Product (×)
+
+All possible combinations of tuples.
+
+$R_1 \\times R_2 = \\{(t_1, t_2) : t_1 \\in R_1 \\land t_2 \\in R_2\\}$
+
+**Degree:** $degree(R_1 \\times R_2) = degree(R_1) + degree(R_2)$
+
+### Join Operations
+
+#### Natural Join (⋈)
+
+Combines relations on common attributes.
+
+$R_1 ⋈ R_2 = \\{t : \\exists t_1 \\in R_1, t_2 \\in R_2$ such that $t_1[common] = t_2[common]\\}$
+
+#### Theta Join (⋈θ)
+
+Join with specified condition.
+
+$R_1 ⋈_θ R_2 = \\sigma_θ(R_1 \\times R_2)$
+
+#### Equi Join
+
+Theta join with equality conditions only.
+
+#### Outer Join
+
+Preserves unmatched tuples.
+
+**Left Outer Join:** $R_1 ⟕ R_2$
+**Right Outer Join:** $R_1 ⟖ R_2$  
+**Full Outer Join:** $R_1 ⟗ R_2$
+
+## Functional Dependencies
+
+### Definition
+
+A functional dependency $X \\rightarrow Y$ holds in relation $R$ if:
+
+$\\forall t_1, t_2 \\in R: t_1[X] = t_2[X] \\Rightarrow t_1[Y] = t_2[Y]$
+
+**Interpretation:** X functionally determines Y
+
+### Examples
+
+In STUDENT(StudentID, Name, Major, GPA):
+- $StudentID \\rightarrow Name$
+- $StudentID \\rightarrow Major$
+- $StudentID \\rightarrow GPA$
+- $StudentID \\rightarrow \\{Name, Major, GPA\\}$
+
+### Types of Functional Dependencies
+
+#### Trivial FD
+
+$X \\rightarrow Y$ is trivial if $Y \\subseteq X$
+
+**Example:** $\\{StudentID, Name\\} \\rightarrow Name$
+
+#### Non-trivial FD
+
+$X \\rightarrow Y$ is non-trivial if $Y \\not\\subseteq X$
+
+#### Completely Non-trivial FD
+
+$X \\rightarrow Y$ is completely non-trivial if $X \\cap Y = \\emptyset$
+
+### Armstrong's Axioms
+
+Fundamental rules for functional dependencies:
+
+#### Reflexivity
+
+If $Y \\subseteq X$, then $X \\rightarrow Y$
+
+#### Augmentation
+
+If $X \\rightarrow Y$, then $XZ \\rightarrow YZ$
+
+#### Transitivity
+
+If $X \\rightarrow Y$ and $Y \\rightarrow Z$, then $X \\rightarrow Z$
+
+### Derived Rules
+
+#### Union
+
+If $X \\rightarrow Y$ and $X \\rightarrow Z$, then $X \\rightarrow YZ$
+
+#### Decomposition
+
+If $X \\rightarrow YZ$, then $X \\rightarrow Y$ and $X \\rightarrow Z$
+
+#### Pseudo-transitivity
+
+If $X \\rightarrow Y$ and $WY \\rightarrow Z$, then $WX \\rightarrow Z$
+
+## Closure and Key Finding
+
+### Attribute Closure
+
+Given set of FDs $F$ and attribute set $X$, the closure $X^+$ is:
+
+$X^+ = \\{A : X \\rightarrow A \\text{ can be derived from } F\\}$
+
+### Algorithm for Attribute Closure
+
+\`\`\`
+Input: Set of attributes X, Set of FDs F
+Output: X+
+
+1. Initialize: result = X
+2. Repeat:
+   old_result = result
+   For each FD Y → Z in F:
+     If Y ⊆ result then result = result ∪ Z
+   Until old_result = result
+3. Return result
+\`\`\`
+
+### Finding Candidate Keys
+
+**Algorithm:**
+1. Compute closure for each attribute subset
+2. If closure equals all attributes, it's a superkey
+3. If no proper subset is superkey, it's candidate key
+
+### Code Example
+
+Here's an implementation for finding attribute closure:
+
+\`\`\`python
+class FunctionalDependency:
+    def __init__(self, left, right):
+        self.left = set(left) if isinstance(left, list) else {left}
+        self.right = set(right) if isinstance(right, list) else {right}
+    
+    def __str__(self):
+        return f"{''.join(sorted(self.left))} → {''.join(sorted(self.right))}"
+
+class RelationalSchema:
+    def __init__(self, attributes, functional_dependencies):
+        self.attributes = set(attributes)
+        self.fds = functional_dependencies
+    
+    def attribute_closure(self, attribute_set):
+        """Compute closure of given attribute set"""
+        closure = set(attribute_set)
+        changed = True
+        
+        while changed:
+            changed = False
+            for fd in self.fds:
+                # If left side is subset of current closure
+                if fd.left.issubset(closure):
+                    # Add right side to closure
+                    old_size = len(closure)
+                    closure.update(fd.right)
+                    if len(closure) > old_size:
+                        changed = True
+        
+        return closure
+    
+    def is_superkey(self, attribute_set):
+        """Check if attribute set is a superkey"""
+        closure = self.attribute_closure(attribute_set)
+        return closure == self.attributes
+    
+    def find_candidate_keys(self):
+        """Find all candidate keys"""
+        candidate_keys = []
+        
+        # Generate all possible attribute subsets
+        from itertools import combinations
+        
+        for r in range(1, len(self.attributes) + 1):
+            for combo in combinations(self.attributes, r):
+                attr_set = set(combo)
+                
+                # Check if it's a superkey
+                if self.is_superkey(attr_set):
+                    # Check if it's minimal (no proper subset is superkey)
+                    is_minimal = True
+                    for subset in combinations(attr_set, len(attr_set) - 1):
+                        if self.is_superkey(set(subset)):
+                            is_minimal = False
+                            break
+                    
+                    if is_minimal:
+                        candidate_keys.append(attr_set)
+        
+        return candidate_keys
+    
+    def check_fd_validity(self, fd):
+        """Check if functional dependency holds"""
+        closure = self.attribute_closure(fd.left)
+        return fd.right.issubset(closure)
+
+# Example usage
+attributes = ['A', 'B', 'C', 'D', 'E']
+fds = [
+    FunctionalDependency('A', 'B'),
+    FunctionalDependency('B', 'C'),
+    FunctionalDependency('C', 'D'),
+    FunctionalDependency(['D', 'E'], 'A')
+]
+
+schema = RelationalSchema(attributes, fds)
+
+# Find closure of {A}
+closure_A = schema.attribute_closure({'A'})
+print(f"Closure of A: {closure_A}")
+
+# Find candidate keys
+candidate_keys = schema.find_candidate_keys()
+print(f"Candidate keys: {candidate_keys}")
+\`\`\`
+
+## Inference Rules and Closure
+
+### Closure of FD Set
+
+The closure $F^+$ of FD set $F$ is:
+
+$F^+ = \\{X \\rightarrow Y : X \\rightarrow Y \\text{ can be derived from } F\\}$
+
+### Canonical Cover
+
+Minimal set of FDs equivalent to original set.
+
+**Properties:**
+- No extraneous attributes in left side
+- No redundant FDs
+- Right side is single attribute
+
+**Algorithm:**
+1. Replace each FD $X \\rightarrow \\{A_1, A_2, ..., A_n\\}$ with $X \\rightarrow A_i$
+2. Remove extraneous attributes from left sides
+3. Remove redundant FDs
+
+### Equivalence of FD Sets
+
+Two FD sets $F$ and $G$ are equivalent if $F^+ = G^+$
+
+**Test:** $F \\equiv G$ iff every FD in $F$ can be derived from $G$ and vice versa
+
+## Normalization Process
+
+### First Normal Form (1NF)
+
+Relation is in 1NF if all attribute values are atomic.
+
+**Violations:**
+- Multi-valued attributes
+- Composite attributes
+- Nested relations
+
+### Second Normal Form (2NF)
+
+Relation is in 2NF if:
+- It's in 1NF
+- No partial dependency exists
+
+**Partial Dependency:** Non-prime attribute depends on proper subset of candidate key
+
+### Third Normal Form (3NF)
+
+Relation is in 3NF if:
+- It's in 2NF  
+- No transitive dependency exists
+
+**Transitive Dependency:** $X \\rightarrow Y$, $Y \\rightarrow Z$, and $Y$ is not candidate key
+
+**Alternative definition:** For every FD $X \\rightarrow A$:
+- $A \\in X$ (trivial), or
+- $X$ is superkey, or  
+- $A$ is prime attribute
+
+### Boyce-Codd Normal Form (BCNF)
+
+Relation is in BCNF if for every FD $X \\rightarrow Y$:
+- $Y \\subseteq X$ (trivial), or
+- $X$ is superkey
+
+**BCNF is stronger than 3NF**
+
+## Decomposition
+
+### Lossless Decomposition
+
+Decomposition $R = R_1 \\cup R_2$ is lossless if:
+
+$R = R_1 ⋈ R_2$
+
+**Test:** $(R_1 \\cap R_2) \\rightarrow R_1$ or $(R_1 \\cap R_2) \\rightarrow R_2$
+
+### Dependency Preservation
+
+Decomposition preserves dependencies if:
+
+$(F_1 \\cup F_2 \\cup ... \\cup F_n)^+ = F^+$
+
+Where $F_i$ are FDs that apply to $R_i$
+
+### Decomposition Algorithms
+
+#### 3NF Decomposition
+
+**Algorithm:**
+1. Find canonical cover of F
+2. For each FD $X \\rightarrow A$ in canonical cover, create relation $R_i(XA)$
+3. If no relation contains candidate key, add relation with candidate key
+4. Remove redundant relations
+
+#### BCNF Decomposition
+
+**Algorithm:**
+1. If relation is in BCNF, stop
+2. Find violating FD $X \\rightarrow Y$
+3. Decompose into $R_1(X^+)$ and $R_2(R - X^+ + X)$
+4. Recursively apply to both relations
+
+## Multi-Valued Dependencies
+
+### Definition
+
+Multi-valued dependency $X \\rightarrow\\rightarrow Y$ holds if:
+
+For tuples with same X value, Y values are independent of other attributes.
+
+**Mathematical definition:**
+$\\forall t_1, t_2 \\in R: t_1[X] = t_2[X] \\Rightarrow \\exists t_3, t_4 \\in R$ such that:
+- $t_3[X] = t_4[X] = t_1[X] = t_2[X]$
+- $t_3[Y] = t_1[Y]$ and $t_3[Z] = t_2[Z]$
+- $t_4[Y] = t_2[Y]$ and $t_4[Z] = t_1[Z]$
+
+### Fourth Normal Form (4NF)
+
+Relation is in 4NF if for every MVD $X \\rightarrow\\rightarrow Y$:
+- $Y \\subseteq X$ or $X \\cup Y = R$ (trivial), or
+- $X$ is superkey
+
+## Performance Implications
+
+### Query Optimization
+
+**Join Cost:** $Cost(R_1 ⋈ R_2) = |R_1| \\times |R_2| \\times selectivity$
+
+**Index Usage:** FDs help determine useful indexes
+
+### Storage Efficiency
+
+**Normalization Trade-offs:**
+- Higher normalization: Less redundancy, more joins
+- Lower normalization: More redundancy, fewer joins
+
+**Optimal design:** Balance based on access patterns
+
+---
+
+*The Relational Model and Functional Dependencies provide the theoretical foundation for designing efficient, consistent, and maintainable database systems!*
+
+> Understanding these concepts is crucial for database designers to create schemas that minimize redundancy while maintaining data integrity and query performance.
+
+`,
+        date: "2025-06-24",
+        author: "Adwait Purao",
+        insta: "https://www.instagram.com/adwaitpurao/",
+        facebook: "https://www.facebook.com/adwait.purao.1/",
+        medium: "https://medium.com/@adwait.purao",
     }
 
 
