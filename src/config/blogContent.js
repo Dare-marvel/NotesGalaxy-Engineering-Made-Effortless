@@ -1076,7 +1076,7 @@ Thread pool efficiency can be measured as:
 $Efficiency = \\frac{Useful\\_Work\\_Time}{Total\\_Thread\\_Time}$
 
 The queue length optimization:
-$Queue\\_Length_{optimal} = \\lambda \\times Service\\_Time$
+$Queue\\_Length\\_{optimal} = \\lambda \\times Service\\_Time$
 
 Where $\\lambda$ is the arrival rate of tasks.
 
@@ -1094,7 +1094,7 @@ Thread-local variables eliminate synchronization overhead:
 $Access\\_Time_{TLS} = O(1)$ with no synchronization cost
 
 The memory overhead:
-$TLS\\_Overhead = N_{threads} \\times TLS\\_Size_{per\\_thread}$
+$TLS\\_Overhead = N\\_{threads} \\times TLS\\_Size\\_{per\\_thread}$
 
 ---
 
