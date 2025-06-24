@@ -1428,7 +1428,7 @@ Process scheduling is the heart of multitasking operating systems, determining w
 
 Process scheduling is the method by which the operating system decides which process in the ready queue gets the CPU next. The scheduling decision can be modeled as:
 
-$Schedule_{decision} = f(Process_{state}, Priority, Arrival_{time}, Burst_{time})$
+$Schedule\\_{decision} = f(Process\\_{state}, Priority, Arrival\\_{time}, Burst\\_{time})$
 
 The primary goal is to optimize system performance metrics while maintaining fairness.
 
@@ -1797,14 +1797,14 @@ $\\sum_{i=1}^{n} \\frac{C_i}{T_i} \\leq n(2^{1/n} - 1)$
 ### Load Balancing
 
 Load balancing efficiency:
-$Balance_{factor} = 1 - \\frac{\\sigma_{load}}{\\mu_{load}}$
+$Balance\\_{factor} = 1 - \\frac{\\sigma_{load}}{\\mu_{load}}$
 
 Where $\\sigma_{load}$ is standard deviation and $\\mu_{load}$ is mean load.
 
 ### Processor Affinity
 
 Cache affinity benefit:
-$Affinity\\_{benefit} = Cache_{hit\\_rate} \\times Cache\\_{access\_time\_saved}$
+$Affinity\\_{benefit} = Cache\\_{hit\\_rate} \\times Cache\\_{access\\_time\\_saved}$
 
 ### Gang Scheduling
 
