@@ -4057,9 +4057,1068 @@ class Subject {
         medium: "https://medium.com/@adwait.purao",
     },
 
+    "instruction-set-addressing-modes": {
+        title: "Computer Instruction Set and Addressing Modes",
+        content: `# Computer Instruction Set and Addressing Modes
+
+Understanding instruction sets and addressing modes is fundamental to computer architecture. These concepts determine how processors execute programs and access data efficiently.
+
+## Introduction to Instruction Sets
+
+An **instruction set architecture (ISA)** defines the interface between software and hardware. It specifies the instructions a processor can execute, their formats, and how they interact with memory and registers.
+
+### Types of Instructions
+
+Instructions can be categorized into several types:
+
+- **Data Transfer Instructions**: Move data between registers, memory, and I/O devices
+- **Arithmetic Instructions**: Perform mathematical operations like $ADD$, $SUB$, $MUL$
+- **Logic Instructions**: Execute bitwise operations such as $AND$, $OR$, $XOR$
+- **Control Instructions**: Alter program flow using $JMP$, $CALL$, $RET$
+
+## Addressing Modes
+
+Addressing modes specify how operands are accessed in instructions. The effective address calculation varies based on the mode used.
+
+### Immediate Addressing
+
+The operand is part of the instruction itself:
+
+$LOAD\\_IMM\\_R1, \\#100$
+
+Here, the value 100 is directly loaded into register R1. The effective address calculation is:
+$EA = Operand\\_Value$
+
+### Direct Addressing
+
+The instruction contains the memory address of the operand:
+
+$LOAD\\_DIR\\_R1, 500$
+
+This loads the content from memory location 500 into R1:
+$EA = Address\\_Field$
+
+### Register Addressing
+
+The operand is in a processor register:
+
+$ADD\\_R1, R2$
+
+This adds the contents of R2 to R1. No memory access is required, making it the fastest addressing mode.
+
+### Indirect Addressing
+
+The instruction specifies a register or memory location that contains the address of the operand:
+
+$LOAD\\_IND\\_R1, (R2)$
+
+The effective address is: $EA = Contents(R2)$
+
+### Indexed Addressing
+
+Combines a base address with an index value:
+
+$LOAD\\_R1, 100(R2)$
+
+The effective address calculation: $EA = Base\\_Address + Index\\_Register$
+
+This is particularly useful for array operations where R2 might contain the array index.
+
+### Base-Plus-Index Addressing
+
+Uses both base and index registers:
+
+$LOAD\\_R1, (R2 + R3)$
+
+Effective address: $EA = Base\\_Register + Index\\_Register$
+
+## Code Example
+
+Here's an assembly program demonstrating different addressing modes:
+
+\`\`\`assembly
+; Immediate addressing
+MOV AX, #50          ; Load immediate value 50 into AX
+
+; Direct addressing  
+MOV BX, [200]        ; Load content from memory address 200
+
+; Register addressing
+ADD AX, BX           ; Add BX to AX
+
+; Indirect addressing
+MOV CX, [BX]         ; Load content from address stored in BX
+
+; Indexed addressing
+MOV DX, 100[SI]      ; Load from address (100 + SI)
+
+; Base-plus-index
+MOV AX, [BX+SI]      ; Load from address (BX + SI)
+\`\`\`
+
+## Performance Comparison
+
+| Addressing Mode | Memory Accesses | Speed | Use Case |
+|----------------|----------------|-------|----------|
+| Immediate | 0 | Fastest | Constants |
+| Register | 0 | Fastest | Temporary values |
+| Direct | 1 | Fast | Global variables |
+| Indirect | 2 | Slow | Pointers |
+| Indexed | 1 | Medium | Arrays |
+
+## Advanced Addressing Modes
+
+### Auto-increment/Auto-decrement
+
+Useful for stack operations and array traversal:
+
+$PUSH\\_R1 \\equiv MOV\\_[--SP], R1$
+$POP\\_R1 \\equiv MOV\\_R1, [SP++]$
+
+### Relative Addressing
+
+Used in branch instructions for position-independent code:
+
+$Branch\\_Address = PC + Displacement$
+
+Where PC is the program counter and displacement is a signed offset.
+
+## Design Considerations
+
+### Instruction Encoding
+
+The number of addressing modes affects instruction encoding. With $n$ addressing modes, you need $\\lceil \\log_2 n \\rceil$ bits in the instruction format.
+
+### Memory Hierarchy Impact
+
+Different addressing modes have varying impacts on cache performance:
+- Register addressing: No cache impact
+- Direct addressing: Single cache access
+- Indirect addressing: Multiple cache accesses
+
+---
+
+*Mastering addressing modes is crucial for writing efficient assembly code and understanding processor behavior!*
+
+> Understanding these concepts helps in optimizing code performance and designing efficient computer architectures.
+
+`,
+        date: "2024-06-04",
+        author: "Adwait Purao",
+        insta: "https://www.instagram.com/adwaitpurao/",
+        facebook: "https://www.facebook.com/adwait.purao.1/",
+        medium: "https://medium.com/@adwait.purao",
+    },
+
+    "instruction-design-format": {
+        title: "Instruction Design and Format in Computer Architecture",
+        content: `# Instruction Design and Format in Computer Architecture
+
+Instruction design and format are critical aspects of computer architecture that determine how efficiently a processor can execute programs. The design choices impact performance, code density, and implementation complexity.
+
+## Introduction to Instruction Format
+
+An instruction format defines the layout of bits within an instruction word. It specifies how the processor interprets the binary representation to determine the operation, operands, and addressing modes.
+
+### Basic Components
+
+Every instruction contains several key fields:
+
+- **Opcode**: Specifies the operation to be performed
+- **Operand Fields**: Identify the data or locations involved
+- **Addressing Mode**: Indicates how operands are accessed
+- **Condition Codes**: For conditional execution
+
+## Types of Instruction Formats
+
+### Fixed-Length Instructions
+
+All instructions have the same bit width, typically 32 or 64 bits.
+
+**Advantages:**
+- Simple instruction fetch and decode
+- Easy pipeline implementation
+- Predictable instruction boundaries
+
+**Example MIPS 32-bit format:**
+
+$\\begin{array}{|c|c|c|c|c|c|}
+\\hline
+Opcode & Rs & Rt & Rd & Shamt & Function \\\\
+\\hline
+6\\text{ bits} & 5\\text{ bits} & 5\\text{ bits} & 5\\text{ bits} & 5\\text{ bits} & 6\\text{ bits} \\\\
+\\hline
+\\end{array}$
+
+### Variable-Length Instructions
+
+Instructions can have different lengths, typically ranging from 1 to 15 bytes.
+
+**Example x86 instruction encoding:**
+- 1-byte instructions: $NOP$, $RET$
+- 2-byte instructions: $MOV\\_AX, BX$
+- Multi-byte instructions: $MOV\\_EAX, [EBX + ECX*4 + 100]$
+
+## Instruction Format Design Considerations
+
+### Opcode Allocation
+
+The number of bits allocated to the opcode determines the maximum number of different operations:
+
+$Maximum\\_Operations = 2^{Opcode\\_Bits}$
+
+For efficient encoding, frequently used instructions should have shorter opcodes.
+
+### Register Specification
+
+With $n$ registers, each register field requires $\\lceil \\log_2 n \\rceil$ bits.
+
+For 32 registers: $\\lceil \\log_2 32 \\rceil = 5$ bits per register field.
+
+### Immediate Field Size
+
+The immediate field size limits the range of constant values:
+
+For an $n$-bit immediate field:
+- Unsigned range: $0$ to $2^n - 1$
+- Signed range: $-2^{n-1}$ to $2^{n-1} - 1$
+
+## Common Instruction Formats
+
+### R-Type (Register Type)
+
+Used for register-to-register operations:
+
+$\\begin{array}{|c|c|c|c|c|c|}
+\\hline
+Opcode & Rs & Rt & Rd & Shamt & Funct \\\\
+\\hline
+6 & 5 & 5 & 5 & 5 & 6 \\\\
+\\hline
+\\end{array}$
+
+Example: $ADD\\_R3, R1, R2$ performs $R3 = R1 + R2$
+
+### I-Type (Immediate Type)
+
+Contains an immediate value or memory address:
+
+$\\begin{array}{|c|c|c|c|}
+\\hline
+Opcode & Rs & Rt & Immediate \\\\
+\\hline
+6 & 5 & 5 & 16 \\\\
+\\hline
+\\end{array}$
+
+Example: $ADDI\\_R2, R1, 100$ performs $R2 = R1 + 100$
+
+### J-Type (Jump Type)
+
+Used for jump instructions with large address fields:
+
+$\\begin{array}{|c|c|}
+\\hline
+Opcode & Address \\\\
+\\hline
+6 & 26 \\\\
+\\hline
+\\end{array}$
+
+## Expanding Opcodes
+
+When the number of operations exceeds the basic opcode space, expanding opcodes are used.
+
+### Two-Level Opcode Structure
+
+\`\`\`
+Primary Opcode (4 bits):
+0000-1110: Single operations (15 operations)
+1111: Extended opcode indicator
+
+When primary = 1111:
+Secondary Opcode (4 bits): Additional 16 operations
+\`\`\`
+
+This provides: $15 + 16 = 31$ total operations using 4+4 bits selectively.
+
+### Mathematical Analysis
+
+For a 16-bit instruction with expanding opcodes:
+
+If we reserve $k$ primary opcodes for extension:
+- Single-format operations: $2^n - k$
+- Extended operations: $k \\times 2^m$
+
+Where $n$ is primary opcode bits and $m$ is secondary opcode bits.
+
+Total operations: $(2^n - k) + k \\times 2^m$
+
+## Instruction Encoding Examples
+
+### RISC-V Instruction Formats
+
+RISC-V uses multiple 32-bit instruction formats:
+
+**R-type arithmetic:**
+$\\begin{array}{|c|c|c|c|c|c|c|}
+\\hline
+funct7 & rs2 & rs1 & funct3 & rd & opcode \\\\
+\\hline
+7 & 5 & 5 & 3 & 5 & 7 \\\\
+\\hline
+\\end{array}$
+
+**I-type immediate:**
+$\\begin{array}{|c|c|c|c|c|}
+\\hline
+imm[11:0] & rs1 & funct3 & rd & opcode \\\\
+\\hline
+12 & 5 & 3 & 5 & 7 \\\\
+\\hline
+\\end{array}$
+
+### Code Example
+
+Here's how different operations map to instruction formats:
+
+\`\`\`assembly
+# R-type: ADD rd, rs1, rs2
+add x3, x1, x2    # x3 = x1 + x2
+# Encoding: 0000000 00010 00001 000 00011 0110011
+
+# I-type: ADDI rd, rs1, immediate  
+addi x2, x1, 100  # x2 = x1 + 100
+# Encoding: 000001100100 00001 000 00010 0010011
+
+# S-type: SW rs2, offset(rs1)
+sw x2, 8(x1)      # Memory[x1+8] = x2
+# Encoding: 0000000 00010 00001 010 01000 0100011
+\`\`\`
+
+## Design Trade-offs
+
+### Code Density vs. Performance
+
+| Aspect | Fixed-Length | Variable-Length |
+|--------|-------------|----------------|
+| Code Size | Larger | Smaller |
+| Decode Complexity | Simple | Complex |
+| Pipeline Efficiency | High | Lower |
+| Instruction Cache | Less efficient | More efficient |
+
+### Optimization Strategies
+
+**Huffman-like Encoding:**
+Assign shorter opcodes to frequent operations:
+
+$Frequency(ADD) > Frequency(MULTIPLY)$
+
+Therefore: $Opcode\\_Length(ADD) < Opcode\\_Length(MULTIPLY)$
+
+**Alignment Considerations:**
+Instructions should align to natural boundaries:
+- 32-bit instructions: 4-byte alignment
+- 64-bit instructions: 8-byte alignment
+
+This ensures: $PC \\bmod Instruction\\_Width = 0$
+
+## Modern Instruction Set Trends
+
+### Compressed Instructions
+
+RISC-V C extension uses 16-bit compressed instructions for common operations:
+
+$C.ADD\\_rd', rs2' \\rightarrow ADD\\_rd, rd, rs2$
+
+This achieves better code density while maintaining RISC principles.
+
+### Predicated Execution
+
+Some architectures include predicate fields in instructions:
+
+$\\begin{array}{|c|c|c|}
+\\hline
+Predicate & Opcode & Operands \\\\
+\\hline
+4 & 6 & 22 \\\\
+\\hline
+\\end{array}$
+
+The instruction executes only if the predicate condition is true.
+
+---
+
+*Effective instruction design balances performance, complexity, and code density to create efficient processor architectures!*
+
+> Understanding instruction formats is essential for compiler design, assembly programming, and processor implementation.
+
+`,
+        date: "2024-06-04",
+        author: "Adwait Purao",
+        insta: "https://www.instagram.com/adwaitpurao/",
+        facebook: "https://www.facebook.com/adwait.purao.1/",
+        medium: "https://medium.com/@adwait.purao",
+    },
+
+    "computer-arithmetic": {
+        title: "Computer Arithmetic in Computer Architecture",
+        content: `# Computer Arithmetic in Computer Architecture
+
+Computer arithmetic forms the foundation of all computational operations in digital systems. Understanding how numbers are represented and manipulated is crucial for designing efficient processors and optimizing performance.
+
+## Introduction to Number Representation
+
+Computers use binary representation to store and process numerical data. The choice of representation affects the range, precision, and complexity of arithmetic operations.
+
+### Binary Number System
+
+In binary, each digit represents a power of 2:
+
+$N = \\sum_{i=0}^{n-1} b_i \\times 2^i$
+
+Where $b_i \\in \\{0, 1\\}$ are the binary digits.
+
+For example: $1011_2 = 1 \\times 2^3 + 0 \\times 2^2 + 1 \\times 2^1 + 1 \\times 2^0 = 11_{10}$
+
+## Integer Representation
+
+### Unsigned Integers
+
+For an n-bit unsigned integer, the range is $[0, 2^n - 1]$.
+
+### Signed Integer Representations
+
+#### Sign-Magnitude
+
+The most significant bit represents the sign:
+- $0$: positive number
+- $1$: negative number
+
+Range: $[-(2^{n-1} - 1), +(2^{n-1} - 1)]$
+
+#### Two's Complement
+
+Most widely used signed representation. For an n-bit number:
+
+$N = -b_{n-1} \\times 2^{n-1} + \\sum_{i=0}^{n-2} b_i \\times 2^i$
+
+Range: $[-2^{n-1}, 2^{n-1} - 1]$
+
+**Two's complement calculation:**
+1. Invert all bits (one's complement)
+2. Add 1 to the result
+
+Example: $-5$ in 4-bit two's complement:
+- $5 = 0101_2$
+- One's complement: $1010_2$
+- Add 1: $1010_2 + 1 = 1011_2$
+
+## Binary Addition and Subtraction
+
+### Addition Algorithm
+
+Binary addition follows these rules:
+- $0 + 0 = 0$
+- $0 + 1 = 1$
+- $1 + 0 = 1$
+- $1 + 1 = 10_2$ (0 with carry 1)
+
+### Overflow Detection
+
+For n-bit two's complement addition:
+
+**Overflow occurs when:**
+- Adding two positive numbers yields a negative result
+- Adding two negative numbers yields a positive result
+
+Mathematical condition: $C_{n-1} \\oplus C_n = 1$
+
+Where $C_{n-1}$ is carry into MSB and $C_n$ is carry out of MSB.
+
+### Subtraction
+
+Subtraction $A - B$ is performed as $A + (-B)$ using two's complement.
+
+## Binary Multiplication
+
+### Unsigned Multiplication
+
+**Shift-and-Add Algorithm:**
+
+\`\`\`
+Product = 0
+For i = 0 to n-1:
+    If Multiplier[i] == 1:
+        Product += Multiplicand << i
+\`\`\`
+
+### Booth's Algorithm
+
+Efficient method for signed multiplication that reduces the number of additions:
+
+**Booth Recoding Rules:**
+- $00$ or $11$: No operation
+- $01$: Add multiplicand
+- $10$: Subtract multiplicand
+
+Example multiplication: $6 \\times (-4)$ using 4-bit representation:
+
+$6 = 0110_2$, $-4 = 1100_2$
+
+Booth recoding of $-4$: $1100_2 \\rightarrow$ operations based on bit transitions.
+
+### Multiplication Hardware
+
+**Array Multiplier:**
+Uses $n \\times n$ AND gates and $(n-1)$ full adders for n-bit multiplication.
+
+**Wallace Tree Multiplier:**
+Reduces partial products using carry-save adders, achieving $O(\\log n)$ delay.
+
+## Binary Division
+
+### Restoring Division Algorithm
+
+\`\`\`
+1. Initialize: Quotient = 0, Remainder = Dividend
+2. For each bit position:
+   - Shift remainder left
+   - Subtract divisor from remainder
+   - If result ≥ 0: Set quotient bit to 1
+   - If result < 0: Restore remainder, set quotient bit to 0
+\`\`\`
+
+### Non-Restoring Division
+
+More efficient as it avoids the restoration step:
+
+\`\`\`
+If remainder ≥ 0: 
+    Remainder = 2×Remainder - Divisor
+Else: 
+    Remainder = 2×Remainder + Divisor
+\`\`\`
+
+The quotient bit is determined by the sign of the remainder.
+
+## Floating-Point Arithmetic
+
+### IEEE 754 Standard
+
+**Single Precision (32-bit):**
+
+$\\begin{array}{|c|c|c|}
+\\hline
+Sign & Exponent & Mantissa \\\\
+\\hline
+1\\text{ bit} & 8\\text{ bits} & 23\\text{ bits} \\\\
+\\hline
+\\end{array}$
+
+**Value representation:**
+$(-1)^S \\times (1.M) \\times 2^{E-127}$
+
+Where:
+- $S$ = sign bit
+- $E$ = biased exponent
+- $M$ = mantissa (fractional part)
+
+### Floating-Point Addition
+
+**Algorithm steps:**
+1. **Alignment:** Shift mantissa of smaller number
+2. **Addition:** Add/subtract aligned mantissas
+3. **Normalization:** Adjust result to proper form
+4. **Rounding:** Apply rounding rules
+
+Example: $1.5 + 2.75$
+
+$1.5 = 1.100_2 \\times 2^0$
+$2.75 = 1.011_2 \\times 2^1$
+
+After alignment: $0.110_2 + 1.011_2 = 10.001_2$
+Normalized: $1.0001_2 \\times 2^1 = 4.25$
+
+### Floating-Point Multiplication
+
+$$(S_1, E_1, M_1) \\times (S_2, E_2, M_2) = (S_1 \\oplus S_2, E_1 + E_2 - 127, M_1 \\times M_2)$$
+
+**Steps:**
+1. XOR signs: $S_{result} = S_1 \\oplus S_2$
+2. Add exponents: $E_{result} = E_1 + E_2 - 127$
+3. Multiply mantissas: $M_{result} = (1.M_1) \\times (1.M_2)$
+4. Normalize and round the result
+
+## Code Example
+
+Here's a simple implementation of binary addition with overflow detection:
+
+\`\`\`c
+#include <stdio.h>
+#include <stdbool.h>
+
+typedef struct {
+    int result;
+    bool overflow;
+    bool carry;
+} ArithmeticResult;
+
+ArithmeticResult binary_add(int a, int b, int bits) {
+    ArithmeticResult res;
     
+    // Perform addition
+    long long temp = (long long)a + b;
+    res.result = temp & ((1LL << bits) - 1);
+    
+    // Check for carry out
+    res.carry = (temp >> bits) & 1;
+    
+    // Check for overflow (two's complement)
+    int sign_a = (a >> (bits - 1)) & 1;
+    int sign_b = (b >> (bits - 1)) & 1;
+    int sign_result = (res.result >> (bits - 1)) & 1;
+    
+    res.overflow = (sign_a == sign_b) && (sign_a != sign_result);
+    
+    return res;
+}
 
+// Example usage
+int main() {
+    ArithmeticResult result = binary_add(127, 1, 8); // 8-bit addition
+    printf("Result: %d, Overflow: %s\\n", 
+           result.result, result.overflow ? "Yes" : "No");
+    return 0;
+}
+\`\`\`
 
+## BCD Arithmetic
+
+**Binary Coded Decimal (BCD)** represents each decimal digit using 4 bits.
+
+### BCD Addition
+
+After binary addition of BCD digits:
+- If result $> 9$ or carry generated: Add 6 for correction
+
+Example: $8 + 5$ in BCD
+- $1000_2 + 0101_2 = 1101_2 = 13$
+- Since $13 > 9$: $1101_2 + 0110_2 = 0011_2$ with carry
+- Result: $13_{10} = 0001\\_0011_{BCD}$
+
+## Performance Considerations
+
+### Arithmetic Unit Design Trade-offs
+
+| Algorithm | Area | Speed | Power |
+|-----------|------|-------|-------|
+| Ripple Carry | Small | Slow | Low |
+| Carry Lookahead | Large | Fast | High |
+| Carry Select | Medium | Fast | Medium |
+| Wallace Tree | Large | Very Fast | High |
+
+### Pipelining Arithmetic Operations
+
+**Multiplication Pipeline:**
+1. **Stage 1:** Booth encoding
+2. **Stage 2:** Partial product generation
+3. **Stage 3:** Partial product reduction
+4. **Stage 4:** Final addition
+
+Pipeline throughput: $\\frac{1}{max(Stage\\_Delay)}$
+
+## Special Cases and Exceptions
+
+### Floating-Point Special Values
+
+- **Zero:** $E = 0$, $M = 0$
+- **Infinity:** $E = 255$, $M = 0$
+- **NaN:** $E = 255$, $M \\neq 0$
+- **Denormalized:** $E = 0$, $M \\neq 0$
+
+### Exception Handling
+
+Common arithmetic exceptions:
+- **Overflow:** Result exceeds representable range
+- **Underflow:** Result too small for representation
+- **Division by zero:** Undefined operation
+- **Invalid operation:** $\\sqrt{-1}$, $0/0$
+
+---
+
+*Computer arithmetic is the heart of digital computation, enabling everything from simple calculations to complex scientific simulations!*
+
+> Mastering these concepts is essential for understanding processor design and optimizing computational performance.
+
+`,
+        date: "2024-06-04",
+        author: "Adwait Purao",
+        insta: "https://www.instagram.com/adwaitpurao/",
+        facebook: "https://www.facebook.com/adwait.purao.1/",
+        medium: "https://medium.com/@adwait.purao",
+    },
+
+    "microprogrammed-control": {
+        title: "Microprogrammed Control in Computer Architecture",
+        content: `# Microprogrammed Control in Computer Architecture
+
+Microprogrammed control is a systematic approach to designing control units in processors. It provides flexibility and simplicity in implementing complex instruction sets by using stored microinstructions to control hardware operations.
+
+## Introduction to Control Unit Design
+
+The control unit generates control signals that coordinate the operation of all processor components. There are two main approaches:
+
+- **Hardwired Control:** Logic circuits generate control signals
+- **Microprogrammed Control:** Stored microprogram generates control signals
+
+### Why Microprogrammed Control?
+
+**Advantages:**
+- Easier to design and modify
+- Supports complex instruction sets
+- Systematic debugging and testing
+- Facilitates instruction set extensions
+
+## Basic Concepts
+
+### Microinstruction
+
+A microinstruction is a low-level instruction that directly controls hardware components. Each microinstruction specifies:
+
+- **Control signals:** Enable/disable various hardware units
+- **Next address:** Location of next microinstruction
+- **Conditional fields:** Branch conditions
+
+### Microprogram
+
+A microprogram is a sequence of microinstructions that implements a machine instruction.
+
+Example: $ADD\\_R1, R2, R3$ might require microprogram:
+1. Read R2 contents
+2. Read R3 contents  
+3. Send to ALU for addition
+4. Write result to R1
+
+## Microinstruction Format
+
+### Horizontal Microinstruction
+
+Each bit directly controls a specific hardware signal.
+
+$\\begin{array}{|c|c|c|c|c|c|}
+\\hline
+ALU\\_OP & REG\\_EN & MEM\\_RD & MEM\\_WR & NEXT\\_ADDR & BRANCH \\\\
+\\hline
+4\\text{ bits} & 8\\text{ bits} & 1\\text{ bit} & 1\\text{ bit} & 10\\text{ bits} & 2\\text{ bits} \\\\
+\\hline
+\\end{array}$
+
+**Characteristics:**
+- Direct hardware control
+- Fast execution
+- Large microinstruction width
+- Limited encoding
+
+### Vertical Microinstruction
+
+Uses encoded fields that require decoding.
+
+$\\begin{array}{|c|c|c|c|}
+\\hline
+OPERATION & SOURCE & DEST & NEXT\\_ADDR \\\\
+\\hline
+6\\text{ bits} & 5\\text{ bits} & 5\\text{ bits} & 10\\text{ bits} \\\\
+\\hline
+\\end{array}$
+
+**Characteristics:**
+- Compact representation
+- Requires decoding logic
+- Slower than horizontal
+- More flexible encoding
+
+## Microprogram Sequencing
+
+### Next Address Generation
+
+The next microinstruction address can be determined by:
+
+**Direct Addressing:**
+$Next\\_Address = NEXT\\_ADDR\\_Field$
+
+**Conditional Branching:**
+$Next\\_Address = \\begin{cases}
+NEXT\\_ADDR\\_Field & \\text{if condition true} \\\\
+Current\\_Address + 1 & \\text{if condition false}
+\\end{cases}$
+
+**Mapping Function:**
+$Microprogram\\_Address = Base\\_Address + f(Opcode)$
+
+Where $f(Opcode)$ is a mapping function.
+
+### Branch Control
+
+Common branching mechanisms:
+
+#### Two-Way Branch
+\`\`\`
+IF condition THEN
+    Next_Address = Branch_Target
+ELSE  
+    Next_Address = Sequential_Address
+\`\`\`
+
+#### Multi-Way Branch
+Based on condition codes or instruction opcode:
+
+$Next\\_Address = Base + \\sum_{i=0}^{n-1} Condition_i \\times 2^i$
+
+## Microprogram Control Unit Architecture
+
+### Basic Components
+
+**Microprogram Memory:**
+- Stores microinstructions
+- Typically ROM or fast RAM
+- Size: $2^{address\\_width} \\times microinstruction\\_width$
+
+**Microprogram Counter (μPC):**
+- Points to current microinstruction
+- Updated based on sequencing logic
+
+**Microinstruction Register (μIR):**
+- Holds current microinstruction
+- Provides control signals to datapath
+
+### Control Unit Block Diagram
+
+\`\`\`
+Instruction Register (IR)
+         |
+    [Mapping Logic]
+         |
+Microprogram Counter (μPC) ──┐
+         |                   │
+    [Microprogram Memory]    │
+         |                   │
+Microinstruction Register    │
+         |                   │
+    [Control Signals] ───────┘
+         |
+    [Processor Datapath]
+\`\`\`
+
+## Microprogram Implementation Example
+
+### Simple ADD Instruction
+
+Machine instruction: $ADD\\_R1, R2, R3$
+
+**Microprogram sequence:**
+
+\`\`\`assembly
+μ1: MAR ← PC                    ; Load address
+μ2: MDR ← Memory[MAR], PC ← PC+1 ; Fetch instruction  
+μ3: IR ← MDR                    ; Decode instruction
+μ4: A ← R[R2]                   ; Read first operand
+μ5: B ← R[R3]                   ; Read second operand
+μ6: ALU ← A + B                 ; Perform addition
+μ7: R[R1] ← ALU                 ; Store result
+μ8: GOTO μ1                     ; Fetch next instruction
+\`\`\`
+
+### Microinstruction Encoding
+
+For microinstruction μ6 (ALU ← A + B):
+
+**Horizontal format:**
+$\\begin{array}{|c|c|c|c|c|}
+\\hline
+1010 & 00110000 & 0 & 0 & 0000000111 \\\\
+\\hline
+\\text{ADD} & \\text{A,B→ALU} & \\text{No} & \\text{No} & \\text{Next=μ7} \\\\
+\\hline
+\\end{array}$
+
+## Addressing Modes in Microprogramming
+
+### Subroutine Linkage
+
+Microprogram subroutines enable code reuse:
+
+\`\`\`
+CALL microsubroutine:
+    μStack[μSP] ← μPC + 1
+    μSP ← μSP + 1  
+    μPC ← subroutine_address
+
+RETURN from microsubroutine:
+    μSP ← μSP - 1
+    μPC ← μStack[μSP]
+\`\`\`
+
+### Loop Control
+
+Implement loops using microprogram counters:
+
+\`\`\`
+μ1: Counter ← n              ; Initialize loop
+μ2: [Loop body operations]
+μ3: Counter ← Counter - 1    ; Decrement  
+μ4: If Counter ≠ 0 GOTO μ2  ; Continue loop
+μ5: [Next instruction]       ; Exit loop
+\`\`\`
+
+## Performance Analysis
+
+### Execution Time
+
+Total execution time for an instruction:
+
+$T_{total} = T_{fetch} + n \\times T_{micro}$
+
+Where:
+- $T_{fetch}$ = Instruction fetch time
+- $n$ = Number of microinstructions
+- $T_{micro}$ = Microinstruction execution time
+
+### Microprogram Memory Requirements
+
+For a processor with:
+- $I$ instructions
+- Average $M$ microinstructions per instruction
+- $W$ bits per microinstruction
+
+Memory requirement: $I \\times M \\times W$ bits
+
+### Optimization Techniques
+
+**Microinstruction Compaction:**
+Reduce microprogram size by:
+- Eliminating redundant microinstructions
+- Using subroutines for common sequences
+- Optimizing branch targets
+
+**Pipeline Overlapping:**
+$T_{overlapped} = T_{micro} + (n-1) \\times T_{pipeline\\_stage}$
+
+## Advanced Microprogramming Concepts
+
+### Writable Control Store
+
+Allows dynamic microprogram modification:
+
+**Applications:**
+- Instruction set emulation
+- System reconfiguration
+- Error correction
+
+**Implementation:**
+RAM-based microprogram memory with write capability.
+
+### Nanoprogramming
+
+Two-level control for extreme optimization:
+
+**Structure:**
+- Microinstructions point to nanoinstruction sequences
+- Nanoinstructions directly control hardware
+
+**Benefits:**
+- Reduced microprogram memory
+- Increased control flexibility
+
+### Microprogram Debugging
+
+**Techniques:**
+- Microprogram trace facilities
+- Breakpoint insertion
+- Single-step execution
+
+**Debug microinstruction format:**
+$\\begin{array}{|c|c|c|}
+\\hline
+Normal\\_Control & Debug\\_Enable & Trace\\_Info \\\\
+\\hline
+20\\text{ bits} & 1\\text{ bit} & 3\\text{ bits} \\\\
+\\hline
+\\end{array}$
+
+## Code Example
+
+Here's a microassembler syntax for a simple processor:
+
+\`\`\`microasm
+; Microprogram for LOAD instruction
+; Format: LOAD Rd, address
+
+LOAD_START:
+    MAR := PC;                          ; μ1: Load PC to MAR
+    MEM_READ, PC := PC + 1, GOTO μ2;   ; μ2: Read instruction
+    
+    IR := MDR, GOTO DECODE;            ; μ3: Store in IR
+    
+DECODE:
+    IF OPCODE = LOAD THEN GOTO LOAD_EXEC;
+    IF OPCODE = STORE THEN GOTO STORE_EXEC;
+    ; ... other instruction decodings
+    
+LOAD_EXEC:
+    MAR := IR[ADDRESS_FIELD];          ; μ4: Get address
+    MEM_READ, GOTO μ5;                 ; μ5: Read memory
+    REG[IR[RD]] := MDR;                ; μ6: Store in register
+    GOTO FETCH_NEXT;                   ; μ7: Next instruction
+
+FETCH_NEXT:
+    GOTO LOAD_START;                   ; Return to fetch
+\`\`\`
+
+## Design Trade-offs
+
+### Microprogrammed vs Hardwired Control
+
+| Aspect | Microprogrammed | Hardwired |
+|--------|----------------|-----------|
+| Design Time | Short | Long |
+| Flexibility | High | Low |
+| Speed | Slower | Faster |
+| Area | Larger | Smaller |
+| Power | Higher | Lower |
+| Debugging | Easier | Harder |
+
+### Microinstruction Width Trade-offs
+
+**Wider microinstructions:**
+- More parallelism
+- Faster execution  
+- Higher memory cost
+- More complex design
+
+**Narrower microinstructions:**
+- Less parallelism
+- Slower execution
+- Lower memory cost
+- Simpler design
+
+Optimal width: $W_{opt} = \\sqrt{\\frac{C_{memory} \\times N_{ops}}{C_{decode}}}$
+
+Where $C_{memory}$ is memory cost per bit and $C_{decode}$ is decode logic cost.
+
+---
+
+*Microprogrammed control provides a systematic and flexible approach to implementing complex processor control logic!*
+
+> Understanding microprogramming is essential for processor design and computer architecture optimization.
+
+`,
+        date: "2025-06-24",
+        author: "Adwait Purao",
+        insta: "https://www.instagram.com/adwaitpurao/",
+        facebook: "https://www.facebook.com/adwait.purao.1/",
+        medium: "https://medium.com/@adwait.purao",
+    }
 
     //   "replace": {
     //     title: "",
