@@ -18,7 +18,7 @@ import {
   InputGroup,
   InputLeftElement
 } from '@chakra-ui/react';
-import { ExternalLinkIcon, StarIcon, SearchIcon } from '@chakra-ui/icons';
+import { ExternalLinkIcon, SearchIcon } from '@chakra-ui/icons';
 
 import SidebarAdLeft from '../components/SidebarAd/SidebarAdLeft';
 import SidebarAdRight from '../components/SidebarAd/SidebarAdRight';

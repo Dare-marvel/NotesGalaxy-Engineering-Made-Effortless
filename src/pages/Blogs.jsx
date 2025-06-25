@@ -20,7 +20,10 @@ import {
     Grid,
     GridItem,
     Spacer,
+    Input,
     Divider,
+    InputGroup,
+    InputLeftElement,
     useBreakpointValue
 } from '@chakra-ui/react';
 import {
@@ -44,6 +47,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import SidebarAdLeft from '../components/SidebarAd/SidebarAdLeft';
 import SidebarAdRight from '../components/SidebarAd/SidebarAdRight';
 import { blogContent } from '../config/blogContent';
+import { SearchIcon } from '@chakra-ui/icons';
 
 import { keyframes } from '@emotion/react';
 
@@ -626,6 +630,7 @@ const Blogs = () => {
     const [searchParams] = useSearchParams();
     const [currentView, setCurrentView] = useState('list');
     const [blogs, setBlogs] = useState([]);
+    const [searchQuery, setSearchQuery] = useState('');
     const [loading, setLoading] = useState(true);
     const blogId = searchParams.get('blogid');
 
@@ -666,6 +671,15 @@ const Blogs = () => {
         setCurrentView('list');
         navigate(`/blogs`);
     };
+
+    const filteredBlogs = blogs.filter(blog => {
+        const title = blogContent[blog.id].title || '';
+        const author = blog.author || '';
+        const query = searchQuery.toLowerCase();
+        return title.toLowerCase().includes(query) || author.toLowerCase().includes(query);
+    });
+
+
 
     if (loading) {
         return (
@@ -724,6 +738,54 @@ const Blogs = () => {
                             >
                                 Discover articles, insights, and stories from our collection of thought-provoking content. Journey through the infinite expanse of knowledge.
                             </Text>
+
+                            <InputGroup
+                                size={{ base: "md", md: "lg" }}
+                                px={{ base: 4, md: 12, lg: 12 }}
+                            >
+                                <InputLeftElement
+                                    pointerEvents="none"
+                                    h={{ base: "45px", md: "48px" }}
+                                    px={{ base: 6, md: 12, lg: 12 }}
+                                    mx={{ base: 3, md: 5, lg: 5 }}
+                                    // pt={{ base: 3 }}
+                                >
+                                    <SearchIcon
+                                        color="gray.400"
+                                        boxSize={{ base: "20px", md: "20px" }}
+                                    />
+                                </InputLeftElement>
+                                <Input
+                                    placeholder="Search blogs by title or author..."
+                                    value={searchQuery}
+                                    onChange={(e) => setSearchQuery(e.target.value)}
+                                    fontSize={{ base: "sm", sm: "md", md: "lg" }}
+                                    borderRadius={{ base: "full", md: "full" }}
+                                    h={{ base: "10px", md: "48px" }}
+                                    px={6}
+                                    py={6}
+                                    boxShadow="0 0 10px rgba(102, 126, 234, 0.6)"
+                                    border="2px solid"
+                                    borderColor="purple.300"
+                                    bg="whiteAlpha.900"
+                                    backdropFilter="blur(10px)"
+                                    _hover={{
+                                        borderColor: "purple.400"
+                                    }}
+                                    _focus={{
+                                        borderColor: "purple.500",
+                                        boxShadow: {
+                                            base: "0 0 0 2px rgba(128, 90, 213, 0.1)",
+                                            md: "0 0 0 3px rgba(128, 90, 213, 0.1)"
+                                        }
+                                    }}
+                                    _placeholder={{
+                                        fontSize: { base: "sm", md: "md" },
+                                        color: "gray.500"
+                                    }}
+                                />
+                            </InputGroup>
+
                         </VStack>
 
                         <Box w="full" px={{ base: 4, md: 12, lg: 12 }} >
@@ -756,7 +818,7 @@ const Blogs = () => {
                                 gap={6}
                                 justifyContent="center"
                                 w="full">
-                                {blogs.map((blog, index) => (
+                                {filteredBlogs.map((blog, index) => (
                                     <GridItem key={index}>
                                         <Box
                                             key={blog.id}
