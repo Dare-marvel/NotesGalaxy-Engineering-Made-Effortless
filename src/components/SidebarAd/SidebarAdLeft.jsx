@@ -85,33 +85,53 @@ const SidebarAdLeft = ({
   }, []);
 
   useEffect(() => {
-    if (!isMobile && window.adsbygoogle) {
-      const timer = setTimeout(() => {
-        try {
-          // Initialize each ad unit with a larger delay between each
-          adRefs.current.forEach((adRef, index) => {
-            if (adRef.current && 
-                adRef.current.offsetWidth > 0 && 
-                !adInitialized.current[index]) {
+    if (!isMobile) {
+      // Ensure AdSense script is loaded
+      const checkAdSenseAndInit = () => {
+        if (window.adsbygoogle) {
+          // Initialize ads one by one with proper error handling
+          const initializeAdsSequentially = async () => {
+            for (let index = 0; index < adRefs.current.length; index++) {
+              const adRef = adRefs.current[index];
               
-              // Add a larger delay between ad initializations
-              setTimeout(() => {
+              if (adRef && adRef.offsetWidth > 0 && !adInitialized.current[index]) {
                 try {
                   console.log(`Initializing ad ${index} with slot ${slotIds[index]}`);
+                  
+                  // Clear any existing ad content
+                  const insElement = adRef.querySelector('.adsbygoogle');
+                  if (insElement && insElement.innerHTML) {
+                    console.log(`Ad ${index} already has content, skipping`);
+                    adInitialized.current[index] = true;
+                    continue;
+                  }
+                  
+                  // Wait a bit before initializing
+                  await new Promise(resolve => setTimeout(resolve, 300));
+                  
                   (window.adsbygoogle = window.adsbygoogle || []).push({});
                   adInitialized.current[index] = true;
                   console.log(`Ad ${index} initialized successfully`);
+                  
+                  // Wait between ad initializations
+                  await new Promise(resolve => setTimeout(resolve, 500));
+                  
                 } catch (adError) {
                   console.error(`AdSense error for ad ${index}:`, adError);
                 }
-              }, index * 500); // Increased to 500ms delay between each ad
+              }
             }
-          });
-        } catch (error) {
-          console.error('AdSense initialization error:', error);
+          };
+          
+          initializeAdsSequentially();
+        } else {
+          console.log('AdSense not loaded yet, retrying...');
+          setTimeout(checkAdSenseAndInit, 500);
         }
-      }, 1000); // Increased initial delay to 1 second
-
+      };
+      
+      // Start checking after component mounts
+      const timer = setTimeout(checkAdSenseAndInit, 1000);
       return () => clearTimeout(timer);
     }
   }, [isMobile, numberOfAds, slotIds]);
