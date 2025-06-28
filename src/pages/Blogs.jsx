@@ -704,7 +704,11 @@ const Blogs = () => {
 
     return (
         <Box bg="white" minH="100vh" px={{ base: 0, md: 12, lg: 12 }} >
-            <SidebarAdLeft position="left" />
+            <SidebarAdLeft
+                      numberOfAds={6}
+                      adSlots={['4333835944', '9478180943','8042079841']}
+                      position="left"
+                    />
             {currentView === 'list' ? (
                 <Flex direction="column" minH="100vh">
                     <Container maxW="6xl" pt={{ base: 7, md: 8, lg: 8 }} mt={{ base: 9, md: 9, lg: 10 }}
@@ -870,7 +874,11 @@ const Blogs = () => {
                     onBack={handleBackToList}
                 />
             )}
-            <SidebarAdRight position="right" />
+            <SidebarAdRight
+                      numberOfAds={6}
+                      adSlots={['3152616213', '3253352242','7001025560']}
+                      position="right"
+                    />
         </Box>
     );
 };

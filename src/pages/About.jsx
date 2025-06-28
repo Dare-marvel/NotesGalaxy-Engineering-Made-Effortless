@@ -163,7 +163,11 @@ const AboutUs = () => {
   return (
     <Container maxW="container.xl" width={["100%", "85%", "85%"]} py={[3, 4, 5]} px={[2, 3, 5]}
     >
-      <SidebarAdLeft position="left" />
+      <SidebarAdLeft
+          numberOfAds={6}
+          adSlots={['4333835944', '9478180943','8042079841']}
+          position="left"
+        />
       {/* Animated Background Elements */}
       {/* <Star size="3px" top="10%" left="15%" delay="0s" />
       <Star size="2px" top="25%" left="85%" delay="1s" />
@@ -474,7 +478,11 @@ const AboutUs = () => {
           </Flex>
         </Box>
       </Container>
-      <SidebarAdRight position="right" />
+      <SidebarAdRight
+        numberOfAds={6}
+        adSlots={['3152616213', '3253352242', '7001025560']}
+        position="right"
+      />
     </Container>
   );
 };

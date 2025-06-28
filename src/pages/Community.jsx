@@ -905,7 +905,7 @@ export default function SpaceCommunityPage() {
             day: "numeric",
           }),
           totalLikes,
-          contributions, 
+          contributions,
         });
       });
 
@@ -1004,7 +1004,11 @@ export default function SpaceCommunityPage() {
   return (
     <Container maxW="container.xl" py={[8, 9, 9]} mt={[2, 2, 3]} px={[2, 3, 5]}
     >
-      <SidebarAdLeft position="left" />
+      <SidebarAdLeft
+          numberOfAds={6}
+          adSlots={['4333835944', '9478180943','8042079841']}
+          position="left"
+        />
       <FloatingStars />
 
       <Container maxW="7xl" py={10}>
@@ -1080,7 +1084,11 @@ export default function SpaceCommunityPage() {
 
         </VStack>
       </Container>
-      <SidebarAdRight position="right" />
+      <SidebarAdRight
+        numberOfAds={6}
+        adSlots={['3152616213', '3253352242', '7001025560']}
+        position="right"
+      />
     </Container>
   );
 }

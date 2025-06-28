@@ -366,8 +366,8 @@ const ChannelLink = ({ channel }) => (
     justifyContent="space-between"
     minH={{ base: "44px", md: "auto" }} // Ensure touch-friendly height on mobile
   >
-    <Text 
-      fontWeight="medium" 
+    <Text
+      fontWeight="medium"
       color="gray.700"
       fontSize={{ base: "sm", md: "md" }}
       noOfLines={2} // Prevent text overflow
@@ -375,8 +375,8 @@ const ChannelLink = ({ channel }) => (
     >
       {channel.name}
     </Text>
-    <ExternalLinkIcon 
-      color="blue.500" 
+    <ExternalLinkIcon
+      color="blue.500"
       boxSize={{ base: "16px", md: "20px" }}
       flexShrink={0}
     />
@@ -394,9 +394,9 @@ const SubjectAccordion = ({ subject }) => (
     overflow="hidden"
     _hover={{
       borderColor: "purple.300",
-      boxShadow: { 
-        base: "0 4px 15px rgba(128, 90, 213, 0.15)", 
-        md: "0 8px 25px rgba(128, 90, 213, 0.2)" 
+      boxShadow: {
+        base: "0 4px 15px rgba(128, 90, 213, 0.15)",
+        md: "0 8px 25px rgba(128, 90, 213, 0.2)"
       }
     }}
     transition="all 0.3s ease"
@@ -409,8 +409,8 @@ const SubjectAccordion = ({ subject }) => (
       minH={{ base: "56px", md: "auto" }} // Touch-friendly height
     >
       <Box flex="1" textAlign="left">
-        <Text 
-          fontWeight="bold" 
+        <Text
+          fontWeight="bold"
           fontSize={{ base: "md", sm: "lg", md: "xl" }}
           color="gray.800"
           noOfLines={2}
@@ -418,13 +418,13 @@ const SubjectAccordion = ({ subject }) => (
           {subject.name}
         </Text>
       </Box>
-      <AccordionIcon 
-        color="purple.500" 
+      <AccordionIcon
+        color="purple.500"
         boxSize={{ base: "20px", md: "24px" }}
       />
     </AccordionButton>
-    <AccordionPanel 
-      pb={{ base: 3, md: 4 }} 
+    <AccordionPanel
+      pb={{ base: 3, md: 4 }}
       px={{ base: 3, md: 4 }}
       bg="gray.50"
     >
@@ -439,8 +439,8 @@ const SubjectAccordion = ({ subject }) => (
 
 const SemesterSection = ({ semester, subjects }) => (
   <Box mb={{ base: 4, md: 6 }} px={{ base: 3, sm: 4, md: 6, lg: 8 }}>
-    <Flex 
-      align="center" 
+    <Flex
+      align="center"
       mb={{ base: 3, md: 4 }}
       direction={{ base: "column", sm: "row" }}
       gap={{ base: 2, sm: 0 }}
@@ -500,12 +500,16 @@ export default function YouTubeChannelsPage() {
   return (
     <Box bg="white" minH="100vh">
       {/* <SpaceBackground /> */}
-      <SidebarAdLeft position="left" />
-      <Container 
+      <SidebarAdLeft
+          numberOfAds={6}
+          adSlots={['4333835944', '9478180943','8042079841']}
+          position="left"
+        />
+      <Container
         maxW={{ base: "full", sm: "container.sm", md: "container.md", lg: "6xl" }}
         py={{ base: 4, sm: 6, md: 8 }}
         px={{ base: 3, sm: 4, md: 6 }}
-        position="relative" 
+        position="relative"
         zIndex="1"
       >
         <VStack spacing={{ base: 6, md: 8 }} align="stretch">
@@ -527,15 +531,15 @@ export default function YouTubeChannelsPage() {
             </Heading>
 
             {/* Search Bar */}
-            <Box 
-              maxW={{ base: "full", md: "full", lg : "full" }}
+            <Box
+              maxW={{ base: "full", md: "full", lg: "full" }}
               px={{ base: 2, sm: 4, md: 6, lg: 12 }}
               mx={{ base: 2, sm: 4, md: 6, lg: 12 }}
             >
               <InputGroup size={{ base: "md", md: "lg" }} >
                 <InputLeftElement pointerEvents="none" h={{ base: "40px", md: "48px" }}>
-                  <SearchIcon 
-                    color="gray.400" 
+                  <SearchIcon
+                    color="gray.400"
                     boxSize={{ base: "16px", md: "20px" }}
                   />
                 </InputLeftElement>
@@ -582,15 +586,15 @@ export default function YouTubeChannelsPage() {
               borderColor="blue.200"
               mx={{ base: 2, sm: 0 }}
             >
-              <Text 
+              <Text
                 fontSize={{ base: "lg", sm: "xl", md: "2xl" }}
-                color="gray.600" 
+                color="gray.600"
                 fontWeight="medium"
                 mb={{ base: 2, md: 3 }}
               >
                 No subjects found matching "{searchTerm}"
               </Text>
-              <Text 
+              <Text
                 fontSize={{ base: "sm", md: "md" }}
                 color="gray.500"
                 maxW={{ base: "full", md: "md" }}
@@ -612,7 +616,11 @@ export default function YouTubeChannelsPage() {
           )}
         </VStack>
       </Container>
-      <SidebarAdRight position="right" />
+      <SidebarAdRight
+        numberOfAds={6}
+        adSlots={['3152616213', '3253352242', '7001025560']}
+        position="right"
+      />
     </Box>
   );
 }
