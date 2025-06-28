@@ -179,7 +179,7 @@ const SidebarAdLeft = ({
           className="adsbygoogle"
           style={{ 
             display: "block",
-            width: "120px",
+            width: "130px",
             height: "600px"
           }}
           data-ad-client={adClient}
