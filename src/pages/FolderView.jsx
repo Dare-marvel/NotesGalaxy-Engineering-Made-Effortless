@@ -639,7 +639,11 @@ const FolderView = () => {
             />
           )}
         </Suspense>
-        <SidebarAdRight position="right" />
+        <SidebarAdRight
+          numberOfAds={6}
+          adSlots={['3152616213', '3253352242','7001025560']}
+          position="right"
+        />
       </Container>
 
       <Box mt={12} />
