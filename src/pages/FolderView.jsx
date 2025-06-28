@@ -519,7 +519,11 @@ const FolderView = () => {
   return (
     <Flex direction="column" minH="100vh">
       <Container maxW="container.xl" py={[3, 4, 5]} px={[2, 3, 5]} >
-        <SidebarAdLeft position="left" />
+        <SidebarAdLeft
+          numberOfAds={6}
+          adSlots={['4333835944', '9478180943','8042079841']}
+          position="left"
+        />
         <Breadcrumbs />
         {!repoName && (
           <Box

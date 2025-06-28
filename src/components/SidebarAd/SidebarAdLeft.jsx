@@ -2,7 +2,13 @@ import { useEffect, useRef, useState } from 'react';
 import { Box, Text, useColorModeValue, VStack } from '@chakra-ui/react';
 import { useWindowSize } from '../../hooks/useWindowSize';
 
-const SidebarAdLeft = ({ position = 'left', numberOfAds = 6 }) => {
+const SidebarAdLeft = ({ 
+  position = 'left', 
+  numberOfAds = 6,
+  adSlots = [], // Array of slot IDs for multiple ads
+  fallbackSlotId = '4333835944', // Fallback slot ID if adSlots is empty
+  adClient = 'ca-pub-8107450590774580'
+}) => {
   const width = useWindowSize();
   const bgColor = useColorModeValue('gray.50', 'gray.700');
   const borderColor = useColorModeValue('gray.200', 'gray.600');
@@ -12,6 +18,24 @@ const SidebarAdLeft = ({ position = 'left', numberOfAds = 6 }) => {
 
   // Define breakpoint for medium screens
   const isMobile = width < 768;
+
+  // Determine which slot IDs to use
+  const getSlotIds = () => {
+    if (adSlots.length > 0) {
+      // If we have specific slot IDs, use them
+      const slots = [];
+      for (let i = 0; i < numberOfAds; i++) {
+        // Cycle through available slot IDs if we need more ads than slots
+        slots.push(adSlots[i % adSlots.length]);
+      }
+      return slots;
+    } else {
+      // Use fallback slot ID for all ads
+      return Array(numberOfAds).fill(fallbackSlotId);
+    }
+  };
+
+  const slotIds = getSlotIds();
 
   // Initialize refs arrays based on numberOfAds
   useEffect(() => {
@@ -64,23 +88,31 @@ const SidebarAdLeft = ({ position = 'left', numberOfAds = 6 }) => {
     if (!isMobile && window.adsbygoogle) {
       const timer = setTimeout(() => {
         try {
-          // Initialize each ad unit
+          // Initialize each ad unit with a small delay between each
           adRefs.current.forEach((adRef, index) => {
             if (adRef.current && 
                 adRef.current.offsetWidth > 0 && 
                 !adInitialized.current[index]) {
-              (window.adsbygoogle = window.adsbygoogle || []).push({});
-              adInitialized.current[index] = true;
+              
+              // Add a small delay between ad initializations to prevent conflicts
+              setTimeout(() => {
+                try {
+                  (window.adsbygoogle = window.adsbygoogle || []).push({});
+                  adInitialized.current[index] = true;
+                } catch (adError) {
+                  console.error(`AdSense error for ad ${index}:`, adError);
+                }
+              }, index * 100); // 100ms delay between each ad
             }
           });
         } catch (error) {
-          console.error('AdSense error:', error);
+          console.error('AdSense initialization error:', error);
         }
-      }, 100);
+      }, 200); // Increased initial delay
 
       return () => clearTimeout(timer);
     }
-  }, [isMobile, numberOfAds]);
+  }, [isMobile, numberOfAds, slotIds]);
 
   // Reset initialization flag when component unmounts or mobile state changes
   useEffect(() => {
@@ -96,7 +128,7 @@ const SidebarAdLeft = ({ position = 'left', numberOfAds = 6 }) => {
   const renderAdUnits = () => {
     return Array.from({ length: numberOfAds }, (_, index) => (
       <Box
-        key={index}
+        key={`ad-${index}-${slotIds[index]}`} // Include slot ID in key for better React reconciliation
         ref={el => adRefs.current[index] = el}
         className={`ad-container-${index}`}
         width="100%"
@@ -112,8 +144,8 @@ const SidebarAdLeft = ({ position = 'left', numberOfAds = 6 }) => {
             width: "120px",
             height: "600px"
           }}
-          data-ad-client="ca-pub-8107450590774580"
-          data-ad-slot="4333835944" // You might want to use different slot IDs
+          data-ad-client={adClient}
+          data-ad-slot={slotIds[index]} // Use different slot ID for each ad
           data-ad-format="vertical"
           data-full-width-responsive="true"
         />
@@ -146,6 +178,15 @@ const SidebarAdLeft = ({ position = 'left', numberOfAds = 6 }) => {
     >
       <VStack spacing={4} align="stretch">
         {renderAdUnits()}
+        
+        {/* Optional: Show debug info in development */}
+        {process.env.NODE_ENV === 'development' && (
+          <Box p={2} bg="yellow.100" borderRadius="md" fontSize="xs">
+            <Text fontWeight="bold">Ad Debug Info:</Text>
+            <Text>Ads: {numberOfAds}</Text>
+            <Text>Slot IDs: {slotIds.join(', ')}</Text>
+          </Box>
+        )}
       </VStack>
     </Box>
   );
