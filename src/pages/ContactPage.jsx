@@ -297,7 +297,7 @@ const ContactPage = () => {
         <FloatingElement
           icon={FaRocket}
           top="15%"
-          left="10%"
+          left="15%"
           delay={0}
           size={{ base: "25px", sm: "25px", md: "35px", lg: "40px" }}
         />
@@ -310,14 +310,14 @@ const ContactPage = () => {
         />
         <FloatingElement icon={FaSpaceShuttle}
           top={{ base: "85%", sm: "85%", md: "75%", lg: "75%" }}
-          left="10%"
+          left="13%"
           delay={2}
           size={{ base: "22px", sm: "22px", md: "25px", lg: "30px" }}
         />
         <FloatingElement
           icon={FaStar}
           top={{ base: "85%", sm: "85%", md: "75%", lg: "75%" }}
-          right="10%"
+          right="15%"
           delay={3}
           size={{ base: "15px", sm: "15px", md: "17px", lg: "20px" }}
         />
