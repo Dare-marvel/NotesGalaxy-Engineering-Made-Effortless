@@ -76,31 +76,29 @@ const Footer = () => {
       />
 
       <Flex
-        direction={{ base: "column", md: "row" }}
+        direction="column"
         maxW="1200px"
         mx="auto"
         px={{ base: 4, sm: 6 }}
         align="center"
-        justify="space-between"
         position="relative"
         zIndex={1}
       >
         {/* Copyright text */}
         <Text
           fontSize={{ base: "sm", sm: "md" }} // Smaller text on mobile
-          color="white"
-          mb={{ base: 5, md: 0 }} // More space below on mobile
-          textShadow="0 0 5px #9F7AEA"
+          color="red.500"
+          mb={5} // Space below copyright text
+          textShadow="0 0 5pxrgb(90, 201, 213)"
           fontWeight="medium"
-          textAlign={{ base: "center", md: "left" }} // Center on mobile
+          textAlign="center"
         >
           © {new Date().getFullYear()} Adwait Purao. All rights reserved.
         </Text>
 
-        {/* Horizontal divider for mobile only */}
+        {/* Horizontal divider for all screen sizes */}
         <Box
-          display={{ base: "block", md: "none" }}
-          w="80%"
+          w={{ base: "80%", md: "60%" }}
           mb={5}
         >
           <motion.div
@@ -121,32 +119,12 @@ const Footer = () => {
           />
         </Box>
 
-        {/* Vertical divider for md screens and up */}
-        <Box display={{ base: "none", md: "block" }}>
-          <motion.div
-            animate={{
-              opacity: [0.7, 1, 0.7],
-            }}
-            transition={{
-              duration: 2,
-              repeat: Infinity,
-              ease: "easeInOut"
-            }}
-            style={{
-              height: "30px",
-              width: "2px",
-              background: "linear-gradient(180deg, #9F7AEA 0%, #805AD5 100%)",
-              boxShadow: "0 0 10px #9F7AEA, 0 0 15px #805AD5",
-            }}
-          />
-        </Box>
-
         {/* Social icons */}
         <Flex
           gap={{ base: 4, sm: 6 }} // Reduced spacing on smallest screens
           align="center"
-          justify="center" // Center icons on mobile
-          width={{ base: "100%", md: "auto" }} // Full width on mobile
+          justify="center"
+          flexWrap="wrap" // Allow wrapping if needed on very small screens
         >
           <AnimatedIcon icon={FaGithub} href="https://github.com/Dare-marvel/" />
           <AnimatedIcon icon={FaTwitter} href="https://x.com/PuraoAdwait" />
@@ -165,7 +143,6 @@ const Footer = () => {
             )}
             href="https://buymeacoffee.com/aspurao038"
           />
-
         </Flex>
       </Flex>
     </Box>
