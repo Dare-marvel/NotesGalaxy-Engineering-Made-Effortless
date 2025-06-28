@@ -589,8 +589,9 @@ const UserRow = ({ user, rank, index, sortBy }) => {
                 fontWeight="bold"
                 color="purple.700"
                 fontSize={{ base: "xs", md: "sm", lg: "md" }}
-                noOfLines={1}
-                maxW="100%"
+                // noOfLines={1}
+                isTruncated
+                maxW={{ base: "100%", md: "100px", lg: "200px" }}
               >
                 {user.username}
               </Text>
@@ -600,7 +601,7 @@ const UserRow = ({ user, rank, index, sortBy }) => {
                 display={{ base: "none", md: "block" }}
                 noOfLines={1}
               >
-                Contributor from {user.createdAt}
+                From {user.createdAt}
               </Text>
               {/* Mobile-only compact info */}
               <HStack
@@ -659,7 +660,7 @@ const UserRow = ({ user, rank, index, sortBy }) => {
           </Tooltip>
         </Td>
 
-        {/* Actions Column */}
+        {/* View Column */}
         <Td px={{ base: 2, md: 3, lg: 4 }} py={{ base: 2, md: 3 }}>
           <Tooltip label="View all notes">
             <Button
@@ -671,7 +672,7 @@ const UserRow = ({ user, rank, index, sortBy }) => {
               fontSize={{ base: "xs", md: "sm" }}
               px={{ base: 2, md: 3 }}
             >
-              <Text display={{ base: "none", md: "inline" }}>View</Text>
+              {/* <Text display={{ base: "none", md: "inline" }}>View</Text> */}
             </Button>
           </Tooltip>
         </Td>
@@ -742,7 +743,7 @@ const RankingTable = ({ title, users, sortBy, icon }) => {
                   py={{ base: 2, md: 3 }}
                   display={{ base: "none", sm: "table-cell" }}
                 >
-                  Contributions
+                  Notes
                 </Th>
                 <Th
                   color="purple.600"
@@ -759,7 +760,7 @@ const RankingTable = ({ title, users, sortBy, icon }) => {
                   px={{ base: 2, md: 3, lg: 4 }}
                   py={{ base: 2, md: 3 }}
                 >
-                  Actions
+                  View
                 </Th>
               </Tr>
             </Thead>
@@ -899,10 +900,10 @@ export default function SpaceCommunityPage() {
         usersList.push({
           id: userId,
           ...userData,
-          createdAt: userData.createdAt?.toDate().toLocaleDateString("en-US", {
-            year: "numeric",
-            month: "long",
+          createdAt: userData.createdAt?.toDate().toLocaleDateString("en-GB", {
             day: "numeric",
+            month: "numeric",
+            year: "2-digit"
           }),
           totalLikes,
           contributions,
@@ -1014,7 +1015,7 @@ export default function SpaceCommunityPage() {
       <Container
         maxW="7xl"
         py={10}
-        // px={{ base: 4, md: 12, lg: 10 }}   
+      // px={{ base: 4, md: 12, lg: 10 }}   
       >
         <VStack spacing={10}>
           {/* Header */}
@@ -1046,8 +1047,9 @@ export default function SpaceCommunityPage() {
             <Grid
               templateColumns={{
                 base: "1fr",                  // Stack vertically on small screens
-                md: "repeat(2, 250px)",       // 2 fixed-width columns on medium screens
-                lg: "repeat(4, 180px)"        // 4 fixed-width columns on large screens
+                md: "repeat(2, 210px)",
+                lg: "repeat(2, 300px)",       // 3 fixed-width columns on large screens
+                xl: "repeat(4, 180px)"        // 4 fixed-width columns on extra large screens
               }}
               gap={6}
               justifyContent="center"
@@ -1073,7 +1075,13 @@ export default function SpaceCommunityPage() {
           </Box>
 
           {/* Ranking Tables */}
-          <VStack spacing={8} px={{ base: 4, md: 12, lg: 12 }} w="full">
+          <VStack
+            spacing={8}
+            px={{ base: 4, md: 12, lg: 12 }}
+            w="full"
+            mx={["0", "auto", "auto"]}
+          // px={{ base: 4, md: 5, lg: 8 }}
+          >
             <RankingTable
               title="🏆 Top Contributors"
               users={users}
