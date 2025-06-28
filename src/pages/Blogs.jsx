@@ -230,13 +230,29 @@ const BlogCard = ({ blog, onClick }) => {
             <CardBody pt={0}>
                 <Divider mb={3} borderColor="purple.100" />
                 <HStack spacing={3} justify="space-between" flexWrap="wrap">
+
+                    <HStack spacing={1}>
+                        <Icon as={IoTime} w={4} h={4} color="blue.500" />
+                        <Text fontSize="sm" color="blue.500" fontWeight="medium">
+                            {readingTime} min read
+                        </Text>
+                    </HStack>
+
+                    {/* <HStack spacing={1}>
+                        <Icon as={IoEye} w={4} h={4} color="gray.500" />
+                        <Text fontSize="sm" color="gray.500">
+                            {blog.views || 0}
+                        </Text>
+                    </HStack> */}
+
                     <HStack spacing={3}>
                         <HStack spacing={1}>
-                            <Icon as={IoTime} w={4} h={4} color="blue.500" />
-                            <Text fontSize="sm" color="blue.500" fontWeight="medium">
-                                {readingTime} min read
+                            <Icon as={IoHeart} w={4} h={4} color="red.400" />
+                            <Text fontSize="sm" color="red.500" fontWeight="medium">
+                                {likesCount}
                             </Text>
                         </HStack>
+
 
                         <HStack spacing={1}>
                             <Icon as={IoEye} w={4} h={4} color="gray.500" />
@@ -244,13 +260,6 @@ const BlogCard = ({ blog, onClick }) => {
                                 {blog.views || 0}
                             </Text>
                         </HStack>
-                    </HStack>
-
-                    <HStack spacing={1}>
-                        <Icon as={IoHeart} w={4} h={4} color="red.400" />
-                        <Text fontSize="sm" color="red.500" fontWeight="medium">
-                            {likesCount}
-                        </Text>
                     </HStack>
                 </HStack>
             </CardBody>
@@ -703,27 +712,33 @@ const Blogs = () => {
     }
 
     return (
-        <Box bg="white" minH="100vh" px={{ base: 0, md: 12, lg: 12 }} >
+        <Box bg="white" minH="100vh" >
             <SidebarAdLeft
-                      numberOfAds={6}
-                      adSlots={['4333835944', '9478180943','8042079841']}
-                      position="left"
-                    />
+                numberOfAds={6}
+                adSlots={['4333835944', '9478180943', '8042079841']}
+                position="left"
+            />
             {currentView === 'list' ? (
                 <Flex direction="column" minH="100vh">
-                    <Container maxW="6xl" pt={{ base: 7, md: 8, lg: 8 }} mt={{ base: 9, md: 9, lg: 10 }}
-
+                    <Container
+                        maxW="6xl"
+                        pt={{ base: 7, md: 8, lg: 8 }}
+                        mt={{ base: 9, md: 9, lg: 10 }}
+                        px={{ base: 2, md: 12, lg: 12 }}
                     >
-                        <VStack spacing={{ base: 6, md: 8 }} align="center" mb={{ base: 8, md: 12 }}>
+                        <VStack
+                            spacing={{ base: 6, md: 8 }}
+                            align="center" mb={{ base: 8, md: 12 }}
+                        >
                             {/* <Box animation={`${float} 4s ease-in-out infinite`}>
                             <Icon as={IoRocket} w={{ base: 12, md: 16 }} h={{ base: 12, md: 16 }} color="purple.400" />
                         </Box> */}
-
                             <Heading
                                 size={{ base: "lg", sm: "xl", md: "xl", lg: "2xl", xl: "2xl" }}
                                 color="gray.800"
                                 textAlign="center"
                                 fontWeight="bold"
+                                mt={2}
                                 background="linear-gradient(135deg, #667eea 0%, #764ba2 100%)"
                                 backgroundClip="text"
                                 animation={`${shimmer} 2s infinite linear`}
@@ -732,7 +747,7 @@ const Blogs = () => {
                                 🚀 Blogs
                             </Heading>
 
-                            <Text
+                            {/* <Text
                                 fontSize={{ base: 'md', md: 'lg' }}
                                 color="gray.600"
                                 textAlign="center"
@@ -741,54 +756,61 @@ const Blogs = () => {
                                 px={{ base: 4, md: 0 }}
                             >
                                 Discover articles, insights, and stories from our collection of thought-provoking content. Journey through the infinite expanse of knowledge.
-                            </Text>
+                            </Text> */}
 
-                            <InputGroup
-                                size={{ base: "md", md: "lg" }}
-                                px={{ base: 4, md: 12, lg: 12 }}
+                            <Box
+                                mb={[4, 5, 6]}
+                                width={["80%", "80%", "85%"]}
+                                mx={["0", "auto", "auto", "auto"]}
+                                px={{ base: 2, sm: 4, md: 12, lg: 12 }}
                             >
-                                <InputLeftElement
-                                    pointerEvents="none"
-                                    h={{ base: "45px", md: "48px" }}
-                                    px={{ base: 6, md: 12, lg: 12 }}
-                                    mx={{ base: 3, md: 5, lg: 5 }}
-                                    // pt={{ base: 3 }}
+                                <InputGroup
+                                    size={{ base: "md", md: "lg" }}
+                                    px={{ base: 4, md: 12, lg: 12 }}
                                 >
-                                    <SearchIcon
-                                        color="gray.400"
-                                        boxSize={{ base: "20px", md: "20px" }}
+                                    <InputLeftElement
+                                        pointerEvents="none"
+                                        h={{ base: "45px", md: "48px" }}
+                                        px={{ base: 6, md: 12, lg: 12 }}
+                                        mx={{ base: 3, md: 5, lg: 5 }}
+                                    // pt={{ base: 3 }}
+                                    >
+                                        <SearchIcon
+                                            color="gray.400"
+                                            boxSize={{ base: "20px", md: "20px" }}
+                                        />
+                                    </InputLeftElement>
+                                    <Input
+                                        placeholder="Search blogs by title or author..."
+                                        value={searchQuery}
+                                        onChange={(e) => setSearchQuery(e.target.value)}
+                                        fontSize={{ base: "sm", sm: "md", md: "lg" }}
+                                        borderRadius={{ base: "full", md: "full" }}
+                                        h={{ base: "10px", md: "48px" }}
+                                        px={6}
+                                        py={6}
+                                        boxShadow="0 0 10px rgba(102, 126, 234, 0.6)"
+                                        border="2px solid"
+                                        borderColor="purple.300"
+                                        bg="whiteAlpha.900"
+                                        backdropFilter="blur(10px)"
+                                        _hover={{
+                                            borderColor: "purple.400"
+                                        }}
+                                        _focus={{
+                                            borderColor: "purple.500",
+                                            boxShadow: {
+                                                base: "0 0 0 2px rgba(128, 90, 213, 0.1)",
+                                                md: "0 0 0 3px rgba(128, 90, 213, 0.1)"
+                                            }
+                                        }}
+                                        _placeholder={{
+                                            fontSize: { base: "sm", md: "md" },
+                                            color: "gray.500"
+                                        }}
                                     />
-                                </InputLeftElement>
-                                <Input
-                                    placeholder="Search blogs by title or author..."
-                                    value={searchQuery}
-                                    onChange={(e) => setSearchQuery(e.target.value)}
-                                    fontSize={{ base: "sm", sm: "md", md: "lg" }}
-                                    borderRadius={{ base: "full", md: "full" }}
-                                    h={{ base: "10px", md: "48px" }}
-                                    px={6}
-                                    py={6}
-                                    boxShadow="0 0 10px rgba(102, 126, 234, 0.6)"
-                                    border="2px solid"
-                                    borderColor="purple.300"
-                                    bg="whiteAlpha.900"
-                                    backdropFilter="blur(10px)"
-                                    _hover={{
-                                        borderColor: "purple.400"
-                                    }}
-                                    _focus={{
-                                        borderColor: "purple.500",
-                                        boxShadow: {
-                                            base: "0 0 0 2px rgba(128, 90, 213, 0.1)",
-                                            md: "0 0 0 3px rgba(128, 90, 213, 0.1)"
-                                        }
-                                    }}
-                                    _placeholder={{
-                                        fontSize: { base: "sm", md: "md" },
-                                        color: "gray.500"
-                                    }}
-                                />
-                            </InputGroup>
+                                </InputGroup>
+                            </Box>
 
                         </VStack>
 
@@ -816,8 +838,9 @@ const Blogs = () => {
                             <Grid
                                 templateColumns={{
                                     base: "1fr",                  // Stack vertically on small screens
-                                    md: "repeat(2, 1fr)",       // 2 fixed-width columns on medium screens
-                                    lg: "repeat(3, 1fr)"        // 4 fixed-width columns on large screens
+                                    md: "repeat(2, 220px)",       // 2 fixed-width columns on medium screens
+                                    lg: "repeat(3, 210px)",
+                                    xl: "repeat(3, 1fr)",       // 3 fixed-width columns on extra-large screens
                                 }}
                                 gap={6}
                                 justifyContent="center"
@@ -875,10 +898,10 @@ const Blogs = () => {
                 />
             )}
             <SidebarAdRight
-                      numberOfAds={6}
-                      adSlots={['3152616213', '3253352242','7001025560']}
-                      position="right"
-                    />
+                numberOfAds={6}
+                adSlots={['3152616213', '3253352242', '7001025560']}
+                position="right"
+            />
         </Box>
     );
 };

@@ -1005,13 +1005,17 @@ export default function SpaceCommunityPage() {
     <Container maxW="container.xl" py={[8, 9, 9]} mt={[2, 2, 3]} px={[2, 3, 5]}
     >
       <SidebarAdLeft
-          numberOfAds={6}
-          adSlots={['4333835944', '9478180943','8042079841']}
-          position="left"
-        />
+        numberOfAds={6}
+        adSlots={['4333835944', '9478180943', '8042079841']}
+        position="left"
+      />
       <FloatingStars />
 
-      <Container maxW="7xl" py={10}>
+      <Container
+        maxW="7xl"
+        py={10}
+        // px={{ base: 4, md: 12, lg: 10 }}   
+      >
         <VStack spacing={10}>
           {/* Header */}
           <Box textAlign="center" position="relative">
@@ -1035,7 +1039,10 @@ export default function SpaceCommunityPage() {
           </Box>
 
           {/* Stats Cards */}
-          <Box w="full" px={{ base: 4, md: 12, lg: 12 }} >
+          <Box w="full"
+            px={{ base: 4, md: 12, lg: 12 }}
+
+          >
             <Grid
               templateColumns={{
                 base: "1fr",                  // Stack vertically on small screens
