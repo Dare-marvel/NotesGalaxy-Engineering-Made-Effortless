@@ -162,7 +162,7 @@ const SidebarAdRight = ({
         position="relative"
       >
         {/* Debug info overlay */}
-        <Box
+        {/* <Box
           position="absolute"
           top="2px"
           left="2px"
@@ -173,7 +173,7 @@ const SidebarAdRight = ({
           zIndex={1}
         >
           Ad {index + 1}: {slotIds[index]}
-        </Box>
+        </Box> */}
         
         <ins
           className="adsbygoogle"
