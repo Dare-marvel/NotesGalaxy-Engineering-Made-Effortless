@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Box, Text, useColorModeValue, VStack } from '@chakra-ui/react';
 import { useWindowSize } from '../../hooks/useWindowSize';
 
-const SidebarAdLeft = ({ position = 'left', numberOfAds = 5 }) => {
+const SidebarAdLeft = ({ position = 'left', numberOfAds = 6 }) => {
   const width = useWindowSize();
   const bgColor = useColorModeValue('gray.50', 'gray.700');
   const borderColor = useColorModeValue('gray.200', 'gray.600');
@@ -114,8 +114,8 @@ const SidebarAdLeft = ({ position = 'left', numberOfAds = 5 }) => {
           }}
           data-ad-client="ca-pub-8107450590774580"
           data-ad-slot="4333835944" // You might want to use different slot IDs
-          data-ad-format="rectangle"
-          data-full-width-responsive="false"
+          data-ad-format="vertical"
+          data-full-width-responsive="true"
         />
       </Box>
     ));
