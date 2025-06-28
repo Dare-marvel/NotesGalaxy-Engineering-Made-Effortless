@@ -1024,19 +1024,19 @@ export default function SpaceCommunityPage() {
               size={{ base: "lg", sm: "xl", md: "xl", lg: "2xl", xl: "3xl" }}
               bgGradient="linear(to-r, #667eea, #764ba2)"
               bgClip="text"
-              mb={4}
+              mb={2}
             // animation={`${float} 4s ease-in-out infinite`}
             >
               🚀 Community Rankings
             </Heading>
-            <Text
+            {/* <Text
               fontSize="lg"
               color="gray.600"
               maxW="2xl"
               mx="auto"
             >
               Discover our top contributors and most beloved community members in this cosmic journey of knowledge sharing!
-            </Text>
+            </Text> */}
           </Box>
 
           {/* Stats Cards */}
