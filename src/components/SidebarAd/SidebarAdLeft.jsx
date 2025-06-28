@@ -218,13 +218,13 @@ const SidebarAdLeft = ({
         {renderAdUnits()}
         
         {/* Optional: Show debug info in development */}
-        {process.env.NODE_ENV === 'development' && (
+        {/* {process.env.NODE_ENV === 'development' && (
           <Box p={2} bg="yellow.100" borderRadius="md" fontSize="xs">
             <Text fontWeight="bold">Ad Debug Info:</Text>
             <Text>Ads: {numberOfAds}</Text>
             <Text>Slot IDs: {slotIds.join(', ')}</Text>
           </Box>
-        )}
+        )} */}
       </VStack>
     </Box>
   );
