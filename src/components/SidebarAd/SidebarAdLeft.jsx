@@ -88,27 +88,29 @@ const SidebarAdLeft = ({
     if (!isMobile && window.adsbygoogle) {
       const timer = setTimeout(() => {
         try {
-          // Initialize each ad unit with a small delay between each
+          // Initialize each ad unit with a larger delay between each
           adRefs.current.forEach((adRef, index) => {
             if (adRef.current && 
                 adRef.current.offsetWidth > 0 && 
                 !adInitialized.current[index]) {
               
-              // Add a small delay between ad initializations to prevent conflicts
+              // Add a larger delay between ad initializations
               setTimeout(() => {
                 try {
+                  console.log(`Initializing ad ${index} with slot ${slotIds[index]}`);
                   (window.adsbygoogle = window.adsbygoogle || []).push({});
                   adInitialized.current[index] = true;
+                  console.log(`Ad ${index} initialized successfully`);
                 } catch (adError) {
                   console.error(`AdSense error for ad ${index}:`, adError);
                 }
-              }, index * 100); // 100ms delay between each ad
+              }, index * 500); // Increased to 500ms delay between each ad
             }
           });
         } catch (error) {
           console.error('AdSense initialization error:', error);
         }
-      }, 200); // Increased initial delay
+      }, 1000); // Increased initial delay to 1 second
 
       return () => clearTimeout(timer);
     }
@@ -136,7 +138,23 @@ const SidebarAdLeft = ({
         display="block"
         textAlign="center"
         mb={index < numberOfAds - 1 ? 4 : 0} // Add margin bottom except for last ad
+        border="1px dashed gray" // Debug border to see ad containers
+        position="relative"
       >
+        {/* Debug info overlay */}
+        <Box
+          position="absolute"
+          top="2px"
+          left="2px"
+          fontSize="xs"
+          bg="red.100"
+          p={1}
+          borderRadius="sm"
+          zIndex={1}
+        >
+          Ad {index + 1}: {slotIds[index]}
+        </Box>
+        
         <ins
           className="adsbygoogle"
           style={{ 
@@ -180,13 +198,13 @@ const SidebarAdLeft = ({
         {renderAdUnits()}
         
         {/* Optional: Show debug info in development */}
-        {/* {process.env.NODE_ENV === 'development' && ( */}
+        {process.env.NODE_ENV === 'development' && (
           <Box p={2} bg="yellow.100" borderRadius="md" fontSize="xs">
             <Text fontWeight="bold">Ad Debug Info:</Text>
             <Text>Ads: {numberOfAds}</Text>
             <Text>Slot IDs: {slotIds.join(', ')}</Text>
           </Box>
-        {/* )} */}
+        )}
       </VStack>
     </Box>
   );
