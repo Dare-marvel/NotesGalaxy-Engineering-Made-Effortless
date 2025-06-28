@@ -96,12 +96,12 @@ const SidebarAdRight = ({
               
               if (adRef && adRef.offsetWidth > 0 && !adInitialized.current[index]) {
                 try {
-                  console.log(`Initializing ad ${index} with slot ${slotIds[index]}`);
+                  // console.log(`Initializing ad ${index} with slot ${slotIds[index]}`);
                   
                   // Clear any existing ad content
                   const insElement = adRef.querySelector('.adsbygoogle');
                   if (insElement && insElement.innerHTML) {
-                    console.log(`Ad ${index} already has content, skipping`);
+                    // console.log(`Ad ${index} already has content, skipping`);
                     adInitialized.current[index] = true;
                     continue;
                   }
@@ -111,7 +111,7 @@ const SidebarAdRight = ({
                   
                   (window.adsbygoogle = window.adsbygoogle || []).push({});
                   adInitialized.current[index] = true;
-                  console.log(`Ad ${index} initialized successfully`);
+                  // console.log(`Ad ${index} initialized successfully`);
                   
                   // Wait between ad initializations
                   await new Promise(resolve => setTimeout(resolve, 500));
@@ -125,7 +125,7 @@ const SidebarAdRight = ({
           
           initializeAdsSequentially();
         } else {
-          console.log('AdSense not loaded yet, retrying...');
+          // console.log('AdSense not loaded yet, retrying...');
           setTimeout(checkAdSenseAndInit, 500);
         }
       };
