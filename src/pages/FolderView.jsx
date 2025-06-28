@@ -60,7 +60,7 @@ const FolderView = () => {
   // Chakra UI color modes
   const bgHover = useColorModeValue('gray.100', 'gray.700');
   const hoverTextColor = useColorModeValue('blue.600', 'blue.300');
-  const borderColor = useColorModeValue('gray.200', 'gray.700');
+  const borderColor = useColorModeValue('purple.200', 'purple.700');
   const headerBg = useColorModeValue('gray.50', 'gray.800');
   const inputBg = useColorModeValue('white', 'gray.800');
 
@@ -260,14 +260,14 @@ const FolderView = () => {
       <Tr
         animation={`${slideInUp} 0.5s ease-out ${index * 0.1}s both`}
       >
-        <Td width={["60%", "65%", "70%"]}>
+        <Td width={["60%", "60% !important", "70%"]} sx={{ px: '0 !important' }}>
           <Box
             ref={hoverRef}
             onClick={() => handleNavigation(repo, true)}
             display="flex"
             alignItems="center"
             cursor="pointer"
-            p={[1, 1, 2]}
+            // p={[1, 1, 1]}
             transition="all 0.2s"
             borderRadius="md"
             _hover={{
@@ -291,20 +291,25 @@ const FolderView = () => {
         {/* <Td width={["40%", "35%", "30%"]}>
           <Text fontSize={["sm", "md", "md"]}>Repo</Text>
         </Td> */}
-        <Td width={["10%", "10%", "10%"]}>
-          <IconButton
-            icon={<FaDownload />}
-            aria-label="Download repository"
-            colorScheme="blue"
-            variant="outline"
-            size={["xs", "sm", "sm"]}
-            isLoading={isDownloading}
-            onClick={downloadRepository}
-            _hover={{
-              transform: ['none', 'scale(1.1)', 'scale(1.1)'],
-              bg: 'blue.50'
-            }}
-          />
+        <Td
+          width={["5%", "5%", "5%", "5%"]}
+          sx={{ px: '0 !important', py: '0 !important' }}
+        >
+          <Flex justify="center" align="center" height="100%">
+            <IconButton
+              icon={<FaDownload />}
+              aria-label="Download repository"
+              colorScheme="blue"
+              variant="outline"
+              size={["xs", "sm", "sm"]}
+              isLoading={isDownloading}
+              onClick={downloadRepository}
+              _hover={{
+                transform: ['none', 'scale(1.1)', 'scale(1.1)'],
+                bg: 'blue.50'
+              }}
+            />
+          </Flex>
         </Td>
       </Tr>
     );
@@ -422,7 +427,7 @@ const FolderView = () => {
       truncateByScreenSize(mappedName, {
         ...TRUNCATE_CONFIG,
         mobileChars: 12,   // smaller limits for content rows
-        tabletChars: 35,
+        tabletChars: 30,
         desktopChars: 50
       }),
       [mappedName, windowWidth]
@@ -517,23 +522,25 @@ const FolderView = () => {
   // const showActionsColumn = (repoName && contents.some(item => typeof item !== 'string' && item.type === 'file'));
 
   return (
-    <Flex direction="column" minH="100vh">
-      <Container maxW="container.xl" py={[3, 4, 5]} px={[2, 3, 5]} >
-        <SidebarAdLeft
-          numberOfAds={6}
-          adSlots={['4333835944', '9478180943','8042079841']}
-          position="left"
-        />
-        <Breadcrumbs />
+    <Box minH="100vh">
+      <SidebarAdLeft
+        numberOfAds={6}
+        adSlots={['4333835944', '9478180943', '8042079841']}
+        position="left"
+      />
+      <Container maxW="container.xl" py={[3, 4, 5]} px={{ base: 4, md: 12, lg: 10 }} >
+        <Box px={{ base: 2, sm: 4, md: 12, lg: 10 }}>
+          <Breadcrumbs />
+        </Box>
         {!repoName && (
           <Box
             mb={[4, 5, 6]}
-            width={["100%", "85%", "85%"]}
-            marginX={["0", "auto", "auto"]}
-            px={{ base: 2, sm: 4, md: 6, lg: 0 }}
+            width={["80%", "80%", "85%"]}
+            mx={["0", "auto", "auto","auto"]}
+            px={{ base: 2, sm: 4, md: 12, lg: 12 }}
           >
-            <InputGroup>
-              <InputLeftElement pointerEvents="none">
+            <InputGroup px={{ base: 2, sm: 4, md: 2}}>
+              <InputLeftElement pointerEvents="none" pl={{sm: 6,md:3}}>
                 <Icon as={FiSearch} color="gray.400" />
               </InputLeftElement>
               <Input
@@ -555,7 +562,7 @@ const FolderView = () => {
         )}
 
         <Box
-          borderWidth="1px"
+          borderWidth="3px"
           borderColor={borderColor}
           borderRadius={["lg", "xl", "xl"]}
           overflow={["auto", "hidden", "hidden"]}
@@ -564,16 +571,20 @@ const FolderView = () => {
           _hover={{
             boxShadow: ["lg", "xl", "xl"]
           }}
-          width={["100%", "85%", "85%"]}
-          marginX={["0", "auto", "auto"]}
-          px={{ base: 4, md: 12, lg: 12 }}
+          width={["100%", "75%", "70%", "75%"]}
+          mx={["0", "auto", "auto"]}
+          px={{ base: 4, md: 5, lg: 8 }}
+        // mx={{ base: 0, sm: 0, md: 12, lg: 12 }}
         >
-          <Table variant="simple" size={["sm", "md", "md"]}>
+          <Table
+            variant="outline"
+            size={["sm", "md", "md"]}
+          >
             <Thead>
               <Tr bg={headerBg}>
-                <Th fontSize={["sm", "md", "md"]}>Name</Th>
+                <Th fontSize={["sm", "md", "md"]} sx={{ px: '0 !important' }}>Name</Th>
                 {/* <Th fontSize={["sm", "md", "md"]}>Type</Th> */}
-                <Th fontSize={["sm", "md", "md"]}>Actions</Th>
+                <Th fontSize={["sm", "md", "md"]} sx={{ px: '0 !important' }}>Action</Th>
               </Tr>
             </Thead>
             <Tbody>
@@ -639,11 +650,7 @@ const FolderView = () => {
             />
           )}
         </Suspense>
-        <SidebarAdRight
-          numberOfAds={6}
-          adSlots={['3152616213', '3253352242','7001025560']}
-          position="right"
-        />
+
       </Container>
 
       <Box mt={12} />
@@ -678,7 +685,12 @@ const FolderView = () => {
           </Button>
         </Tooltip>
       </Box>
-    </Flex>
+      <SidebarAdRight
+        numberOfAds={6}
+        adSlots={['3152616213', '3253352242', '7001025560']}
+        position="right"
+      />
+    </Box>
   );
 };
 
