@@ -164,10 +164,10 @@ const AboutUs = () => {
     <Container maxW="container.xl" width={["100%", "85%", "85%"]} py={[3, 4, 5]} px={[2, 3, 5]}
     >
       <SidebarAdLeft
-          numberOfAds={6}
-          adSlots={['4333835944', '9478180943','8042079841']}
-          position="left"
-        />
+        numberOfAds={6}
+        adSlots={['4333835944', '9478180943', '8042079841']}
+        position="left"
+      />
       {/* Animated Background Elements */}
       {/* <Star size="3px" top="10%" left="15%" delay="0s" />
       <Star size="2px" top="25%" left="85%" delay="1s" />
@@ -193,7 +193,7 @@ const AboutUs = () => {
       left={{ base: "70%", md: "25%", lg: "32%" }} 
       duration="35s" /> */}
 
-      <Container maxWidth="1200px" px={{ base: 4, md: 8, lg: 12 }}>
+      <Container maxWidth="1200px" px={{ base: 4, md: 10, lg: 12 }}>
         {/* Header Section */}
         <VStack spacing={8} py={16}>
           <Box
@@ -215,10 +215,11 @@ const AboutUs = () => {
               </Heading>
             </Flex>
             <Text
-              fontSize={useBreakpointValue({ base: "lg", md: "xl" })}
+              fontSize={{ base: "lg", md: "xl" }}
               color="gray.700"
               maxWidth="800px"
               mx="auto"
+              px={{ base: 4, md: 12, lg: 12 }}
               lineHeight="1.8"
               animation={isVisible ? `${slideUp} 1s ease-out 0.3s both` : ''}
             >
@@ -229,47 +230,51 @@ const AboutUs = () => {
           </Box>
 
           {/* Features Grid */}
-          <Grid
-            templateColumns={useBreakpointValue({
-              base: "1fr",
-              md: "repeat(2, 1fr)",
-              lg: "repeat(3, 1fr)"
-            })}
-            gap={6}
-            width="100%"
-            animation={isVisible ? `${slideUp} 1s ease-out 0.6s both` : ''}
+          <Box
+            px={{ base: 4, md: 12, lg: 12 }}
           >
-            {[
-              { icon: "📁", text: "Subject-wise categorized notes" },
-              { icon: "📥", text: "Instant download support" },
-              { icon: "🧠", text: "Neatly formatted explanations" },
-              { icon: "🔍", text: "Search and filter capability" },
-              { icon: "🔄", text: "Continuous updates" },
-              { icon: "👥", text: "Community engagement" }
-            ].map((feature, index) => (
-              <GridItem key={index}>
-                <Box
-                  p={6}
-                  borderRadius="20px"
-                  background="linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(59, 130, 246, 0.1))"
-                  border="2px solid"
-                  borderColor="purple.200"
-                  textAlign="center"
-                  transition="all 0.3s ease"
-                  _hover={{
-                    transform: "translateY(-10px)",
-                    boxShadow: "0 20px 40px rgba(139, 92, 246, 0.2)",
-                    borderColor: "purple.400"
-                  }}
-                >
-                  <Text fontSize="3xl" mb={3}>{feature.icon}</Text>
-                  <Text fontWeight="semibold" color="gray.700">
-                    {feature.text}
-                  </Text>
-                </Box>
-              </GridItem>
-            ))}
-          </Grid>
+            <Grid
+              templateColumns={{
+                base: "1fr",
+                md: "repeat(2, 210px)",
+                lg: "repeat(3, 1fr)"
+              }}
+              gap={6}
+              width="100%"
+              animation={isVisible ? `${slideUp} 1s ease-out 0.6s both` : ''}
+            >
+              {[
+                { icon: "📁", text: "Subject-wise categorized notes" },
+                { icon: "📥", text: "Instant download support" },
+                { icon: "🧠", text: "Neatly formatted explanations" },
+                { icon: "🔍", text: "Search and filter capability" },
+                { icon: "🔄", text: "Continuous updates" },
+                { icon: "👥", text: "Community engagement" }
+              ].map((feature, index) => (
+                <GridItem key={index}>
+                  <Box
+                    p={6}
+                    borderRadius="20px"
+                    background="linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(59, 130, 246, 0.1))"
+                    border="2px solid"
+                    borderColor="purple.200"
+                    textAlign="center"
+                    transition="all 0.3s ease"
+                    _hover={{
+                      transform: "translateY(-10px)",
+                      boxShadow: "0 20px 40px rgba(139, 92, 246, 0.2)",
+                      borderColor: "purple.400"
+                    }}
+                  >
+                    <Text fontSize="3xl" mb={3}>{feature.icon}</Text>
+                    <Text fontWeight="semibold" color="gray.700">
+                      {feature.text}
+                    </Text>
+                  </Box>
+                </GridItem>
+              ))}
+            </Grid>
+          </Box>
         </VStack>
 
         {/* FAQ Section */}
@@ -285,7 +290,9 @@ const AboutUs = () => {
           >
             Frequently Asked Questions
           </Heading>
-          <Accordion allowMultiple>
+          <Accordion 
+          px={{ base: 3, sm: 4, md: 12, lg: 12 }}
+          allowMultiple>
             {faqData.map((faq, index) => (
               <AccordionItem key={index} border="none" mb={4}>
                 <AccordionButton
@@ -324,6 +331,7 @@ const AboutUs = () => {
         <Box
           mb={16}
           animation={isVisible ? `${slideUp} 1s ease-out 1.2s both` : ''}
+          px={{ base: 3, sm: 4, md: 12, lg: 12 }}
         >
           <Heading
             textAlign="center"

@@ -1042,7 +1042,6 @@ export default function SpaceCommunityPage() {
           {/* Stats Cards */}
           <Box w="full"
             px={{ base: 4, md: 12, lg: 12 }}
-
           >
             <Grid
               templateColumns={{
