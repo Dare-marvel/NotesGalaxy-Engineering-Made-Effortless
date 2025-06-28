@@ -438,18 +438,23 @@ const SubjectAccordion = ({ subject }) => (
 );
 
 const SemesterSection = ({ semester, subjects }) => (
-  <Box mb={{ base: 4, md: 6 }} px={{ base: 3, sm: 4, md: 6, lg: 8 }}>
+  <Box
+    mb={{ base: 4, md: 6 }}
+    px={{ base: 3, sm: 4, md: 10, lg: 8 }}
+    width={{ base: "full", md: "auto" }}
+  >
     <Flex
       align="center"
       mb={{ base: 3, md: 4 }}
       direction={{ base: "column", sm: "row" }}
       gap={{ base: 2, sm: 0 }}
+      px={{ base: 3, sm: 4, md: 12, lg: 12 }}
     >
       <Heading
         size={{ base: "md", sm: "lg", md: "xl" }}
         color="purple.700"
         fontWeight="bold"
-        mr={{ base: 0, sm: 3 }}
+        // mr={{ base: 0, sm: 3 }}
         textShadow="0 2px 4px rgba(128, 90, 213, 0.3)"
         textAlign={{ base: "center", sm: "left" }}
         mb={{ base: 1, sm: 0 }}
@@ -460,6 +465,7 @@ const SemesterSection = ({ semester, subjects }) => (
         colorScheme="blue"
         variant="subtle"
         px={{ base: 2, md: 3 }}
+        mx={{ base: 0, sm: 2, md: 6, lg: 6 }}
         py={1}
         borderRadius="full"
         fontSize={{ base: "xs", md: "sm" }}
@@ -468,7 +474,9 @@ const SemesterSection = ({ semester, subjects }) => (
       </Badge>
     </Flex>
 
-    <Accordion allowMultiple>
+    <Accordion
+      px={{ base: 3, sm: 4, md: 12, lg: 12 }}
+      allowMultiple>
       {subjects.map((subject, idx) => (
         <SubjectAccordion key={idx} subject={subject} />
       ))}
@@ -501,14 +509,14 @@ export default function YouTubeChannelsPage() {
     <Box bg="white" minH="100vh">
       {/* <SpaceBackground /> */}
       <SidebarAdLeft
-          numberOfAds={6}
-          adSlots={['4333835944', '9478180943','8042079841']}
-          position="left"
-        />
+        numberOfAds={6}
+        adSlots={['4333835944', '9478180943', '8042079841']}
+        position="left"
+      />
       <Container
         maxW={{ base: "full", sm: "container.sm", md: "container.md", lg: "6xl" }}
-        py={{ base: 4, sm: 6, md: 8 }}
-        px={{ base: 3, sm: 4, md: 6 }}
+        py={{ base: 4, sm: 6, md: 8, lg: 12 }}
+        px={{ base: 3, sm: 4, md: 12, lg: 12 }}
         position="relative"
         zIndex="1"
       >
@@ -527,17 +535,22 @@ export default function YouTubeChannelsPage() {
               textShadow="0 4px 8px rgba(0,0,0,0.1)"
               lineHeight={{ base: "shorter", md: "short" }}
             >
-              🚀 Best Youtube Playlists for each subject
+              🚀 Best Youtube Playlists
             </Heading>
 
             {/* Search Bar */}
             <Box
               maxW={{ base: "full", md: "full", lg: "full" }}
-              px={{ base: 2, sm: 4, md: 6, lg: 12 }}
-              mx={{ base: 2, sm: 4, md: 6, lg: 12 }}
+              px={{ base: 2, sm: 4, md: 10, lg: 12 }}
+              mx={{ base: 2, sm: 4, md: 10, lg: 12 }}
             >
-              <InputGroup size={{ base: "md", md: "lg" }} >
-                <InputLeftElement pointerEvents="none" h={{ base: "40px", md: "48px" }}>
+              <InputGroup
+                px={{ base: 2, sm: 4, md: 4, lg: 6 }}
+                size={{ base: "md", md: "lg" }} >
+                <InputLeftElement 
+                pointerEvents="none" 
+                pl={{ sm: 6, md: 5 , lg: 9}}
+                h={{ base: "40px", md: "48px" }}>
                   <SearchIcon
                     color="gray.400"
                     boxSize={{ base: "16px", md: "20px" }}
@@ -551,7 +564,7 @@ export default function YouTubeChannelsPage() {
                   backdropFilter="blur(10px)"
                   border="2px solid"
                   borderColor="blue.300"
-                  borderRadius={{ base: "xl", md: "full" }}
+                  borderRadius={{ base: "full", md: "full" }}
                   fontSize={{ base: "sm", sm: "md", md: "lg" }}
                   h={{ base: "40px", md: "48px" }}
                   // pl={{ base: "40px", md: "48px" }}

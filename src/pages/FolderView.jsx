@@ -528,7 +528,10 @@ const FolderView = () => {
         adSlots={['4333835944', '9478180943', '8042079841']}
         position="left"
       />
-      <Container maxW="container.xl" py={[3, 4, 5]} px={{ base: 4, md: 12, lg: 10 }} >
+      <Container maxW="container.xl"
+        py={[3, 4, 5]}
+        px={{ base: 4, md: 12, lg: 10 }}
+      >
         <Box px={{ base: 2, sm: 4, md: 12, lg: 10 }}>
           <Breadcrumbs />
         </Box>
@@ -536,11 +539,11 @@ const FolderView = () => {
           <Box
             mb={[4, 5, 6]}
             width={["80%", "80%", "85%"]}
-            mx={["0", "auto", "auto","auto"]}
+            mx={["0", "auto", "auto", "auto"]}
             px={{ base: 2, sm: 4, md: 12, lg: 12 }}
           >
-            <InputGroup px={{ base: 2, sm: 4, md: 2}}>
-              <InputLeftElement pointerEvents="none" pl={{sm: 6,md:3}}>
+            <InputGroup px={{ base: 2, sm: 4, md: 2 }}>
+              <InputLeftElement pointerEvents="none" pl={{ sm: 6, md: 3 }}>
                 <Icon as={FiSearch} color="gray.400" />
               </InputLeftElement>
               <Input
