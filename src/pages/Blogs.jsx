@@ -714,7 +714,7 @@ const Blogs = () => {
     return (
         <Box bg="white" minH="100vh" >
             <SidebarAdLeft
-                numberOfAds={6}
+                numberOfAds={3}
                 adSlots={['4333835944', '9478180943', '8042079841']}
                 position="left"
             />
@@ -898,7 +898,7 @@ const Blogs = () => {
                 />
             )}
             <SidebarAdRight
-                numberOfAds={6}
+                numberOfAds={3}
                 adSlots={['3152616213', '3253352242', '7001025560']}
                 position="right"
             />

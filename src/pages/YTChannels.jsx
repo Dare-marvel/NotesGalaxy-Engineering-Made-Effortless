@@ -509,7 +509,7 @@ export default function YouTubeChannelsPage() {
     <Box bg="white" minH="100vh">
       {/* <SpaceBackground /> */}
       <SidebarAdLeft
-        numberOfAds={6}
+        numberOfAds={3}
         adSlots={['4333835944', '9478180943', '8042079841']}
         position="left"
       />
@@ -630,7 +630,7 @@ export default function YouTubeChannelsPage() {
         </VStack>
       </Container>
       <SidebarAdRight
-        numberOfAds={6}
+        numberOfAds={3}
         adSlots={['3152616213', '3253352242', '7001025560']}
         position="right"
       />
