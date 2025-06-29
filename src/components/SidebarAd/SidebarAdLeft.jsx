@@ -1,11 +1,10 @@
-import React from 'react';
 import { useEffect, useRef, useState } from 'react';
 import { Box, Text, useColorModeValue, VStack } from '@chakra-ui/react';
 import { useWindowSize } from '../../hooks/useWindowSize';
 
 const SidebarAdLeft = ({ 
   position = 'left', 
-  numberOfAds = 6,
+  numberOfAds = 3,
   adSlots = [], // Array of slot IDs for multiple ads
   fallbackSlotId = '4333835944', // Fallback slot ID if adSlots is empty
   adClient = 'ca-pub-8107450590774580'
@@ -15,7 +14,9 @@ const SidebarAdLeft = ({
   const borderColor = useColorModeValue('gray.200', 'gray.600');
   const adRefs = useRef([]);
   const adInitialized = useRef([]);
+  const adsPushed = useRef([]); // Track which ads have been pushed to adsbygoogle
   const [headerHeight, setHeaderHeight] = useState(0);
+  const componentId = useRef(`sidebar-ads-${Date.now()}-${Math.random()}`);
 
   // Define breakpoint for medium screens
   const isMobile = width < 768;
@@ -42,6 +43,7 @@ const SidebarAdLeft = ({
   useEffect(() => {
     adRefs.current = Array(numberOfAds).fill().map((_, i) => adRefs.current[i] || React.createRef());
     adInitialized.current = Array(numberOfAds).fill(false);
+    adsPushed.current = Array(numberOfAds).fill(false);
   }, [numberOfAds]);
 
   // Detect header height dynamically
@@ -85,8 +87,28 @@ const SidebarAdLeft = ({
     return () => window.removeEventListener('resize', detectHeaderHeight);
   }, []);
 
+  // Clean up function to properly remove ads
+  const cleanupAds = () => {
+    adRefs.current.forEach((adRef, index) => {
+      if (adRef) {
+        const insElements = adRef.querySelectorAll('.adsbygoogle');
+        insElements.forEach(ins => {
+          // Remove any existing ad content
+          ins.innerHTML = '';
+          // Remove data attributes that might prevent re-initialization
+          ins.removeAttribute('data-adsbygoogle-status');
+        });
+      }
+    });
+    adInitialized.current = Array(numberOfAds).fill(false);
+    adsPushed.current = Array(numberOfAds).fill(false);
+  };
+
   useEffect(() => {
     if (!isMobile) {
+      // Clean up any existing ads first
+      cleanupAds();
+      
       // Ensure AdSense script is loaded
       const checkAdSenseAndInit = () => {
         if (window.adsbygoogle) {
@@ -99,26 +121,46 @@ const SidebarAdLeft = ({
                 try {
                   console.log(`Initializing ad ${index} with slot ${slotIds[index]}`);
                   
-                  // Clear any existing ad content
+                  // Find the ins element for this ad
                   const insElement = adRef.querySelector('.adsbygoogle');
-                  if (insElement && insElement.innerHTML) {
-                    // console.log(`Ad ${index} already has content, skipping`);
+                  if (!insElement) {
+                    console.warn(`No ins element found for ad ${index}`);
+                    continue;
+                  }
+
+                  // Check if this ad has already been processed by AdSense
+                  const adStatus = insElement.getAttribute('data-adsbygoogle-status');
+                  if (adStatus === 'done' || insElement.innerHTML.trim() !== '') {
+                    console.log(`Ad ${index} already initialized, skipping`);
                     adInitialized.current[index] = true;
+                    adsPushed.current[index] = true;
+                    continue;
+                  }
+
+                  // Check if we've already pushed this ad to the queue
+                  if (adsPushed.current[index]) {
+                    console.log(`Ad ${index} already pushed to queue, skipping`);
                     continue;
                   }
                   
                   // Wait a bit before initializing
                   await new Promise(resolve => setTimeout(resolve, 300));
                   
+                  // Mark as pushed before actually pushing to prevent duplicate calls
+                  adsPushed.current[index] = true;
+                  
+                  // Push to AdSense queue
                   (window.adsbygoogle = window.adsbygoogle || []).push({});
                   adInitialized.current[index] = true;
-                  // console.log(`Ad ${index} initialized successfully`);
+                  console.log(`Ad ${index} pushed to AdSense queue successfully`);
                   
                   // Wait between ad initializations
                   await new Promise(resolve => setTimeout(resolve, 500));
                   
                 } catch (adError) {
                   console.error(`AdSense error for ad ${index}:`, adError);
+                  // Reset the pushed flag on error so we can retry
+                  adsPushed.current[index] = false;
                 }
               }
             }
@@ -126,21 +168,26 @@ const SidebarAdLeft = ({
           
           initializeAdsSequentially();
         } else {
-          // console.log('AdSense not loaded yet, retrying...');
+          console.log('AdSense not loaded yet, retrying...');
           setTimeout(checkAdSenseAndInit, 500);
         }
       };
       
       // Start checking after component mounts
       const timer = setTimeout(checkAdSenseAndInit, 1000);
-      return () => clearTimeout(timer);
+      return () => {
+        clearTimeout(timer);
+        // Don't clean up ads on unmount as it might interfere with AdSense
+      };
     }
   }, [isMobile, numberOfAds, slotIds]);
 
-  // Reset initialization flag when component unmounts or mobile state changes
+  // Reset initialization flags when mobile state changes
   useEffect(() => {
     if (isMobile) {
+      // Reset flags but don't clean DOM elements when switching to mobile
       adInitialized.current = Array(numberOfAds).fill(false);
+      adsPushed.current = Array(numberOfAds).fill(false);
     }
   }, [isMobile, numberOfAds]);
 
@@ -151,7 +198,7 @@ const SidebarAdLeft = ({
   const renderAdUnits = () => {
     return Array.from({ length: numberOfAds }, (_, index) => (
       <Box
-        key={`ad-${index}-${slotIds[index]}`} // Include slot ID in key for better React reconciliation
+        key={`${componentId.current}-ad-${index}-${slotIds[index]}`} // Unique key with component instance
         ref={el => adRefs.current[index] = el}
         className={`ad-container-${index}`}
         width="100%"
@@ -187,6 +234,7 @@ const SidebarAdLeft = ({
           data-ad-slot={slotIds[index]} // Use different slot ID for each ad
           data-ad-format="vertical"
           data-full-width-responsive="true"
+          key={`ins-${componentId.current}-${index}`} // Unique key for ins element
         />
       </Box>
     ));
@@ -224,6 +272,7 @@ const SidebarAdLeft = ({
             <Text fontWeight="bold">Ad Debug Info:</Text>
             <Text>Ads: {numberOfAds}</Text>
             <Text>Slot IDs: {slotIds.join(', ')}</Text>
+            <Text>Component ID: {componentId.current}</Text>
           </Box>
         )} */}
       </VStack>
