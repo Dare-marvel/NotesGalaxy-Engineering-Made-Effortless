@@ -524,8 +524,6 @@ const FolderView = () => {
   return (
     <Box minH="100vh">
       <SidebarAdLeft
-        numberOfAds={3}
-        adSlots={['4333835944', '9478180943', '8042079841']}
         position="left"
       />
       <Container maxW="container.xl"
@@ -689,8 +687,6 @@ const FolderView = () => {
         </Tooltip>
       </Box>
       <SidebarAdRight
-        numberOfAds={3}
-        adSlots={['3152616213', '3253352242', '7001025560']}
         position="right"
       />
     </Box>

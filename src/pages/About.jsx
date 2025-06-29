@@ -164,8 +164,6 @@ const AboutUs = () => {
     <Container maxW="container.xl" width={["100%", "85%", "85%"]} py={[3, 4, 5]} px={[2, 3, 5]}
     >
       <SidebarAdLeft
-        numberOfAds={3}
-        adSlots={['4333835944', '9478180943', '8042079841']}
         position="left"
       />
       {/* Animated Background Elements */}
@@ -487,8 +485,6 @@ const AboutUs = () => {
         </Box>
       </Container>
       <SidebarAdRight
-        numberOfAds={3}
-        adSlots={['3152616213', '3253352242', '7001025560']}
         position="right"
       />
     </Container>

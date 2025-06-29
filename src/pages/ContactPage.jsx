@@ -289,8 +289,6 @@ const ContactPage = () => {
       <Container maxW="container.xl" py={[3, 4, 5]} px={[2, 3, 5]}
       >
         <SidebarAdLeft
-          numberOfAds={3}
-          adSlots={['4333835944', '9478180943','8042079841']}
           position="left"
         />
         {/* Floating elements */}
@@ -519,8 +517,6 @@ const ContactPage = () => {
           </VStack>
         </Container>
         <SidebarAdRight
-          numberOfAds={3}
-          adSlots={['3152616213', '3253352242', '7001025560']}
           position="right"
         />
       </Container>

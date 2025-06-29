@@ -47,14 +47,14 @@ const Footer = () => {
       position="relative"
       mt={10}
       py={{ base: 6, md: 8 }} // Reduced padding on mobile
-      borderTop="1px solid"
+      // borderTop="1px solid"
       borderColor="whiteAlpha.300"
       bg="linear-gradient(180deg, rgba(14, 25, 47, 0) 0%, rgba(19, 2, 50, 0.5) 100%)"
       overflow="hidden"
       width="100%"
     >
       {/* Animated glowing background line */}
-      <motion.div
+      {/* <motion.div
         animate={{
           x: ["0%", "100%", "0%"],
           opacity: [0.4, 0.8, 0.4],
@@ -73,7 +73,7 @@ const Footer = () => {
           background: "linear-gradient(90deg, transparent 0%, #9F7AEA 50%, transparent 100%)",
           zIndex: 0
         }}
-      />
+      /> */}
 
       <Flex
         direction="column"

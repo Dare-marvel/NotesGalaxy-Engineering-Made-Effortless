@@ -4,11 +4,11 @@ import { useWindowSize } from '../../hooks/useWindowSize';
 
 const SidebarAdRight = ({ 
   position = 'right', 
-  adClient = 'ca-pub-8107450590774580',
+  // adClient = 'ca-pub-8107450590774580',
   // Define your slot IDs here - modify these as needed
-  slotId1 = '3152616213',
-  slotId2 = '3253352242', 
-  slotId3 = '7001025560',
+  // slotId1 = '3152616213',
+  // slotId2 = '3253352242', 
+  // slotId3 = '7001025560',
   // slotId4 = '4333835947',
   // slotId5 = '4333835948',
   // slotId6 = '4333835949'
@@ -148,8 +148,8 @@ const SidebarAdRight = ({
               width: "130px",
               height: "600px"
             }}
-            data-ad-client={adClient}
-            data-ad-slot={slotId1}
+            data-ad-client='ca-pub-8107450590774580'
+            data-ad-slot='3152616213'
             data-ad-format="vertical"
             data-full-width-responsive="true"
           />
@@ -172,8 +172,8 @@ const SidebarAdRight = ({
               width: "130px",
               height: "600px"
             }}
-            data-ad-client={adClient}
-            data-ad-slot={slotId2}
+            data-ad-client='ca-pub-8107450590774580'
+            data-ad-slot='3253352242'
             data-ad-format="vertical"
             data-full-width-responsive="true"
           />
@@ -196,8 +196,8 @@ const SidebarAdRight = ({
               width: "130px",
               height: "600px"
             }}
-            data-ad-client={adClient}
-            data-ad-slot={slotId3}
+            data-ad-client='ca-pub-8107450590774580'
+            data-ad-slot='7001025560'
             data-ad-format="vertical"
             data-full-width-responsive="true"
           />
