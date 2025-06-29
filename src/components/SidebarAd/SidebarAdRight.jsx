@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Box, Text, useColorModeValue, VStack } from '@chakra-ui/react';
 import { useWindowSize } from '../../hooks/useWindowSize';
 
-const SidebarAdLeft = ({ 
+const SidebarAdRight = ({ 
   position = 'right', 
   adClient = 'ca-pub-8107450590774580',
   // Define your slot IDs here - modify these as needed
@@ -279,4 +279,4 @@ const SidebarAdLeft = ({
   );
 };
 
-export default SidebarAdLeft;
+export default SidebarAdRight;
