@@ -156,7 +156,7 @@ const SidebarAdLeft = ({
         </Box>
 
         {/* Ad 2 */}
-        {/* <Box
+        <Box
           className="ad-container-2"
           width="100%"
           minHeight="600px"
@@ -177,10 +177,10 @@ const SidebarAdLeft = ({
             data-ad-format="vertical"
             data-full-width-responsive="true"
           />
-        </Box> */}
+        </Box>
 
         {/* Ad 3 */}
-        {/* <Box
+        <Box
           className="ad-container-3"
           width="100%"
           minHeight="600px"
@@ -201,7 +201,7 @@ const SidebarAdLeft = ({
             data-ad-format="vertical"
             data-full-width-responsive="true"
           />
-        </Box> */}
+        </Box>
 
         {/* Ad 4 */}
         {/* <Box
