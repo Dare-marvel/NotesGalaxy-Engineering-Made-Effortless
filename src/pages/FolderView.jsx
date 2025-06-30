@@ -536,11 +536,11 @@ const FolderView = () => {
         {!repoName && (
           <Box
             mb={[4, 5, 6]}
-            width={["80%", "80%", "85%"]}
+            width={["100%", "80%", "85%"]}
             mx={["0", "auto", "auto", "auto"]}
-            px={{ base: 2, sm: 4, md: 12, lg: 12 }}
+            px={{ base: 0, sm: 4, md: 12, lg: 12 }}
           >
-            <InputGroup px={{ base: 2, sm: 4, md: 2 }}>
+            <InputGroup px={{ base: 0, sm: 4, md: 2 }}>
               <InputLeftElement pointerEvents="none" pl={{ sm: 6, md: 3 }}>
                 <Icon as={FiSearch} color="gray.400" />
               </InputLeftElement>
@@ -550,10 +550,12 @@ const FolderView = () => {
                 onChange={(e) => setSearchQuery(e.target.value)}
                 bg={inputBg}
                 borderRadius="full"
+                borderColor="blue.200"
+                // border="2px solid"
                 size={["sm", "md", "md"]}
                 boxShadow="md"
                 _focus={{
-                  borderColor: 'teal.500',
+                  borderColor: 'blue.500',
                   boxShadow: 'lg'
                 }}
               />
