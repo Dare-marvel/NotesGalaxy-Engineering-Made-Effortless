@@ -7,7 +7,8 @@ import FolderView from '../pages/FolderView';
 import AboutUs from '../pages/About';
 import YouTubeChannelsPage from '../pages/YTChannels';
 import Blogs from '../pages/Blogs';
-// import Tetris from '../components/Games/Tetris'
+import EducationalSnakeGame from '../components/Games/SnakeGame';
+import Tetris from '../components/Games/Tetris'
 
 
 
@@ -21,9 +22,8 @@ const AppRoutes = () => {
       <Route path="/ytchannels" element={<YouTubeChannelsPage />} />
       <Route path="/community" element={<Community />} />
       <Route path="/blogs" element={<Blogs />} />
-      {/* <Route path="/tetris" element={<Tetris />} /> */}
-      {/* <Route path="/snake-game" element={<EducationalSnakeGame />} /> */}
-      {/* <Route path="/blogs/*" element={<Blogs />} /> */}
+      <Route path="/tetris" element={<Tetris />} />
+      <Route path="/snake-game" element={<EducationalSnakeGame />} />
     </Routes>
   );
 };
