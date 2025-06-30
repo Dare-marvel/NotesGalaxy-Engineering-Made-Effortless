@@ -18,8 +18,11 @@ import {
   Input,
   Badge,
   Flex,
-  Spacer
+  Spacer,
+  Select,
 } from '@chakra-ui/react';
+import subjectsList from '../../config/subjectsList';
+import QUESTIONS from './constants/QuestionsList';
 
 // Tetris pieces
 const TETROMINOS = {
@@ -98,10 +101,11 @@ const BOARD_WIDTH = 10;
 const BOARD_HEIGHT = 20;
 
 const SpaceTetris = () => {
-  const [board, setBoard] = useState(() => 
+  const [board, setBoard] = useState(() =>
     Array(BOARD_HEIGHT).fill().map(() => Array(BOARD_WIDTH).fill(0))
   );
   const [currentPiece, setCurrentPiece] = useState(null);
+  const [selectedSubject, setSelectedSubject] = useState("All Subjects");
   const [currentPosition, setCurrentPosition] = useState({ x: 4, y: 0 });
   const [score, setScore] = useState(0);
   const [level, setLevel] = useState(1);
@@ -110,17 +114,17 @@ const SpaceTetris = () => {
   const [gameOver, setGameOver] = useState(false);
   const [nextPiece, setNextPiece] = useState(null);
   const [dropTime, setDropTime] = useState(1000);
-  
+
   // Puzzle state
   const [currentPuzzle, setCurrentPuzzle] = useState(null);
   const [puzzleAnswer, setPuzzleAnswer] = useState('');
   const [showHint, setShowHint] = useState(false);
   const [puzzlesSolved, setPuzzlesSolved] = useState(0);
-  
+
   const [highScore, setHighScore] = useState(() => {
     return parseInt(localStorage.getItem('tetrisHighScore')) || 0;
   });
-  
+
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
   const gameLoopRef = useRef();
@@ -130,7 +134,7 @@ const SpaceTetris = () => {
     if (newScore > highScore) {
       setHighScore(newScore);
       localStorage.setItem('tetrisHighScore', newScore.toString());
-      
+
       toast({
         title: '🎉 NEW HIGH SCORE!',
         description: `Amazing! You scored ${newScore.toLocaleString()} points!`,
@@ -166,11 +170,11 @@ const SpaceTetris = () => {
         if (piece[y][x]) {
           const newX = position.x + x;
           const newY = position.y + y;
-          
+
           if (newX < 0 || newX >= BOARD_WIDTH || newY >= BOARD_HEIGHT) {
             return true;
           }
-          
+
           if (newY >= 0 && boardState[newY][newX]) {
             return true;
           }
@@ -183,20 +187,20 @@ const SpaceTetris = () => {
   // Place piece on board
   const placePiece = useCallback(() => {
     const newBoard = board.map(row => [...row]);
-    
+
     for (let y = 0; y < currentPiece.shape.length; y++) {
       for (let x = 0; x < currentPiece.shape[y].length; x++) {
         if (currentPiece.shape[y][x]) {
           const boardY = currentPosition.y + y;
           const boardX = currentPosition.x + x;
-          
+
           if (boardY >= 0) {
             newBoard[boardY][boardX] = currentPiece.color;
           }
         }
       }
     }
-    
+
     setBoard(newBoard);
     return newBoard;
   }, [board, currentPiece, currentPosition]);
@@ -211,11 +215,11 @@ const SpaceTetris = () => {
       }
       return true;
     });
-    
+
     while (newBoard.length < BOARD_HEIGHT) {
       newBoard.unshift(Array(BOARD_WIDTH).fill(0));
     }
-    
+
     if (linesCleared > 0) {
       const points = linesCleared * 100 * level;
       setScore(prev => {
@@ -225,26 +229,42 @@ const SpaceTetris = () => {
       });
       setLines(prev => prev + linesCleared);
       setLevel(Math.floor(lines / 10) + 1);
-      
+
       // Trigger puzzle every 3 lines cleared
       if ((lines + linesCleared) % 3 === 0) {
         triggerPuzzle();
       }
-      
+
       toast({
         title: `${linesCleared} line${linesCleared > 1 ? 's' : ''} cleared!`,
         description: `+${points} points`,
         status: 'success',
-        duration: 2000,
+        duration: 1000,
       });
     }
-    
+
     return newBoard;
   }, [level, lines, updateHighScore, toast]);
 
+  const getAllQuestions = () => {
+    if (selectedSubject === "All Subjects") {
+      return Object.values(QUESTIONS).flat();
+    }
+    return QUESTIONS[selectedSubject] || [];
+  };
+
+  const getRandomQuestion = () => {
+    const availableQuestions = getAllQuestions();
+    if (availableQuestions.length === 0) {
+      // Fallback to math questions if selected subject has no questions
+      return QUESTIONS["Mathematics"][0];
+    }
+    return availableQuestions[Math.floor(Math.random() * availableQuestions.length)];
+  };
+
   // Trigger space puzzle
   const triggerPuzzle = () => {
-    const randomPuzzle = SPACE_PUZZLES[Math.floor(Math.random() * SPACE_PUZZLES.length)];
+    const randomPuzzle = getRandomQuestion();
     setCurrentPuzzle(randomPuzzle);
     setPuzzleAnswer('');
     setShowHint(false);
@@ -252,9 +272,10 @@ const SpaceTetris = () => {
     onOpen();
   };
 
-  // Handle puzzle answer
-  const handlePuzzleSubmit = () => {
-    if (puzzleAnswer.toLowerCase().trim() === currentPuzzle.answer.toLowerCase()) {
+  const handleAnswerQuestion = (selectedIndex) => {
+    const isCorrect = selectedIndex === currentPuzzle.correct;
+
+    if (isCorrect) {
       setPuzzlesSolved(prev => prev + 1);
       const bonusPoints = 500;
       setScore(prev => {
@@ -263,32 +284,69 @@ const SpaceTetris = () => {
         return newScore;
       });
       setDropTime(prev => Math.max(prev - 50, 100)); // Speed up game
-      
+
+
       toast({
         title: 'Correct!',
         description: `Puzzle solved! +${bonusPoints} bonus points and faster gameplay!`,
         status: 'success',
-        duration: 3000,
+        duration: 1000,
       });
-      
+
       onClose();
       setGameRunning(true);
     } else {
       toast({
-        title: 'Incorrect',
-        description: 'Try again or use the hint!',
-        status: 'error',
-        duration: 2000,
+        title: "Wrong Answer ❌",
+        description: "Try again next time!",
+        status: "error",
+        duration: 1000,
+        isClosable: true,
       });
     }
+
+    setCurrentPuzzle(null);
+    setGameRunning(true);
+    onClose();
   };
+
+  // Handle puzzle answer
+  // const handlePuzzleSubmit = () => {
+  //   if (puzzleAnswer.toLowerCase().trim() === currentPuzzle.answer.toLowerCase()) {
+  //     setPuzzlesSolved(prev => prev + 1);
+  //     const bonusPoints = 500;
+  //     setScore(prev => {
+  //       const newScore = prev + bonusPoints;
+  //       updateHighScore(newScore);
+  //       return newScore;
+  //     });
+  //     setDropTime(prev => Math.max(prev - 50, 100)); // Speed up game
+
+  //     toast({
+  //       title: 'Correct!',
+  //       description: `Puzzle solved! +${bonusPoints} bonus points and faster gameplay!`,
+  //       status: 'success',
+  //       duration: 1000,
+  //     });
+
+  //     onClose();
+  //     setGameRunning(true);
+  //   } else {
+  //     toast({
+  //       title: 'Incorrect',
+  //       description: 'Try again or use the hint!',
+  //       status: 'error',
+  //       duration: 1000,
+  //     });
+  //   }
+  // };
 
   // Move piece
   const movePiece = useCallback((direction) => {
     if (!currentPiece || !gameRunning) return;
-    
+
     const newPosition = { ...currentPosition };
-    
+
     switch (direction) {
       case 'left':
         newPosition.x -= 1;
@@ -300,7 +358,7 @@ const SpaceTetris = () => {
         newPosition.y += 1;
         break;
     }
-    
+
     if (!checkCollision(currentPiece.shape, newPosition)) {
       setCurrentPosition(newPosition);
     } else if (direction === 'down') {
@@ -308,15 +366,15 @@ const SpaceTetris = () => {
       const newBoard = placePiece();
       const clearedBoard = clearLines(newBoard);
       setBoard(clearedBoard);
-      
+
       // Check game over
       if (currentPosition.y <= 1) {
         setGameOver(true);
         setGameRunning(false);
-        
+
         // Final high score check
         updateHighScore(score);
-        
+
         toast({
           title: 'Game Over!',
           description: `Final Score: ${score} | Puzzles Solved: ${puzzlesSolved}`,
@@ -325,7 +383,7 @@ const SpaceTetris = () => {
         });
         return;
       }
-      
+
       // Spawn new piece
       setCurrentPiece(nextPiece);
       setNextPiece(generatePiece());
@@ -336,7 +394,7 @@ const SpaceTetris = () => {
   // Rotate current piece
   const rotateCurrent = useCallback(() => {
     if (!currentPiece || !gameRunning) return;
-    
+
     const rotated = rotatePiece(currentPiece.shape);
     if (!checkCollision(rotated, currentPosition)) {
       setCurrentPiece(prev => ({ ...prev, shape: rotated }));
@@ -352,7 +410,7 @@ const SpaceTetris = () => {
     } else {
       clearInterval(gameLoopRef.current);
     }
-    
+
     return () => clearInterval(gameLoopRef.current);
   }, [gameRunning, gameOver, movePiece, dropTime]);
 
@@ -360,7 +418,7 @@ const SpaceTetris = () => {
   useEffect(() => {
     const handleKeyPress = (e) => {
       if (!gameRunning) return;
-      
+
       switch (e.key) {
         case 'ArrowLeft':
           e.preventDefault();
@@ -381,7 +439,7 @@ const SpaceTetris = () => {
           break;
       }
     };
-    
+
     window.addEventListener('keydown', handleKeyPress);
     return () => window.removeEventListener('keydown', handleKeyPress);
   }, [gameRunning, movePiece, rotateCurrent]);
@@ -391,7 +449,7 @@ const SpaceTetris = () => {
     setBoard(Array(BOARD_HEIGHT).fill().map(() => Array(BOARD_WIDTH).fill(0)));
     setCurrentPiece(generatePiece());
     setNextPiece(generatePiece());
-    setCurrentPosition({ x: 4, y:0 });
+    setCurrentPosition({ x: 4, y: 0 });
     setScore(0);
     setLevel(1);
     setLines(0);
@@ -404,7 +462,7 @@ const SpaceTetris = () => {
   // Render board with current piece
   const renderBoard = () => {
     const displayBoard = board.map(row => [...row]);
-    
+
     // Add current piece to display
     if (currentPiece) {
       for (let y = 0; y < currentPiece.shape.length; y++) {
@@ -412,7 +470,7 @@ const SpaceTetris = () => {
           if (currentPiece.shape[y][x]) {
             const boardY = currentPosition.y + y;
             const boardX = currentPosition.x + x;
-            
+
             if (boardY >= 0 && boardY < BOARD_HEIGHT && boardX >= 0 && boardX < BOARD_WIDTH) {
               displayBoard[boardY][boardX] = currentPiece.color;
             }
@@ -420,30 +478,31 @@ const SpaceTetris = () => {
         }
       }
     }
-    
+
     return displayBoard;
   };
 
   const displayBoard = renderBoard();
 
   return (
-    <Box 
-      minH="100vh" 
+    <Box
+      minH="100vh"
       bg="white"
-      p={4}
+      // p={4}
+      py={{ base: 10, md: 10, lg: 12 }}
       color="black"
     >
-      <VStack spacing={4}>
-        <Text fontSize="4xl" fontWeight="bold" textAlign="center" color="purple.600">
+      <VStack spacing={4} pt={{ base: 8, md: 6, lg: 8 }} >
+        {/* <Text fontSize="4xl" fontWeight="bold" textAlign="center" color="purple.600">
           🚀 SPACE TETRIS 🌌
-        </Text>
-        
+        </Text> */}
+
         <HStack spacing={8} align="start">
           {/* Game Board */}
           <VStack>
-            <Box 
-              border="2px solid" 
-              borderColor="purple.500" 
+            <Box
+              border="2px solid"
+              borderColor="purple.500"
               bg="rgba(0,0,0,0.05)"
               p={2}
               borderRadius="md"
@@ -464,37 +523,37 @@ const SpaceTetris = () => {
                 )}
               </Grid>
             </Box>
-            
+
             {/* Controls */}
             <VStack spacing={2}>
               <HStack>
-                <Button 
-                  size="sm" 
-                  colorScheme="cyan" 
+                <Button
+                  size="sm"
+                  colorScheme="cyan"
                   onClick={() => movePiece('left')}
                   isDisabled={!gameRunning}
                 >
                   ←
                 </Button>
-                <Button 
-                  size="sm" 
-                  colorScheme="cyan" 
+                <Button
+                  size="sm"
+                  colorScheme="cyan"
                   onClick={() => movePiece('down')}
                   isDisabled={!gameRunning}
                 >
                   ↓
                 </Button>
-                <Button 
-                  size="sm" 
-                  colorScheme="cyan" 
+                <Button
+                  size="sm"
+                  colorScheme="cyan"
                   onClick={() => movePiece('right')}
                   isDisabled={!gameRunning}
                 >
                   →
                 </Button>
-                <Button 
-                  size="sm" 
-                  colorScheme="purple" 
+                <Button
+                  size="sm"
+                  colorScheme="purple"
                   onClick={rotateCurrent}
                   isDisabled={!gameRunning}
                 >
@@ -506,14 +565,14 @@ const SpaceTetris = () => {
               </Text>
             </VStack>
           </VStack>
-          
+
           {/* Side Panel */}
           <VStack spacing={4} align="stretch" minW="200px">
             {/* Game Stats */}
-            <Box 
-              bg="rgba(0,0,0,0.05)" 
-              p={4} 
-              borderRadius="md" 
+            <Box
+              bg="rgba(0,0,0,0.05)"
+              p={4}
+              borderRadius="md"
               border="1px solid rgba(0,0,0,0.2)"
             >
               <Text fontSize="lg" fontWeight="bold" mb={2} color="purple.600">
@@ -547,13 +606,30 @@ const SpaceTetris = () => {
                 </Flex>
               </VStack>
             </Box>
-            
+
+            {/* Subject Selection */}
+            <Box w={{ base: "full", md: "400px" }}>
+              <Text mb={2} fontWeight="medium">Select Subject:</Text>
+              <Select
+                value={selectedSubject}
+                onChange={(e) => setSelectedSubject(e.target.value)}
+                disabled={gameRunning}
+              >
+                {subjectsList.map((subject) => (
+                  <option key={subject} value={subject}>
+                    {subject}
+                  </option>
+                ))}
+              </Select>
+            </Box>
+
+
             {/* Next Piece */}
             {nextPiece && (
-              <Box 
-                bg="rgba(0,0,0,0.05)" 
-                p={4} 
-                borderRadius="md" 
+              <Box
+                bg="rgba(0,0,0,0.05)"
+                p={4}
+                borderRadius="md"
                 border="1px solid rgba(0,0,0,0.2)"
               >
                 <Text fontSize="md" fontWeight="bold" mb={2} color="purple.600">
@@ -578,24 +654,24 @@ const SpaceTetris = () => {
                 </Grid>
               </Box>
             )}
-            
+
             {/* Game Controls */}
             <VStack spacing={2}>
               {!gameRunning && !gameOver && (
-                <Button 
-                  colorScheme="green" 
-                  size="lg" 
+                <Button
+                  colorScheme="green"
+                  size="lg"
                   onClick={startGame}
                   leftIcon={<Text>🚀</Text>}
                 >
                   START MISSION
                 </Button>
               )}
-              
+
               {gameRunning && (
-                <Button 
-                  colorScheme="red" 
-                  size="md" 
+                <Button
+                  colorScheme="red"
+                  size="md"
                   onClick={() => {
                     setGameRunning(false);
                     setGameOver(true);
@@ -604,11 +680,11 @@ const SpaceTetris = () => {
                   ABORT MISSION
                 </Button>
               )}
-              
+
               {gameOver && (
-                <Button 
-                  colorScheme="blue" 
-                  size="lg" 
+                <Button
+                  colorScheme="blue"
+                  size="lg"
                   onClick={startGame}
                   leftIcon={<Text>🔄</Text>}
                 >
@@ -619,51 +695,44 @@ const SpaceTetris = () => {
           </VStack>
         </HStack>
       </VStack>
-      
+
       {/* Puzzle Modal */}
-      <Modal isOpen={isOpen} onClose={() => {}} closeOnOverlayClick={false}>
-        <ModalOverlay bg="rgba(0,0,0,0.8)" />
-        <ModalContent bg="gray.900" border="2px solid" borderColor="purple.500">
-          <ModalHeader color="purple.300">
-            🧩 Space Knowledge Challenge
+      <Modal isOpen={isOpen} onClose={() => { }} closeOnOverlayClick={false}>
+        <ModalOverlay  />
+        <ModalContent border="2px solid" borderColor="purple.300">
+          <ModalHeader>
+            <Badge colorScheme="purple" mr={2}>
+              {currentPuzzle?.category}
+            </Badge>
+            Question Time! 🧠
           </ModalHeader>
           <ModalBody>
             {currentPuzzle && (
               <VStack spacing={4} align="stretch">
-                <Text fontSize="lg" color="white">
+                <Text fontSize={{ base: "md", md: "lg" }} fontWeight="medium" textAlign="center" >
                   {currentPuzzle.question}
                 </Text>
-                <Input
-                  value={puzzleAnswer}
-                  onChange={(e) => setPuzzleAnswer(e.target.value)}
-                  placeholder="Enter your answer..."
-                  bg="gray.800"
-                  color="white"
-                  onKeyPress={(e) => e.key === 'Enter' && handlePuzzleSubmit()}
-                />
-                {showHint && (
-                  <Box p={3} bg="yellow.900" borderRadius="md">
-                    <Text color="yellow.200">
-                      💡 Hint: {currentPuzzle.hint}
-                    </Text>
-                  </Box>
-                )}
+                <Grid templateColumns={{ base: "1fr", md: "repeat(2, 1fr)" }} gap={3} w="full">
+                  {currentPuzzle.options.map((option, index) => (
+                    <GridItem key={index}>
+                      <Button
+                        w="full"
+                        minH="12"
+                        variant="outline"
+                        colorScheme="teal"
+                        onClick={() => handleAnswerQuestion(index)}
+                        whiteSpace="normal"
+                        textAlign="center"
+                        fontSize={{ base: "sm", md: "md" }}
+                      >
+                        {option}
+                      </Button>
+                    </GridItem>
+                  ))}
+                </Grid>
               </VStack>
             )}
           </ModalBody>
-          <ModalFooter>
-            <Button
-              colorScheme="yellow"
-              mr={3}
-              onClick={() => setShowHint(true)}
-              isDisabled={showHint}
-            >
-              {showHint ? 'Hint Shown' : 'Show Hint'}
-            </Button>
-            <Button colorScheme="purple" onClick={handlePuzzleSubmit}>
-              Submit Answer
-            </Button>
-          </ModalFooter>
         </ModalContent>
       </Modal>
     </Box>
