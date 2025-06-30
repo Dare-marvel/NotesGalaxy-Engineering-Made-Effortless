@@ -69,7 +69,7 @@ const SpaceTetris = () => {
     Array(BOARD_HEIGHT).fill().map(() => Array(BOARD_WIDTH).fill(0))
   );
   const [currentPiece, setCurrentPiece] = useState(null);
-  const [selectedSubject, setSelectedSubject] = useState("All Subjects");
+  const [selectedSubject, setSelectedSubject] = useState("Problem Solving through Imperative Programming Lab in C (PSIPL)");
   const [currentPosition, setCurrentPosition] = useState({ x: 4, y: 0 });
   const [score, setScore] = useState(0);
   const [level, setLevel] = useState(1);
@@ -211,9 +211,9 @@ const SpaceTetris = () => {
   }, [level, lines, updateHighScore, toast]);
 
   const getAllQuestions = () => {
-    if (selectedSubject === "All Subjects") {
-      return Object.values(QUESTIONS).flat();
-    }
+    // if (selectedSubject === "All Subjects") {
+    //   return Object.values(QUESTIONS).flat();
+    // }
     return QUESTIONS[selectedSubject] || [];
   };
 
@@ -453,31 +453,100 @@ const SpaceTetris = () => {
       minH="100vh"
       bg="white"
       pt={{ base: 10, md: 10, lg: 12 }}
+      px={{ base: 2, md: 4, lg: 6 }}
       color="black"
     >
-      <VStack spacing={4} pt={{ base: 8, md: 6, lg: 8 }} >
-        {/* <Text fontSize="4xl" fontWeight="bold" textAlign="center" color="purple.600">
-          🚀 SPACE TETRIS 🌌
-        </Text> */}
+      <VStack spacing={{ base: 2, md: 6, lg: 8 }} pt={{ base: 2, md: 6, lg: 8 }}>
+        {/* Mobile Top Section - Stats and Subject */}
+        <VStack spacing={2} w="full" display={{ base: "flex", lg: "none" }}>
+          {/* Compact Mission Stats for Mobile */}
+          <Box
+            bg="rgba(0,0,0,0.05)"
+            pt={{ base: 9, sm: 3 }}
+            mt={{base : 6}}
+            borderRadius="md"
+            border="2px solid rgba(164, 28, 182, 0.2)"
+            w="full"
+            maxW="400px"
+          >
+            <Text fontSize="sm" fontWeight="bold" mb={1} color="purple.600" textAlign="center">
+              MISSION STATS
+            </Text>
+            <Grid templateColumns="repeat(3, 1fr)" gap={1} fontSize="xs">
+              <VStack spacing={0}>
+                <Text fontWeight="bold">{score.toLocaleString()}</Text>
+                <Text opacity={0.7}>Score</Text>
+              </VStack>
+              <VStack spacing={0}>
+                <Text fontWeight="bold" color="gold">{highScore.toLocaleString()}</Text>
+                <Text opacity={0.7}>High</Text>
+              </VStack>
+              <VStack spacing={0}>
+                <Text fontWeight="bold">{level}</Text>
+                <Text opacity={0.7}>Level</Text>
+              </VStack>
+            </Grid>
+            <Grid templateColumns="repeat(2, 1fr)" gap={1} fontSize="xs" mt={1}>
+              <VStack spacing={0}>
+                <Text fontWeight="bold">{lines}</Text>
+                <Text opacity={0.7}>Lines</Text>
+              </VStack>
+              <VStack spacing={0}>
+                <Badge colorScheme="purple" fontSize="xs">{puzzlesSolved}</Badge>
+                <Text opacity={0.7}>Puzzles</Text>
+              </VStack>
+            </Grid>
+          </Box>
 
-        <HStack spacing={8} align="start">
+          {/* Subject Selection for Mobile */}
+          <Box w="full" maxW="400px">
+            <Text mb={1} fontWeight="medium" fontSize="sm" textAlign="center">
+              Subject:
+            </Text>
+            <Select
+              value={selectedSubject}
+              onChange={(e) => setSelectedSubject(e.target.value)}
+              disabled={gameRunning}
+              size="sm"
+            >
+              {subjectsList.map((subject) => (
+                <option key={subject} value={subject}>
+                  {subject}
+                </option>
+              ))}
+            </Select>
+          </Box>
+        </VStack>
+
+        <Flex
+          direction={{ base: "column", lg: "row" }}
+          spacing={0}
+          gap={{ base: 3, md: 8, lg: 8 }}
+          align={{ base: "center", lg: "start" }}
+          w="full"
+          justify="center"
+        >
           {/* Game Board */}
-          <VStack>
+          <VStack spacing={{ base: 2, md: 4 }}>
             <Box
               border="2px solid"
               borderColor="purple.500"
               bg="rgba(0,0,0,0.05)"
-              p={2}
+              p={{ base: 1, md: 2 }}
               borderRadius="md"
               boxShadow="0 0 20px rgba(128,90,213,0.3)"
+              maxW="fit-content"
             >
-              <Grid templateColumns={`repeat(${BOARD_WIDTH}, 1fr)`} gap={0.5}>
+              <Grid
+                templateColumns={`repeat(${BOARD_WIDTH}, 1fr)`}
+                gap={{ base: "1px", md: "2px" }}
+              >
                 {displayBoard.map((row, y) =>
                   row.map((cell, x) => (
                     <GridItem
                       key={`${y}-${x}`}
-                      w="20px"
-                      h="20px"
+                      w={{ base: "16px", sm: "18px", md: "20px", lg: "22px" }}
+                      h={{ base: "16px", sm: "18px", md: "20px", lg: "22px" }}
                       bg={cell || 'rgba(0,0,0,0.1)'}
                       border="1px solid rgba(0,0,0,0.2)"
                       borderRadius="sm"
@@ -487,8 +556,59 @@ const SpaceTetris = () => {
               </Grid>
             </Box>
 
-            {/* Controls */}
-            <VStack spacing={2}>
+            {/* Mobile Controls */}
+            <VStack spacing={2} display={{ base: "flex", lg: "none" }}>
+              <HStack spacing={2}>
+                <Button
+                  size="sm"
+                  colorScheme="cyan"
+                  onClick={() => movePiece('left')}
+                  isDisabled={!gameRunning}
+                  minW="45px"
+                  h="45px"
+                >
+                  ←
+                </Button>
+                <VStack spacing={1}>
+                  <Button
+                    size="sm"
+                    colorScheme="purple"
+                    onClick={rotateCurrent}
+                    isDisabled={!gameRunning}
+                    minW="45px"
+                    h="35px"
+                  >
+                    ↻
+                  </Button>
+                  <Button
+                    size="sm"
+                    colorScheme="cyan"
+                    onClick={() => movePiece('down')}
+                    isDisabled={!gameRunning}
+                    minW="45px"
+                    h="45px"
+                  >
+                    ↓
+                  </Button>
+                </VStack>
+                <Button
+                  size="sm"
+                  colorScheme="cyan"
+                  onClick={() => movePiece('right')}
+                  isDisabled={!gameRunning}
+                  minW="45px"
+                  h="45px"
+                >
+                  →
+                </Button>
+              </HStack>
+              <Text fontSize="xs" textAlign="center" opacity={0.7}>
+                Touch controls
+              </Text>
+            </VStack>
+
+            {/* Desktop Controls */}
+            <VStack spacing={2} display={{ base: "none", lg: "flex" }}>
               <HStack>
                 <Button
                   size="sm"
@@ -529,54 +649,87 @@ const SpaceTetris = () => {
             </VStack>
           </VStack>
 
-          {/* Side Panel */}
-          <VStack spacing={4} align="stretch" minW="200px">
-            {/* Game Stats */}
+          {/* Side Panel - Desktop Only Stats and Subject */}
+          <VStack
+            spacing={4}
+            align="stretch"
+            w={{ base: "full", md: "350px", lg: "280px" }}
+            maxW={{ base: "400px", lg: "none" }}
+            display={{ base: "flex", lg: "flex" }}
+          >
+            {/* Game Stats - Desktop Only */}
             <Box
               bg="rgba(0,0,0,0.05)"
-              p={4}
+              p={{ base: 3, md: 4 }}
               borderRadius="md"
               border="1px solid rgba(0,0,0,0.2)"
+              display={{ base: "none", lg: "block" }}
             >
-              <Text fontSize="lg" fontWeight="bold" mb={2} color="purple.600">
+              <Text
+                fontSize={{ base: "md", md: "lg" }}
+                fontWeight="bold"
+                mb={2}
+                color="purple.600"
+              >
                 MISSION STATS
               </Text>
               <VStack align="stretch" spacing={1}>
                 <Flex>
-                  <Text>Score:</Text>
+                  <Text fontSize={{ base: "sm", md: "md" }}>Score:</Text>
                   <Spacer />
-                  <Text fontWeight="bold">{score.toLocaleString()}</Text>
+                  <Text fontWeight="bold" fontSize={{ base: "sm", md: "md" }}>
+                    {score.toLocaleString()}
+                  </Text>
                 </Flex>
                 <Flex>
-                  <Text>High Score:</Text>
+                  <Text fontSize={{ base: "sm", md: "md" }}>High Score:</Text>
                   <Spacer />
-                  <Text fontWeight="bold" color="gold">{highScore.toLocaleString()}</Text>
+                  <Text
+                    fontWeight="bold"
+                    color="gold"
+                    fontSize={{ base: "sm", md: "md" }}
+                  >
+                    {highScore.toLocaleString()}
+                  </Text>
                 </Flex>
                 <Flex>
-                  <Text>Level:</Text>
+                  <Text fontSize={{ base: "sm", md: "md" }}>Level:</Text>
                   <Spacer />
-                  <Text fontWeight="bold">{level}</Text>
+                  <Text fontWeight="bold" fontSize={{ base: "sm", md: "md" }}>
+                    {level}
+                  </Text>
                 </Flex>
                 <Flex>
-                  <Text>Lines:</Text>
+                  <Text fontSize={{ base: "sm", md: "md" }}>Lines:</Text>
                   <Spacer />
-                  <Text fontWeight="bold">{lines}</Text>
+                  <Text fontWeight="bold" fontSize={{ base: "sm", md: "md" }}>
+                    {lines}
+                  </Text>
                 </Flex>
                 <Flex>
-                  <Text>Puzzles:</Text>
+                  <Text fontSize={{ base: "sm", md: "md" }}>Puzzles:</Text>
                   <Spacer />
-                  <Badge colorScheme="purple">{puzzlesSolved}</Badge>
+                  <Badge colorScheme="purple" fontSize={{ base: "xs", md: "sm" }}>
+                    {puzzlesSolved}
+                  </Badge>
                 </Flex>
               </VStack>
             </Box>
 
-            {/* Subject Selection */}
-            <Box w={{ base: "full", md: "400px" }}>
-              <Text mb={2} fontWeight="medium">Select Subject:</Text>
+            {/* Subject Selection - Desktop Only */}
+            <Box display={{ base: "none", lg: "block" }}>
+              <Text
+                mb={2}
+                fontWeight="medium"
+                fontSize={{ base: "sm", md: "md" }}
+              >
+                Select Subject:
+              </Text>
               <Select
                 value={selectedSubject}
                 onChange={(e) => setSelectedSubject(e.target.value)}
                 disabled={gameRunning}
+                size={{ base: "sm", md: "md" }}
               >
                 {subjectsList.map((subject) => (
                   <option key={subject} value={subject}>
@@ -586,27 +739,35 @@ const SpaceTetris = () => {
               </Select>
             </Box>
 
-
             {/* Next Piece */}
             {nextPiece && (
               <Box
                 bg="rgba(0,0,0,0.05)"
-                p={4}
+                p={{ base: 3, md: 4 }}
                 borderRadius="md"
                 border="1px solid rgba(0,0,0,0.2)"
               >
-                <Text fontSize="md" fontWeight="bold" mb={2} color="purple.600">
+                <Text
+                  fontSize={{ base: "sm", md: "md" }}
+                  fontWeight="bold"
+                  mb={2}
+                  color="purple.600"
+                >
                   NEXT PIECE
                 </Text>
-                <Grid templateColumns={`repeat(4, 1fr)`} gap={0.5} w="60px">
+                <Grid
+                  templateColumns={`repeat(4, 1fr)`}
+                  gap={{ base: "1px", md: "2px" }}
+                  w={{ base: "48px", md: "60px" }}
+                >
                   {Array(4).fill().map((_, y) =>
                     Array(4).fill().map((_, x) => {
                       const cell = nextPiece.shape[y] && nextPiece.shape[y][x];
                       return (
                         <GridItem
                           key={`${y}-${x}`}
-                          w="12px"
-                          h="12px"
+                          w={{ base: "10px", md: "12px" }}
+                          h={{ base: "10px", md: "12px" }}
                           bg={cell ? nextPiece.color : 'transparent'}
                           border={cell ? '1px solid rgba(0,0,0,0.3)' : 'none'}
                           borderRadius="sm"
@@ -623,9 +784,10 @@ const SpaceTetris = () => {
               {!gameRunning && !gameOver && (
                 <Button
                   colorScheme="green"
-                  size="lg"
+                  size={{ base: "sm", md: "lg" }}
                   onClick={startGame}
                   leftIcon={<Text>🚀</Text>}
+                  w="full"
                 >
                   START MISSION
                 </Button>
@@ -634,11 +796,12 @@ const SpaceTetris = () => {
               {gameRunning && (
                 <Button
                   colorScheme="red"
-                  size="md"
+                  size={{ base: "xs", md: "md" }}
                   onClick={() => {
                     setGameRunning(false);
                     setGameOver(true);
                   }}
+                  w="full"
                 >
                   ABORT MISSION
                 </Button>
@@ -647,16 +810,17 @@ const SpaceTetris = () => {
               {gameOver && (
                 <Button
                   colorScheme="blue"
-                  size="lg"
+                  size={{ base: "sm", md: "lg" }}
                   onClick={startGame}
                   leftIcon={<Text>🔄</Text>}
+                  w="full"
                 >
                   NEW MISSION
                 </Button>
               )}
             </VStack>
           </VStack>
-        </HStack>
+        </Flex>
       </VStack>
 
       {/* Puzzle Modal */}
