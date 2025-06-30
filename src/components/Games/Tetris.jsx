@@ -22,6 +22,9 @@ import {
 import subjectsList from '../../config/subjectsList';
 import QUESTIONS from './constants/QuestionsList';
 
+import SidebarAdRight from '../SidebarAd/SidebarAdRight';
+import SidebarAdLeft from '../SidebarAd/SidebarAdLeft';
+
 // Tetris pieces
 const TETROMINOS = {
   I: {
@@ -456,6 +459,9 @@ const SpaceTetris = () => {
       px={{ base: 2, md: 4, lg: 6 }}
       color="black"
     >
+      <SidebarAdLeft
+        position="left"
+      />
       <VStack spacing={{ base: 2, md: 6, lg: 8 }} pt={{ base: 2, md: 6, lg: 8 }}>
         {/* Mobile Top Section - Stats and Subject */}
         <VStack
@@ -865,6 +871,10 @@ const SpaceTetris = () => {
           </ModalBody>
         </ModalContent>
       </Modal>
+
+      <SidebarAdRight
+        position="right"
+      />
     </Box>
   );
 };
