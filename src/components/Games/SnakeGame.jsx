@@ -176,7 +176,7 @@ export default function EnhancedEducationalSnakeGame() {
   // Responsive values
   const cellSize = useBreakpointValue({ base: 15, md: 20 });
   const gameSize = useBreakpointValue({ base: 300, md: 400 });
-  const containerPadding = useBreakpointValue({ base: 4, md: 8 });
+  const containerPadding = useBreakpointValue({ base: 4, md: 8 , lg : 12, xl: 12 });
   const buttonSize = useBreakpointValue({ base: "md", md: "lg" });
 
   const generateFood = useCallback(() => {
@@ -389,16 +389,16 @@ export default function EnhancedEducationalSnakeGame() {
   return (
     <Container maxW="4xl" py={containerPadding}>
       <VStack spacing={6}>
-        <Heading
+        {/* <Heading
           color="teal.500"
           textAlign="center"
           fontSize={{ base: "2xl", md: "3xl" }}
         >
           🐍 Educational Snake Game
-        </Heading>
+        </Heading> */}
 
         {/* Stats Display */}
-        <SimpleGrid columns={{ base: 2, md: 4 }} spacing={4} w="full">
+        <SimpleGrid columns={{ base: 2, md: 4 }} spacing={4} w="full" py={{base: 12, md: 5, lg: 5}} mt={2}>
           <Badge colorScheme="blue" fontSize="md" p={2} textAlign="center">
             Score: {score}
           </Badge>
