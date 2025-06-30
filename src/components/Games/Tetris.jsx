@@ -13,9 +13,7 @@ import {
   ModalContent,
   ModalHeader,
   ModalBody,
-  ModalFooter,
   useDisclosure,
-  Input,
   Badge,
   Flex,
   Spacer,
@@ -62,40 +60,6 @@ const TETROMINOS = {
     name: 'L-piece'
   }
 };
-
-// Space puzzles
-const SPACE_PUZZLES = [
-  {
-    question: "How many planets are in our solar system?",
-    answer: "8",
-    hint: "Pluto was reclassified in 2006"
-  },
-  {
-    question: "What is the closest star to Earth?",
-    answer: "sun",
-    hint: "It's the center of our solar system"
-  },
-  {
-    question: "How many moons does Mars have?",
-    answer: "2",
-    hint: "Named Phobos and Deimos"
-  },
-  {
-    question: "What galaxy do we live in?",
-    answer: "milky way",
-    hint: "Named after its appearance from Earth"
-  },
-  {
-    question: "What is the largest planet in our solar system?",
-    answer: "jupiter",
-    hint: "It's a gas giant with a great red spot"
-  },
-  {
-    question: "How long does it take Earth to orbit the Sun?",
-    answer: "365",
-    hint: "Number of days in a year"
-  }
-];
 
 const BOARD_WIDTH = 10;
 const BOARD_HEIGHT = 20;
@@ -697,7 +661,7 @@ const SpaceTetris = () => {
 
       {/* Puzzle Modal */}
       <Modal isOpen={isOpen} onClose={() => { }} closeOnOverlayClick={false}>
-        <ModalOverlay  />
+        <ModalOverlay />
         <ModalContent border="2px solid" borderColor="purple.300">
           <ModalHeader>
             <Badge colorScheme="purple" mr={2}>
