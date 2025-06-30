@@ -25,6 +25,9 @@ import {
 } from '@chakra-ui/react';
 import { ChevronUpIcon, ChevronDownIcon, ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
 
+import SidebarAdRight from '../SidebarAd/SidebarAdRight';
+import SidebarAdLeft from '../SidebarAd/SidebarAdLeft';
+
 const GRID_SIZE = 20;
 const INITIAL_SNAKE = [{ x: 10, y: 10 }];
 const INITIAL_DIRECTION = { x: 0, y: -1 };
@@ -176,7 +179,7 @@ export default function EnhancedEducationalSnakeGame() {
   // Responsive values
   const cellSize = useBreakpointValue({ base: 15, md: 20 });
   const gameSize = useBreakpointValue({ base: 300, md: 400 });
-  const containerPadding = useBreakpointValue({ base: 4, md: 8 , lg : 12, xl: 12 });
+  const containerPadding = useBreakpointValue({ base: 4, md: 8, lg: 12, xl: 12 });
   const buttonSize = useBreakpointValue({ base: "md", md: "lg" });
 
   const generateFood = useCallback(() => {
@@ -388,6 +391,9 @@ export default function EnhancedEducationalSnakeGame() {
 
   return (
     <Container maxW="4xl" py={containerPadding}>
+      <SidebarAdLeft
+        position="left"
+      />
       <VStack spacing={6}>
         {/* <Heading
           color="teal.500"
@@ -398,17 +404,49 @@ export default function EnhancedEducationalSnakeGame() {
         </Heading> */}
 
         {/* Stats Display */}
-        <SimpleGrid columns={{ base: 2, md: 4 }} spacing={4} w="full" py={{base: 12, md: 5, lg: 5}} mt={2}>
-          <Badge colorScheme="blue" fontSize="md" p={2} textAlign="center">
+        <SimpleGrid
+          columns={{ base: 2, md: 2, lg: 4, xl: 4 }}
+          spacing={4}
+          w="full"
+          py={{ base: 12, md: 5, lg: 5 }}
+          px={{ base: 4, md: 6, lg: 8 }} // Added horizontal padding for all screens
+          width={{ base: "full", md: "70%" , lg: "80%" }} // Responsive width
+          mt={2}
+        >
+          <Badge
+            colorScheme="blue"
+            fontSize="md"
+            p={2}
+            textAlign="center"
+            w={{ base: "full", md: "auto" }} // Responsive width
+          >
             Score: {score}
           </Badge>
-          <Badge colorScheme="orange" fontSize="md" p={2} textAlign="center">
+          <Badge
+            colorScheme="orange"
+            fontSize="md"
+            p={2}
+            textAlign="center"
+            w={{ base: "full", md: "auto" }} // Responsive width
+          >
             High Score: {highScore}
           </Badge>
-          <Badge colorScheme="green" fontSize="md" p={2} textAlign="center">
+          <Badge
+            colorScheme="green"
+            fontSize="md"
+            p={2}
+            textAlign="center"
+            w={{ base: "full", md: "auto" }} // Responsive width
+          >
             Level: {level}
           </Badge>
-          <Badge colorScheme="purple" fontSize="md" p={2} textAlign="center">
+          <Badge
+            colorScheme="purple"
+            fontSize="md"
+            p={2}
+            textAlign="center"
+            w={{ base: "full", md: "auto" }} // Responsive width
+          >
             Questions: {questionsAnswered}
           </Badge>
         </SimpleGrid>
@@ -616,6 +654,9 @@ export default function EnhancedEducationalSnakeGame() {
           </ModalContent>
         </Modal>
       </VStack>
+      <SidebarAdRight
+        position="right"
+      />
     </Container>
   );
 }
