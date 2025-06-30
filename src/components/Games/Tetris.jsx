@@ -488,8 +488,7 @@ const SpaceTetris = () => {
     <Box
       minH="100vh"
       bg="white"
-      // p={4}
-      py={{ base: 10, md: 10, lg: 12 }}
+      pt={{ base: 10, md: 10, lg: 12 }}
       color="black"
     >
       <VStack spacing={4} pt={{ base: 8, md: 6, lg: 8 }} >
