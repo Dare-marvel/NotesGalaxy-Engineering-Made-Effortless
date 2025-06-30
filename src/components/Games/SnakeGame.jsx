@@ -161,13 +161,15 @@ export default function EnhancedEducationalSnakeGame() {
   const [gameOver, setGameOver] = useState(false);
   const [gameStarted, setGameStarted] = useState(false);
   const [score, setScore] = useState(0);
-  const [highScore, setHighScore] = useState(0); // In-memory high score
+  const [highScore, setHighScore] = useState(() => {
+    return parseInt(localStorage.getItem('snakeGameHighScore')) || 0;
+  });; // In-memory high score
   const [currentQuestion, setCurrentQuestion] = useState(null);
   const [gameRunning, setGameRunning] = useState(false);
   const [level, setLevel] = useState(1);
   const [questionsAnswered, setQuestionsAnswered] = useState(0);
   const [selectedSubject, setSelectedSubject] = useState("All Subjects");
-  
+
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
 
@@ -207,6 +209,7 @@ export default function EnhancedEducationalSnakeGame() {
   const updateHighScore = (newScore) => {
     if (newScore > highScore) {
       setHighScore(newScore);
+      localStorage.setItem('snakeGameHighScore', newScore.toString());
       toast({
         title: "New High Score! 🏆",
         description: `Amazing! You scored ${newScore} points!`,
@@ -239,7 +242,7 @@ export default function EnhancedEducationalSnakeGame() {
 
   const moveSnake = (newDirection) => {
     if (!gameRunning || gameOver) return;
-    
+
     // Prevent reverse direction
     if (
       (newDirection.x === 1 && direction.x === -1) ||
@@ -249,13 +252,13 @@ export default function EnhancedEducationalSnakeGame() {
     ) {
       return;
     }
-    
+
     setDirection(newDirection);
   };
 
   const handleKeyPress = useCallback((e) => {
     if (!gameRunning || gameOver) return;
-    
+
     e.preventDefault();
     const key = e.key;
 
@@ -283,14 +286,14 @@ export default function EnhancedEducationalSnakeGame() {
         handleKeyPress(e);
       }
     };
-    
+
     document.addEventListener('keydown', handleGlobalKeyPress);
     return () => document.removeEventListener('keydown', handleGlobalKeyPress);
   }, [handleKeyPress]);
 
   const handleAnswerQuestion = (selectedIndex) => {
     const isCorrect = selectedIndex === currentQuestion.correct;
-    
+
     if (isCorrect) {
       const points = 10 * level;
       setScore(prev => {
@@ -299,10 +302,10 @@ export default function EnhancedEducationalSnakeGame() {
         return newScore;
       });
       setQuestionsAnswered(prev => prev + 1);
-      
+
       // Grow snake
       setSnake(prev => [...prev, { ...prev[prev.length - 1] }]);
-      
+
       toast({
         title: "Correct! 🎉",
         description: `+${points} points`,
@@ -310,7 +313,7 @@ export default function EnhancedEducationalSnakeGame() {
         duration: 2000,
         isClosable: true,
       });
-      
+
       // Level up every 3 questions
       if ((questionsAnswered + 1) % 3 === 0) {
         setLevel(prev => prev + 1);
@@ -331,7 +334,7 @@ export default function EnhancedEducationalSnakeGame() {
         isClosable: true,
       });
     }
-    
+
     setCurrentQuestion(null);
     setGameRunning(true);
     onClose();
@@ -344,10 +347,10 @@ export default function EnhancedEducationalSnakeGame() {
       setSnake(currentSnake => {
         const newSnake = [...currentSnake];
         const head = { ...newSnake[0] };
-        
+
         head.x += direction.x;
         head.y += direction.y;
-        
+
         // Check wall collision
         if (head.x < 0 || head.x >= GRID_SIZE || head.y < 0 || head.y >= GRID_SIZE) {
           setGameOver(true);
@@ -355,7 +358,7 @@ export default function EnhancedEducationalSnakeGame() {
           updateHighScore(score);
           return currentSnake;
         }
-        
+
         // Check self collision
         if (newSnake.some(segment => segment.x === head.x && segment.y === head.y)) {
           setGameOver(true);
@@ -363,9 +366,9 @@ export default function EnhancedEducationalSnakeGame() {
           updateHighScore(score);
           return currentSnake;
         }
-        
+
         newSnake.unshift(head);
-        
+
         // Check food collision
         if (head.x === food.x && head.y === food.y) {
           setFood(generateFood());
@@ -375,7 +378,7 @@ export default function EnhancedEducationalSnakeGame() {
         } else {
           newSnake.pop();
         }
-        
+
         return newSnake;
       });
     }, Math.max(100, GAME_SPEED - (level - 1) * 30));
@@ -386,14 +389,14 @@ export default function EnhancedEducationalSnakeGame() {
   return (
     <Container maxW="4xl" py={containerPadding}>
       <VStack spacing={6}>
-        <Heading 
-          color="teal.500" 
+        <Heading
+          color="teal.500"
           textAlign="center"
           fontSize={{ base: "2xl", md: "3xl" }}
         >
           🐍 Educational Snake Game
         </Heading>
-        
+
         {/* Stats Display */}
         <SimpleGrid columns={{ base: 2, md: 4 }} spacing={4} w="full">
           <Badge colorScheme="blue" fontSize="md" p={2} textAlign="center">
@@ -413,8 +416,8 @@ export default function EnhancedEducationalSnakeGame() {
         {/* Subject Selection */}
         <Box w={{ base: "full", md: "400px" }}>
           <Text mb={2} fontWeight="medium">Select Subject:</Text>
-          <Select 
-            value={selectedSubject} 
+          <Select
+            value={selectedSubject}
             onChange={(e) => setSelectedSubject(e.target.value)}
             disabled={gameStarted && gameRunning}
           >
@@ -428,14 +431,14 @@ export default function EnhancedEducationalSnakeGame() {
 
         {!gameStarted ? (
           <VStack spacing={4}>
-            <Text 
-              fontSize={{ base: "md", md: "lg" }} 
-              textAlign="center" 
+            <Text
+              fontSize={{ base: "md", md: "lg" }}
+              textAlign="center"
               color="gray.600"
               px={4}
             >
-              🎮 Use arrow keys or touch controls to move<br/>
-              🍎 Eat food to trigger educational questions<br/>
+              🎮 Use arrow keys or touch controls to move<br />
+              🍎 Eat food to trigger educational questions<br />
               📚 Answer correctly to grow and earn points!
             </Text>
             <Button colorScheme="teal" size={buttonSize} onClick={startGame}>
@@ -467,7 +470,7 @@ export default function EnhancedEducationalSnakeGame() {
                   borderRadius={index === 0 ? "md" : "sm"}
                 />
               ))}
-              
+
               {/* Food */}
               <Box
                 position="absolute"
@@ -525,8 +528,8 @@ export default function EnhancedEducationalSnakeGame() {
             </VStack>
 
             <HStack spacing={4} flexWrap="wrap" justify="center">
-              <Button 
-                colorScheme="orange" 
+              <Button
+                colorScheme="orange"
                 onClick={() => setGameRunning(!gameRunning)}
                 disabled={gameOver}
                 size={buttonSize}
@@ -539,12 +542,12 @@ export default function EnhancedEducationalSnakeGame() {
             </HStack>
 
             {gameOver && (
-              <VStack 
-                spacing={4} 
-                p={6} 
-                bg="red.50" 
-                borderRadius="md" 
-                border="2px solid" 
+              <VStack
+                spacing={4}
+                p={6}
+                bg="red.50"
+                borderRadius="md"
+                border="2px solid"
                 borderColor="red.200"
                 textAlign="center"
               >
@@ -571,7 +574,7 @@ export default function EnhancedEducationalSnakeGame() {
         )}
 
         {/* Question Modal */}
-        <Modal isOpen={isOpen} onClose={() => {}} closeOnOverlayClick={false} size={{ base: "sm", md: "md" }}>
+        <Modal isOpen={isOpen} onClose={() => { }} closeOnOverlayClick={false} size={{ base: "sm", md: "md" }}>
           <ModalOverlay />
           <ModalContent mx={4}>
             <ModalHeader>
