@@ -15,83 +15,167 @@ import {
   Badge,
   Grid,
   GridItem,
-  Flex,
   Container,
   Heading,
-  useToast
+  useToast,
+  Select,
+  IconButton,
+  SimpleGrid,
+  useBreakpointValue
 } from '@chakra-ui/react';
+import { ChevronUpIcon, ChevronDownIcon, ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
 
 const GRID_SIZE = 20;
-const CELL_SIZE = 20;
 const INITIAL_SNAKE = [{ x: 10, y: 10 }];
 const INITIAL_DIRECTION = { x: 0, y: -1 };
 const GAME_SPEED = 300;
 
-const QUESTIONS = [
-  {
-    question: "What is 7 × 8?",
-    options: ["54", "56", "58", "62"],
-    correct: 1,
-    category: "Math"
-  },
-  {
-    question: "What is the capital of France?",
-    options: ["London", "Berlin", "Paris", "Madrid"],
-    correct: 2,
-    category: "Geography"
-  },
-  {
-    question: "What is H2O commonly known as?",
-    options: ["Hydrogen", "Oxygen", "Water", "Carbon"],
-    correct: 2,
-    category: "Science"
-  },
-  {
-    question: "Who wrote 'Romeo and Juliet'?",
-    options: ["Charles Dickens", "William Shakespeare", "Jane Austen", "Mark Twain"],
-    correct: 1,
-    category: "Literature"
-  },
-  {
-    question: "What is 15% of 200?",
-    options: ["25", "30", "35", "40"],
-    correct: 1,
-    category: "Math"
-  },
-  {
-    question: "Which planet is closest to the Sun?",
-    options: ["Venus", "Mercury", "Earth", "Mars"],
-    correct: 1,
-    category: "Science"
-  },
-  {
-    question: "What is the largest ocean on Earth?",
-    options: ["Atlantic", "Indian", "Arctic", "Pacific"],
-    correct: 3,
-    category: "Geography"
-  },
-  {
-    question: "What is 12²?",
-    options: ["124", "144", "164", "184"],
-    correct: 1,
-    category: "Math"
-  }
+const subjects = [
+  "All Subjects",
+  "Problem Solving through Imperative Programming Lab in C (PSIPL)",
+  "Digital Systems and Microprocessors (DSM)",
+  "Mathematics",
+  "Science",
+  "Geography",
+  "Literature",
+  "History",
+  "Physics",
+  "Chemistry"
 ];
 
-export default function EducationalSnakeGame() {
+const QUESTIONS = {
+  "Problem Solving through Imperative Programming Lab in C (PSIPL)": [
+    {
+      question: "What is the correct syntax to declare an integer variable in C?",
+      options: ["integer x;", "int x;", "var x;", "x: integer;"],
+      correct: 1,
+      category: "PSIPL"
+    },
+    {
+      question: "Which loop is guaranteed to execute at least once?",
+      options: ["for loop", "while loop", "do-while loop", "nested loop"],
+      correct: 2,
+      category: "PSIPL"
+    },
+    {
+      question: "What is the output of printf(\"%d\", 5/2); in C?",
+      options: ["2.5", "2", "3", "Error"],
+      correct: 1,
+      category: "PSIPL"
+    },
+    {
+      question: "Which header file is required for printf() function?",
+      options: ["<stdlib.h>", "<stdio.h>", "<string.h>", "<math.h>"],
+      correct: 1,
+      category: "PSIPL"
+    }
+  ],
+  "Digital Systems and Microprocessors (DSM)": [
+    {
+      question: "What does CPU stand for?",
+      options: ["Central Processing Unit", "Computer Processing Unit", "Central Program Unit", "Control Processing Unit"],
+      correct: 0,
+      category: "DSM"
+    },
+    {
+      question: "How many bits are in a byte?",
+      options: ["4", "8", "16", "32"],
+      correct: 1,
+      category: "DSM"
+    },
+    {
+      question: "What is the binary representation of decimal 5?",
+      options: ["100", "101", "110", "111"],
+      correct: 1,
+      category: "DSM"
+    },
+    {
+      question: "Which gate produces output 1 only when all inputs are 1?",
+      options: ["OR gate", "AND gate", "NOT gate", "XOR gate"],
+      correct: 1,
+      category: "DSM"
+    }
+  ],
+  "Mathematics": [
+    {
+      question: "What is 7 × 8?",
+      options: ["54", "56", "58", "62"],
+      correct: 1,
+      category: "Math"
+    },
+    {
+      question: "What is 15% of 200?",
+      options: ["25", "30", "35", "40"],
+      correct: 1,
+      category: "Math"
+    },
+    {
+      question: "What is 12²?",
+      options: ["124", "144", "164", "184"],
+      correct: 1,
+      category: "Math"
+    }
+  ],
+  "Science": [
+    {
+      question: "What is H2O commonly known as?",
+      options: ["Hydrogen", "Oxygen", "Water", "Carbon"],
+      correct: 2,
+      category: "Science"
+    },
+    {
+      question: "Which planet is closest to the Sun?",
+      options: ["Venus", "Mercury", "Earth", "Mars"],
+      correct: 1,
+      category: "Science"
+    }
+  ],
+  "Geography": [
+    {
+      question: "What is the capital of France?",
+      options: ["London", "Berlin", "Paris", "Madrid"],
+      correct: 2,
+      category: "Geography"
+    },
+    {
+      question: "What is the largest ocean on Earth?",
+      options: ["Atlantic", "Indian", "Arctic", "Pacific"],
+      correct: 3,
+      category: "Geography"
+    }
+  ],
+  "Literature": [
+    {
+      question: "Who wrote 'Romeo and Juliet'?",
+      options: ["Charles Dickens", "William Shakespeare", "Jane Austen", "Mark Twain"],
+      correct: 1,
+      category: "Literature"
+    }
+  ]
+};
+
+export default function EnhancedEducationalSnakeGame() {
   const [snake, setSnake] = useState(INITIAL_SNAKE);
   const [direction, setDirection] = useState(INITIAL_DIRECTION);
   const [food, setFood] = useState({ x: 15, y: 15 });
   const [gameOver, setGameOver] = useState(false);
   const [gameStarted, setGameStarted] = useState(false);
   const [score, setScore] = useState(0);
+  const [highScore, setHighScore] = useState(0); // In-memory high score
   const [currentQuestion, setCurrentQuestion] = useState(null);
   const [gameRunning, setGameRunning] = useState(false);
   const [level, setLevel] = useState(1);
   const [questionsAnswered, setQuestionsAnswered] = useState(0);
+  const [selectedSubject, setSelectedSubject] = useState("All Subjects");
   
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
+
+  // Responsive values
+  const cellSize = useBreakpointValue({ base: 15, md: 20 });
+  const gameSize = useBreakpointValue({ base: 300, md: 400 });
+  const containerPadding = useBreakpointValue({ base: 4, md: 8 });
+  const buttonSize = useBreakpointValue({ base: "md", md: "lg" });
 
   const generateFood = useCallback(() => {
     let newFood;
@@ -104,8 +188,33 @@ export default function EducationalSnakeGame() {
     return newFood;
   }, [snake]);
 
+  const getAllQuestions = () => {
+    if (selectedSubject === "All Subjects") {
+      return Object.values(QUESTIONS).flat();
+    }
+    return QUESTIONS[selectedSubject] || [];
+  };
+
   const getRandomQuestion = () => {
-    return QUESTIONS[Math.floor(Math.random() * QUESTIONS.length)];
+    const availableQuestions = getAllQuestions();
+    if (availableQuestions.length === 0) {
+      // Fallback to math questions if selected subject has no questions
+      return QUESTIONS["Mathematics"][0];
+    }
+    return availableQuestions[Math.floor(Math.random() * availableQuestions.length)];
+  };
+
+  const updateHighScore = (newScore) => {
+    if (newScore > highScore) {
+      setHighScore(newScore);
+      toast({
+        title: "New High Score! 🏆",
+        description: `Amazing! You scored ${newScore} points!`,
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
+    }
   };
 
   const resetGame = () => {
@@ -114,6 +223,7 @@ export default function EducationalSnakeGame() {
     setFood({ x: 15, y: 15 });
     setGameOver(false);
     setGameStarted(false);
+    updateHighScore(score); // Check for high score before resetting
     setScore(0);
     setCurrentQuestion(null);
     setGameRunning(false);
@@ -127,32 +237,40 @@ export default function EducationalSnakeGame() {
     setGameRunning(true);
   };
 
+  const moveSnake = (newDirection) => {
+    if (!gameRunning || gameOver) return;
+    
+    // Prevent reverse direction
+    if (
+      (newDirection.x === 1 && direction.x === -1) ||
+      (newDirection.x === -1 && direction.x === 1) ||
+      (newDirection.y === 1 && direction.y === -1) ||
+      (newDirection.y === -1 && direction.y === 1)
+    ) {
+      return;
+    }
+    
+    setDirection(newDirection);
+  };
+
   const handleKeyPress = useCallback((e) => {
     if (!gameRunning || gameOver) return;
     
-    e.preventDefault(); // Prevent page scrolling
+    e.preventDefault();
     const key = e.key;
 
     switch (key) {
       case 'ArrowUp':
-        if (direction.y !== 1) { // Prevent reverse direction
-          setDirection({ x: 0, y: -1 });
-        }
+        moveSnake({ x: 0, y: -1 });
         break;
       case 'ArrowDown':
-        if (direction.y !== -1) {
-          setDirection({ x: 0, y: 1 });
-        }
+        moveSnake({ x: 0, y: 1 });
         break;
       case 'ArrowLeft':
-        if (direction.x !== 1) {
-          setDirection({ x: -1, y: 0 });
-        }
+        moveSnake({ x: -1, y: 0 });
         break;
       case 'ArrowRight':
-        if (direction.x !== -1) {
-          setDirection({ x: 1, y: 0 });
-        }
+        moveSnake({ x: 1, y: 0 });
         break;
       default:
         return;
@@ -174,15 +292,20 @@ export default function EducationalSnakeGame() {
     const isCorrect = selectedIndex === currentQuestion.correct;
     
     if (isCorrect) {
-      setScore(prev => prev + (10 * level));
+      const points = 10 * level;
+      setScore(prev => {
+        const newScore = prev + points;
+        updateHighScore(newScore);
+        return newScore;
+      });
       setQuestionsAnswered(prev => prev + 1);
       
       // Grow snake
       setSnake(prev => [...prev, { ...prev[prev.length - 1] }]);
       
       toast({
-        title: "Correct!",
-        description: `+${10 * level} points`,
+        title: "Correct! 🎉",
+        description: `+${points} points`,
         status: "success",
         duration: 2000,
         isClosable: true,
@@ -192,7 +315,7 @@ export default function EducationalSnakeGame() {
       if ((questionsAnswered + 1) % 3 === 0) {
         setLevel(prev => prev + 1);
         toast({
-          title: "Level Up!",
+          title: "Level Up! 🚀",
           description: `Now on level ${level + 1}`,
           status: "info",
           duration: 2000,
@@ -201,7 +324,7 @@ export default function EducationalSnakeGame() {
       }
     } else {
       toast({
-        title: "Wrong Answer",
+        title: "Wrong Answer ❌",
         description: "Try again next time!",
         status: "error",
         duration: 2000,
@@ -229,6 +352,7 @@ export default function EducationalSnakeGame() {
         if (head.x < 0 || head.x >= GRID_SIZE || head.y < 0 || head.y >= GRID_SIZE) {
           setGameOver(true);
           setGameRunning(false);
+          updateHighScore(score);
           return currentSnake;
         }
         
@@ -236,6 +360,7 @@ export default function EducationalSnakeGame() {
         if (newSnake.some(segment => segment.x === head.x && segment.y === head.y)) {
           setGameOver(true);
           setGameRunning(false);
+          updateHighScore(score);
           return currentSnake;
         }
         
@@ -256,61 +381,88 @@ export default function EducationalSnakeGame() {
     }, Math.max(100, GAME_SPEED - (level - 1) * 30));
 
     return () => clearInterval(gameLoop);
-  }, [direction, food, gameRunning, gameOver, generateFood, level, onOpen]);
+  }, [direction, food, gameRunning, gameOver, generateFood, level, onOpen, score]);
 
   return (
-    <Container maxW="4xl" py={8}>
+    <Container maxW="4xl" py={containerPadding}>
       <VStack spacing={6}>
-        <Heading color="teal.500" textAlign="center">
+        <Heading 
+          color="teal.500" 
+          textAlign="center"
+          fontSize={{ base: "2xl", md: "3xl" }}
+        >
           🐍 Educational Snake Game
         </Heading>
         
-        <HStack spacing={8}>
-          <Badge colorScheme="blue" fontSize="md" p={2}>
+        {/* Stats Display */}
+        <SimpleGrid columns={{ base: 2, md: 4 }} spacing={4} w="full">
+          <Badge colorScheme="blue" fontSize="md" p={2} textAlign="center">
             Score: {score}
           </Badge>
-          <Badge colorScheme="green" fontSize="md" p={2}>
+          <Badge colorScheme="orange" fontSize="md" p={2} textAlign="center">
+            High Score: {highScore}
+          </Badge>
+          <Badge colorScheme="green" fontSize="md" p={2} textAlign="center">
             Level: {level}
           </Badge>
-          <Badge colorScheme="purple" fontSize="md" p={2}>
+          <Badge colorScheme="purple" fontSize="md" p={2} textAlign="center">
             Questions: {questionsAnswered}
           </Badge>
-        </HStack>
+        </SimpleGrid>
+
+        {/* Subject Selection */}
+        <Box w={{ base: "full", md: "400px" }}>
+          <Text mb={2} fontWeight="medium">Select Subject:</Text>
+          <Select 
+            value={selectedSubject} 
+            onChange={(e) => setSelectedSubject(e.target.value)}
+            disabled={gameStarted && gameRunning}
+          >
+            {subjects.map((subject) => (
+              <option key={subject} value={subject}>
+                {subject}
+              </option>
+            ))}
+          </Select>
+        </Box>
 
         {!gameStarted ? (
           <VStack spacing={4}>
-            <Text fontSize="lg" textAlign="center" color="gray.600">
-              🎮 Use arrow keys to move the snake<br/>
+            <Text 
+              fontSize={{ base: "md", md: "lg" }} 
+              textAlign="center" 
+              color="gray.600"
+              px={4}
+            >
+              🎮 Use arrow keys or touch controls to move<br/>
               🍎 Eat food to trigger educational questions<br/>
               📚 Answer correctly to grow and earn points!
             </Text>
-            <Button colorScheme="teal" size="lg" onClick={startGame}>
+            <Button colorScheme="teal" size={buttonSize} onClick={startGame}>
               Start Game
             </Button>
           </VStack>
         ) : (
           <>
             <Box
-              width={`${GRID_SIZE * CELL_SIZE}px`}
-              height={`${GRID_SIZE * CELL_SIZE}px`}
+              width={`${gameSize}px`}
+              height={`${gameSize}px`}
               border="3px solid"
               borderColor="teal.400"
               bg="gray.50"
               position="relative"
               borderRadius="md"
-              tabIndex={0}
-              outline="none"
-              onKeyDown={handleKeyPress}
+              mx="auto"
             >
               {/* Snake */}
               {snake.map((segment, index) => (
                 <Box
                   key={index}
                   position="absolute"
-                  left={`${segment.x * CELL_SIZE}px`}
-                  top={`${segment.y * CELL_SIZE}px`}
-                  width={`${CELL_SIZE}px`}
-                  height={`${CELL_SIZE}px`}
+                  left={`${(segment.x * gameSize) / GRID_SIZE}px`}
+                  top={`${(segment.y * gameSize) / GRID_SIZE}px`}
+                  width={`${gameSize / GRID_SIZE}px`}
+                  height={`${gameSize / GRID_SIZE}px`}
                   bg={index === 0 ? "teal.500" : "teal.300"}
                   borderRadius={index === 0 ? "md" : "sm"}
                 />
@@ -319,10 +471,10 @@ export default function EducationalSnakeGame() {
               {/* Food */}
               <Box
                 position="absolute"
-                left={`${food.x * CELL_SIZE}px`}
-                top={`${food.y * CELL_SIZE}px`}
-                width={`${CELL_SIZE}px`}
-                height={`${CELL_SIZE}px`}
+                left={`${(food.x * gameSize) / GRID_SIZE}px`}
+                top={`${(food.y * gameSize) / GRID_SIZE}px`}
+                width={`${gameSize / GRID_SIZE}px`}
+                height={`${gameSize / GRID_SIZE}px`}
                 bg="red.400"
                 borderRadius="full"
                 display="flex"
@@ -334,30 +486,83 @@ export default function EducationalSnakeGame() {
               </Box>
             </Box>
 
-            <HStack spacing={4}>
+            {/* Mobile Controls */}
+            <VStack spacing={2}>
+              <IconButton
+                aria-label="Move up"
+                icon={<ChevronUpIcon />}
+                colorScheme="teal"
+                size="lg"
+                onClick={() => moveSnake({ x: 0, y: -1 })}
+                disabled={!gameRunning || gameOver}
+              />
+              <HStack spacing={4}>
+                <IconButton
+                  aria-label="Move left"
+                  icon={<ChevronLeftIcon />}
+                  colorScheme="teal"
+                  size="lg"
+                  onClick={() => moveSnake({ x: -1, y: 0 })}
+                  disabled={!gameRunning || gameOver}
+                />
+                <IconButton
+                  aria-label="Move right"
+                  icon={<ChevronRightIcon />}
+                  colorScheme="teal"
+                  size="lg"
+                  onClick={() => moveSnake({ x: 1, y: 0 })}
+                  disabled={!gameRunning || gameOver}
+                />
+              </HStack>
+              <IconButton
+                aria-label="Move down"
+                icon={<ChevronDownIcon />}
+                colorScheme="teal"
+                size="lg"
+                onClick={() => moveSnake({ x: 0, y: 1 })}
+                disabled={!gameRunning || gameOver}
+              />
+            </VStack>
+
+            <HStack spacing={4} flexWrap="wrap" justify="center">
               <Button 
                 colorScheme="orange" 
-                onClick={() => {
-                  setGameRunning(!gameRunning);
-                }}
+                onClick={() => setGameRunning(!gameRunning)}
                 disabled={gameOver}
+                size={buttonSize}
               >
                 {gameRunning ? "Pause" : "Resume"}
               </Button>
-              <Button colorScheme="red" onClick={resetGame}>
+              <Button colorScheme="red" onClick={resetGame} size={buttonSize}>
                 Reset Game
               </Button>
             </HStack>
 
             {gameOver && (
-              <VStack spacing={4} p={6} bg="red.50" borderRadius="md" border="2px solid" borderColor="red.200">
+              <VStack 
+                spacing={4} 
+                p={6} 
+                bg="red.50" 
+                borderRadius="md" 
+                border="2px solid" 
+                borderColor="red.200"
+                textAlign="center"
+              >
                 <Text fontSize="2xl" fontWeight="bold" color="red.500">
                   Game Over! 🎮
                 </Text>
-                <Text fontSize="lg">
-                  Final Score: {score} | Questions Answered: {questionsAnswered}
-                </Text>
-                <Button colorScheme="teal" onClick={startGame}>
+                <VStack spacing={2}>
+                  <Text fontSize="lg">
+                    Final Score: {score}
+                  </Text>
+                  <Text fontSize="lg">
+                    High Score: {highScore}
+                  </Text>
+                  <Text fontSize="md">
+                    Questions Answered: {questionsAnswered}
+                  </Text>
+                </VStack>
+                <Button colorScheme="teal" onClick={startGame} size={buttonSize}>
                   Play Again
                 </Button>
               </VStack>
@@ -366,9 +571,9 @@ export default function EducationalSnakeGame() {
         )}
 
         {/* Question Modal */}
-        <Modal isOpen={isOpen} onClose={() => {}} closeOnOverlayClick={false}>
+        <Modal isOpen={isOpen} onClose={() => {}} closeOnOverlayClick={false} size={{ base: "sm", md: "md" }}>
           <ModalOverlay />
-          <ModalContent>
+          <ModalContent mx={4}>
             <ModalHeader>
               <Badge colorScheme="purple" mr={2}>
                 {currentQuestion?.category}
@@ -377,20 +582,21 @@ export default function EducationalSnakeGame() {
             </ModalHeader>
             <ModalBody>
               <VStack spacing={4}>
-                <Text fontSize="lg" fontWeight="medium" textAlign="center">
+                <Text fontSize={{ base: "md", md: "lg" }} fontWeight="medium" textAlign="center">
                   {currentQuestion?.question}
                 </Text>
-                <Grid templateColumns="repeat(2, 1fr)" gap={3} w="full">
+                <Grid templateColumns={{ base: "1fr", md: "repeat(2, 1fr)" }} gap={3} w="full">
                   {currentQuestion?.options.map((option, index) => (
                     <GridItem key={index}>
                       <Button
                         w="full"
-                        h="12"
+                        minH="12"
                         variant="outline"
                         colorScheme="teal"
                         onClick={() => handleAnswerQuestion(index)}
                         whiteSpace="normal"
                         textAlign="center"
+                        fontSize={{ base: "sm", md: "md" }}
                       >
                         {option}
                       </Button>
@@ -400,7 +606,7 @@ export default function EducationalSnakeGame() {
               </VStack>
             </ModalBody>
             <ModalFooter>
-              <Text fontSize="sm" color="gray.500">
+              <Text fontSize="sm" color="gray.500" textAlign="center" w="full">
                 Choose the correct answer to grow your snake!
               </Text>
             </ModalFooter>
