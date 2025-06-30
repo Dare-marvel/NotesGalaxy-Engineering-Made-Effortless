@@ -458,12 +458,15 @@ const SpaceTetris = () => {
     >
       <VStack spacing={{ base: 2, md: 6, lg: 8 }} pt={{ base: 2, md: 6, lg: 8 }}>
         {/* Mobile Top Section - Stats and Subject */}
-        <VStack spacing={2} w="full" display={{ base: "flex", lg: "none" }}>
+        <VStack
+          pt={{ base: 4, sm: 3 }}
+          mt={{ base: 2 }}
+          spacing={2}
+          w="full"
+          display={{ base: "flex", lg: "none" }}>
           {/* Compact Mission Stats for Mobile */}
           <Box
             bg="rgba(0,0,0,0.05)"
-            pt={{ base: 9, sm: 3 }}
-            mt={{base : 6}}
             borderRadius="md"
             border="2px solid rgba(164, 28, 182, 0.2)"
             w="full"
