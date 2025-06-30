@@ -9,6 +9,7 @@ import YouTubeChannelsPage from '../pages/YTChannels';
 import Blogs from '../pages/Blogs';
 import EducationalSnakeGame from '../components/Games/SnakeGame';
 import Tetris from '../components/Games/Tetris'
+import Games from '../pages/Games'
 
 
 
@@ -23,6 +24,7 @@ const AppRoutes = () => {
       <Route path="/community" element={<Community />} />
       <Route path="/blogs" element={<Blogs />} />
       <Route path="/tetris" element={<Tetris />} />
+      <Route path="/games" element={<Games />} />
       <Route path="/snake-game" element={<EducationalSnakeGame />} />
     </Routes>
   );
