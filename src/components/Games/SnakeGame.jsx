@@ -408,7 +408,7 @@ export default function EnhancedEducationalSnakeGame() {
           columns={{ base: 2, md: 2, lg: 4, xl: 4 }}
           spacing={4}
           w="full"
-          py={{ base: 12, md: 5, lg: 5 }}
+          pt={{ base: 12, md: 8, lg: 5 }}
           px={{ base: 4, md: 6, lg: 8 }} // Added horizontal padding for all screens
           width={{ base: "full", md: "70%" , lg: "80%" }} // Responsive width
           mt={2}
