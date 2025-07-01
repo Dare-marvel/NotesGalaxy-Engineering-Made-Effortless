@@ -46,7 +46,8 @@ const Footer = () => {
       as="footer"
       position="relative"
       mt={10}
-      py={{ base: 6, md: 8 }} // Reduced padding on mobile
+      pt={{ base: 6, md: 8 }} // Reduced padding on mobile
+      pb={{ base: 2, md: 3 }} // Reduced padding on mobile
       // borderTop="1px solid"
       borderColor="whiteAlpha.300"
       bg="linear-gradient(180deg, rgba(14, 25, 47, 0) 0%, rgba(19, 2, 50, 0.5) 100%)"
@@ -111,10 +112,10 @@ const Footer = () => {
               ease: "easeInOut"
             }}
             style={{
-              height: "1px",
+              height: "2px",
               width: "100%",
-              background: "linear-gradient(90deg, transparent 0%, #9F7AEA 50%, transparent 100%)",
-              boxShadow: "0 0 10px #9F7AEA, 0 0 15px #805AD5",
+              background: "linear-gradient(90deg, transparent 0%,rgb(0, 255, 213) 50%, transparent 100%)",
+              boxShadow: "0 0 10px #00FFD1, 0 0 20px #00C9A7",
             }}
           />
         </Box>

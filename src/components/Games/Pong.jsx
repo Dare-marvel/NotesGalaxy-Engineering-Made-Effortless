@@ -20,16 +20,23 @@ import {
     useToast
 } from '@chakra-ui/react';
 
+import SidebarAdRight from '../SidebarAd/SidebarAdRight';
+import SidebarAdLeft from '../SidebarAd/SidebarAdLeft';
+
 import subjectsList from '../../config/subjectsList';
 import QUESTIONS from './constants/QuestionsList';
 
-
-const Pong = () => {
+const SpacePongGame = () => {
     // Game state
     const canvasRef = useRef(null);
     const gameLoopRef = useRef(null);
     const keysRef = useRef({});
     const touchRef = useRef({ player1: null, player2: null });
+    const gameContainerRef = useRef(null);
+
+    // Device detection
+    const [deviceType, setDeviceType] = useState('desktop'); // desktop, tablet, mobile
+    const [gameSize, setGameSize] = useState({ width: 800, height: 600 });
 
     // Game objects
     const [gameState, setGameState] = useState({
@@ -45,12 +52,75 @@ const Pong = () => {
     const [currentQuestion, setCurrentQuestion] = useState(null);
     const [selectedAnswer, setSelectedAnswer] = useState('');
     const [highScore, setHighScore] = useState(0);
-    const [isMobile, setIsMobile] = useState(false);
 
     const { isOpen, onOpen, onClose } = useDisclosure();
     const toast = useToast();
 
-    // Initialize high score and detect mobile
+    // Device detection and game size calculation
+    useEffect(() => {
+        const updateGameSize = () => {
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+
+            let newDeviceType = 'desktop';
+            let newGameSize = { width: 800, height: 600 };
+
+            if (width <= 768) {
+                newDeviceType = 'mobile';
+                // Mobile: vertical orientation
+                newGameSize = {
+                    width: Math.min(400, width - 20),
+                    height: Math.min(600, height - 120) // Leave space for panels
+                };
+            } else if (width <= 1024) {
+                newDeviceType = 'tablet';
+                // Tablet: horizontal orientation
+                newGameSize = {
+                    width: Math.min(800, width - 40),
+                    height: Math.min(600, height - 120)
+                };
+            } else {
+                // Desktop: horizontal orientation
+                newGameSize = {
+                    width: Math.min(800, width - 40),
+                    height: Math.min(600, height - 120)
+                };
+            }
+
+            setDeviceType(newDeviceType);
+            setGameSize(newGameSize);
+        };
+
+        updateGameSize();
+        window.addEventListener('resize', updateGameSize);
+        return () => window.removeEventListener('resize', updateGameSize);
+    }, []);
+
+    // Update game objects positions based on game size
+    useEffect(() => {
+        if (gameState.gameStarted) {
+            setGameState(prev => ({
+                ...prev,
+                ball: {
+                    ...prev.ball,
+                    x: gameSize.width / 2,
+                    y: gameSize.height / 2
+                },
+                player1: {
+                    ...prev.player1,
+                    x: 20,
+                    y: (gameSize.height - prev.player1.height) / 2
+                },
+                player2: {
+                    ...prev.player2,
+                    x: gameSize.width - 35,
+                    y: (gameSize.height - prev.player2.height) / 2
+                }
+            }));
+        }
+    }, [gameSize, gameState.gameStarted]);
+
+    // Initialize high score
     useEffect(() => {
         try {
             const savedHighScore = localStorage.getItem('spacePongHighScore');
@@ -60,15 +130,29 @@ const Pong = () => {
         } catch (error) {
             console.log('LocalStorage not available');
         }
-
-        const checkMobile = () => {
-            setIsMobile(window.innerWidth <= 768);
-        };
-
-        checkMobile();
-        window.addEventListener('resize', checkMobile);
-        return () => window.removeEventListener('resize', checkMobile);
     }, []);
+
+    // Prevent scroll when game is running
+    useEffect(() => {
+        if (gameState.gameStarted) {
+            document.body.style.overflow = 'hidden';
+            document.body.style.position = 'fixed';
+            document.body.style.width = '100%';
+            document.body.style.height = '100%';
+        } else {
+            document.body.style.overflow = 'unset';
+            document.body.style.position = 'unset';
+            document.body.style.width = 'unset';
+            document.body.style.height = 'unset';
+        }
+
+        return () => {
+            document.body.style.overflow = 'unset';
+            document.body.style.position = 'unset';
+            document.body.style.width = 'unset';
+            document.body.style.height = 'unset';
+        };
+    }, [gameState.gameStarted]);
 
     // Update high score
     const updateHighScore = useCallback((score) => {
@@ -83,7 +167,7 @@ const Pong = () => {
                 title: "New High Score!",
                 description: `You've reached ${score} points!`,
                 status: "success",
-                duration: 1000,
+                duration: 3000,
                 isClosable: true,
             });
         }
@@ -110,7 +194,7 @@ const Pong = () => {
                     title: "Correct!",
                     description: "Great job! Continue playing.",
                     status: "success",
-                    duration: 1000,
+                    duration: 2000,
                     isClosable: true,
                 });
                 // Bonus points for correct answer
@@ -128,7 +212,7 @@ const Pong = () => {
                     title: "Incorrect",
                     description: `The correct answer was: ${currentQuestion.options[currentQuestion.correct]}`,
                     status: "error",
-                    duration: 1000,
+                    duration: 3000,
                     isClosable: true,
                 });
             }
@@ -143,15 +227,15 @@ const Pong = () => {
         setGameState(prev => ({
             ...prev,
             ball: {
-                x: 400,
-                y: 300,
+                x: gameSize.width / 2,
+                y: gameSize.height / 2,
                 dx: isFirstServe ? 0 : (Math.random() > 0.5 ? 1 : -1) * 3,
                 dy: isFirstServe ? 2 : (Math.random() > 0.5 ? 1 : -1) * 2,
                 radius: 8,
                 isFirstServe: isFirstServe
             }
         }));
-    }, []);
+    }, [gameSize]);
 
     const updateGame = useCallback(() => {
         setGameState(prev => {
@@ -165,7 +249,7 @@ const Pong = () => {
             ball.y += ball.dy;
 
             // Ball collision with top/bottom walls (90-degree rebound)
-            if (ball.y - ball.radius <= 0 || ball.y + ball.radius >= 600) {
+            if (ball.y - ball.radius <= 0 || ball.y + ball.radius >= gameSize.height) {
                 ball.dy = -ball.dy;
                 // If it's the first serve, start horizontal movement after hitting top/bottom
                 if (ball.isFirstServe) {
@@ -201,42 +285,42 @@ const Pong = () => {
                 updateHighScore(Math.max(player1.score, player2.score));
                 resetBall(false);
                 // Show question every 3 points
-                if (player2.score % 7 === 0) {
+                if (player2.score % 10 === 0) {
                     setTimeout(showQuestion, 1000);
                 }
-            } else if (ball.x > 800) {
+            } else if (ball.x > gameSize.width) {
                 player1.score++;
                 updateHighScore(Math.max(player1.score, player2.score));
                 resetBall(false);
                 // Show question every 3 points
-                if (player1.score % 7 === 0) {
+                if (player1.score % 10 === 0) {
                     setTimeout(showQuestion, 1000);
                 }
             }
 
             // Update paddle positions based on input
-            if (!isMobile) {
+            if (deviceType !== 'mobile') {
                 if (keysRef.current['a'] && player1.y > 0) {
                     player1.y -= 6;
                 }
-                if (keysRef.current['z'] && player1.y < 500) {
+                if (keysRef.current['z'] && player1.y < gameSize.height - player1.height) {
                     player1.y += 6;
                 }
                 if (keysRef.current['k'] && player2.y > 0) {
                     player2.y -= 6;
                 }
-                if (keysRef.current['m'] && player2.y < 500) {
+                if (keysRef.current['m'] && player2.y < gameSize.height - player2.height) {
                     player2.y += 6;
                 }
             }
 
             return newState;
         });
-    }, [resetBall, showQuestion, updateHighScore, isMobile]);
+    }, [resetBall, showQuestion, updateHighScore, deviceType, gameSize]);
 
     // Touch handling for mobile
     const handleTouchStart = (e, player) => {
-        if (!isMobile) return;
+        if (deviceType !== 'mobile') return;
         e.preventDefault();
         const touch = e.touches[0];
         touchRef.current[player] = {
@@ -246,7 +330,7 @@ const Pong = () => {
     };
 
     const handleTouchMove = (e, player) => {
-        if (!isMobile || !touchRef.current[player]) return;
+        if (deviceType !== 'mobile' || !touchRef.current[player]) return;
         e.preventDefault();
         const touch = e.touches[0];
         const deltaY = touch.clientY - touchRef.current[player].currentY;
@@ -254,7 +338,7 @@ const Pong = () => {
         setGameState(prev => {
             const newState = { ...prev };
             const paddle = player === 'player1' ? newState.player1 : newState.player2;
-            paddle.y = Math.max(0, Math.min(500, paddle.y + deltaY * 2));
+            paddle.y = Math.max(0, Math.min(gameSize.height - paddle.height, paddle.y + deltaY * 2));
             return newState;
         });
 
@@ -262,7 +346,7 @@ const Pong = () => {
     };
 
     const handleTouchEnd = (player) => {
-        if (!isMobile) return;
+        if (deviceType !== 'mobile') return;
         touchRef.current[player] = null;
     };
 
@@ -304,18 +388,18 @@ const Pong = () => {
         const ctx = canvas.getContext('2d');
 
         // Clear canvas with space background
-        const gradient = ctx.createLinearGradient(0, 0, 0, 600);
+        const gradient = ctx.createLinearGradient(0, 0, 0, gameSize.height);
         gradient.addColorStop(0, '#1a1a2e');
         gradient.addColorStop(0.5, '#16213e');
         gradient.addColorStop(1, '#0f0f3d');
         ctx.fillStyle = gradient;
-        ctx.fillRect(0, 0, 800, 600);
+        ctx.fillRect(0, 0, gameSize.width, gameSize.height);
 
         // Draw stars
         ctx.fillStyle = '#ffffff';
         for (let i = 0; i < 50; i++) {
-            const x = (i * 37) % 800;
-            const y = (i * 23) % 600;
+            const x = (i * 37) % gameSize.width;
+            const y = (i * 23) % gameSize.height;
             ctx.fillRect(x, y, 1, 1);
         }
 
@@ -324,8 +408,8 @@ const Pong = () => {
         ctx.lineWidth = 2;
         ctx.setLineDash([5, 5]);
         ctx.beginPath();
-        ctx.moveTo(400, 0);
-        ctx.lineTo(400, 600);
+        ctx.moveTo(gameSize.width / 2, 0);
+        ctx.lineTo(gameSize.width / 2, gameSize.height);
         ctx.stroke();
         ctx.setLineDash([]);
 
@@ -349,7 +433,7 @@ const Pong = () => {
         ctx.arc(gameState.ball.x, gameState.ball.y, gameState.ball.radius, 0, Math.PI * 2);
         ctx.fill();
         ctx.shadowBlur = 0;
-    }, [gameState]);
+    }, [gameState, gameSize]);
 
     const startGame = () => {
         setGameState(prev => ({
@@ -363,39 +447,40 @@ const Pong = () => {
 
     const resetGame = () => {
         setGameState({
-            ball: { x: 400, y: 300, dx: 0, dy: 2, radius: 8, isFirstServe: true },
-            player1: { x: 20, y: 250, width: 15, height: 100, score: 0 },
-            player2: { x: 765, y: 250, width: 15, height: 100, score: 0 },
+            ball: { x: gameSize.width / 2, y: gameSize.height / 2, dx: 0, dy: 2, radius: 8, isFirstServe: true },
+            player1: { x: 20, y: (gameSize.height - 100) / 2, width: 15, height: 100, score: 0 },
+            player2: { x: gameSize.width - 35, y: (gameSize.height - 100) / 2, width: 15, height: 100, score: 0 },
             gameRunning: false,
             gameStarted: false
         });
     };
 
-    return (
-        <Box minH="100vh" bg="white" p={gameState.gameStarted ? 0 : 4}>
-            {!gameState.gameStarted ? (
-                // Pre-game setup screen
+    // Pre-game setup screen
+    if (!gameState.gameStarted) {
+        return (
+            <Box minH="100vh" bg="white" >
+                <SidebarAdLeft
+                    position="left"
+                />
                 <VStack spacing={4} maxW="900px" mx="auto">
                     {/* Header */}
-                    <VStack spacing={2}>
-                        <Text fontSize="3xl" fontWeight="bold" bgGradient="linear(to-r, #9d4edd, #c77dff)" bgClip="text">
-                            🚀 Space Pong Educational Game 🚀
-                        </Text>
-                        <HStack spacing={4} wrap="wrap" justify="center">
-                            <Badge colorScheme="purple" fontSize="md" p={2}>
-                                High Score: {highScore}
-                            </Badge>
-                            <Badge colorScheme="blue" fontSize="md" p={2}>
-                                P1: {gameState.player1.score}
-                            </Badge>
-                            <Badge colorScheme="pink" fontSize="md" p={2}>
-                                P2: {gameState.player2.score}
-                            </Badge>
-                        </HStack>
-                    </VStack>
+                    {/* <VStack spacing={2}>
+            <Text fontSize="3xl" fontWeight="bold" bgGradient="linear(to-r, #9d4edd, #c77dff)" bgClip="text">
+              🚀 Space Pong Educational Game 🚀
+            </Text>
+            <HStack spacing={4} wrap="wrap" justify="center">
+              <Badge colorScheme="purple" fontSize="md" p={2}>
+                High Score: {highScore}
+              </Badge>
+            </HStack>
+          </VStack> */}
 
                     {/* Subject Selection */}
-                    <VStack spacing={2}>
+                    <VStack
+                        spacing={2}
+                        pt={{ base: 12, md: 12, lg: 12, xl: 12 }}
+                        mt={4}
+                    >
                         <Text fontSize="lg" color="gray.600">Select Subject for Quiz Questions:</Text>
                         <Select
                             value={selectedSubject}
@@ -417,25 +502,61 @@ const Pong = () => {
                         <Text fontSize="lg" fontWeight="semibold" color="gray.700">
                             Game Controls
                         </Text>
-                        {isMobile ? (
+                        {deviceType === 'mobile' ? (
                             <Text color="gray.600">
-                                📱 Touch and drag the screen to move paddles
+                                📱 Touch and drag the left/right side of the screen to move paddles
                             </Text>
                         ) : (
-                            <HStack spacing={6} wrap="wrap" justify="center">
-                                <VStack>
+                            <HStack spacing={6} wrap="wrap" justify="center" p={4} bg="white">
+                                <VStack spacing={1} align="center">
                                     <Text color="blue.500" fontWeight="semibold">Player 1 (Blue)</Text>
-                                    <Text fontSize="sm" color="gray.600">A = Up, Z = Down</Text>
+                                    <Text
+                                        fontSize="sm"
+                                        fontWeight="bold"
+                                        color="blue.700"
+                                        // textShadow="0 0 6px #3b82f6"
+                                        letterSpacing="wide"
+                                    >
+                                        A = Up
+                                    </Text>
+                                    <Text
+                                        fontSize="sm"
+                                        fontWeight="bold"
+                                        color="blue.700"
+                                        // textShadow="0 0 6px #3b82f6"
+                                        letterSpacing="wide"
+                                    >
+                                        Z = Down
+                                    </Text>
                                 </VStack>
-                                <VStack>
+
+                                <VStack spacing={1} align="center">
                                     <Text color="pink.500" fontWeight="semibold">Player 2 (Pink)</Text>
-                                    <Text fontSize="sm" color="gray.600">K = Up, M = Down</Text>
+                                    <Text
+                                        fontSize="sm"
+                                        fontWeight="bold"
+                                        color="pink.700"
+                                        // textShadow="0 0 6px #ec4899"
+                                        letterSpacing="wide"
+                                    >
+                                        K = Up
+                                    </Text>
+                                    <Text
+                                        fontSize="sm"
+                                        fontWeight="bold"
+                                        color="pink.700"
+                                        // textShadow="0 0 6px #ec4899"
+                                        letterSpacing="wide"
+                                    >
+                                        M = Down
+                                    </Text>
                                 </VStack>
                             </HStack>
+
                         )}
                     </VStack>
 
-                    {/* Start Game Button */}
+                    {/* Start Button */}
                     <Button
                         size="lg"
                         colorScheme="purple"
@@ -446,144 +567,137 @@ const Pong = () => {
                     </Button>
 
                     {/* Info */}
-                    <Text fontSize="sm" color="gray.500" textAlign="center" maxW="600px">
-                        💡 Answer quiz questions correctly every 3 points to earn bonus points!
-                        Questions are randomly selected from your chosen subject.
+                    {/* <Text fontSize="sm" color="gray.500" textAlign="center" maxW="600px">
+            💡 Answer quiz questions correctly every 3 points to earn bonus points! 
+            Questions are randomly selected from your chosen subject.
+          </Text> */}
+                </VStack>
+                <SidebarAdRight
+                    position="right"
+                />
+            </Box>
+        );
+    }
+
+    // Full-screen game view
+    return (
+        <Box
+            position="fixed"
+            top="0"
+            left="0"
+            width="100vw"
+            height="100vh"
+            bg="black"
+            overflow="hidden"
+            pt={{ base: 0, md: 0, lg: 10, xl: 12 }}
+            ref={gameContainerRef}
+            zIndex={2}
+        >
+            {/* Top Panel - Scores */}
+            <Flex
+                position="absolute"
+                pt={{ base: 2, md: 4, lg: 6, xl: 8 }}
+                // top="0"
+                left="0"
+                right="0"
+                height="60px"
+                bg="rgba(0,0,0,0.8)"
+                align="center"
+                justify="center"
+                zIndex={2}
+            >
+                <HStack spacing={8}>
+                    <Text color="#00d4ff" fontSize="xl" fontWeight="bold">
+                        P1: {gameState.player1.score}
                     </Text>
-                </VStack>
-            ) : (
-                // Fullscreen game view
-                <VStack
-                    // h="100vh"
-                    spacing={0}
-                    bg="black"
-                    transform={isMobile ? "rotate(90deg)" : "none"}
-                    transformOrigin="center"
-                    w={isMobile ? "100vh" : "100vw"}
-                    h={isMobile ? "100vw" : "100vh"}
-                    position={isMobile ? "fixed" : "relative"}
-                    top={isMobile ? "0" : "auto"}
-                    left={isMobile ? "0" : "auto"}
-                >
-                    {/* Top Score Panel */}
-                    <Flex
-                        w="100%"
-                        bg="blackAlpha.800"
-                        p={2}
+                    <Text color="white" fontSize="lg">
+                        High: {highScore}
+                    </Text>
+                    <Text color="#ff006e" fontSize="xl" fontWeight="bold">
+                        P2: {gameState.player2.score}
+                    </Text>
+                </HStack>
+            </Flex>
 
-                        justify="center"
-                        align="center"
-                        borderBottom="1px solid"
-                        borderColor="purple.400"
-                        minH="60px"
+            {/* Game Canvas */}
+            <Box
+                position="absolute"
+                top="100px"
+                left="50%"
+                transform="translateX(-50%)"
+                bottom="60px"
+                display="flex"
+                alignItems="center"
+                justifyContent="center"
+            >
+                <canvas
+                    ref={canvasRef}
+                    width={gameSize.width}
+                    height={gameSize.height}
+                    style={{
+                        border: '2px solid #9d4edd',
+                        borderRadius: '8px',
+                        maxWidth: '100%',
+                        maxHeight: '100%'
+                    }}
+                    onTouchStart={(e) => {
+                        if (deviceType !== 'mobile') return;
+                        const rect = e.currentTarget.getBoundingClientRect();
+                        const x = e.touches[0].clientX - rect.left;
+                        if (x < rect.width / 2) {
+                            handleTouchStart(e, 'player1');
+                        } else {
+                            handleTouchStart(e, 'player2');
+                        }
+                    }}
+                    onTouchMove={(e) => {
+                        if (deviceType !== 'mobile') return;
+                        const rect = e.currentTarget.getBoundingClientRect();
+                        const x = e.touches[0].clientX - rect.left;
+                        if (x < rect.width / 2) {
+                            handleTouchMove(e, 'player1');
+                        } else {
+                            handleTouchMove(e, 'player2');
+                        }
+                    }}
+                    onTouchEnd={() => {
+                        if (deviceType !== 'mobile') return;
+                        handleTouchEnd('player1');
+                        handleTouchEnd('player2');
+                    }}
+                />
+            </Box>
+
+            {/* Bottom Panel - Controls */}
+            <Flex
+                position="absolute"
+                bottom="0"
+                left="0"
+                right="0"
+                height="60px"
+                bg="rgba(0,0,0,0.8)"
+                align="center"
+                justify="center"
+                zIndex="10"
+            >
+                <HStack spacing={4}>
+                    <Button
+                        colorScheme={gameState.gameRunning ? "red" : "green"}
+                        onClick={() => setGameState(prev => ({ ...prev, gameRunning: !prev.gameRunning }))}
+                        size="sm"
                     >
-                        <HStack spacing={8}>
-                            <Badge colorScheme="blue" fontSize="lg" p={3}>
-                                P1: {gameState.player1.score}
-                            </Badge>
-                            <Badge colorScheme="purple" fontSize="lg" p={3}>
-                                High Score: {highScore}
-                            </Badge>
-                            <Badge colorScheme="pink" fontSize="lg" p={3}>
-                                P2: {gameState.player2.score}
-                            </Badge>
-                        </HStack>
-                    </Flex>
-
-                    {/* Game Canvas - Takes remaining space */}
-                    <Box
-                        flex="1"
-                        w="100%"
-                        position="relative"
-                        overflow="hidden"
-                    >
-                        <canvas
-                            ref={canvasRef}
-                            width={isMobile ? "600" : "800"}
-                            height={isMobile ? "800" : "600"}
-                            style={{
-                                width: '100%',
-                                height: '100%',
-                                display: 'block',
-                                background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f0f3d 100%)'
-                            }}
-                            onTouchStart={(e) => {
-                                const rect = e.currentTarget.getBoundingClientRect();
-                                const touch = isMobile ?
-                                    (e.touches[0].clientY - rect.top < rect.height / 2) :
-                                    (e.touches[0].clientX - rect.left < rect.width / 2);
-
-                                if (touch) {
-                                    handleTouchStart(e, 'player1');
-                                } else {
-                                    handleTouchStart(e, 'player2');
-                                }
-                            }}
-                            onTouchMove={(e) => {
-                                const rect = e.currentTarget.getBoundingClientRect();
-                                const touch = isMobile ?
-                                    (e.touches[0].clientY - rect.top < rect.height / 2) :
-                                    (e.touches[0].clientX - rect.left < rect.width / 2);
-
-                                if (touch) {
-                                    handleTouchMove(e, 'player1');
-                                } else {
-                                    handleTouchMove(e, 'player2');
-                                }
-                            }}
-                            onTouchEnd={() => {
-                                handleTouchEnd('player1');
-                                handleTouchEnd('player2');
-                            }}
-                        />
-                    </Box>
-
-                    {/* Bottom Control Panel */}
-                    <Flex
-                        w="100%"
-                        bg="blackAlpha.800"
-                        p={3}
-                        justify="center"
-                        align="center"
-                        borderTop="1px solid"
-                        borderColor="purple.400"
-                        minH="70px"
-                    >
-                        <HStack spacing={4}>
-                            <Badge colorScheme="blue" fontSize="lg" p={3}>
-                                P1: {gameState.player1.score}
-                            </Badge>
-                            <Badge colorScheme="pink" fontSize="lg" p={3}>
-                                P2: {gameState.player2.score}
-                            </Badge>
-                            <Button
-                                colorScheme={gameState.gameRunning ? "red" : "green"}
-                                onClick={() => setGameState(prev => ({ ...prev, gameRunning: !prev.gameRunning }))}
-                                size="md"
-                            >
-                                {gameState.gameRunning ? "Pause" : "Resume"}
-                            </Button>
-                            <Button
-                                colorScheme="orange"
-                                onClick={resetGame}
-                                size="md"
-                            >
-                                Reset Game
-                            </Button>
-                        </HStack>
-                    </Flex>
-                </VStack>
-            )}
+                        {gameState.gameRunning ? "Pause" : "Resume"}
+                    </Button>
+                    <Button colorScheme="orange" onClick={resetGame} size="sm">
+                        Reset Game
+                    </Button>
+                </HStack>
+            </Flex>
 
             {/* Question Modal */}
             <Modal isOpen={isOpen} onClose={() => { }} closeOnOverlayClick={false} size="lg">
                 <ModalOverlay bg="blackAlpha.800" />
-                <ModalContent
-                    bg="white"
-                    border="2px solid"
-                    borderColor="purple.400"
-                    transform={isMobile && gameState.gameStarted ? "rotate(90deg)" : "none"}
-                >
+                <ModalContent bg="white" border="2px solid" borderColor="purple.400">
                     <ModalHeader bg="purple.500" color="white" borderRadius="md md 0 0">
                         🧠 Quiz Time! - {currentQuestion?.category}
                     </ModalHeader>
@@ -626,4 +740,4 @@ const Pong = () => {
     );
 };
 
-export default Pong;
+export default SpacePongGame;
