@@ -42,7 +42,7 @@ const Navbar = () => {
     { name: 'Youtube', path: '/ytchannels' },
     { name: 'Community', path: '/community' },
     { name: 'Blogs', path: '/blogs' },
-    { name: 'Games', path: '/games' },
+    // { name: 'Games', path: '/games' },
     { name: 'Contact', path: '/contact' },
     { name: 'About', path: '/about' },
   ];
