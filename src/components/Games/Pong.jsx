@@ -66,7 +66,7 @@ const Pong = () => {
             let paddleWidth = 15;
             let paddleHeight = 100;
 
-            if (height <= 530 ) {
+            if (height <= 530) {
                 newDeviceType = 'mobile';
                 // Mobile: use full screen
                 newGameSize = {
@@ -452,7 +452,7 @@ const Pong = () => {
             elem.msRequestFullscreen();
         }
     };
-    
+
     // Canvas rendering
     useEffect(() => {
         const canvas = canvasRef.current;
@@ -508,7 +508,7 @@ const Pong = () => {
         ctx.shadowBlur = 0;
     }, [gameState, gameSize]);
 
-    
+
 
     const startGame = () => {
         setGameState(prev => ({
@@ -570,13 +570,28 @@ const Pong = () => {
 
                     {/* Controls Info */}
                     <VStack spacing={2} textAlign="center">
-                        <Text fontSize={{ base: "md", md: "lg" }} fontWeight="semibold" color="gray.700">
+                        <Text
+                            fontSize={{ base: "md", md: "lg" }}
+                            fontWeight="semibold"
+                            color="gray.700"
+                        >
                             Game Controls
                         </Text>
                         {deviceType === 'mobile' ? (
-                            <Text color="gray.600">
-                                📱 Touch and drag the left/right side of the screen to move paddles
-                            </Text>
+                            <Box
+                                maxW={{ base: "100%",sm:"400px", md: "500px", lg: "960px" }}
+                                mx="auto"
+                                px={{ base: 4,sm:5, md: 6 }}
+                            >
+                                <Text
+                                    fontSize={{ base: "sm", md: "md" }}
+                                    color="gray.600"
+                                    textAlign="center"
+                                >
+                                    📱 Touch and drag the left/right side of the screen to move paddles
+                                </Text>
+                            </Box>
+
                         ) : (
                             <VStack spacing={3} align="center">
                                 <HStack
@@ -633,7 +648,7 @@ const Pong = () => {
 
                     {/* Start Button */}
                     <Button
-                        size={{ base: "sm", md: "lg" }}
+                        size={{ base: "sm",sm:"md", md: "lg" }}
                         colorScheme="purple"
                         onClick={startGame}
                         variant={deviceType === 'mobile' ? "solid" : "outline"}
@@ -748,7 +763,7 @@ const Pong = () => {
             {/* Game Canvas */}
             <Box
                 position="absolute"
-                top={{base: "40px", md: "60px", lg: "60px", xl: "60px"}}
+                top={{ base: "40px", md: "60px", lg: "60px", xl: "60px" }}
                 left="0"
                 right="0"
                 bottom="0"
