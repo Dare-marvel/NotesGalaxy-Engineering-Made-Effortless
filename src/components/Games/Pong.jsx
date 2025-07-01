@@ -63,31 +63,46 @@ const Pong = () => {
 
             let newDeviceType = 'desktop';
             let newGameSize = { width: 800, height: 600 };
+            let paddleWidth = 15;
+            let paddleHeight = 100;
 
             if (width <= 768) {
                 newDeviceType = 'mobile';
-                // Mobile: vertical orientation
+                // Mobile: use full screen
                 newGameSize = {
-                    width: Math.min(400, width - 20),
-                    height: Math.min(600, height - 120) // Leave space for panels
+                    width: width,
+                    height: height - 120 // Leave space for score panel
                 };
+                paddleWidth = 8;
+                paddleHeight = 60;
             } else if (width <= 1024) {
                 newDeviceType = 'tablet';
-                // Tablet: horizontal orientation
+                // Tablet: use most of screen
                 newGameSize = {
-                    width: Math.min(800, width - 40),
-                    height: Math.min(600, height - 120)
+                    width: width - 40,
+                    height: height - 120
                 };
+                paddleWidth = 12;
+                paddleHeight = 80;
             } else {
-                // Desktop: horizontal orientation
+                // Desktop: use most of screen
                 newGameSize = {
-                    width: Math.min(800, width - 40),
-                    height: Math.min(600, height - 120)
+                    width: width - 40,
+                    height: height - 120
                 };
+                paddleWidth = 15;
+                paddleHeight = 100;
             }
 
             setDeviceType(newDeviceType);
             setGameSize(newGameSize);
+
+            // Update paddle dimensions based on screen size
+            setGameState(prev => ({
+                ...prev,
+                player1: { ...prev.player1, width: paddleWidth, height: paddleHeight },
+                player2: { ...prev.player2, width: paddleWidth, height: paddleHeight }
+            }));
         };
 
         updateGameSize();
@@ -250,14 +265,14 @@ const Pong = () => {
             if (ball.x < 0) {
                 player2.score++;
                 resetBall(false);
-                // Show question every 3 points
+                // Show question every 10 points
                 if (player2.score % 10 === 0) {
                     setTimeout(showQuestion, 1000);
                 }
             } else if (ball.x > gameSize.width) {
                 player1.score++;
                 resetBall(false);
-                // Show question every 3 points
+                // Show question every 10 points
                 if (player1.score % 10 === 0) {
                     setTimeout(showQuestion, 1000);
                 }
@@ -283,36 +298,84 @@ const Pong = () => {
         });
     }, [resetBall, showQuestion, deviceType, gameSize]);
 
-    // Touch handling for mobile
-    const handleTouchStart = (e, player) => {
+    // Touch handling for mobile - supporting simultaneous touches
+    const handleTouchStart = (e) => {
         if (deviceType !== 'mobile') return;
         e.preventDefault();
-        const touch = e.touches[0];
-        touchRef.current[player] = {
-            startY: touch.clientY,
-            currentY: touch.clientY
-        };
+
+        const rect = e.currentTarget.getBoundingClientRect();
+
+        // Handle all touches
+        for (let i = 0; i < e.touches.length; i++) {
+            const touch = e.touches[i];
+            const x = touch.clientX - rect.left;
+
+            if (x < rect.width / 2) {
+                // Left side - Player 1
+                touchRef.current.player1 = {
+                    id: touch.identifier,
+                    startY: touch.clientY,
+                    currentY: touch.clientY
+                };
+            } else {
+                // Right side - Player 2
+                touchRef.current.player2 = {
+                    id: touch.identifier,
+                    startY: touch.clientY,
+                    currentY: touch.clientY
+                };
+            }
+        }
     };
 
-    const handleTouchMove = (e, player) => {
-        if (deviceType !== 'mobile' || !touchRef.current[player]) return;
-        e.preventDefault();
-        const touch = e.touches[0];
-        const deltaY = touch.clientY - touchRef.current[player].currentY;
-
-        setGameState(prev => {
-            const newState = { ...prev };
-            const paddle = player === 'player1' ? newState.player1 : newState.player2;
-            paddle.y = Math.max(0, Math.min(gameSize.height - paddle.height, paddle.y + deltaY * 2));
-            return newState;
-        });
-
-        touchRef.current[player].currentY = touch.clientY;
-    };
-
-    const handleTouchEnd = (player) => {
+    const handleTouchMove = (e) => {
         if (deviceType !== 'mobile') return;
-        touchRef.current[player] = null;
+        e.preventDefault();
+
+        const rect = e.currentTarget.getBoundingClientRect();
+
+        // Handle all touches
+        for (let i = 0; i < e.touches.length; i++) {
+            const touch = e.touches[i];
+            const x = touch.clientX - rect.left;
+
+            // Determine which player this touch belongs to
+            let player = null;
+            if (x < rect.width / 2 && touchRef.current.player1 && touchRef.current.player1.id === touch.identifier) {
+                player = 'player1';
+            } else if (x >= rect.width / 2 && touchRef.current.player2 && touchRef.current.player2.id === touch.identifier) {
+                player = 'player2';
+            }
+
+            if (player && touchRef.current[player]) {
+                const deltaY = touch.clientY - touchRef.current[player].currentY;
+
+                setGameState(prev => {
+                    const newState = { ...prev };
+                    const paddle = player === 'player1' ? newState.player1 : newState.player2;
+                    paddle.y = Math.max(0, Math.min(gameSize.height - paddle.height, paddle.y + deltaY * 2));
+                    return newState;
+                });
+
+                touchRef.current[player].currentY = touch.clientY;
+            }
+        }
+    };
+
+    const handleTouchEnd = (e) => {
+        if (deviceType !== 'mobile') return;
+
+        // Remove ended touches
+        for (let i = 0; i < e.changedTouches.length; i++) {
+            const touch = e.changedTouches[i];
+
+            if (touchRef.current.player1 && touchRef.current.player1.id === touch.identifier) {
+                touchRef.current.player1 = null;
+            }
+            if (touchRef.current.player2 && touchRef.current.player2.id === touch.identifier) {
+                touchRef.current.player2 = null;
+            }
+        }
     };
 
     // Keyboard handling
@@ -411,10 +474,13 @@ const Pong = () => {
     };
 
     const resetGame = () => {
+        const paddleWidth = deviceType === 'mobile' ? 8 : deviceType === 'tablet' ? 12 : 15;
+        const paddleHeight = deviceType === 'mobile' ? 60 : deviceType === 'tablet' ? 80 : 100;
+
         setGameState({
             ball: { x: gameSize.width / 2, y: gameSize.height / 2, dx: 0, dy: 2, radius: 8, isFirstServe: true },
-            player1: { x: 20, y: (gameSize.height - 100) / 2, width: 15, height: 100, score: 0 },
-            player2: { x: gameSize.width - 35, y: (gameSize.height - 100) / 2, width: 15, height: 100, score: 0 },
+            player1: { x: 20, y: (gameSize.height - paddleHeight) / 2, width: paddleWidth, height: paddleHeight, score: 0 },
+            player2: { x: gameSize.width - 35, y: (gameSize.height - paddleHeight) / 2, width: paddleWidth, height: paddleHeight, score: 0 },
             gameRunning: false,
             gameStarted: false
         });
@@ -544,10 +610,10 @@ const Pong = () => {
             {/* Game Canvas */}
             <Box
                 position="absolute"
-                top="20px"
-                left="50%"
-                transform="translateX(-50%)"
-                bottom="60px"
+                top="60px"
+                left="0"
+                right="0"
+                bottom="0"
                 display="flex"
                 alignItems="center"
                 justifyContent="center"
@@ -557,39 +623,17 @@ const Pong = () => {
                     width={gameSize.width}
                     height={gameSize.height}
                     style={{
-                        border: '2px solid #9d4edd',
-                        borderRadius: '8px',
-                        maxWidth: '100%',
-                        maxHeight: '100%'
+                        border: deviceType === 'mobile' ? 'none' : '2px solid #9d4edd',
+                        borderRadius: deviceType === 'mobile' ? '0' : '8px',
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'contain'
                     }}
-                    onTouchStart={(e) => {
-                        if (deviceType !== 'mobile') return;
-                        const rect = e.currentTarget.getBoundingClientRect();
-                        const x = e.touches[0].clientX - rect.left;
-                        if (x < rect.width / 2) {
-                            handleTouchStart(e, 'player1');
-                        } else {
-                            handleTouchStart(e, 'player2');
-                        }
-                    }}
-                    onTouchMove={(e) => {
-                        if (deviceType !== 'mobile') return;
-                        const rect = e.currentTarget.getBoundingClientRect();
-                        const x = e.touches[0].clientX - rect.left;
-                        if (x < rect.width / 2) {
-                            handleTouchMove(e, 'player1');
-                        } else {
-                            handleTouchMove(e, 'player2');
-                        }
-                    }}
-                    onTouchEnd={() => {
-                        if (deviceType !== 'mobile') return;
-                        handleTouchEnd('player1');
-                        handleTouchEnd('player2');
-                    }}
+                    onTouchStart={handleTouchStart}
+                    onTouchMove={handleTouchMove}
+                    onTouchEnd={handleTouchEnd}
                 />
             </Box>
-
 
             {/* Question Modal */}
             <Modal isOpen={isOpen} onClose={() => { }} closeOnOverlayClick={false} size="lg">
