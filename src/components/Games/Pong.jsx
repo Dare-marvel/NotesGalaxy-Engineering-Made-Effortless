@@ -310,14 +310,15 @@ const Pong = () => {
                 resetBall(false);
                 // Show question every qFreq points
                 if (player2.score % qFreq === 0) {
-                    setTimeout(showQuestion, 1000);
+                    setTimeout(showQuestion, 100);
                 }
             } else if (ball.x > gameSize.width) {
                 player1.score++;
                 resetBall(false);
                 // Show question every qFreq points
+                // console.log("Checking freq in game", qFreq,player1.score % qFreq );
                 if (player1.score % qFreq === 0) {
-                    setTimeout(showQuestion, 1000);
+                    setTimeout(showQuestion, 100);
                 }
             }
 
@@ -453,15 +454,21 @@ const Pong = () => {
 
     const requestFullScreen = () => {
         const elem = gameContainerRef.current;
+        if (!elem) {
+            console.warn("Fullscreen element not found");
+            return;
+        }
+
         if (elem.requestFullscreen) {
-            elem.requestFullscreen();
+            elem.requestFullscreen().catch(err => {
+                console.error("Error attempting to enable fullscreen:", err);
+            });
         } else if (elem.webkitRequestFullscreen) { /* Safari */
             elem.webkitRequestFullscreen();
         } else if (elem.msRequestFullscreen) { /* IE11 */
             elem.msRequestFullscreen();
         }
     };
-
     // Canvas rendering
     useEffect(() => {
         const canvas = canvasRef.current;
@@ -520,6 +527,7 @@ const Pong = () => {
 
 
     const startGame = () => {
+        // console.log("Checking freq ",qFreq, typeof qFreq);
         setGameState(prev => ({
             ...prev,
             gameRunning: true,
