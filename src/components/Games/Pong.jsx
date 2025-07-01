@@ -372,158 +372,218 @@ const Pong = () => {
     };
 
     return (
-        <Box minH="100vh" bg="white" p={4}>
-            <VStack spacing={4} maxW="900px" mx="auto">
-                {/* Header */}
-                <VStack spacing={2}>
-                    <Text fontSize="3xl" fontWeight="bold" bgGradient="linear(to-r, #9d4edd, #c77dff)" bgClip="text">
-                        🚀 Space Pong Educational Game 🚀
-                    </Text>
-                    <HStack spacing={4} wrap="wrap" justify="center">
-                        <Badge colorScheme="purple" fontSize="md" p={2}>
-                            High Score: {highScore}
-                        </Badge>
-                        <Badge colorScheme="blue" fontSize="md" p={2}>
-                            P1: {gameState.player1.score}
-                        </Badge>
-                        <Badge colorScheme="pink" fontSize="md" p={2}>
-                            P2: {gameState.player2.score}
-                        </Badge>
-                    </HStack>
-                </VStack>
-
-                {/* Subject Selection */}
-                <VStack spacing={2}>
-                    <Text fontSize="lg" color="gray.600">Select Subject for Quiz Questions:</Text>
-                    <Select
-                        value={selectedSubject}
-                        onChange={(e) => setSelectedSubject(e.target.value)}
-                        maxW="400px"
-                        borderColor="purple.300"
-                        focusBorderColor="purple.500"
-                    >
-                        {subjectsList.map((subject, index) => (
-                            <option key={index} value={subject}>
-                                {subject}
-                            </option>
-                        ))}
-                    </Select>
-                </VStack>
-
-                {/* Game Canvas */}
-                <Box position="relative" border="3px solid" borderColor="purple.400" borderRadius="lg" overflow="hidden">
-                    <canvas
-                        ref={canvasRef}
-                        width="800"
-                        height="600"
-                        style={{
-                            width: '100%',
-                            maxWidth: '800px',
-                            height: 'auto',
-                            display: 'block',
-                            background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f0f3d 100%)'
-                        }}
-                        onTouchStart={(e) => {
-                            const rect = e.currentTarget.getBoundingClientRect();
-                            const x = e.touches[0].clientX - rect.left;
-                            if (x < rect.width / 2) {
-                                handleTouchStart(e, 'player1');
-                            } else {
-                                handleTouchStart(e, 'player2');
-                            }
-                        }}
-                        onTouchMove={(e) => {
-                            const rect = e.currentTarget.getBoundingClientRect();
-                            const x = e.touches[0].clientX - rect.left;
-                            if (x < rect.width / 2) {
-                                handleTouchMove(e, 'player1');
-                            } else {
-                                handleTouchMove(e, 'player2');
-                            }
-                        }}
-                        onTouchEnd={() => {
-                            handleTouchEnd('player1');
-                            handleTouchEnd('player2');
-                        }}
-                    />
-
-                    {/* Game overlay */}
-                    {!gameState.gameStarted && (
-                        <Flex
-                            position="absolute"
-                            top="0"
-                            left="0"
-                            right="0"
-                            bottom="0"
-                            bg="blackAlpha.700"
-                            align="center"
-                            justify="center"
-                            flexDir="column"
-                            gap={4}
-                        >
-                            <Text fontSize="2xl" color="white" textAlign="center">
-                                🌟 Welcome to Space Pong! 🌟
-                            </Text>
-                            <Button
-                                size="lg"
-                                colorScheme="purple"
-                                onClick={startGame}
-                                _hover={{ transform: 'scale(1.05)' }}
-                            >
-                                Start Game
-                            </Button>
-                        </Flex>
-                    )}
-                </Box>
-
-                {/* Controls */}
-                <VStack spacing={2} textAlign="center">
-                    <Text fontSize="lg" fontWeight="semibold" color="gray.700">
-                        Game Controls
-                    </Text>
-                    {isMobile ? (
-                        <Text color="gray.600">
-                            📱 Touch and drag the left/right side of the screen to move paddles
+        <Box minH="100vh" bg="white" p={gameState.gameStarted ? 0 : 4}>
+            {!gameState.gameStarted ? (
+                // Pre-game setup screen
+                <VStack spacing={4} maxW="900px" mx="auto">
+                    {/* Header */}
+                    <VStack spacing={2}>
+                        <Text fontSize="3xl" fontWeight="bold" bgGradient="linear(to-r, #9d4edd, #c77dff)" bgClip="text">
+                            🚀 Space Pong Educational Game 🚀
                         </Text>
-                    ) : (
-                        <HStack spacing={6} wrap="wrap" justify="center">
-                            <VStack>
-                                <Text color="blue.500" fontWeight="semibold">Player 1 (Blue)</Text>
-                                <Text fontSize="sm" color="gray.600">A = Up, Z = Down</Text>
-                            </VStack>
-                            <VStack>
-                                <Text color="pink.500" fontWeight="semibold">Player 2 (Pink)</Text>
-                                <Text fontSize="sm" color="gray.600">K = Up, M = Down</Text>
-                            </VStack>
+                        <HStack spacing={4} wrap="wrap" justify="center">
+                            <Badge colorScheme="purple" fontSize="md" p={2}>
+                                High Score: {highScore}
+                            </Badge>
+                            <Badge colorScheme="blue" fontSize="md" p={2}>
+                                P1: {gameState.player1.score}
+                            </Badge>
+                            <Badge colorScheme="pink" fontSize="md" p={2}>
+                                P2: {gameState.player2.score}
+                            </Badge>
                         </HStack>
-                    )}
-                </VStack>
+                    </VStack>
 
-                {/* Game Buttons */}
-                <HStack spacing={4}>
+                    {/* Subject Selection */}
+                    <VStack spacing={2}>
+                        <Text fontSize="lg" color="gray.600">Select Subject for Quiz Questions:</Text>
+                        <Select
+                            value={selectedSubject}
+                            onChange={(e) => setSelectedSubject(e.target.value)}
+                            maxW="400px"
+                            borderColor="purple.300"
+                            focusBorderColor="purple.500"
+                        >
+                            {subjectsList.map((subject, index) => (
+                                <option key={index} value={subject}>
+                                    {subject}
+                                </option>
+                            ))}
+                        </Select>
+                    </VStack>
+
+                    {/* Controls Info */}
+                    <VStack spacing={2} textAlign="center">
+                        <Text fontSize="lg" fontWeight="semibold" color="gray.700">
+                            Game Controls
+                        </Text>
+                        {isMobile ? (
+                            <Text color="gray.600">
+                                📱 Touch and drag the screen to move paddles
+                            </Text>
+                        ) : (
+                            <HStack spacing={6} wrap="wrap" justify="center">
+                                <VStack>
+                                    <Text color="blue.500" fontWeight="semibold">Player 1 (Blue)</Text>
+                                    <Text fontSize="sm" color="gray.600">A = Up, Z = Down</Text>
+                                </VStack>
+                                <VStack>
+                                    <Text color="pink.500" fontWeight="semibold">Player 2 (Pink)</Text>
+                                    <Text fontSize="sm" color="gray.600">K = Up, M = Down</Text>
+                                </VStack>
+                            </HStack>
+                        )}
+                    </VStack>
+
+                    {/* Start Game Button */}
                     <Button
-                        colorScheme={gameState.gameRunning ? "red" : "green"}
-                        onClick={() => setGameState(prev => ({ ...prev, gameRunning: !prev.gameRunning }))}
-                        disabled={!gameState.gameStarted}
+                        size="lg"
+                        colorScheme="purple"
+                        onClick={startGame}
+                        _hover={{ transform: 'scale(1.05)' }}
                     >
-                        {gameState.gameRunning ? "Pause" : "Resume"}
+                        Start Game
                     </Button>
-                    <Button colorScheme="orange" onClick={resetGame}>
-                        Reset Game
-                    </Button>
-                </HStack>
 
-                {/* Info */}
-                <Text fontSize="sm" color="gray.500" textAlign="center" maxW="600px">
-                    💡 Answer quiz questions correctly every 3 points to earn bonus points!
-                    Questions are randomly selected from your chosen subject.
-                </Text>
-            </VStack>
+                    {/* Info */}
+                    <Text fontSize="sm" color="gray.500" textAlign="center" maxW="600px">
+                        💡 Answer quiz questions correctly every 3 points to earn bonus points!
+                        Questions are randomly selected from your chosen subject.
+                    </Text>
+                </VStack>
+            ) : (
+                // Fullscreen game view
+                <VStack
+                    // h="100vh"
+                    spacing={0}
+                    bg="black"
+                    transform={isMobile ? "rotate(90deg)" : "none"}
+                    transformOrigin="center"
+                    w={isMobile ? "100vh" : "100vw"}
+                    h={isMobile ? "100vw" : "100vh"}
+                    position={isMobile ? "fixed" : "relative"}
+                    top={isMobile ? "0" : "auto"}
+                    left={isMobile ? "0" : "auto"}
+                >
+                    {/* Top Score Panel */}
+                    <Flex
+                        w="100%"
+                        bg="blackAlpha.800"
+                        p={2}
+
+                        justify="center"
+                        align="center"
+                        borderBottom="1px solid"
+                        borderColor="purple.400"
+                        minH="60px"
+                    >
+                        <HStack spacing={8}>
+                            <Badge colorScheme="blue" fontSize="lg" p={3}>
+                                P1: {gameState.player1.score}
+                            </Badge>
+                            <Badge colorScheme="purple" fontSize="lg" p={3}>
+                                High Score: {highScore}
+                            </Badge>
+                            <Badge colorScheme="pink" fontSize="lg" p={3}>
+                                P2: {gameState.player2.score}
+                            </Badge>
+                        </HStack>
+                    </Flex>
+
+                    {/* Game Canvas - Takes remaining space */}
+                    <Box
+                        flex="1"
+                        w="100%"
+                        position="relative"
+                        overflow="hidden"
+                    >
+                        <canvas
+                            ref={canvasRef}
+                            width={isMobile ? "600" : "800"}
+                            height={isMobile ? "800" : "600"}
+                            style={{
+                                width: '100%',
+                                height: '100%',
+                                display: 'block',
+                                background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f0f3d 100%)'
+                            }}
+                            onTouchStart={(e) => {
+                                const rect = e.currentTarget.getBoundingClientRect();
+                                const touch = isMobile ?
+                                    (e.touches[0].clientY - rect.top < rect.height / 2) :
+                                    (e.touches[0].clientX - rect.left < rect.width / 2);
+
+                                if (touch) {
+                                    handleTouchStart(e, 'player1');
+                                } else {
+                                    handleTouchStart(e, 'player2');
+                                }
+                            }}
+                            onTouchMove={(e) => {
+                                const rect = e.currentTarget.getBoundingClientRect();
+                                const touch = isMobile ?
+                                    (e.touches[0].clientY - rect.top < rect.height / 2) :
+                                    (e.touches[0].clientX - rect.left < rect.width / 2);
+
+                                if (touch) {
+                                    handleTouchMove(e, 'player1');
+                                } else {
+                                    handleTouchMove(e, 'player2');
+                                }
+                            }}
+                            onTouchEnd={() => {
+                                handleTouchEnd('player1');
+                                handleTouchEnd('player2');
+                            }}
+                        />
+                    </Box>
+
+                    {/* Bottom Control Panel */}
+                    <Flex
+                        w="100%"
+                        bg="blackAlpha.800"
+                        p={3}
+                        justify="center"
+                        align="center"
+                        borderTop="1px solid"
+                        borderColor="purple.400"
+                        minH="70px"
+                    >
+                        <HStack spacing={4}>
+                            <Badge colorScheme="blue" fontSize="lg" p={3}>
+                                P1: {gameState.player1.score}
+                            </Badge>
+                            <Badge colorScheme="pink" fontSize="lg" p={3}>
+                                P2: {gameState.player2.score}
+                            </Badge>
+                            <Button
+                                colorScheme={gameState.gameRunning ? "red" : "green"}
+                                onClick={() => setGameState(prev => ({ ...prev, gameRunning: !prev.gameRunning }))}
+                                size="md"
+                            >
+                                {gameState.gameRunning ? "Pause" : "Resume"}
+                            </Button>
+                            <Button
+                                colorScheme="orange"
+                                onClick={resetGame}
+                                size="md"
+                            >
+                                Reset Game
+                            </Button>
+                        </HStack>
+                    </Flex>
+                </VStack>
+            )}
 
             {/* Question Modal */}
             <Modal isOpen={isOpen} onClose={() => { }} closeOnOverlayClick={false} size="lg">
                 <ModalOverlay bg="blackAlpha.800" />
-                <ModalContent bg="white" border="2px solid" borderColor="purple.400">
+                <ModalContent
+                    bg="white"
+                    border="2px solid"
+                    borderColor="purple.400"
+                    transform={isMobile && gameState.gameStarted ? "rotate(90deg)" : "none"}
+                >
                     <ModalHeader bg="purple.500" color="white" borderRadius="md md 0 0">
                         🧠 Quiz Time! - {currentQuestion?.category}
                     </ModalHeader>
