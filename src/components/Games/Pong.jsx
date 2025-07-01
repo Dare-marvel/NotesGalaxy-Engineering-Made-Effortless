@@ -26,7 +26,7 @@ import SidebarAdLeft from '../SidebarAd/SidebarAdLeft';
 import subjectsList from '../../config/subjectsList';
 import QUESTIONS from './constants/QuestionsList';
 
-const SpacePongGame = () => {
+const Pong = () => {
     // Game state
     const canvasRef = useRef(null);
     const gameLoopRef = useRef(null);
@@ -51,7 +51,6 @@ const SpacePongGame = () => {
     const [selectedSubject, setSelectedSubject] = useState(subjectsList[0]);
     const [currentQuestion, setCurrentQuestion] = useState(null);
     const [selectedAnswer, setSelectedAnswer] = useState('');
-    const [highScore, setHighScore] = useState(0);
 
     const { isOpen, onOpen, onClose } = useDisclosure();
     const toast = useToast();
@@ -120,18 +119,6 @@ const SpacePongGame = () => {
         }
     }, [gameSize, gameState.gameStarted]);
 
-    // Initialize high score
-    useEffect(() => {
-        try {
-            const savedHighScore = localStorage.getItem('spacePongHighScore');
-            if (savedHighScore) {
-                setHighScore(parseInt(savedHighScore));
-            }
-        } catch (error) {
-            console.log('LocalStorage not available');
-        }
-    }, []);
-
     // Prevent scroll when game is running
     useEffect(() => {
         if (gameState.gameStarted) {
@@ -153,25 +140,6 @@ const SpacePongGame = () => {
             document.body.style.height = 'unset';
         };
     }, [gameState.gameStarted]);
-
-    // Update high score
-    const updateHighScore = useCallback((score) => {
-        if (score > highScore) {
-            setHighScore(score);
-            try {
-                localStorage.setItem('spacePongHighScore', score.toString());
-            } catch (error) {
-                console.log('LocalStorage not available');
-            }
-            toast({
-                title: "New High Score!",
-                description: `You've reached ${score} points!`,
-                status: "success",
-                duration: 3000,
-                isClosable: true,
-            });
-        }
-    }, [highScore, toast]);
 
     // Question system
     const showQuestion = useCallback(() => {
@@ -200,7 +168,6 @@ const SpacePongGame = () => {
                 // Bonus points for correct answer
                 setGameState(prev => {
                     const newScore = Math.max(prev.player1.score, prev.player2.score) + 5;
-                    updateHighScore(newScore);
                     return {
                         ...prev,
                         player1: { ...prev.player1, score: prev.player1.score >= prev.player2.score ? newScore : prev.player1.score },
@@ -282,7 +249,6 @@ const SpacePongGame = () => {
             // Scoring
             if (ball.x < 0) {
                 player2.score++;
-                updateHighScore(Math.max(player1.score, player2.score));
                 resetBall(false);
                 // Show question every 3 points
                 if (player2.score % 10 === 0) {
@@ -290,7 +256,6 @@ const SpacePongGame = () => {
                 }
             } else if (ball.x > gameSize.width) {
                 player1.score++;
-                updateHighScore(Math.max(player1.score, player2.score));
                 resetBall(false);
                 // Show question every 3 points
                 if (player1.score % 10 === 0) {
@@ -316,7 +281,7 @@ const SpacePongGame = () => {
 
             return newState;
         });
-    }, [resetBall, showQuestion, updateHighScore, deviceType, gameSize]);
+    }, [resetBall, showQuestion, deviceType, gameSize]);
 
     // Touch handling for mobile
     const handleTouchStart = (e, player) => {
@@ -463,17 +428,6 @@ const SpacePongGame = () => {
                     position="left"
                 />
                 <VStack spacing={4} maxW="900px" mx="auto">
-                    {/* Header */}
-                    {/* <VStack spacing={2}>
-            <Text fontSize="3xl" fontWeight="bold" bgGradient="linear(to-r, #9d4edd, #c77dff)" bgClip="text">
-              🚀 Space Pong Educational Game 🚀
-            </Text>
-            <HStack spacing={4} wrap="wrap" justify="center">
-              <Badge colorScheme="purple" fontSize="md" p={2}>
-                High Score: {highScore}
-              </Badge>
-            </HStack>
-          </VStack> */}
 
                     {/* Subject Selection */}
                     <VStack
@@ -507,49 +461,14 @@ const SpacePongGame = () => {
                                 📱 Touch and drag the left/right side of the screen to move paddles
                             </Text>
                         ) : (
-                            <HStack spacing={6} wrap="wrap" justify="center" p={4} bg="white">
-                                <VStack spacing={1} align="center">
+                            <HStack spacing={6} wrap="wrap" justify="center">
+                                <VStack>
                                     <Text color="blue.500" fontWeight="semibold">Player 1 (Blue)</Text>
-                                    <Text
-                                        fontSize="sm"
-                                        fontWeight="bold"
-                                        color="blue.700"
-                                        // textShadow="0 0 6px #3b82f6"
-                                        letterSpacing="wide"
-                                    >
-                                        A = Up
-                                    </Text>
-                                    <Text
-                                        fontSize="sm"
-                                        fontWeight="bold"
-                                        color="blue.700"
-                                        // textShadow="0 0 6px #3b82f6"
-                                        letterSpacing="wide"
-                                    >
-                                        Z = Down
-                                    </Text>
+                                    <Text fontSize="sm" color="gray.600">A = Up, Z = Down</Text>
                                 </VStack>
-
-                                <VStack spacing={1} align="center">
+                                <VStack>
                                     <Text color="pink.500" fontWeight="semibold">Player 2 (Pink)</Text>
-                                    <Text
-                                        fontSize="sm"
-                                        fontWeight="bold"
-                                        color="pink.700"
-                                        // textShadow="0 0 6px #ec4899"
-                                        letterSpacing="wide"
-                                    >
-                                        K = Up
-                                    </Text>
-                                    <Text
-                                        fontSize="sm"
-                                        fontWeight="bold"
-                                        color="pink.700"
-                                        // textShadow="0 0 6px #ec4899"
-                                        letterSpacing="wide"
-                                    >
-                                        M = Down
-                                    </Text>
+                                    <Text fontSize="sm" color="gray.600">K = Up, M = Down</Text>
                                 </VStack>
                             </HStack>
 
@@ -566,11 +485,6 @@ const SpacePongGame = () => {
                         Start Game
                     </Button>
 
-                    {/* Info */}
-                    {/* <Text fontSize="sm" color="gray.500" textAlign="center" maxW="600px">
-            💡 Answer quiz questions correctly every 3 points to earn bonus points! 
-            Questions are randomly selected from your chosen subject.
-          </Text> */}
                 </VStack>
                 <SidebarAdRight
                     position="right"
@@ -589,14 +503,12 @@ const SpacePongGame = () => {
             height="100vh"
             bg="black"
             overflow="hidden"
-            // pt={{ base: 0, md: 0, lg: 10, xl: 12 }}
             ref={gameContainerRef}
             zIndex={3}
         >
             {/* Top Panel - Scores */}
             <Flex
                 position="absolute"
-                // pt={{ base: 2, md: 4, lg: 6, xl: 8 }}
                 top="0"
                 left="0"
                 right="0"
@@ -610,12 +522,22 @@ const SpacePongGame = () => {
                     <Text color="#00d4ff" fontSize="xl" fontWeight="bold">
                         P1: {gameState.player1.score}
                     </Text>
-                    <Text color="white" fontSize="lg">
-                        High: {highScore}
-                    </Text>
                     <Text color="#ff006e" fontSize="xl" fontWeight="bold">
                         P2: {gameState.player2.score}
                     </Text>
+                </HStack>
+
+                <HStack spacing={4} ml={6}>
+                    <Button
+                        colorScheme={gameState.gameRunning ? "red" : "green"}
+                        onClick={() => setGameState(prev => ({ ...prev, gameRunning: !prev.gameRunning }))}
+                        size="sm"
+                    >
+                        {gameState.gameRunning ? "Pause" : "Resume"}
+                    </Button>
+                    <Button colorScheme="orange" onClick={resetGame} size="sm">
+                        Reset Game
+                    </Button>
                 </HStack>
             </Flex>
 
@@ -668,31 +590,6 @@ const SpacePongGame = () => {
                 />
             </Box>
 
-            {/* Bottom Panel - Controls */}
-            <Flex
-                position="absolute"
-                bottom="0"
-                left="0"
-                right="0"
-                height="60px"
-                bg="rgba(0,0,0,0.8)"
-                align="center"
-                justify="center"
-                zIndex="10"
-            >
-                <HStack spacing={4}>
-                    <Button
-                        colorScheme={gameState.gameRunning ? "red" : "green"}
-                        onClick={() => setGameState(prev => ({ ...prev, gameRunning: !prev.gameRunning }))}
-                        size="sm"
-                    >
-                        {gameState.gameRunning ? "Pause" : "Resume"}
-                    </Button>
-                    <Button colorScheme="orange" onClick={resetGame} size="sm">
-                        Reset Game
-                    </Button>
-                </HStack>
-            </Flex>
 
             {/* Question Modal */}
             <Modal isOpen={isOpen} onClose={() => { }} closeOnOverlayClick={false} size="lg">
@@ -740,4 +637,4 @@ const SpacePongGame = () => {
     );
 };
 
-export default SpacePongGame;
+export default Pong;
