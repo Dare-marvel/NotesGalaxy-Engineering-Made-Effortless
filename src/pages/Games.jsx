@@ -66,6 +66,24 @@ const TetrisIcon = () => (
   </svg>
 );
 
+const PongIcon = () => (
+  <svg width="60" height="60" viewBox="0 0 60 60" fill="none">
+    {/* Left Paddle */}
+    <rect x="5" y="20" width="4" height="20" fill="currentColor" />
+    
+    {/* Right Paddle */}
+    <rect x="51" y="25" width="4" height="20" fill="currentColor" />
+    
+    {/* Ball */}
+    <circle cx="30" cy="30" r="3" fill="currentColor" />
+
+    {/* Motion Trail (optional for style) */}
+    <circle cx="25" cy="28" r="1.5" fill="currentColor" opacity="0.6" />
+    <circle cx="20" cy="26" r="1" fill="currentColor" opacity="0.4" />
+  </svg>
+);
+
+
 const ComingSoonIcon = () => (
   <svg width="60" height="60" viewBox="0 0 60 60" fill="none">
     <circle cx="30" cy="30" r="25" stroke="currentColor" strokeWidth="2" strokeDasharray="5,5" />
@@ -239,56 +257,57 @@ const Games = () => {
       borderColor: 'rgba(139, 92, 246, 0.3)',
       status: 'Available',
       description: 'Stack blocks and clear lines',
-      slug: 'tetris'
-    },
-    {
-      name: 'Space Invaders',
-      icon: <ComingSoonIcon />,
-      primaryColor: '#06b6d4',
-      secondaryColor: '#0891b2',
-      accentColor: '#67e8f9',
-      glowColor: '#06b6d4',
-      borderColor: 'rgba(6, 182, 212, 0.3)',
-      status: 'Coming Soon',
-      description: 'Defend Earth from alien invasion',
-      slug: 'space-invaders'
-    },
-    {
-      name: 'Pac-Man',
-      icon: <ComingSoonIcon />,
-      primaryColor: '#f59e0b',
-      secondaryColor: '#d97706',
-      accentColor: '#fbbf24',
-      glowColor: '#f59e0b',
-      borderColor: 'rgba(245, 158, 11, 0.3)',
-      status: 'Coming Soon',
-      description: 'Navigate the maze and collect dots',
-      slug: 'pac-man'
-    },
-    {
-      name: 'Asteroids',
-      icon: <ComingSoonIcon />,
-      primaryColor: '#ef4444',
-      secondaryColor: '#dc2626',
-      accentColor: '#fca5a5',
-      glowColor: '#ef4444',
-      borderColor: 'rgba(239, 68, 68, 0.3)',
-      status: 'Coming Soon',
-      description: 'Destroy asteroids in deep space',
-      slug: 'asteroids'
+      slug: 'tetris-game'
     },
     {
       name: 'Pong',
-      icon: <ComingSoonIcon />,
+      icon: <PongIcon />,
       primaryColor: '#ec4899',
       secondaryColor: '#db2777',
       accentColor: '#f9a8d4',
       glowColor: '#ec4899',
       borderColor: 'rgba(236, 72, 153, 0.3)',
-      status: 'Coming Soon',
+      status: 'Available',
       description: 'Classic paddle ball game',
-      slug: 'pong'
-    }
+      slug: 'pong-game'
+    },
+    // {
+    //   name: 'Space Invaders',
+    //   icon: <ComingSoonIcon />,
+    //   primaryColor: '#06b6d4',
+    //   secondaryColor: '#0891b2',
+    //   accentColor: '#67e8f9',
+    //   glowColor: '#06b6d4',
+    //   borderColor: 'rgba(6, 182, 212, 0.3)',
+    //   status: 'Coming Soon',
+    //   description: 'Defend Earth from alien invasion',
+    //   slug: 'space-invaders'
+    // },
+    // {
+    //   name: 'Pac-Man',
+    //   icon: <ComingSoonIcon />,
+    //   primaryColor: '#f59e0b',
+    //   secondaryColor: '#d97706',
+    //   accentColor: '#fbbf24',
+    //   glowColor: '#f59e0b',
+    //   borderColor: 'rgba(245, 158, 11, 0.3)',
+    //   status: 'Coming Soon',
+    //   description: 'Navigate the maze and collect dots',
+    //   slug: 'pac-man'
+    // },
+    // {
+    //   name: 'Asteroids',
+    //   icon: <ComingSoonIcon />,
+    //   primaryColor: '#ef4444',
+    //   secondaryColor: '#dc2626',
+    //   accentColor: '#fca5a5',
+    //   glowColor: '#ef4444',
+    //   borderColor: 'rgba(239, 68, 68, 0.3)',
+    //   status: 'Coming Soon',
+    //   description: 'Destroy asteroids in deep space',
+    //   slug: 'asteroids'
+    // },
+    
   ];
 
   return (
