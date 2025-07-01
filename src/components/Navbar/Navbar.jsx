@@ -51,7 +51,7 @@ const Navbar = () => {
       position="fixed"
       top="0"
       width="100%"
-      zIndex="999"
+      zIndex={2}
       bg={useColorModeValue('white', 'gray.800')}
       boxShadow="sm"
     >

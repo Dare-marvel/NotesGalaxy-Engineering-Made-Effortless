@@ -589,15 +589,15 @@ const SpacePongGame = () => {
             height="100vh"
             bg="black"
             overflow="hidden"
-            pt={{ base: 0, md: 0, lg: 10, xl: 12 }}
+            // pt={{ base: 0, md: 0, lg: 10, xl: 12 }}
             ref={gameContainerRef}
-            zIndex={2}
+            zIndex={3}
         >
             {/* Top Panel - Scores */}
             <Flex
                 position="absolute"
-                pt={{ base: 2, md: 4, lg: 6, xl: 8 }}
-                // top="0"
+                // pt={{ base: 2, md: 4, lg: 6, xl: 8 }}
+                top="0"
                 left="0"
                 right="0"
                 height="60px"
@@ -622,7 +622,7 @@ const SpacePongGame = () => {
             {/* Game Canvas */}
             <Box
                 position="absolute"
-                top="100px"
+                top="20px"
                 left="50%"
                 transform="translateX(-50%)"
                 bottom="60px"
