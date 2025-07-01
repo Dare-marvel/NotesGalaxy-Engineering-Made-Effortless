@@ -71,7 +71,7 @@ const Pong = () => {
                 // Mobile: use full screen
                 newGameSize = {
                     width: width,
-                    height: height - 120 // Leave space for score panel
+                    height: height - 50 // Leave space for score panel
                 };
                 paddleWidth = 8;
                 paddleHeight = 40;
@@ -205,7 +205,7 @@ const Pong = () => {
                     title: "Correct!",
                     description: "Great job! Continue playing.",
                     status: "success",
-                    duration: 2000,
+                    duration: 1000,
                     isClosable: true,
                 });
                 // Bonus points for correct answer
@@ -222,7 +222,7 @@ const Pong = () => {
                     title: "Incorrect",
                     description: `The correct answer was: ${currentQuestion.options[currentQuestion.correct]}`,
                     status: "error",
-                    duration: 3000,
+                    duration: 1000,
                     isClosable: true,
                 });
             }
@@ -606,39 +606,70 @@ const Pong = () => {
                 top="0"
                 left="0"
                 right="0"
-                height="60px"
+                height={{ base: "40px", md: "50px", lg: "60px" }}
                 bg="rgba(0,0,0,0.8)"
                 align="center"
-                justify="center"
+                justify="space-between"
+                px={{ base: 3, md: 6, lg: 8, xl: 7 }}
                 zIndex={2}
             >
-                <HStack spacing={8}>
-                    <Text color="#00d4ff" fontSize="xl" fontWeight="bold">
-                        P1: {gameState.player1.score}
-                    </Text>
-                    <Text color="#ff006e" fontSize="xl" fontWeight="bold">
-                        P2: {gameState.player2.score}
-                    </Text>
-                </HStack>
+                {/* Centered Scores */}
+                <Box flex="1" textAlign="center" >
+                    <HStack
+                        spacing={{ base: 3, md: 6, lg: 8, xl: 10 }}
+                        mr={{ base: 5, md: 5, lg: 5, xl: 7 }}
+                        width={{ base: "100%", md: "auto", lg: "auto", xl: "20%" }}
+                        justify="right"
+                    >
+                        <Text
+                            color="#00d4ff"
+                            fontSize={{ base: "sm", md: "lg", lg: "xl" }}
+                            fontWeight="bold"
+                        // mr={{ base: 2, md: 2, lg: 2, xl: 3 }}
+                        >
+                            P1: {gameState.player1.score}
+                        </Text>
+                        <Text
+                            color="#ff006e"
+                            fontSize={{ base: "sm", md: "lg", lg: "xl" }}
+                            fontWeight="bold"
+                            mr={{ base: 2, md: 2, lg: 2, xl: 6 }}
 
-                <HStack spacing={4} ml={6}>
+                        >
+                            P2: {gameState.player2.score}
+                        </Text>
+                    </HStack>
+                </Box>
+
+                {/* Right-aligned Buttons */}
+                <HStack
+                    spacing={{ base: 2, md: 3 }}
+                // ml="auto"
+                >
                     <Button
                         colorScheme={gameState.gameRunning ? "red" : "green"}
-                        onClick={() => setGameState(prev => ({ ...prev, gameRunning: !prev.gameRunning }))}
-                        size="sm"
+                        onClick={() =>
+                            setGameState((prev) => ({ ...prev, gameRunning: !prev.gameRunning }))
+                        }
+                        size={{ base: "xs", md: "sm" }}
                     >
                         {gameState.gameRunning ? "Pause" : "Resume"}
                     </Button>
-                    <Button colorScheme="orange" onClick={resetGame} size="sm">
+                    <Button
+                        colorScheme="orange"
+                        onClick={resetGame}
+                        size={{ base: "xs", md: "sm" }}
+                    >
                         Reset Game
                     </Button>
                 </HStack>
             </Flex>
 
+
             {/* Game Canvas */}
             <Box
                 position="absolute"
-                top="60px"
+                top="35px"
                 left="0"
                 right="0"
                 bottom="0"
