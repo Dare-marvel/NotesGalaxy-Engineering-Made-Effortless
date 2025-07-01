@@ -165,11 +165,13 @@ const Pong = () => {
     // Prevent scroll when game is running
     useEffect(() => {
         if (gameState.gameStarted) {
+            document.body.classList.add('game-active');
             document.body.style.overflow = 'hidden';
             document.body.style.position = 'fixed';
             document.body.style.width = '100%';
             document.body.style.height = '100%';
         } else {
+            document.body.classList.remove('game-active');
             document.body.style.overflow = 'unset';
             document.body.style.position = 'unset';
             document.body.style.width = 'unset';
@@ -436,6 +438,17 @@ const Pong = () => {
         return () => clearInterval(gameLoopRef.current);
     }, [gameState.gameRunning, updateGame]);
 
+    const requestFullScreen = () => {
+        const elem = gameContainerRef.current;
+        if (elem.requestFullscreen) {
+            elem.requestFullscreen();
+        } else if (elem.webkitRequestFullscreen) { /* Safari */
+            elem.webkitRequestFullscreen();
+        } else if (elem.msRequestFullscreen) { /* IE11 */
+            elem.msRequestFullscreen();
+        }
+    };
+
     // Canvas rendering
     useEffect(() => {
         const canvas = canvasRef.current;
@@ -491,6 +504,8 @@ const Pong = () => {
         ctx.shadowBlur = 0;
     }, [gameState, gameSize]);
 
+
+
     const startGame = () => {
         setGameState(prev => ({
             ...prev,
@@ -499,6 +514,8 @@ const Pong = () => {
         }));
         // Reset ball for first serve
         resetBall(true);
+
+        if (deviceType === 'mobile') requestFullScreen();
     };
 
     const resetGame = () => {
@@ -641,6 +658,15 @@ const Pong = () => {
             overflow="hidden"
             ref={gameContainerRef}
             zIndex={3}
+            css={{
+                '@media (display-mode: fullscreen)': {
+                    width: '100%',
+                    height: '100%'
+                },
+                // Prevent iOS rubber band effect
+                overscrollBehavior: 'none',
+                WebkitOverflowScrolling: 'touch'
+            }}
         >
             {/* Top Panel - Scores */}
             <Flex
@@ -704,6 +730,13 @@ const Pong = () => {
                     >
                         Reset Game
                     </Button>
+                    <Button
+                        colorScheme="purple"
+                        onClick={requestFullScreen}
+                        size={{ base: "xs", md: "sm" }}
+                    >
+                        Go Full Screen
+                    </Button>
                 </HStack>
             </Flex>
 
@@ -728,11 +761,15 @@ const Pong = () => {
                         borderRadius: deviceType === 'mobile' ? '0' : '8px',
                         width: '100%',
                         height: '100%',
-                        objectFit: 'contain'
+                        objectFit: 'contain',
+                        touchAction: 'none',
+                        userSelect: 'none',
+                        WebkitUserSelect: 'none'
                     }}
                     onTouchStart={handleTouchStart}
                     onTouchMove={handleTouchMove}
                     onTouchEnd={handleTouchEnd}
+                    onTouchCancel={handleTouchEnd}
                 />
             </Box>
 
