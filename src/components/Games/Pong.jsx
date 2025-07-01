@@ -66,7 +66,7 @@ const Pong = () => {
             let paddleWidth = 15;
             let paddleHeight = 100;
 
-            if (height <= 530) {
+            if (height <= 530 ) {
                 newDeviceType = 'mobile';
                 // Mobile: use full screen
                 newGameSize = {
@@ -92,6 +92,10 @@ const Pong = () => {
                 };
                 paddleWidth = 15;
                 paddleHeight = 100;
+            }
+
+            if (width < 768) {
+                newDeviceType = 'mobile';
             }
 
             // if (width <= 768) {
@@ -448,7 +452,7 @@ const Pong = () => {
             elem.msRequestFullscreen();
         }
     };
-
+    
     // Canvas rendering
     useEffect(() => {
         const canvas = canvasRef.current;
@@ -504,7 +508,7 @@ const Pong = () => {
         ctx.shadowBlur = 0;
     }, [gameState, gameSize]);
 
-
+    
 
     const startGame = () => {
         setGameState(prev => ({
@@ -744,7 +748,7 @@ const Pong = () => {
             {/* Game Canvas */}
             <Box
                 position="absolute"
-                top="35px"
+                top={{base: "40px", md: "60px", lg: "60px", xl: "60px"}}
                 left="0"
                 right="0"
                 bottom="0"
