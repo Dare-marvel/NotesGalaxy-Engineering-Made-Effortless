@@ -529,13 +529,15 @@ const Pong = () => {
                         pt={{ base: 12, md: 12, lg: 12, xl: 12 }}
                         mt={4}
                     >
-                        <Text fontSize="lg" color="gray.600">Select Subject for Quiz Questions:</Text>
+                        <Text fontSize={{ base: "md", md: "lg" }} color="purple.600">Select Subject for Quiz Questions:</Text>
                         <Select
                             value={selectedSubject}
                             onChange={(e) => setSelectedSubject(e.target.value)}
                             maxW="400px"
                             borderColor="purple.300"
                             focusBorderColor="purple.500"
+                            px={{ base: 4, md: 0 }}
+                            size={{ base: "md", md: "md" }}
                         >
                             {subjectsList.map((subject, index) => (
                                 <option key={index} value={subject}>
@@ -547,7 +549,7 @@ const Pong = () => {
 
                     {/* Controls Info */}
                     <VStack spacing={2} textAlign="center">
-                        <Text fontSize="lg" fontWeight="semibold" color="gray.700">
+                        <Text fontSize={{ base: "md", md: "lg" }} fontWeight="semibold" color="gray.700">
                             Game Controls
                         </Text>
                         {deviceType === 'mobile' ? (
@@ -555,25 +557,65 @@ const Pong = () => {
                                 📱 Touch and drag the left/right side of the screen to move paddles
                             </Text>
                         ) : (
-                            <HStack spacing={6} wrap="wrap" justify="center">
-                                <VStack>
-                                    <Text color="blue.500" fontWeight="semibold">Player 1 (Blue)</Text>
-                                    <Text fontSize="sm" color="gray.600">A = Up, Z = Down</Text>
-                                </VStack>
-                                <VStack>
-                                    <Text color="pink.500" fontWeight="semibold">Player 2 (Pink)</Text>
-                                    <Text fontSize="sm" color="gray.600">K = Up, M = Down</Text>
-                                </VStack>
-                            </HStack>
-
+                            <VStack spacing={3} align="center">
+                                <HStack
+                                    spacing={{ base: 4, md: 8 }}
+                                    wrap="wrap"
+                                    justify="center"
+                                    bg="gray.50"
+                                    p={4}
+                                    borderRadius="lg"
+                                    boxShadow="sm"
+                                    width="full"
+                                    maxW="md"
+                                >
+                                    <VStack
+                                        spacing={1}
+                                        px={3}
+                                        py={2}
+                                        bg="blue.50"
+                                        borderRadius="md"
+                                        borderLeft="4px solid"
+                                        borderColor="blue.500">
+                                        <Text color="blue.500" fontWeight="bold" fontSize={{ base: "sm", md: "md" }}>Player 1 (Blue)</Text>
+                                        <Text fontSize="xs" color="gray.500" fontWeight="medium">▲ A / Z ▼</Text>
+                                    </VStack>
+                                    <VStack
+                                        spacing={1}
+                                        px={3}
+                                        py={2}
+                                        bg="pink.50" borderRadius="md"
+                                        borderLeft="4px solid"
+                                        borderColor="pink.500">
+                                        <Text
+                                            color="pink.500"
+                                            fontWeight="bold"
+                                            fontSize={{ base: "sm", md: "md" }}>Player 2 (Pink)</Text>
+                                        <Text
+                                            fontSize="xs"
+                                            color="gray.500"
+                                            fontWeight="medium">▲ K / M ▼</Text>
+                                    </VStack>
+                                </HStack>
+                                <Text
+                                    fontSize="sm"
+                                    color="purple.500"
+                                    fontStyle="italic"
+                                    // display={{ base: "block", md: "block" }}
+                                    textAlign="center"
+                                >
+                                    Play on desktop for best experience
+                                </Text>
+                            </VStack>
                         )}
                     </VStack>
 
                     {/* Start Button */}
                     <Button
-                        size="lg"
+                        size={{ base: "sm", md: "lg" }}
                         colorScheme="purple"
                         onClick={startGame}
+                        variant={deviceType === 'mobile' ? "solid" : "outline"}
                         _hover={{ transform: 'scale(1.05)' }}
                     >
                         Start Game
