@@ -15,10 +15,13 @@ import {
     RadioGroup,
     Radio,
     useDisclosure,
-    Badge,
+    Tooltip,
+    NumberInput, NumberInputField, NumberInputStepper, NumberIncrementStepper, NumberDecrementStepper,
     Flex,
     useToast
 } from '@chakra-ui/react';
+
+import { InfoIcon } from '@chakra-ui/icons';
 
 import SidebarAdRight from '../SidebarAd/SidebarAdRight';
 import SidebarAdLeft from '../SidebarAd/SidebarAdLeft';
@@ -37,6 +40,12 @@ const Pong = () => {
     // Device detection
     const [deviceType, setDeviceType] = useState('desktop'); // desktop, tablet, mobile
     const [gameSize, setGameSize] = useState({ width: 800, height: 600 });
+    const [qFreq, setqFreq] = useState(5);
+
+    const handleChange = (e) => {
+        const val = e.target.value;
+        if (!isNaN(val)) setqFreq(val);
+    };
 
     // Game objects
     const [gameState, setGameState] = useState({
@@ -299,15 +308,15 @@ const Pong = () => {
             if (ball.x < 0) {
                 player2.score++;
                 resetBall(false);
-                // Show question every 10 points
-                if (player2.score % 10 === 0) {
+                // Show question every qFreq points
+                if (player2.score % qFreq === 0) {
                     setTimeout(showQuestion, 1000);
                 }
             } else if (ball.x > gameSize.width) {
                 player1.score++;
                 resetBall(false);
-                // Show question every 10 points
-                if (player1.score % 10 === 0) {
+                // Show question every qFreq points
+                if (player1.score % qFreq === 0) {
                     setTimeout(showQuestion, 1000);
                 }
             }
@@ -566,6 +575,47 @@ const Pong = () => {
                                 </option>
                             ))}
                         </Select>
+                        <HStack align="center" w="full" px={{ base: 4, md: 0 }} justify="space-between">
+                            <HStack spacing={1}>
+                                <Text color="purple.600" size={{ base: "md", md: "md" }} fontWeight="semibold">
+                                    Points/Question
+                                </Text>
+                                <Tooltip
+                                    label="This number signifies the frequency with which questions would be asked to you."
+                                    fontSize="sm"
+                                    bg="blue.700"
+                                    color="white"
+                                    borderRadius="md"
+                                    px={3}
+                                    py={2}
+                                >
+                                    <InfoIcon color="purple.300" cursor="pointer" />
+                                </Tooltip>
+                            </HStack>
+
+                            <NumberInput
+                                value={qFreq}
+                                onChange={(valueString) => setqFreq(parseInt(valueString) || 0)}
+                                step={1}
+                                min={3}
+                                max={1000}
+                                size={{ base: "md", md: "md" }}
+                                width="130px"
+                            >
+                                <NumberInputField
+                                    color="purple.600"
+                                    _placeholder={{ color: 'gray.400' }}
+                                    _hover={{ borderColor: 'purple.500' }}
+                                    _focus={{ boxShadow: '0 0 10px #8e2de2' }}
+                                    borderColor="blue.300"
+                                    placeholder="Enter a number"
+                                />
+                                <NumberInputStepper>
+                                    <NumberIncrementStepper color="purple.300" />
+                                    <NumberDecrementStepper color="purple.300" />
+                                </NumberInputStepper>
+                            </NumberInput>
+                        </HStack>
                     </VStack>
 
                     {/* Controls Info */}
@@ -579,9 +629,9 @@ const Pong = () => {
                         </Text>
                         {deviceType === 'mobile' ? (
                             <Box
-                                maxW={{ base: "100%",sm:"400px", md: "500px", lg: "960px" }}
+                                maxW={{ base: "100%", sm: "400px", md: "500px", lg: "960px" }}
                                 mx="auto"
-                                px={{ base: 4,sm:5, md: 6 }}
+                                px={{ base: 4, sm: 5, md: 6 }}
                             >
                                 <Text
                                     fontSize={{ base: "sm", md: "md" }}
@@ -648,7 +698,7 @@ const Pong = () => {
 
                     {/* Start Button */}
                     <Button
-                        size={{ base: "sm",sm:"md", md: "lg" }}
+                        size={{ base: "sm", sm: "md", md: "lg" }}
                         colorScheme="purple"
                         onClick={startGame}
                         variant={deviceType === 'mobile' ? "solid" : "outline"}
