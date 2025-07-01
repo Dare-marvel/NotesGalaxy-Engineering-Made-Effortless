@@ -835,10 +835,10 @@ const Blogs = () => {
 
                             <Grid
                                 templateColumns={{
-                                    base: "1fr",                  // Stack vertically on small screens
-                                    md: "repeat(2, 220px)",       // 2 fixed-width columns on medium screens
+                                    base: "1fr",                  
+                                    md: "repeat(2, 220px)",      
                                     lg: "repeat(3, 210px)",
-                                    xl: "repeat(3, 1fr)",       // 3 fixed-width columns on extra-large screens
+                                    xl: "repeat(3, 1fr)",       
                                 }}
                                 gap={6}
                                 justifyContent="center"

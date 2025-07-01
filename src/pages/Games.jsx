@@ -3,20 +3,25 @@ import {
   Box,
   Container,
   Heading,
-  SimpleGrid,
+  // SimpleGrid,
+  Grid,
+  GridItem,
   Card,
   CardBody,
   Text,
   useColorModeValue,
   VStack,
-  Icon,
-  Flex,
+  // Icon,
+  // Flex,
   Badge,
-  Image,
+  // Image,
 } from '@chakra-ui/react';
 
 import { keyframes } from '@emotion/react';
 import { useNavigate } from 'react-router-dom';
+
+import SidebarAdLeft from '../components/SidebarAd/SidebarAdLeft';
+import SidebarAdRight from '../components/SidebarAd/SidebarAdRight';
 
 // Keyframes for animations
 const float = keyframes`
@@ -71,7 +76,7 @@ const ComingSoonIcon = () => (
 const GameCard = ({ game, index }) => {
   const [isHovered, setIsHovered] = React.useState(false);
   const navigate = useNavigate();
-  
+
   const cardBg = useColorModeValue('rgba(255, 255, 255, 0.1)', 'rgba(255, 255, 255, 0.05)');
   const hoverBg = useColorModeValue('rgba(255, 255, 255, 0.2)', 'rgba(255, 255, 255, 0.1)');
 
@@ -80,7 +85,7 @@ const GameCard = ({ game, index }) => {
       navigate(`/${game.slug}`); // Relative navigation
     }
   };
-  
+
   return (
     <Card
       bg={isHovered ? hoverBg : cardBg}
@@ -116,7 +121,7 @@ const GameCard = ({ game, index }) => {
         animationDelay={`${index * 0.8}s`}
         pointerEvents="none"
       />
-      
+
       {/* Sparkle effects */}
       <Box
         position="absolute"
@@ -151,7 +156,7 @@ const GameCard = ({ game, index }) => {
         animation={`${sparkle} 2s ease-in-out infinite`}
         animationDelay="1.4s"
       />
-      
+
       <CardBody p={6}>
         <VStack spacing={4} align="center" justify="center" minH="150px">
           <Box
@@ -162,7 +167,7 @@ const GameCard = ({ game, index }) => {
           >
             {game.icon}
           </Box>
-          
+
           <VStack spacing={2} align="center">
             <Heading
               size="md"
@@ -174,7 +179,7 @@ const GameCard = ({ game, index }) => {
             >
               {game.name}
             </Heading>
-            
+
             {game.status && (
               <Badge
                 colorScheme={game.status === 'Available' ? 'green' : 'orange'}
@@ -189,7 +194,7 @@ const GameCard = ({ game, index }) => {
                 {game.status}
               </Badge>
             )}
-            
+
             {isHovered && game.description && (
               <Text
                 fontSize="sm"
@@ -222,7 +227,7 @@ const Games = () => {
       borderColor: 'rgba(0, 255, 136, 0.3)',
       status: 'Available',
       description: 'Classic snake game with modern twist',
-      slug: 'snake-game' 
+      slug: 'snake-game'
     },
     {
       name: 'Tetris',
@@ -293,6 +298,9 @@ const Games = () => {
       position="relative"
       overflow="hidden"
     >
+      <SidebarAdLeft
+        position="left"
+      />
       {/* Animated background elements */}
       <Box
         position="fixed"
@@ -349,9 +357,10 @@ const Games = () => {
 
       <Container maxW="7xl" py={{ base: 10, md: 12, lg: 12 }} position="relative" zIndex={1}>
         <VStack spacing={12} align="center">
-          <VStack spacing={4} textAlign="center" mt={{ base: 4, md: 6, lg: 8 }}>
+          <VStack spacing={4} textAlign="center" mt={{ base: 8, md: 6, lg: 8 }}>
             <Heading
-              size="2xl"
+              // size="2xl"
+              fontSize={{base: '2xl', sm: '3xl', md: '4xl', lg: '5xl' , xl: '5xl'}}
               bgGradient="linear(to-r, #8b5cf6, #06b6d4, #00ff88)"
               bgClip="text"
               fontWeight="extrabold"
@@ -370,7 +379,7 @@ const Games = () => {
             </Text> */}
           </VStack>
 
-          <SimpleGrid
+          {/* <SimpleGrid
             columns={{ base: 1, sm: 2, md: 3, lg: 3, xl: 3 }}
             spacing={{ base: 6, md: 8, lg: 10 }}
             w="full"
@@ -378,9 +387,37 @@ const Games = () => {
             {games.map((game, index) => (
               <GameCard key={game.name} game={game} index={index} />
             ))}
-          </SimpleGrid>
+          </SimpleGrid> */}
+
+          <Grid
+            templateColumns={{
+              base: "1fr",
+              sm: "repeat(2, 220px)",
+              md: "repeat(2, 220px)",
+              lg: "repeat(3, 210px)",
+              xl: "repeat(3, 300px)",
+            }}
+            gap={6}
+            justifyContent="center"
+            w="full">
+            {games.map((game, index) => (
+              <GridItem key={index}>
+                <Box
+                  key={game.id}
+                  style={{
+                    animationDelay: `${index * 0.1}s`
+                  }}
+                >
+                  <GameCard key={game.name} game={game} index={index} />
+                </Box>
+              </GridItem>
+            ))}
+          </Grid>
         </VStack>
       </Container>
+      <SidebarAdRight
+        position="right"
+      />
     </Box>
   );
 };
