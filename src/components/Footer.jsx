@@ -87,9 +87,9 @@ const Footer = () => {
         {/* Copyright text */}
         <Text
           fontSize={{ base: "sm", sm: "md" }} // Smaller text on mobile
-          color="red.500"
+          color="white"
           mb={5} // Space below copyright text
-          textShadow="0 0 5pxrgb(90, 201, 213)"
+          textShadow="0 0 8px #9F7AEA, 0 0 12px #805AD5, 0 0 18px #805AD5"
           fontWeight="medium"
           textAlign="center"
         >
