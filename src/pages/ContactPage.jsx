@@ -58,19 +58,6 @@ const FloatingElement = ({ icon, top, left, right, duration = 5, size = "30px", 
   </Box>
 );
 
-const predefinedSubjects = [
-  "Mathematics",
-  "Physics",
-  "Chemistry",
-  "Biology",
-  "Computer Science",
-  "English Literature",
-  "History",
-  "Geography",
-  "Economics",
-  "Psychology",
-  "Other"
-];
 
 const db = getFirestore(app);
 
@@ -338,7 +325,7 @@ const ContactPage = () => {
           borderColor="purple.200"
           position="relative"
           overflow={"auto"}
-          zIndex={2}
+          zIndex={1}
           mt={{ base: 200, sm: 20, md: 14, lg: 16 }}
         >
           <VStack spacing={{ base: 4, sm: 3, md: 4, lg: 5 }}>
