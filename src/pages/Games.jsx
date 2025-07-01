@@ -198,7 +198,7 @@ const GameCard = ({ game, index }) => {
               {game.name}
             </Heading>
 
-            {game.status && (
+            {/* {game.status && (
               <Badge
                 colorScheme={game.status === 'Available' ? 'green' : 'orange'}
                 variant="subtle"
@@ -211,7 +211,7 @@ const GameCard = ({ game, index }) => {
               >
                 {game.status}
               </Badge>
-            )}
+            )} */}
 
             {isHovered && game.description && (
               <Text
