@@ -66,7 +66,7 @@ const Pong = () => {
             let paddleWidth = 15;
             let paddleHeight = 100;
 
-            if (width <= 768) {
+            if (height <= 500) {
                 newDeviceType = 'mobile';
                 // Mobile: use full screen
                 newGameSize = {
@@ -74,8 +74,8 @@ const Pong = () => {
                     height: height - 120 // Leave space for score panel
                 };
                 paddleWidth = 8;
-                paddleHeight = 60;
-            } else if (width <= 1024) {
+                paddleHeight = 40;
+            } else if (height <= 1024) {
                 newDeviceType = 'tablet';
                 // Tablet: use most of screen
                 newGameSize = {
@@ -93,6 +93,34 @@ const Pong = () => {
                 paddleWidth = 15;
                 paddleHeight = 100;
             }
+
+            // if (width <= 768) {
+            //     newDeviceType = 'mobile';
+            //     // Mobile: use full screen
+            //     newGameSize = {
+            //         width: width,
+            //         height: height - 120 // Leave space for score panel
+            //     };
+            //     paddleWidth = 8;
+            //     paddleHeight = 60;
+            // } else if (width <= 1024) {
+            //     newDeviceType = 'tablet';
+            //     // Tablet: use most of screen
+            //     newGameSize = {
+            //         width: width - 40,
+            //         height: height - 120
+            //     };
+            //     paddleWidth = 12;
+            //     paddleHeight = 80;
+            // } else {
+            //     // Desktop: use most of screen
+            //     newGameSize = {
+            //         width: width - 40,
+            //         height: height - 120
+            //     };
+            //     paddleWidth = 15;
+            //     paddleHeight = 100;
+            // }
 
             setDeviceType(newDeviceType);
             setGameSize(newGameSize);
