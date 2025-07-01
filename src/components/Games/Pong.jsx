@@ -20,56 +20,11 @@ import {
     useToast
 } from '@chakra-ui/react';
 
-// Import your data (placeholder for now)
-const QUESTIONS = {
-    "Problem Solving through Imperative Programming Lab in C (PSIPL)": [
-        {
-            question: "What is the correct syntax to declare an integer variable in C?",
-            options: ["integer x;", "int x;", "var x;", "x: integer;"],
-            correct: 1,
-            category: "PSIPL"
-        },
-        {
-            question: "Which header file is required for printf() function?",
-            options: ["<stdlib.h>", "<stdio.h>", "<string.h>", "<math.h>"],
-            correct: 1,
-            category: "PSIPL"
-        },
-        {
-            question: "What is the size of int data type in C?",
-            options: ["2 bytes", "4 bytes", "8 bytes", "Depends on compiler"],
-            correct: 3,
-            category: "PSIPL"
-        }
-    ],
-    "Digital Systems and Microprocessors (DSM)": [
-        {
-            question: "What does CPU stand for?",
-            options: ["Central Processing Unit", "Computer Processing Unit", "Central Program Unit", "Control Processing Unit"],
-            correct: 0,
-            category: "DSM"
-        },
-        {
-            question: "How many bits are in a byte?",
-            options: ["4", "8", "16", "32"],
-            correct: 1,
-            category: "DSM"
-        },
-        {
-            question: "What is the binary representation of decimal 15?",
-            options: ["1111", "1101", "1110", "1010"],
-            correct: 0,
-            category: "DSM"
-        }
-    ]
-};
+import subjectsList from '../../config/subjectsList';
+import QUESTIONS from './constants/QuestionsList';
 
-const subjects = [
-    "Problem Solving through Imperative Programming Lab in C (PSIPL)",
-    "Digital Systems and Microprocessors (DSM)"
-];
 
-const SpacePongGame = () => {
+const Pong = () => {
     // Game state
     const canvasRef = useRef(null);
     const gameLoopRef = useRef(null);
@@ -86,7 +41,7 @@ const SpacePongGame = () => {
     });
 
     // UI state
-    const [selectedSubject, setSelectedSubject] = useState(subjects[0]);
+    const [selectedSubject, setSelectedSubject] = useState(subjectsList[0]);
     const [currentQuestion, setCurrentQuestion] = useState(null);
     const [selectedAnswer, setSelectedAnswer] = useState('');
     const [highScore, setHighScore] = useState(0);
@@ -447,7 +402,7 @@ const SpacePongGame = () => {
                         borderColor="purple.300"
                         focusBorderColor="purple.500"
                     >
-                        {subjects.map((subject, index) => (
+                        {subjectsList.map((subject, index) => (
                             <option key={index} value={subject}>
                                 {subject}
                             </option>
@@ -460,7 +415,7 @@ const SpacePongGame = () => {
                     <canvas
                         ref={canvasRef}
                         width="800"
-                        height="500"
+                        height="600"
                         style={{
                             width: '100%',
                             maxWidth: '800px',
@@ -611,4 +566,4 @@ const SpacePongGame = () => {
     );
 };
 
-export default SpacePongGame;
+export default Pong;
