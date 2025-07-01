@@ -66,7 +66,7 @@ const Pong = () => {
             let paddleWidth = 15;
             let paddleHeight = 100;
 
-            if (height <= 500) {
+            if (height <= 530) {
                 newDeviceType = 'mobile';
                 // Mobile: use full screen
                 newGameSize = {
@@ -80,7 +80,7 @@ const Pong = () => {
                 // Tablet: use most of screen
                 newGameSize = {
                     width: width - 40,
-                    height: height - 120
+                    height: height - 70
                 };
                 paddleWidth = 12;
                 paddleHeight = 80;
@@ -88,7 +88,7 @@ const Pong = () => {
                 // Desktop: use most of screen
                 newGameSize = {
                     width: width - 40,
-                    height: height - 120
+                    height: height - 100
                 };
                 paddleWidth = 15;
                 paddleHeight = 100;
