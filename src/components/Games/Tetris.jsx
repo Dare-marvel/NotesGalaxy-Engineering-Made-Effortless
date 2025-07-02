@@ -104,7 +104,8 @@ const SpaceTetris = () => {
         title: '🎉 NEW HIGH SCORE!',
         description: `Amazing! You scored ${newScore.toLocaleString()} points!`,
         status: 'success',
-        duration: 4000,
+        duration: 1200,
+        position: 'top-right',
       });
     }
   }, [highScore, toast]);
@@ -205,6 +206,7 @@ const SpaceTetris = () => {
         description: `+${points} points`,
         status: 'success',
         duration: 1000,
+        position: 'top-right',
       });
     }
 
@@ -254,6 +256,7 @@ const SpaceTetris = () => {
         description: `Puzzle solved! +${bonusPoints} bonus points and faster gameplay!`,
         status: 'success',
         duration: 1000,
+        position: 'top-right',
       });
 
       onClose();
@@ -264,6 +267,7 @@ const SpaceTetris = () => {
         description: "Try again next time!",
         status: "error",
         duration: 1000,
+        position: 'top-right',
         isClosable: true,
       });
     }
@@ -311,7 +315,8 @@ const SpaceTetris = () => {
           title: 'Game Over!',
           description: `Final Score: ${score} | Puzzles Solved: ${puzzlesSolved}`,
           status: 'error',
-          duration: 5000,
+          duration: 3000,
+          position: 'top-right',
         });
         return;
       }
