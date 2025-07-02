@@ -84,8 +84,6 @@ const SpaceTetris = () => {
 
   // Puzzle state
   const [currentPuzzle, setCurrentPuzzle] = useState(null);
-  const [puzzleAnswer, setPuzzleAnswer] = useState('');
-  const [showHint, setShowHint] = useState(false);
   const [puzzlesSolved, setPuzzlesSolved] = useState(0);
 
   const [highScore, setHighScore] = useState(() => {
@@ -233,8 +231,6 @@ const SpaceTetris = () => {
   const triggerPuzzle = () => {
     const randomPuzzle = getRandomQuestion();
     setCurrentPuzzle(randomPuzzle);
-    setPuzzleAnswer('');
-    setShowHint(false);
     setGameRunning(false);
     onOpen();
   };
@@ -276,37 +272,6 @@ const SpaceTetris = () => {
     setGameRunning(true);
     onClose();
   };
-
-  // Handle puzzle answer
-  // const handlePuzzleSubmit = () => {
-  //   if (puzzleAnswer.toLowerCase().trim() === currentPuzzle.answer.toLowerCase()) {
-  //     setPuzzlesSolved(prev => prev + 1);
-  //     const bonusPoints = 500;
-  //     setScore(prev => {
-  //       const newScore = prev + bonusPoints;
-  //       updateHighScore(newScore);
-  //       return newScore;
-  //     });
-  //     setDropTime(prev => Math.max(prev - 50, 100)); // Speed up game
-
-  //     toast({
-  //       title: 'Correct!',
-  //       description: `Puzzle solved! +${bonusPoints} bonus points and faster gameplay!`,
-  //       status: 'success',
-  //       duration: 1000,
-  //     });
-
-  //     onClose();
-  //     setGameRunning(true);
-  //   } else {
-  //     toast({
-  //       title: 'Incorrect',
-  //       description: 'Try again or use the hint!',
-  //       status: 'error',
-  //       duration: 1000,
-  //     });
-  //   }
-  // };
 
   // Move piece
   const movePiece = useCallback((direction) => {
