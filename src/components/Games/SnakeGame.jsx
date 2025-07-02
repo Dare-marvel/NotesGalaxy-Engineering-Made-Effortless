@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import {
   Box,
   Button,
@@ -16,7 +16,7 @@ import {
   Grid,
   GridItem,
   Container,
-  Heading,
+  // Heading,
   useToast,
   Select,
   IconButton,
@@ -46,7 +46,7 @@ export default function EnhancedEducationalSnakeGame() {
   const [score, setScore] = useState(0);
   const [highScore, setHighScore] = useState(() => {
     return parseInt(localStorage.getItem('snakeGameHighScore')) || 0;
-  });; // In-memory high score
+  });; 
   const [currentQuestion, setCurrentQuestion] = useState(null);
   const [gameRunning, setGameRunning] = useState(false);
   const [level, setLevel] = useState(1);
@@ -57,7 +57,7 @@ export default function EnhancedEducationalSnakeGame() {
   const toast = useToast();
 
   // Responsive values
-  const cellSize = useBreakpointValue({ base: 15, md: 20 });
+  // const cellSize = useBreakpointValue({ base: 15, md: 20 });
   const gameSize = useBreakpointValue({ base: 300, md: 400 });
   const containerPadding = useBreakpointValue({ base: 4, md: 8, lg: 12, xl: 12 });
   const buttonSize = useBreakpointValue({ base: "md", md: "lg" });
