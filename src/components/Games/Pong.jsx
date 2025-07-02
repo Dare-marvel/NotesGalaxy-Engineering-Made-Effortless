@@ -49,7 +49,7 @@ const Pong = () => {
         player2: { x: 765, y: 250, width: 15, height: 100, score: 0 },
         gameRunning: false,
         gameStarted: false,
-        qFreq : 5
+        qFreq: 5
     });
 
     // UI state
@@ -585,7 +585,7 @@ const Pong = () => {
                             ))}
                         </Select>
                         <HStack align="center" w="full" px={{ base: 4, md: 0 }} justify="space-between">
-                            <HStack px={{ base: 5, sm: 0}} spacing={1}>
+                            <HStack px={{ base: 5, sm: 0 }} spacing={1}>
                                 <Text color="purple.600" size={{ base: "md", md: "md" }} fontWeight="semibold">
                                     Points/Question
                                 </Text>
@@ -609,7 +609,7 @@ const Pong = () => {
                                 min={3}
                                 max={1000}
                                 size={{ base: "md", md: "md" }}
-                                width={{base: "165px",sm: "165px", md: "170px", lg: "180px", xl: "200px"}}
+                                width={{ base: "165px", sm: "165px", md: "170px", lg: "180px", xl: "200px" }}
                                 id='qFreq_3425'
                             >
                                 <NumberInputField
@@ -852,15 +852,40 @@ const Pong = () => {
                 />
             </Box>
 
-            {/* Question Modal */}
-            <Modal 
-            isOpen={isOpen} 
-            onClose={() => { }} 
-            closeOnOverlayClick={false} 
-            size="lg"
+            {/* Question Modal - Now inside the fullscreen container */}
+            <Modal
+                isOpen={isOpen}
+                onClose={() => { }}
+                closeOnOverlayClick={false}
+                size="lg"
+                // Add portalProps to render inside the current container
+                portalProps={{
+                    containerRef: gameContainerRef
+                }}
             >
-                <ModalOverlay bg="blackAlpha.800" />
-                <ModalContent bg="white" border="2px solid" borderColor="purple.400">
+                <ModalOverlay
+                    bg="blackAlpha.800"
+                    // Put overlay behind the modal content
+                    zIndex={4}
+                    // Make overlay non-interactive so clicks pass through
+                    pointerEvents="none"
+                />
+                <ModalContent
+                    bg="white"
+                    border="2px solid"
+                    borderColor="purple.400"
+                    // Ensure modal content appears above overlay
+                    zIndex={5}
+                    // Center the modal properly in fullscreen
+                    position="relative"
+                    top="auto"
+                    left="auto"
+                    transform="none"
+                    m="auto"
+                    mt="10vh"
+                    // Ensure pointer events work
+                    pointerEvents="auto"
+                >
                     <ModalHeader bg="purple.500" color="white" borderRadius="md md 0 0">
                         🧠 Quiz Time! - {currentQuestion?.category}
                     </ModalHeader>
