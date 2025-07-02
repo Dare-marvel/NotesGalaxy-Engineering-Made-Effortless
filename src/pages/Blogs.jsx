@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense, lazy } from 'react';
 import {
     Box,
     Container,
@@ -292,9 +292,10 @@ const BlogView = ({ blogId, onBack }) => {
             try {
                 const content = blogContent[blogId];
                 const meta = await getBlogMetadata(blogId);
+                const contentModule = await import(`../blog-files/${blogId}.js`);
 
-                if (content && meta) {
-                    setBlog(content);
+                if (content && meta && contentModule) {
+                    setBlog({ ...content, content: contentModule.default });
                     setBlogMeta(meta);
                     await incrementViews(blogId);
                     setBlogMeta(prev => ({ ...prev, views: (prev.views || 0) + 1 }));
@@ -835,10 +836,10 @@ const Blogs = () => {
 
                             <Grid
                                 templateColumns={{
-                                    base: "1fr",                  
-                                    md: "repeat(2, 220px)",      
+                                    base: "1fr",
+                                    md: "repeat(2, 220px)",
                                     lg: "repeat(3, 210px)",
-                                    xl: "repeat(3, 1fr)",       
+                                    xl: "repeat(3, 1fr)",
                                 }}
                                 gap={6}
                                 justifyContent="center"
