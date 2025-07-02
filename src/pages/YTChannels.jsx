@@ -22,7 +22,6 @@ import { ExternalLinkIcon, SearchIcon } from '@chakra-ui/icons';
 import SidebarAdLeft from '../components/SidebarAd/SidebarAdLeft';
 import SidebarAdRight from '../components/SidebarAd/SidebarAdRight';
 
-// Mock YouTube channel data - replace with actual links
 const subjectsData = {
   "Semester 1": [
     {

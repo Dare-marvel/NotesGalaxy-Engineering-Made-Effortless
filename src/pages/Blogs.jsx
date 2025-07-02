@@ -714,7 +714,6 @@ const Blogs = () => {
                                         h={{ base: "45px", md: "48px" }}
                                         px={{ base: 6, md: 12, lg: 12 }}
                                         mx={{ base: 3, md: 5, lg: 5 }}
-                                    // pt={{ base: 3 }}
                                     >
                                         <SearchIcon
                                             color="gray.400"

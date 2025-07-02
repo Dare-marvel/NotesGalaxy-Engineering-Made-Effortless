@@ -10,19 +10,12 @@ import {
   Tr,
   Th,
   Td,
-  // Avatar,
   Badge,
   VStack,
   HStack,
   Button,
   Icon,
   Flex,
-  // useColorModeValue,
-  // Tabs,
-  // TabList,
-  // TabPanels,
-  // Tab,
-  // TabPanel,
   Card,
   CardBody,
   Grid,
@@ -33,22 +26,18 @@ import {
   ModalOverlay,
   ModalContent,
   ModalHeader,
-  // ModalFooter,
   ModalBody,
   ModalCloseButton,
   useDisclosure,
   Spinner,
   Alert,
   AlertIcon,
-  // Collapse,
   useToast
 } from '@chakra-ui/react';
 
 import { keyframes } from '@emotion/react';
-// getUserId.js
 import FingerprintJS from '@fingerprintjs/fingerprintjs';
 
-// Import Firebase (you'll need to install: npm install firebase)
 import app from '../config/firebaseConfig'
 import {
   getFirestore,
@@ -57,19 +46,18 @@ import {
   getDocs,
   updateDoc,
   increment,
-  onSnapshot,
+  // onSnapshot,
   query,
-  orderBy,
+  // orderBy,
   where,
   arrayUnion,
   getDoc,
-  setDoc
+  // setDoc
 } from 'firebase/firestore';
 
 import SidebarAdLeft from '../components/SidebarAd/SidebarAdLeft';
 import SidebarAdRight from '../components/SidebarAd/SidebarAdRight';
 
-// React Icons
 import {
   FaTrophy,
   FaStar,
@@ -82,14 +70,12 @@ import {
   FaFileAlt,
   FaThumbsUp,
   FaEye,
-  FaLink,
   FaGlobe,
   FaRegHeart
 } from 'react-icons/fa';
 
 import { incrementVisitorCount } from "../utils/visitorTracker";
 
-// Keyframe animations
 const float = keyframes`
   0% { transform: translateY(0px) rotate(0deg); }
   50% { transform: translateY(-10px) rotate(5deg); }
@@ -117,19 +103,6 @@ const pulse = keyframes`
   100% { transform: scale(1); }
 `;
 
-// Firebase configuration - Replace with your config
-// const firebaseConfig = {
-//   // Your Firebase config object
-//   apiKey: "your-api-key",
-//   authDomain: "your-project.firebaseapp.com",
-//   projectId: "your-project-id",
-//   storageBucket: "your-project.appspot.com",
-//   messagingSenderId: "123456789",
-//   appId: "your-app-id"
-// };
-
-// Initialize Firebase
-// const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 // Helper function to get user's unique identifier (IP-based or device fingerprint)
@@ -474,13 +447,11 @@ const NotesModal = ({ isOpen, onClose, user }) => {
 const UserRow = ({ user, rank, index, sortBy }) => {
   const [userId, setUserId] = useState(null);
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const toast = useToast();
 
   useEffect(() => {
     getUserId().then(setUserId);
   }, []);
 
-  // const handleQuickLike = async () => {
   //   if (!userId) return;
 
   //   try {
@@ -827,43 +798,7 @@ export default function SpaceCommunityPage() {
     incrementVisitorCount();
     fetchUsers();
     fetchStats();
-    // getVisitorCount().then((count) => {
-    //   setStats((prev) => ({
-    //     ...prev,
-    //     totalVisitors: count,
-    //   }));
-    // });
   }, []);
-
-  // const fetchUsers = async () => {
-  //   try {
-  //     setLoading(true);
-  //     const usersRef = collection(db, "users");
-  //     const querySnapshot = await getDocs(usersRef);
-
-  //     const usersList = [];
-  //     querySnapshot.forEach((doc) => {
-  //       const userData = doc.data();
-
-  //       usersList.push({
-  //         id: doc.id,
-  //         ...userData,
-  //         createdAt: userData.createdAt?.toDate().toLocaleDateString("en-US", {
-  //           year: "numeric",
-  //           month: "long",
-  //           day: "numeric",
-  //         }),
-  //       });
-  //     });
-
-  //     setUsers(usersList);
-  //   } catch (error) {
-  //     console.error("Error fetching users:", error);
-  //     setError("Failed to load users");
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
 
   const fetchUsers = async () => {
     try {
@@ -917,9 +852,6 @@ export default function SpaceCommunityPage() {
       setLoading(false);
     }
   };
-
-
-
 
   const fetchStats = async () => {
     try {
@@ -1026,14 +958,6 @@ export default function SpaceCommunityPage() {
             >
               🚀 Community Rankings
             </Heading>
-            {/* <Text
-              fontSize="lg"
-              color="gray.600"
-              maxW="2xl"
-              mx="auto"
-            >
-              Discover our top contributors and most beloved community members in this cosmic journey of knowledge sharing!
-            </Text> */}
           </Box>
 
           {/* Stats Cards */}
@@ -1042,10 +966,10 @@ export default function SpaceCommunityPage() {
           >
             <Grid
               templateColumns={{
-                base: "1fr",                  // Stack vertically on small screens
+                base: "1fr",                 
                 md: "repeat(2, 210px)",
-                lg: "repeat(2, 300px)",       // 3 fixed-width columns on large screens
-                xl: "repeat(4, 180px)"        // 4 fixed-width columns on extra large screens
+                lg: "repeat(2, 300px)",       
+                xl: "repeat(4, 180px)"        
               }}
               gap={6}
               justifyContent="center"

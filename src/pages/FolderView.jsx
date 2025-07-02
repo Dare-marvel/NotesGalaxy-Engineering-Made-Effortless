@@ -25,7 +25,6 @@ import {
 import { FiArrowLeft, FiFolder, FiFile, FiSearch } from 'react-icons/fi';
 import { FaDownload } from "react-icons/fa";
 import { getSimpleName, getActualName } from '../config/nameMapping';
-// import FileViewer from '../components/FileViewer/FileViewer';
 const FileViewer = lazy(() => import('../components/FileViewer/FileViewer'));
 import { useFolderContents } from '../hooks/useFolderContents';
 import { useParams, useNavigate } from 'react-router-dom';
@@ -56,14 +55,12 @@ const FolderView = () => {
   const navigate = useNavigate();
   const { contents = [], loading } = useFolderContents(repoName, path);
 
-  // Chakra UI color modes
   const bgHover = useColorModeValue('gray.100', 'gray.700');
   const hoverTextColor = useColorModeValue('blue.600', 'blue.300');
   const borderColor = useColorModeValue('purple.200', 'purple.700');
   const headerBg = useColorModeValue('gray.50', 'gray.800');
   const inputBg = useColorModeValue('white', 'gray.800');
 
-  // Safe filter function with type checking
   const filteredContents = !repoName && Array.isArray(contents)
     ? contents.filter(repo => {
       try {

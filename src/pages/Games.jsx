@@ -3,7 +3,6 @@ import {
   Box,
   Container,
   Heading,
-  // SimpleGrid,
   Grid,
   GridItem,
   Card,
@@ -11,9 +10,6 @@ import {
   Text,
   useColorModeValue,
   VStack,
-  // Icon,
-  // Flex,
-  // Image,
 } from '@chakra-ui/react';
 
 import { keyframes } from '@emotion/react';
@@ -22,7 +18,6 @@ import { useNavigate } from 'react-router-dom';
 import SidebarAdLeft from '../components/SidebarAd/SidebarAdLeft';
 import SidebarAdRight from '../components/SidebarAd/SidebarAdRight';
 
-// Keyframes for animations
 const float = keyframes`
   0%, 100% { transform: translateY(0px) rotate(0deg); }
   50% { transform: translateY(-10px) rotate(5deg); }
@@ -270,42 +265,6 @@ const Games = () => {
       description: 'Classic paddle ball game',
       slug: 'pong-game'
     },
-    // {
-    //   name: 'Space Invaders',
-    //   icon: <ComingSoonIcon />,
-    //   primaryColor: '#06b6d4',
-    //   secondaryColor: '#0891b2',
-    //   accentColor: '#67e8f9',
-    //   glowColor: '#06b6d4',
-    //   borderColor: 'rgba(6, 182, 212, 0.3)',
-    //   status: 'Coming Soon',
-    //   description: 'Defend Earth from alien invasion',
-    //   slug: 'space-invaders'
-    // },
-    // {
-    //   name: 'Pac-Man',
-    //   icon: <ComingSoonIcon />,
-    //   primaryColor: '#f59e0b',
-    //   secondaryColor: '#d97706',
-    //   accentColor: '#fbbf24',
-    //   glowColor: '#f59e0b',
-    //   borderColor: 'rgba(245, 158, 11, 0.3)',
-    //   status: 'Coming Soon',
-    //   description: 'Navigate the maze and collect dots',
-    //   slug: 'pac-man'
-    // },
-    // {
-    //   name: 'Asteroids',
-    //   icon: <ComingSoonIcon />,
-    //   primaryColor: '#ef4444',
-    //   secondaryColor: '#dc2626',
-    //   accentColor: '#fca5a5',
-    //   glowColor: '#ef4444',
-    //   borderColor: 'rgba(239, 68, 68, 0.3)',
-    //   status: 'Coming Soon',
-    //   description: 'Destroy asteroids in deep space',
-    //   slug: 'asteroids'
-    // },
     
   ];
 
@@ -387,25 +346,7 @@ const Games = () => {
             >
               🚀 Cosmic Games Hub
             </Heading>
-            {/* <Text
-              fontSize="xl"
-              color="gray.600"
-              maxW="2xl"
-              lineHeight="tall"
-            >
-              Embark on epic gaming adventures across the galaxy. From classic arcade games to modern space odysseys.
-            </Text> */}
           </VStack>
-
-          {/* <SimpleGrid
-            columns={{ base: 1, sm: 2, md: 3, lg: 3, xl: 3 }}
-            spacing={{ base: 6, md: 8, lg: 10 }}
-            w="full"
-          >
-            {games.map((game, index) => (
-              <GameCard key={game.name} game={game} index={index} />
-            ))}
-          </SimpleGrid> */}
 
           <Grid
             templateColumns={{

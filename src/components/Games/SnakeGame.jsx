@@ -16,7 +16,6 @@ import {
   Grid,
   GridItem,
   Container,
-  // Heading,
   useToast,
   Select,
   IconButton,
@@ -46,18 +45,17 @@ export default function EnhancedEducationalSnakeGame() {
   const [score, setScore] = useState(0);
   const [highScore, setHighScore] = useState(() => {
     return parseInt(localStorage.getItem('snakeGameHighScore')) || 0;
-  });; 
+  });;
   const [currentQuestion, setCurrentQuestion] = useState(null);
   const [gameRunning, setGameRunning] = useState(false);
   const [level, setLevel] = useState(1);
   const [questionsAnswered, setQuestionsAnswered] = useState(0);
   const [selectedSubject, setSelectedSubject] = useState("Problem Solving through Imperative Programming Lab in C (PSIPL)");
+  const [subjectQuestions, setSubjectQuestions] = useState([]);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
 
-  // Responsive values
-  // const cellSize = useBreakpointValue({ base: 15, md: 20 });
   const gameSize = useBreakpointValue({ base: 300, md: 400 });
   const containerPadding = useBreakpointValue({ base: 4, md: 8, lg: 12, xl: 12 });
   const buttonSize = useBreakpointValue({ base: "md", md: "lg" });
@@ -73,20 +71,23 @@ export default function EnhancedEducationalSnakeGame() {
     return newFood;
   }, [snake]);
 
-  const getAllQuestions = () => {
-    // if (selectedSubject === "All Subjects") {
-    //   return Object.values(QUESTIONS).flat();
-    // }
-    return QUESTIONS[selectedSubject] || [];
-  };
+  // const getAllQuestions = () => {
+  //    if (selectedSubject === "All Subjects") {
+  //      return Object.values(QUESTIONS).flat();
+  //   }
+  //   return QUESTIONS[selectedSubject] || [];
+  // };
 
   const getRandomQuestion = () => {
-    const availableQuestions = getAllQuestions();
-    if (availableQuestions.length === 0) {
-      // Fallback to math questions if selected subject has no questions
-      return QUESTIONS["Mathematics"][0];
+    if (subjectQuestions.length === 0) {
+      return {
+        question: "What is 2 + 2?",
+        options: ["3", "4", "5", "6"],
+        correct: 1,
+        category: "Fallback"
+      };
     }
-    return availableQuestions[Math.floor(Math.random() * availableQuestions.length)];
+    return subjectQuestions[Math.floor(Math.random() * subjectQuestions.length)];
   };
 
   const updateHighScore = (newScore) => {
@@ -118,11 +119,27 @@ export default function EnhancedEducationalSnakeGame() {
     setQuestionsAnswered(0);
   };
 
-  const startGame = () => {
+  const startGame = async () => {
     resetGame();
-    setGameStarted(true);
-    setGameRunning(true);
+
+    try {
+      const fileSafeSubject = selectedSubject.replace(/\s+/g, '').replace(/[^\w]/g, '');
+      const module = await import(`../../question-files/${fileSafeSubject}.js`);
+      setSubjectQuestions(module.default);
+      setGameStarted(true);
+      setGameRunning(true);
+    } catch (error) {
+      console.error("Error loading questions:", error);
+      toast({
+        title: "Error loading questions",
+        description: "Please try a different subject.",
+        status: "error",
+        duration: 2000,
+        isClosable: true,
+      });
+    }
   };
+
 
   const moveSnake = (newDirection) => {
     if (!gameRunning || gameOver) return;
@@ -293,8 +310,8 @@ export default function EnhancedEducationalSnakeGame() {
           spacing={4}
           w="full"
           pt={{ base: 12, md: 8, lg: 5 }}
-          px={{ base: 4, md: 6, lg: 8 }} 
-          width={{ base: "full", md: "70%" , lg: "80%" }} // Responsive width
+          px={{ base: 4, md: 6, lg: 8 }}
+          width={{ base: "full", md: "70%", lg: "80%" }} // Responsive width
           mt={2}
         >
           <Badge
