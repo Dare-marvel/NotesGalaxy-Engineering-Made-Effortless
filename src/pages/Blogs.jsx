@@ -588,32 +588,47 @@ const Blogs = () => {
     const [blogs, setBlogs] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
     const [loading, setLoading] = useState(true);
+    const [allBlogsLoaded, setAllBlogsLoaded] = useState(false);
     const blogId = searchParams.get('blogid');
 
     useEffect(() => {
         const handleRouteChange = async () => {
             if (blogId) {
                 setCurrentView(blogId);
-                setLoading(true);
-                const blogMeta = await getBlogMetadata(blogId);
-                if (blogMeta) {
-                    setBlogs(prev => {
-                        const existing = prev.find(b => b.id === blogId);
-                        return existing ? prev : [...prev, blogMeta];
-                    });
+                
+                // Check if we already have this blog's metadata
+                const existingBlog = blogs.find(b => b.id === blogId);
+                
+                if (!existingBlog) {
+                    setLoading(true);
+                    const blogMeta = await getBlogMetadata(blogId);
+                    if (blogMeta) {
+                        setBlogs(prev => [...prev, blogMeta]);
+                    }
+                    setLoading(false);
+                } else {
+                    // We already have the blog metadata, no need to load
+                    setLoading(false);
                 }
-                setLoading(false);
             } else {
                 setCurrentView('list');
-                setLoading(true);
-                const allBlogs = await getAllBlogsMetadata();
-                setBlogs(allBlogs);
-                setLoading(false);
+                
+                // Only fetch all blogs if we haven't loaded them before
+                if (!allBlogsLoaded) {
+                    setLoading(true);
+                    const allBlogs = await getAllBlogsMetadata();
+                    setBlogs(allBlogs);
+                    setAllBlogsLoaded(true);
+                    setLoading(false);
+                } else {
+                    // We already have all blogs metadata, no need to load
+                    setLoading(false);
+                }
             }
         };
 
         handleRouteChange();
-    }, [blogId]);
+    }, [blogId, allBlogsLoaded, blogs]);
 
     const handleBlogClick = (blogId) => {
         setCurrentView(blogId);
@@ -631,8 +646,6 @@ const Blogs = () => {
         const query = searchQuery.toLowerCase();
         return title.toLowerCase().includes(query) || author.toLowerCase().includes(query);
     });
-
-
 
     if (loading) {
         return (
