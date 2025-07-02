@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import {
   Box,
   Button,
@@ -20,7 +20,6 @@ import {
   Select,
 } from '@chakra-ui/react';
 import subjectsList from '../../config/subjectsList';
-import QUESTIONS from './constants/QuestionsList';
 
 import SidebarAdRight from '../SidebarAd/SidebarAdRight';
 import SidebarAdLeft from '../SidebarAd/SidebarAdLeft';
@@ -81,6 +80,7 @@ const SpaceTetris = () => {
   const [gameOver, setGameOver] = useState(false);
   const [nextPiece, setNextPiece] = useState(null);
   const [dropTime, setDropTime] = useState(1000);
+  const [currentQuestions, setCurrentQuestions] = useState([]);
 
   // Puzzle state
   const [currentPuzzle, setCurrentPuzzle] = useState(null);
@@ -215,20 +215,19 @@ const SpaceTetris = () => {
     return newBoard;
   }, [level, lines, updateHighScore, toast]);
 
-  const getAllQuestions = () => {
-    // if (selectedSubject === "All Subjects") {
-    //   return Object.values(QUESTIONS).flat();
-    // }
-    return QUESTIONS[selectedSubject] || [];
-  };
 
   const getRandomQuestion = () => {
-    const availableQuestions = getAllQuestions();
-    if (availableQuestions.length === 0) {
+    // const availableQuestions = getAllQuestions();
+    if (currentQuestions.length === 0) {
       // Fallback to math questions if selected subject has no questions
-      return QUESTIONS["Mathematics"][0];
+      return {
+      question: "Fallback: What is 2 + 2?",
+      options: ["3", "4", "5", "6"],
+      correct: 1,
+      category: "Fallback"
+    };
     }
-    return availableQuestions[Math.floor(Math.random() * availableQuestions.length)];
+    return currentQuestions[Math.floor(Math.random() * currentQuestions.length)];
   };
 
   // Trigger space puzzle
@@ -385,8 +384,29 @@ const SpaceTetris = () => {
     return () => window.removeEventListener('keydown', handleKeyPress);
   }, [gameRunning, movePiece, rotateCurrent]);
 
+  const loadSubjectQuestions = async (subject) => {
+    const subjectSlug = subject.replace(/\s+/g, '').replace(/[^\w]/g, '');
+    const module = await import(`../../question-files/${subjectSlug}.js`);
+    return module.default || [];
+  };
+
   // Start game
-  const startGame = () => {
+  const startGame = async () => {
+    try {
+      const questions = await loadSubjectQuestions(selectedSubject);
+      setCurrentQuestions(questions);
+    }
+    catch (error) {
+      console.error("Error loading questions:", error);
+      toast({
+        title: "Error loading questions",
+        description: "Please try a different subject.",
+        status: "error",
+        duration: 1000,
+        isClosable: true,
+      });
+    }
+
     setBoard(Array(BOARD_HEIGHT).fill().map(() => Array(BOARD_WIDTH).fill(0)));
     setCurrentPiece(generatePiece());
     setNextPiece(generatePiece());
@@ -399,6 +419,7 @@ const SpaceTetris = () => {
     setPuzzlesSolved(0);
     setDropTime(1000);
   };
+
 
   // Render board with current piece
   const renderBoard = () => {
