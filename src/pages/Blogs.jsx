@@ -1,4 +1,4 @@
-import { useState, useEffect, Suspense, lazy } from 'react';
+import { useState, useEffect } from 'react';
 import {
     Box,
     Container,
@@ -7,7 +7,6 @@ import {
     Card,
     CardBody,
     CardHeader,
-    // SimpleGrid,
     Center,
     Button,
     Flex,
@@ -34,7 +33,6 @@ import {
     IoShareSocial,
     IoLogoFacebook,
     IoLogoInstagram,
-    // IoLogoGithub,
     IoLogoMedium,
     IoCalendar,
     IoRocket,
@@ -389,7 +387,7 @@ const BlogView = ({ blogId, onBack }) => {
 
     if (!blog || !blogMeta) {
         return (
-            <VStack spacing={4} align="center" py={10}>
+            <VStack spacing={4} align="center" mt={20}>
                 <Icon as={IoRocket} w={16} h={16} color="purple.400" />
                 <Heading color="purple.600">Lost in Space</Heading>
                 <Text color="gray.600" textAlign="center" maxW="md">
@@ -578,63 +576,11 @@ const BlogView = ({ blogId, onBack }) => {
             <Container maxW={containerMaxW} py={2} px={{ base: 4, md: 12, lg: 12 }} mt={0}>
                 <MarkdownRenderer
                     content={blog.content} />
-                {/* <Box
-                    dangerouslySetInnerHTML={{ __html: marked(blog.content) }}
-                    sx={{
-                        'h1, h2, h3, h4, h5, h6': {
-                            color: '#2D3748',
-                            marginTop: '2rem',
-                            marginBottom: '1rem',
-                            fontWeight: 'bold',
-                            lineHeight: '1.3'
-                        },
-                        'h1': { fontSize: { base: 'lg', md: 'xl' } },
-                        'h2': { fontSize: { base: 'md', md: 'lg' } },
-                        'p': {
-                            marginBottom: '1rem',
-                            lineHeight: { base: '1.6', md: '1.8' },
-                            color: '#4A5568',
-                            fontSize: { base: 'md', md: 'lg' }
-                        },
-                        'ul, ol': {
-                            marginLeft: '2rem',
-                            marginBottom: '1rem',
-                            color: '#4A5568'
-                        },
-                        'blockquote': {
-                            borderLeft: '4px solid #805AD5',
-                            paddingLeft: '1rem',
-                            fontStyle: 'italic',
-                            color: '#666',
-                            margin: '1rem 0',
-                            background: 'linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%)',
-                            padding: '1rem',
-                            borderRadius: '8px'
-                        },
-                        'code': {
-                            background: 'linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%)',
-                            padding: '0.2rem 0.4rem',
-                            borderRadius: '4px',
-                            fontSize: '0.9em',
-                            color: '#2D3748',
-                            border: '1px solid #E2E8F0'
-                        },
-                        'pre': {
-                            background: 'linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%)',
-                            padding: '1rem',
-                            borderRadius: '8px',
-                            overflow: 'auto',
-                            border: '1px solid #E2E8F0',
-                            boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
-                        }
-                    }}
-                /> */}
             </Container>
         </Box>
     );
 };
 
-// Main App Component
 const Blogs = () => {
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
@@ -643,9 +589,6 @@ const Blogs = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const [loading, setLoading] = useState(true);
     const blogId = searchParams.get('blogid');
-
-    // const titleSize = useBreakpointValue({ base: 'xl', md: '2xl', lg: '3xl' });
-    // const gridColumns = useBreakpointValue({ base: 1, md: 2, lg: 3 });
 
     useEffect(() => {
         const handleRouteChange = async () => {
@@ -729,9 +672,6 @@ const Blogs = () => {
                             spacing={{ base: 6, md: 8 }}
                             align="center" mb={{ base: 8, md: 12 }}
                         >
-                            {/* <Box animation={`${float} 4s ease-in-out infinite`}>
-                            <Icon as={IoRocket} w={{ base: 12, md: 16 }} h={{ base: 12, md: 16 }} color="purple.400" />
-                        </Box> */}
                             <Heading
                                 size={{ base: "lg", sm: "xl", md: "xl", lg: "2xl", xl: "2xl" }}
                                 color="gray.800"
@@ -745,17 +685,6 @@ const Blogs = () => {
                             >
                                 🚀 Blogs
                             </Heading>
-
-                            {/* <Text
-                                fontSize={{ base: 'md', md: 'lg' }}
-                                color="gray.600"
-                                textAlign="center"
-                                maxW={{ base: 'full', md: '2xl' }}
-                                lineHeight="1.6"
-                                px={{ base: 4, md: 0 }}
-                            >
-                                Discover articles, insights, and stories from our collection of thought-provoking content. Journey through the infinite expanse of knowledge.
-                            </Text> */}
 
                             <Box
                                 mb={[4, 5, 6]}
@@ -814,26 +743,6 @@ const Blogs = () => {
                         </VStack>
 
                         <Box w="full" px={{ base: 4, md: 12, lg: 12 }} >
-                            {/* <SimpleGrid
-                            columns={gridColumns}
-                            spacing={{ base: 6, md: 8 }}
-                            pb={{ base: 8, md: 16 }}
-                        >
-                            {blogs.map((blog, index) => (
-                                <Box
-                                    key={blog.id}
-                                    style={{
-                                        animationDelay: `${index * 0.1}s`
-                                    }}
-                                >
-                                    <BlogCard
-                                        blog={blog}
-                                        onClick={() => handleBlogClick(blog.id)}
-                                    />
-                                </Box>
-                            ))}
-                        </SimpleGrid> */}
-
                             <Grid
                                 templateColumns={{
                                     base: "1fr",
