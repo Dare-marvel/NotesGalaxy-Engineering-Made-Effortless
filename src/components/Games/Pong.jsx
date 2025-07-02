@@ -40,12 +40,7 @@ const Pong = () => {
     // Device detection
     const [deviceType, setDeviceType] = useState('desktop'); // desktop, tablet, mobile
     const [gameSize, setGameSize] = useState({ width: 800, height: 600 });
-    const [qFreq, setqFreq] = useState(5);
 
-    const handleChange = (e) => {
-        const val = e.target.value;
-        if (!isNaN(val)) setqFreq(val);
-    };
 
     // Game objects
     const [gameState, setGameState] = useState({
@@ -53,7 +48,8 @@ const Pong = () => {
         player1: { x: 20, y: 250, width: 15, height: 100, score: 0 },
         player2: { x: 765, y: 250, width: 15, height: 100, score: 0 },
         gameRunning: false,
-        gameStarted: false
+        gameStarted: false,
+        qFreq : 5
     });
 
     // UI state
@@ -267,7 +263,7 @@ const Pong = () => {
             if (!prev.gameRunning) return prev;
 
             const newState = { ...prev };
-            const { ball, player1, player2 } = newState;
+            const { ball, player1, player2, qFreq } = newState;
 
             // Update ball position
             ball.x += ball.dx;
@@ -528,10 +524,12 @@ const Pong = () => {
 
     const startGame = () => {
         // console.log("Checking freq ",qFreq, typeof qFreq);
+        const value = parseInt(document.getElementById('qFreq_3425').value, 10);
         setGameState(prev => ({
             ...prev,
             gameRunning: true,
-            gameStarted: true
+            gameStarted: true,
+            qFreq: isNaN(value) ? 5 : value // Default to 5 if invalid input
         }));
         // Reset ball for first serve
         resetBall(true);
@@ -548,7 +546,8 @@ const Pong = () => {
             player1: { x: 20, y: (gameSize.height - paddleHeight) / 2, width: paddleWidth, height: paddleHeight, score: 0 },
             player2: { x: gameSize.width - 35, y: (gameSize.height - paddleHeight) / 2, width: paddleWidth, height: paddleHeight, score: 0 },
             gameRunning: false,
-            gameStarted: false
+            gameStarted: false,
+            qFreq: 5 // Reset question frequency
         });
     };
 
@@ -584,12 +583,12 @@ const Pong = () => {
                             ))}
                         </Select>
                         <HStack align="center" w="full" px={{ base: 4, md: 0 }} justify="space-between">
-                            <HStack spacing={1}>
+                            <HStack px={{ base: 5, sm: 0}} spacing={1}>
                                 <Text color="purple.600" size={{ base: "md", md: "md" }} fontWeight="semibold">
                                     Points/Question
                                 </Text>
                                 <Tooltip
-                                    label="This number signifies the frequency with which questions would be asked to you."
+                                    label="This number signifies the frequency with which questions would be asked to you. Default is 5 points."
                                     fontSize="sm"
                                     bg="blue.700"
                                     color="white"
@@ -602,13 +601,14 @@ const Pong = () => {
                             </HStack>
 
                             <NumberInput
-                                value={qFreq}
-                                onChange={(valueString) => setqFreq(parseInt(valueString) || 0)}
+                                // value={qFreq}
+                                // onChange={(valueString) => setqFreq(parseInt(valueString) || 0)}
                                 step={1}
                                 min={3}
                                 max={1000}
                                 size={{ base: "md", md: "md" }}
-                                width="130px"
+                                width={{base: "165px",sm: "165px", md: "170px", lg: "180px", xl: "200px"}}
+                                id='qFreq_3425'
                             >
                                 <NumberInputField
                                     color="purple.600"
