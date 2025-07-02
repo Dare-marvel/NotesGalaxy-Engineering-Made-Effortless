@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import {
   Box,
   VStack,
-  HStack,
   Text,
   Heading,
   Container,
@@ -15,10 +14,8 @@ import {
   Flex,
   Grid,
   GridItem,
-  Icon,
   useBreakpointValue,
 } from '@chakra-ui/react';
-import { ChevronDownIcon } from '@chakra-ui/icons';
 import logo from '../assets/logo.png';
 
 import adwait from '../assets/adwait-purao.png';

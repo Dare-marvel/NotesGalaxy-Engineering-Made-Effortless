@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import {
   Box,
   VStack,
@@ -13,7 +13,6 @@ import {
   Heading,
   Badge,
   Flex,
-  Icon,
   Input,
   InputGroup,
   InputLeftElement

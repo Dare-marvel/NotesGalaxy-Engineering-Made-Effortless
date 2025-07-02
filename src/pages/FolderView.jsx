@@ -7,7 +7,6 @@ import {
   Tooltip,
   Button,
   Td,
-  Spacer,
   Tr,
   Th,
   Container,

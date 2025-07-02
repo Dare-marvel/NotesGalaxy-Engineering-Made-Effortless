@@ -13,7 +13,6 @@ import {
   VStack,
   // Icon,
   // Flex,
-  Badge,
   // Image,
 } from '@chakra-ui/react';
 

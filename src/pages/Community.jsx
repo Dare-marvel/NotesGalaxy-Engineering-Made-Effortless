@@ -33,7 +33,7 @@ import {
   ModalOverlay,
   ModalContent,
   ModalHeader,
-  ModalFooter,
+  // ModalFooter,
   ModalBody,
   ModalCloseButton,
   useDisclosure,
@@ -41,7 +41,6 @@ import {
   Alert,
   AlertIcon,
   // Collapse,
-  Stack,
   useToast
 } from '@chakra-ui/react';
 
