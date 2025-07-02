@@ -28,7 +28,6 @@ import SidebarAdRight from '../SidebarAd/SidebarAdRight';
 import SidebarAdLeft from '../SidebarAd/SidebarAdLeft';
 
 import subjectsList from '../../config/subjectsList';
-import QUESTIONS from './constants/QuestionsList';
 
 const GRID_SIZE = 20;
 const INITIAL_SNAKE = [{ x: 10, y: 10 }];

@@ -853,7 +853,12 @@ const Pong = () => {
             </Box>
 
             {/* Question Modal */}
-            <Modal isOpen={isOpen} onClose={() => { }} closeOnOverlayClick={false} size="lg">
+            <Modal 
+            isOpen={isOpen} 
+            onClose={() => { }} 
+            closeOnOverlayClick={false} 
+            size="lg"
+            >
                 <ModalOverlay bg="blackAlpha.800" />
                 <ModalContent bg="white" border="2px solid" borderColor="purple.400">
                     <ModalHeader bg="purple.500" color="white" borderRadius="md md 0 0">
