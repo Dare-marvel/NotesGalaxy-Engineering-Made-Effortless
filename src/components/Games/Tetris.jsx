@@ -105,6 +105,7 @@ const SpaceTetris = () => {
         description: `Amazing! You scored ${newScore.toLocaleString()} points!`,
         status: 'success',
         duration: 1200,
+        isClosable: true,
         position: 'top-right',
       });
     }
@@ -206,6 +207,7 @@ const SpaceTetris = () => {
         description: `+${points} points`,
         status: 'success',
         duration: 1000,
+        isClosable: true,
         position: 'top-right',
       });
     }
@@ -256,6 +258,7 @@ const SpaceTetris = () => {
         description: `Puzzle solved! +${bonusPoints} bonus points and faster gameplay!`,
         status: 'success',
         duration: 1000,
+        isClosable: true,
         position: 'top-right',
       });
 
@@ -315,7 +318,8 @@ const SpaceTetris = () => {
           title: 'Game Over!',
           description: `Final Score: ${score} | Puzzles Solved: ${puzzlesSolved}`,
           status: 'error',
-          duration: 3000,
+          duration: 2000,
+          isClosable: true,
           position: 'top-right',
         });
         return;

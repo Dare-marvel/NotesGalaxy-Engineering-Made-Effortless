@@ -216,8 +216,9 @@ const Pong = () => {
                     title: "Correct!",
                     description: "Great job! Continue playing.",
                     status: "success",
-                    duration: 1000,
+                    duration: 500,
                     isClosable: true,
+                    position: 'top',
                 });
                 // Bonus points for correct answer
                 setGameState(prev => {
@@ -233,7 +234,8 @@ const Pong = () => {
                     title: "Incorrect",
                     description: `The correct answer was: ${currentQuestion.options[currentQuestion.correct]}`,
                     status: "error",
-                    duration: 1000,
+                    duration: 500,
+                    position: 'top',
                     isClosable: true,
                 });
             }

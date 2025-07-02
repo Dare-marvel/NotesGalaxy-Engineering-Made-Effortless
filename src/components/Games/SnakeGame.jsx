@@ -97,7 +97,8 @@ export default function EnhancedEducationalSnakeGame() {
         title: "New High Score! 🏆",
         description: `Amazing! You scored ${newScore} points!`,
         status: "success",
-        duration: 3000,
+        duration: 1000,
+        position: 'top-right',
         isClosable: true,
       });
     }
@@ -193,7 +194,8 @@ export default function EnhancedEducationalSnakeGame() {
         title: "Correct! 🎉",
         description: `+${points} points`,
         status: "success",
-        duration: 2000,
+        duration: 1000,
+        position: 'top-right',
         isClosable: true,
       });
 
@@ -204,7 +206,8 @@ export default function EnhancedEducationalSnakeGame() {
           title: "Level Up! 🚀",
           description: `Now on level ${level + 1}`,
           status: "info",
-          duration: 2000,
+          duration: 1100,
+          position: 'top-right',
           isClosable: true,
         });
       }
@@ -213,8 +216,9 @@ export default function EnhancedEducationalSnakeGame() {
         title: "Wrong Answer ❌",
         description: "Try again next time!",
         status: "error",
-        duration: 2000,
+        duration: 1000,
         isClosable: true,
+        position: 'top-right',
       });
     }
 
