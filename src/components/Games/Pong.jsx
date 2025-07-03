@@ -22,6 +22,7 @@ import {
 } from '@chakra-ui/react';
 
 import { InfoIcon } from '@chakra-ui/icons';
+import './Pong.css'
 
 import SidebarAdRight from '../SidebarAd/SidebarAdRight';
 import SidebarAdLeft from '../SidebarAd/SidebarAdLeft';
@@ -813,26 +814,158 @@ const Pong = () => {
         const winnerColor = gameState.winner === 'player1' ? '#00d4ff' : '#ff006e';
         return (
             <Box
-                position="absolute"
-                top="50%"
-                left="50%"
-                transform="translate(-50%, -50%)"
-                bg="rgba(124, 45, 208, 0.9)"
-                color="white"
-                p={8}
-                borderRadius="lg"
-                textAlign="center"
-                zIndex={1000}
+                position="fixed"
+                top="0"
+                left="0"
+                width="100vw"
+                height="100vh"
+                bg="linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f0f23 100%)"
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                zIndex={2}
+                overflow="hidden"
             >
-                <Text fontSize="3xl" fontWeight="bold" color={winnerColor} mb={4}>
-                    🎉 {winnerName} Wins! 🎉
-                </Text>
-                <Text fontSize="xl" mb={4}>
-                    Final Score: {gameState.player1.score} - {gameState.player2.score}
-                </Text>
-                <Button colorScheme="purple" onClick={resetGame}>
-                    Go Back
-                </Button>
+                {/* Stars Background */}
+                <Box
+                    position="absolute"
+                    top="0"
+                    left="0"
+                    width="100%"
+                    height="100%"
+                    background="radial-gradient(2px 2px at 20px 30px, white, transparent),
+                           radial-gradient(2px 2px at 40px 70px, white, transparent),
+                           radial-gradient(1px 1px at 90px 40px, white, transparent),
+                           radial-gradient(1px 1px at 130px 80px, white, transparent),
+                           radial-gradient(2px 2px at 160px 30px, white, transparent),
+                           radial-gradient(1px 1px at 200px 60px, white, transparent),
+                           radial-gradient(2px 2px at 240px 90px, white, transparent),
+                           radial-gradient(1px 1px at 280px 20px, white, transparent),
+                           radial-gradient(1px 1px at 320px 50px, white, transparent),
+                           radial-gradient(2px 2px at 360px 80px, white, transparent),
+                           radial-gradient(1px 1px at 400px 30px, white, transparent),
+                           radial-gradient(2px 2px at 440px 60px, white, transparent),
+                           radial-gradient(1px 1px at 480px 90px, white, transparent),
+                           radial-gradient(2px 2px at 520px 20px, white, transparent),
+                           radial-gradient(1px 1px at 560px 50px, white, transparent),
+                           radial-gradient(2px 2px at 600px 80px, white, transparent),
+                           radial-gradient(1px 1px at 640px 30px, white, transparent),
+                           radial-gradient(2px 2px at 680px 60px, white, transparent),
+                           radial-gradient(1px 1px at 720px 90px, white, transparent),
+                           radial-gradient(2px 2px at 760px 20px, white, transparent)"
+                    backgroundSize="800px 100px"
+                    animation="twinkle 3s ease-in-out infinite"
+                />
+
+                {/* Floating Particles */}
+                <Box
+                    position="absolute"
+                    top="10%"
+                    left="10%"
+                    width="8px"
+                    height="8px"
+                    bg="#00d4ff"
+                    borderRadius="50%"
+                    animation="float1 4s ease-in-out infinite"
+                    boxShadow="0 0 16px #00d4ff"
+                />
+                <Box
+                    position="absolute"
+                    top="20%"
+                    right="15%"
+                    width="6px"
+                    height="6px"
+                    bg="#ff006e"
+                    borderRadius="50%"
+                    animation="float2 3s ease-in-out infinite"
+                    boxShadow="0 0 12px #ff006e"
+                />
+                <Box
+                    position="absolute"
+                    bottom="30%"
+                    left="20%"
+                    width="10px"
+                    height="10px"
+                    bg="#ffd700"
+                    borderRadius="50%"
+                    animation="float3 5s ease-in-out infinite"
+                    boxShadow="0 0 20px #ffd700"
+                />
+                <Box
+                    position="absolute"
+                    top="40%"
+                    left="60%"
+                    width="7px"
+                    height="7px"
+                    bg="#9d4edd"
+                    borderRadius="50%"
+                    animation="float1 3.5s ease-in-out infinite"
+                    boxShadow="0 0 14px #9d4edd"
+                />
+                <Box
+                    position="absolute"
+                    bottom="20%"
+                    right="25%"
+                    width="9px"
+                    height="9px"
+                    bg="#06ffa5"
+                    borderRadius="50%"
+                    animation="float2 4.5s ease-in-out infinite"
+                    boxShadow="0 0 18px #06ffa5"
+                />
+
+                {/* Winner Modal */}
+                <Box
+                    bg="rgba(255, 255, 255, 0.95)"
+                    backdropFilter="blur(10px)"
+                    borderRadius="24px"
+                    p={12}
+                    textAlign="center"
+                    boxShadow="0 20px 40px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.1)"
+                    border="2px solid rgba(255, 255, 255, 0.2)"
+                    animation="modalAppear 0.8s ease-out"
+                    maxW="90vw"
+                    maxH="90vh"
+                >
+                    <Text
+                        fontSize="3xl"
+                        fontWeight="bold"
+                        color={winnerColor}
+                        mb={6}
+                        textShadow={`0 0 20px ${winnerColor}`}
+                        animation="pulse 2s ease-in-out infinite"
+                    >
+                        🚀 {winnerName} Wins! 🏆
+                    </Text>
+
+                    <Text
+                        fontSize="xl"
+                        color="#333"
+                        mb={8}
+                        fontWeight="600"
+                    >
+                        Final Score: {gameState.player1.score} - {gameState.player2.score}
+                    </Text>
+
+                    <Button
+                        onClick={resetGame}
+                        bg="linear-gradient(45deg, #667eea 0%, #764ba2 100%)"
+                        color="white"
+                        borderRadius="12px"
+                        px={8}
+                        py={4}
+                        fontSize="lg"
+                        fontWeight="bold"
+                        boxShadow="0 4px 15px rgba(102, 126, 234, 0.4)"
+                        _hover={{
+                            transform: 'translateY(-2px)',
+                            boxShadow: '0 8px 25px rgba(102, 126, 234, 0.6)'
+                        }}
+                        transition="all 0.3s ease"
+                    >
+                        🌌 Return to Space
+                    </Button>
+                </Box>
             </Box>
         );
     }
