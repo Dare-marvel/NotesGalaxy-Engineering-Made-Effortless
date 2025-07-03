@@ -153,7 +153,7 @@ const SidebarAdRight = ({
         </Box>
 
         {/* Ad 2 */}
-        <Box
+        {/* <Box
           className="ad-container-2"
           width="100%"
           minHeight="600px"
@@ -165,10 +165,10 @@ const SidebarAdRight = ({
           <AdErrorBoundary>
             <GoogleAd adSlot="3253352242" />
           </AdErrorBoundary>
-        </Box>
+        </Box> */}
 
         {/* Ad 3 */}
-        <Box
+        {/* <Box
           className="ad-container-3"
           width="100%"
           minHeight="600px"
@@ -180,7 +180,7 @@ const SidebarAdRight = ({
           <AdErrorBoundary>
             <GoogleAd adSlot="7001025560" />
           </AdErrorBoundary>
-        </Box>
+        </Box> */}
       </VStack>
     </Box>
   );

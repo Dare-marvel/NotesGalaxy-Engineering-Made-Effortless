@@ -156,7 +156,7 @@ const SidebarAdLeft = ({
         </Box>
 
         {/* Ad 2 */}
-        <Box
+        {/* <Box
           className="ad-container-2"
           width="100%"
           minHeight="600px"
@@ -177,10 +177,10 @@ const SidebarAdLeft = ({
             data-ad-format="vertical"
             data-full-width-responsive="true"
           />
-        </Box>
+        </Box> */}
 
         {/* Ad 3 */}
-        <Box
+        {/* <Box
           className="ad-container-3"
           width="100%"
           minHeight="600px"
@@ -198,78 +198,6 @@ const SidebarAdLeft = ({
             }}
             data-ad-client='ca-pub-8107450590774580'
             data-ad-slot='8042079841'
-            data-ad-format="vertical"
-            data-full-width-responsive="true"
-          />
-        </Box>
-
-        {/* Ad 4 */}
-        {/* <Box
-          className="ad-container-4"
-          width="100%"
-          minHeight="600px"
-          display="block"
-          textAlign="center"
-          border="1px dashed gray"
-          position="relative"
-        >
-          <ins
-            className="adsbygoogle"
-            style={{ 
-              display: "block",
-              width: "130px",
-              height: "600px"
-            }}
-            data-ad-client={adClient}
-            data-ad-slot={slotId4}
-            data-ad-format="vertical"
-            data-full-width-responsive="true"
-          />
-        </Box> */}
-
-        {/* Ad 5 */}
-        {/* <Box
-          className="ad-container-5"
-          width="100%"
-          minHeight="600px"
-          display="block"
-          textAlign="center"
-          border="1px dashed gray"
-          position="relative"
-        >
-          <ins
-            className="adsbygoogle"
-            style={{ 
-              display: "block",
-              width: "130px",
-              height: "600px"
-            }}
-            data-ad-client={adClient}
-            data-ad-slot={slotId5}
-            data-ad-format="vertical"
-            data-full-width-responsive="true"
-          />
-        </Box> */}
-
-        {/* Ad 6 */}
-        {/* <Box
-          className="ad-container-6"
-          width="100%"
-          minHeight="600px"
-          display="block"
-          textAlign="center"
-          border="1px dashed gray"
-          position="relative"
-        >
-          <ins
-            className="adsbygoogle"
-            style={{ 
-              display: "block",
-              width: "130px",
-              height: "600px"
-            }}
-            data-ad-client={adClient}
-            data-ad-slot={slotId6}
             data-ad-format="vertical"
             data-full-width-responsive="true"
           />
