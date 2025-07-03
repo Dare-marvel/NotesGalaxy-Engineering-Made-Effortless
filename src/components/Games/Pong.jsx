@@ -205,15 +205,24 @@ const Pong = () => {
 
     // Question system
     const showQuestion = useCallback(() => {
-        const questions = gameState.currentQuestions;
-        if (questions && questions.length > 0) {
-            const randomQuestion = questions[Math.floor(Math.random() * questions.length)];
-            setCurrentQuestion(randomQuestion);
-            setSelectedAnswer('');
-            setGameState(prev => ({ ...prev, gameRunning: false }));
-            onOpen();
-        }
-    }, [selectedSubject, onOpen]);
+        // Access current questions directly from state updater
+        setGameState(prev => {
+            const questions = prev.currentQuestions;
+            console.log("Showing question with currentQuestions", questions);
+
+            if (questions && questions.length > 0) {
+                const randomQuestion = questions[Math.floor(Math.random() * questions.length)];
+                setCurrentQuestion(randomQuestion);
+                setSelectedAnswer('');
+                onOpen();
+
+                // Stop the game while showing question
+                return { ...prev, gameRunning: false };
+            }
+
+            return prev;
+        });
+    }, [onOpen]);
 
     const handleAnswerSubmit = () => {
         if (currentQuestion && selectedAnswer !== '') {
@@ -547,6 +556,7 @@ const Pong = () => {
         let questions = [];
         try {
             questions = await loadSubjectQuestions(selectedSubject);
+            console.log("Loaded questions for subject:", selectedSubject, questions);
         }
         catch (error) {
             console.error("Error loading questions:", error);
