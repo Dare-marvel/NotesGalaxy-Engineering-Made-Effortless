@@ -1,7 +1,32 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Box, useColorModeValue, VStack } from '@chakra-ui/react';
 import { useWindowSize } from '../../hooks/useWindowSize';
-import { useAdSense } from '../../hooks/useAdSense'; // Import the hook
+
+// Individual Google Ad Component
+const GoogleAd = ({ adSlot, width = "130px", height = "600px" }) => {
+  useEffect(() => {
+    try {
+      (window.adsbygoogle = window.adsbygoogle || []).push({});
+    } catch (e) {
+      console.error("AdSense error:", e);
+    }
+  }, []);
+
+  return (
+    <ins
+      className="adsbygoogle"
+      style={{ 
+        display: "block",
+        width: width,
+        height: height
+      }}
+      data-ad-client='ca-pub-8107450590774580'
+      data-ad-slot={adSlot}
+      data-ad-format="vertical"
+      data-full-width-responsive="true"
+    />
+  );
+};
 
 const SidebarAdRight = ({ 
   position = 'right', 
@@ -10,20 +35,9 @@ const SidebarAdRight = ({
   const bgColor = useColorModeValue('gray.50', 'gray.700');
   const borderColor = useColorModeValue('gray.200', 'gray.600');
   const [headerHeight, setHeaderHeight] = useState(0);
-  const containerRef = useRef(null);
 
   // Define breakpoint for medium screens
-  const isMobile = width < 768;
-
-  // Use the AdSense hook
-  const { isAdSenseLoaded, initializeAds, resetAds } = useAdSense(!isMobile);
-
-  // Ad configurations
-  const adConfigs = [
-    { slot: '3152616213', id: 'ad-1' },
-    { slot: '3253352242', id: 'ad-2' },
-    { slot: '7001025560', id: 'ad-3' }
-  ];
+  const isMobile = width < 530;
 
   // Detect header height dynamically
   useEffect(() => {
@@ -62,50 +76,11 @@ const SidebarAdRight = ({
     return () => window.removeEventListener('resize', detectHeaderHeight);
   }, []);
 
-  // Initialize ads when conditions are met
-  useEffect(() => {
-    if (!isMobile && isAdSenseLoaded && containerRef.current) {
-      const timer = setTimeout(() => {
-        initializeAds(containerRef);
-      }, 1000);
-
-      return () => clearTimeout(timer);
-    }
-  }, [isMobile, isAdSenseLoaded, initializeAds]);
-
-  // Handle mobile/desktop switching
-  useEffect(() => {
-    if (isMobile) {
-      resetAds();
-      // Clean up ads when switching to mobile
-      if (containerRef.current) {
-        const adElements = containerRef.current.querySelectorAll('.adsbygoogle');
-        adElements.forEach(ad => {
-          ad.innerHTML = '';
-          ad.removeAttribute('data-adsbygoogle-status');
-        });
-      }
-    }
-  }, [isMobile, resetAds]);
-
-  // Handle visibility change
-  useEffect(() => {
-    const handleVisibilityChange = () => {
-      if (!document.hidden && !isMobile && isAdSenseLoaded && containerRef.current) {
-        setTimeout(() => initializeAds(containerRef), 1000);
-      }
-    };
-
-    document.addEventListener('visibilitychange', handleVisibilityChange);
-    return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
-  }, [isMobile, isAdSenseLoaded, initializeAds]);
-
   // If on mobile, don't render the component at all
   if (isMobile) return null;
 
   return (
     <Box
-      ref={containerRef}
       position="fixed"
       top={`${headerHeight}px`}
       bottom="0"
@@ -128,31 +103,44 @@ const SidebarAdRight = ({
       }}
     >
       <VStack spacing={4} align="stretch">
-        {adConfigs.map((config, index) => (
-          <Box
-            key={`${config.id}-${Date.now()}-${index}`} // Unique key to prevent conflicts
-            className={`ad-container-${index + 1}`}
-            width="100%"
-            minHeight="600px"
-            display="block"
-            textAlign="center"
-            border="1px dashed gray"
-            position="relative"
-          >
-            <ins
-              className="adsbygoogle"
-              style={{ 
-                display: "block",
-                width: "130px",
-                height: "600px"
-              }}
-              data-ad-client="ca-pub-8107450590774580"
-              data-ad-slot={config.slot}
-              data-ad-format="vertical"
-              data-full-width-responsive="true"
-            />
-          </Box>
-        ))}
+        {/* Ad 1 */}
+        <Box
+          className="ad-container-1"
+          width="100%"
+          minHeight="600px"
+          display="block"
+          textAlign="center"
+          border="1px dashed gray"
+          position="relative"
+        >
+          <GoogleAd adSlot="3152616213" />
+        </Box>
+
+        {/* Ad 2 */}
+        <Box
+          className="ad-container-2"
+          width="100%"
+          minHeight="600px"
+          display="block"
+          textAlign="center"
+          border="1px dashed gray"
+          position="relative"
+        >
+          <GoogleAd adSlot="3253352242" />
+        </Box>
+
+        {/* Ad 3 */}
+        <Box
+          className="ad-container-3"
+          width="100%"
+          minHeight="600px"
+          display="block"
+          textAlign="center"
+          border="1px dashed gray"
+          position="relative"
+        >
+          <GoogleAd adSlot="7001025560" />
+        </Box>
       </VStack>
     </Box>
   );
