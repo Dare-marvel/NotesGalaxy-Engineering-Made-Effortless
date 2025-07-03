@@ -8,17 +8,11 @@ const SidebarAdRight = ({ position = 'right' }) => {
   const borderColor = useColorModeValue('gray.200', 'gray.600');
   const [headerHeight, setHeaderHeight] = useState(0);
   const adsInitialized = useRef(false);
-
-  // Define breakpoint for mobile devices
   const isMobile = width < 768;
 
-  // Load the AdSense script if it hasn't been loaded already
+  // Load AdSense script once globally
   useEffect(() => {
-    if (
-      !document.querySelector(
-        'script[src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"]'
-      )
-    ) {
+    if (!document.querySelector('script[src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"]')) {
       const script = document.createElement('script');
       script.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js';
       script.async = true;
@@ -27,16 +21,12 @@ const SidebarAdRight = ({ position = 'right' }) => {
     }
   }, []);
 
-  // Dynamically detect header height to position the sidebar correctly
+  // Detect header height dynamically
   useEffect(() => {
     const detectHeaderHeight = () => {
       const headerSelectors = [
-        'header',
-        '.header',
-        '.navbar',
-        '.nav-bar',
-        '[data-testid="header"]',
-        '.chakra-ui-header'
+        'header', '.header', '.navbar', '.nav-bar',
+        '[data-testid="header"]', '.chakra-ui-header'
       ];
       let detectedHeight = 0;
 
@@ -49,8 +39,8 @@ const SidebarAdRight = ({ position = 'right' }) => {
       }
 
       if (detectedHeight === 0) {
-        const viewportTop = document.elementFromPoint(window.innerWidth / 2, 50);
-        if (viewportTop && viewportTop !== document.body && viewportTop !== document.documentElement) {
+        const fallbackElement = document.elementFromPoint(window.innerWidth / 2, 50);
+        if (fallbackElement && fallbackElement !== document.body && fallbackElement !== document.documentElement) {
           detectedHeight = 60;
         }
       }
@@ -63,7 +53,7 @@ const SidebarAdRight = ({ position = 'right' }) => {
     return () => window.removeEventListener('resize', detectHeaderHeight);
   }, []);
 
-  // Helper function to wait until window.adsbygoogle is available
+  // Retry mechanism for AdSense readiness
   const waitForAdsbyGoogle = (maxRetries = 10, delay = 500) => {
     return new Promise((resolve, reject) => {
       let attempts = 0;
@@ -73,52 +63,47 @@ const SidebarAdRight = ({ position = 'right' }) => {
           resolve(true);
         } else if (attempts >= maxRetries) {
           clearInterval(interval);
-          reject(new Error('adsbygoogle not loaded'));
+          reject('adsbygoogle not loaded');
         }
         attempts++;
       }, delay);
     });
   };
 
-  // Initialize the ads if not on mobile and if they have not already been initialized
+  // Initialize ads once on desktop
   useEffect(() => {
     if (!isMobile && !adsInitialized.current) {
-      waitForAdsbyGoogle()
-        .then(() => {
-          const adElements = document.querySelectorAll('.adsbygoogle');
-          const uninitializedAds = Array.from(adElements).filter(
-            ad =>
-              !ad.getAttribute('data-adsbygoogle-status') &&
-              ad.innerHTML.trim() === ''
-          );
+      waitForAdsbyGoogle().then(() => {
+        const adElements = document.querySelectorAll('.adsbygoogle');
+        const uninitializedAds = Array.from(adElements).filter(
+          ad =>
+            !ad.getAttribute('data-adsbygoogle-status') &&
+            ad.innerHTML.trim() === ''
+        );
 
-          if (uninitializedAds.length > 0) {
-            console.log(`Initializing ${uninitializedAds.length} ads`);
-            uninitializedAds.forEach(() => {
-              try {
-                (window.adsbygoogle = window.adsbygoogle || []).push({});
-              } catch (error) {
-                console.error('Ad push error:', error);
-              }
-            });
-            adsInitialized.current = true;
-            console.log('All ads initialized successfully');
+        uninitializedAds.forEach(() => {
+          try {
+            (window.adsbygoogle = window.adsbygoogle || []).push({});
+          } catch (e) {
+            console.error('Ad push error:', e);
           }
-        })
-        .catch((err) => {
-          console.error('Failed to load AdSense script:', err);
         });
+
+        if (uninitializedAds.length > 0) {
+          console.log(`Initialized ${uninitializedAds.length} ads`);
+          adsInitialized.current = true;
+        }
+      }).catch((err) => {
+        console.error('AdSense script failed to load:', err);
+      });
     }
   }, [isMobile]);
 
-  // Reset the ads initialization flag when switching to mobile
+  // Reset flag when switching to mobile
   useEffect(() => {
-    if (isMobile) {
-      adsInitialized.current = false;
-    }
+    if (isMobile) adsInitialized.current = false;
   }, [isMobile]);
 
-  // Do not render the sidebar on mobile devices
   if (isMobile) return null;
 
   return (
@@ -143,18 +128,11 @@ const SidebarAdRight = ({ position = 'right' }) => {
       }}
     >
       <VStack spacing={4} align="stretch">
-        {/* Ad 1 */}
-        <Box
-          className="ad-container-1"
-          width="100%"
-          display="block"
-          textAlign="center"
-          border="1px dashed gray"
-          position="relative"
-        >
+        {/* Ad Slot 1 */}
+        <Box textAlign="center">
           <ins
             className="adsbygoogle"
-            style={{ display: 'block', width: '130px', height: '600px' }}
+            style={{ display: 'block' }}
             data-ad-client="ca-pub-8107450590774580"
             data-ad-slot="3152616213"
             data-ad-format="vertical"
@@ -162,18 +140,11 @@ const SidebarAdRight = ({ position = 'right' }) => {
           />
         </Box>
 
-        {/* Ad 2 */}
-        <Box
-          className="ad-container-2"
-          width="100%"
-          display="block"
-          textAlign="center"
-          border="1px dashed gray"
-          position="relative"
-        >
+        {/* Ad Slot 2 */}
+        <Box textAlign="center">
           <ins
             className="adsbygoogle"
-            style={{ display: 'block', width: '130px', height: '600px' }}
+            style={{ display: 'block' }}
             data-ad-client="ca-pub-8107450590774580"
             data-ad-slot="3253352242"
             data-ad-format="vertical"
@@ -181,18 +152,11 @@ const SidebarAdRight = ({ position = 'right' }) => {
           />
         </Box>
 
-        {/* Ad 3 */}
-        <Box
-          className="ad-container-3"
-          width="100%"
-          display="block"
-          textAlign="center"
-          border="1px dashed gray"
-          position="relative"
-        >
+        {/* Ad Slot 3 */}
+        <Box textAlign="center">
           <ins
             className="adsbygoogle"
-            style={{ display: 'block', width: '130px', height: '600px' }}
+            style={{ display: 'block' }}
             data-ad-client="ca-pub-8107450590774580"
             data-ad-slot="7001025560"
             data-ad-format="vertical"
