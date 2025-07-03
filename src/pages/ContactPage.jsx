@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 import {
   Box,
   VStack,
@@ -65,6 +65,11 @@ const ContactPage = () => {
   // const [name, setName] = useState('');
   // const [email, setEmail] = useState('');
   // const [message, setMessage] = useState('');
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+    document.title = "Sangrah | Contact Us";
+  }, []);
+
   const [subjects, setSubjects] = useState([]);
   const [loading, setLoading] = useState(false);
   const [isHovered, setIsHovered] = useState(false);

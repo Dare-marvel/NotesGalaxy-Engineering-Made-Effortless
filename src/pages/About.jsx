@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Box,
   VStack,
@@ -26,17 +26,15 @@ import SidebarAdRight from '../components/SidebarAd/SidebarAdRight';
 import { keyframes } from '@emotion/react';
 
 // Keyframe animations
-const float = keyframes`
-  0%, 100% { transform: translateY(0px) rotate(0deg); }
-  50% { transform: translateY(-20px) rotate(180deg); }
-`;
+// const float = keyframes`
+//   0%, 100% { transform: translateY(0px) rotate(0deg); }
+//   50% { transform: translateY(-20px) rotate(180deg); }
+// `;
 
 const twinkle = keyframes`
   0%, 100% { opacity: 0.3; transform: scale(1); }
   50% { opacity: 1; transform: scale(1.2); }
 `;
-
-
 
 const slideUp = keyframes`
   0% { opacity: 0; transform: translateY(50px); }
@@ -63,60 +61,60 @@ const pulse = keyframes`
 // );
 
 // Enhanced floating planet component
-const FloatingPlanet = ({ size, type, top, left, right = "0%", duration = "20s" }) => {
-  const planetStyles = {
-    jupiter: {
-      background: `radial-gradient(circle at 30% 30%, #FFD700, #FF8C00, #8B4513, #654321)`,
-      boxShadow: `
-        0 0 40px rgba(255, 215, 0, 0.4),
-        inset -20px -20px 40px rgba(0, 0, 0, 0.3),
-        inset 20px 20px 40px rgba(255, 255, 255, 0.1)
-      `
-    },
-    neptune: {
-      background: `radial-gradient(circle at 30% 30%, #4169E1, #0000CD, #191970, #000080)`,
-      boxShadow: `
-        0 0 40px rgba(65, 105, 225, 0.5),
-        inset -15px -15px 30px rgba(0, 0, 0, 0.4),
-        inset 15px 15px 30px rgba(255, 255, 255, 0.1)
-      `
-    },
-    saturn: {
-      background: `radial-gradient(circle at 30% 30%, #FAD5A5, #DEB887, #CD853F, #8B7355)`,
-      boxShadow: `
-        0 0 35px rgba(250, 213, 165, 0.4),
-        inset -18px -18px 35px rgba(0, 0, 0, 0.3),
-        inset 18px 18px 35px rgba(255, 255, 255, 0.15)
-      `
-    }
-  };
+// const FloatingPlanet = ({ size, type, top, left, right = "0%", duration = "20s" }) => {
+//   const planetStyles = {
+//     jupiter: {
+//       background: `radial-gradient(circle at 30% 30%, #FFD700, #FF8C00, #8B4513, #654321)`,
+//       boxShadow: `
+//         0 0 40px rgba(255, 215, 0, 0.4),
+//         inset -20px -20px 40px rgba(0, 0, 0, 0.3),
+//         inset 20px 20px 40px rgba(255, 255, 255, 0.1)
+//       `
+//     },
+//     neptune: {
+//       background: `radial-gradient(circle at 30% 30%, #4169E1, #0000CD, #191970, #000080)`,
+//       boxShadow: `
+//         0 0 40px rgba(65, 105, 225, 0.5),
+//         inset -15px -15px 30px rgba(0, 0, 0, 0.4),
+//         inset 15px 15px 30px rgba(255, 255, 255, 0.1)
+//       `
+//     },
+//     saturn: {
+//       background: `radial-gradient(circle at 30% 30%, #FAD5A5, #DEB887, #CD853F, #8B7355)`,
+//       boxShadow: `
+//         0 0 35px rgba(250, 213, 165, 0.4),
+//         inset -18px -18px 35px rgba(0, 0, 0, 0.3),
+//         inset 18px 18px 35px rgba(255, 255, 255, 0.15)
+//       `
+//     }
+//   };
 
-  return (
-    <Box
-      position="absolute"
-      width={size}
-      height={size}
-      borderRadius="50%"
-      background={planetStyles[type].background}
-      boxShadow={planetStyles[type].boxShadow}
-      top={top}
-      left={left}
-      right={right}
-      animation={`${float} ${duration} ease-in-out infinite`}
-      _before={{
-        content: '""',
-        position: 'absolute',
-        top: '20%',
-        left: '25%',
-        width: '30%',
-        height: '25%',
-        borderRadius: '50%',
-        background: 'rgba(255, 255, 255, 0.3)',
-        filter: 'blur(8px)'
-      }}
-    />
-  );
-};
+//   return (
+//     <Box
+//       position="absolute"
+//       width={size}
+//       height={size}
+//       borderRadius="50%"
+//       background={planetStyles[type].background}
+//       boxShadow={planetStyles[type].boxShadow}
+//       top={top}
+//       left={left}
+//       right={right}
+//       animation={`${float} ${duration} ease-in-out infinite`}
+//       _before={{
+//         content: '""',
+//         position: 'absolute',
+//         top: '20%',
+//         left: '25%',
+//         width: '30%',
+//         height: '25%',
+//         borderRadius: '50%',
+//         background: 'rgba(255, 255, 255, 0.3)',
+//         filter: 'blur(8px)'
+//       }}
+//     />
+//   );
+// };
 
 const AboutUs = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -131,6 +129,8 @@ const AboutUs = () => {
   `;
 
   useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+    document.title = "NotesGalaxy | About Us";
     setIsVisible(true);
   }, []);
 
@@ -285,9 +285,9 @@ const AboutUs = () => {
           >
             Frequently Asked Questions
           </Heading>
-          <Accordion 
-          px={{ base: 3, sm: 4, md: 12, lg: 12 }}
-          allowMultiple>
+          <Accordion
+            px={{ base: 3, sm: 4, md: 12, lg: 12 }}
+            allowMultiple>
             {faqData.map((faq, index) => (
               <AccordionItem key={index} border="none" mb={4}>
                 <AccordionButton

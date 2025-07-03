@@ -1,4 +1,3 @@
-import React from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {
   Box,
@@ -17,7 +16,7 @@ import {
 import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
 import { motion } from 'framer-motion';
 import NavItem from './NavItem';
-import logo from '../../assets/logo.png';
+import logo from '../../../public/logo.png';
 import { keyframes } from "@emotion/react";
 
 const MotionImage = motion(Image);
@@ -66,12 +65,13 @@ const Navbar = () => {
               boxSize="40px"
               whileTap={{ rotate: 20, scale: 1.1 }}
               transition={{ type: 'spring', stiffness: 300 }}
+              loading="lazy"
             />
             <Text
               fontSize="xl"
               fontWeight="bold"
               bgGradient="linear(to-r, cyan.400, blue.500, purple.600)"
-              animation={`${spaceGlow} 3s infinite alternate`}
+              // animation={`${spaceGlow} 3s infinite alternate`}
               bgClip="text"
             >
               NotesGalaxy

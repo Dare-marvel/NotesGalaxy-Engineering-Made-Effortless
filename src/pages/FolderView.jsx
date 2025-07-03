@@ -1,4 +1,4 @@
-import React, { useState, useRef, Suspense, lazy } from 'react';
+import React, { useState, useRef,useEffect, Suspense, lazy } from 'react';
 import {
   Box,
   Table,
@@ -46,6 +46,10 @@ const slideInUp = keyframes`
 `;
 
 const FolderView = () => {
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+    document.title = "NotesGalaxy | All Engineering Notes at One Place";
+  }, []);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedFile, setSelectedFile] = useState(null);
   const [hoveredItem, setHoveredItem] = useState(null);

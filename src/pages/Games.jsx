@@ -1,4 +1,4 @@
-import React from 'react';
+import {useState,useEffect} from 'react';
 import {
   Box,
   Container,
@@ -78,15 +78,19 @@ const PongIcon = () => (
 );
 
 
-const ComingSoonIcon = () => (
-  <svg width="60" height="60" viewBox="0 0 60 60" fill="none">
-    <circle cx="30" cy="30" r="25" stroke="currentColor" strokeWidth="2" strokeDasharray="5,5" />
-    <text x="30" y="35" textAnchor="middle" fontSize="20" fill="currentColor">?</text>
-  </svg>
-);
+// const ComingSoonIcon = () => (
+//   <svg width="60" height="60" viewBox="0 0 60 60" fill="none">
+//     <circle cx="30" cy="30" r="25" stroke="currentColor" strokeWidth="2" strokeDasharray="5,5" />
+//     <text x="30" y="35" textAnchor="middle" fontSize="20" fill="currentColor">?</text>
+//   </svg>
+// );
 
 const GameCard = ({ game, index }) => {
-  const [isHovered, setIsHovered] = React.useState(false);
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+    document.title = "NotesGalaxy | Games";
+  }, []);
+  const [isHovered, setIsHovered] = useState(false);
   const navigate = useNavigate();
 
   const cardBg = useColorModeValue('rgba(255, 255, 255, 0.1)', 'rgba(255, 255, 255, 0.05)');

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Box,
   Container,
@@ -795,6 +795,8 @@ export default function SpaceCommunityPage() {
   });
 
   useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+    document.title = "NotesGalaxy | Community";
     incrementVisitorCount();
     fetchUsers();
     fetchStats();
@@ -966,10 +968,10 @@ export default function SpaceCommunityPage() {
           >
             <Grid
               templateColumns={{
-                base: "1fr",                 
+                base: "1fr",
                 md: "repeat(2, 210px)",
-                lg: "repeat(2, 300px)",       
-                xl: "repeat(4, 180px)"        
+                lg: "repeat(2, 300px)",
+                xl: "repeat(4, 180px)"
               }}
               gap={6}
               justifyContent="center"

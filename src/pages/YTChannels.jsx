@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import {
   Box,
   VStack,
@@ -483,6 +483,10 @@ const SemesterSection = ({ semester, subjects }) => (
 );
 
 export default function YouTubeChannelsPage() {
+  useEffect(() => {
+      window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+      document.title = "NotesGalaxy | Engineering Youtube Playlists";
+    }, []);
   const [searchTerm, setSearchTerm] = useState('');
 
   // Filter subjects based on search term

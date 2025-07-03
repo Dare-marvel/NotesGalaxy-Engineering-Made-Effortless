@@ -1,8 +1,8 @@
-import React from 'react';
+import {useState,useEffect} from 'react';
 export const useWindowSize = () => {
-    const [width, setWidth] = React.useState(window.innerWidth);
+    const [width, setWidth] = useState(window.innerWidth);
   
-    React.useEffect(() => {
+    useEffect(() => {
       // Debounce the resize handler to prevent too many updates
       let timeoutId;
       const handleResize = () => {

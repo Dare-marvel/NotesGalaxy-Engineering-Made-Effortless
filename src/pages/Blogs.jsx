@@ -592,13 +592,15 @@ const Blogs = () => {
     const blogId = searchParams.get('blogid');
 
     useEffect(() => {
+        window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+        document.title = "NotesGalaxy | Blogs";
         const handleRouteChange = async () => {
             if (blogId) {
                 setCurrentView(blogId);
-                
+
                 // Check if we already have this blog's metadata
                 const existingBlog = blogs.find(b => b.id === blogId);
-                
+
                 if (!existingBlog) {
                     setLoading(true);
                     const blogMeta = await getBlogMetadata(blogId);
@@ -612,7 +614,7 @@ const Blogs = () => {
                 }
             } else {
                 setCurrentView('list');
-                
+
                 // Only fetch all blogs if we haven't loaded them before
                 if (!allBlogsLoaded) {
                     setLoading(true);
