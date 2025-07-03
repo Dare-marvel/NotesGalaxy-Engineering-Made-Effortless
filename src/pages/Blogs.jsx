@@ -266,9 +266,9 @@ const BlogCard = ({ blog, onClick }) => {
 };
 
 // Blog View Component
-const BlogView = ({ blogId, onBack }) => {
+const BlogView = ({ blogId, metaData, onBack }) => {
     const [blog, setBlog] = useState(null);
-    const [blogMeta, setBlogMeta] = useState(null);
+    const [blogMeta, setBlogMeta] = useState(metaData ||null);
     const [loading, setLoading] = useState(true);
     const [userId, setUserId] = useState(null);
     const toast = useToast();
@@ -289,12 +289,14 @@ const BlogView = ({ blogId, onBack }) => {
         const loadBlog = async () => {
             try {
                 const content = blogContent[blogId];
-                const meta = await getBlogMetadata(blogId);
+                if(!metaData) {
+                    const meta = await getBlogMetadata(blogId);
+                    setBlogMeta(meta);
+                }
                 const contentModule = await import(`../blog-files/${blogId}.js`);
 
-                if (content && meta && contentModule) {
+                if (content && contentModule) {
                     setBlog({ ...content, content: contentModule.default });
-                    setBlogMeta(meta);
                     await incrementViews(blogId);
                     setBlogMeta(prev => ({ ...prev, views: (prev.views || 0) + 1 }));
                 }
@@ -621,6 +623,7 @@ const Blogs = () => {
                 if (!allBlogsLoaded) {
                     setLoading(true);
                     const allBlogs = await getAllBlogsMetadata();
+                    // console.log('All blogs metadata:', allBlogs);
                     setBlogs(allBlogs);
                     setAllBlogsLoaded(true);
                     setLoading(false);
@@ -819,6 +822,7 @@ const Blogs = () => {
             ) : (
                 <BlogView
                     blogId={currentView}
+                    metaData={blogs.find(blog => blog.id === currentView)}
                     onBack={handleBackToList}
                 />
             )}
