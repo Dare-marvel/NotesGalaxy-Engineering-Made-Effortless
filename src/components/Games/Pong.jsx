@@ -27,7 +27,6 @@ import SidebarAdRight from '../SidebarAd/SidebarAdRight';
 import SidebarAdLeft from '../SidebarAd/SidebarAdLeft';
 
 import subjectsList from '../../config/subjectsList';
-import QUESTIONS from './constants/QuestionsList';
 
 import { usePageMeta } from '../../hooks/usePageMeta';
 
@@ -57,7 +56,8 @@ const Pong = () => {
         player2: { x: 765, y: 250, width: 15, height: 100, score: 0 },
         gameRunning: false,
         gameStarted: false,
-        qFreq: 5
+        qFreq: 5,
+        currentQuestions: [],
     });
 
     // UI state
@@ -205,7 +205,7 @@ const Pong = () => {
 
     // Question system
     const showQuestion = useCallback(() => {
-        const questions = QUESTIONS[selectedSubject];
+        const questions = gameState.currentQuestions;
         if (questions && questions.length > 0) {
             const randomQuestion = questions[Math.floor(Math.random() * questions.length)];
             setCurrentQuestion(randomQuestion);
@@ -315,16 +315,21 @@ const Pong = () => {
                 player2.score++;
                 resetBall(false);
                 // Show question every qFreq points
+
                 if (player2.score % qFreq === 0) {
-                    setTimeout(showQuestion, 100);
+                    console.log("Showing question for player 2", player2.score, player2.score % qFreq);
+                    // setTimeout(showQuestion, 100);
+                    showQuestion();
                 }
             } else if (ball.x > gameSize.width) {
                 player1.score++;
                 resetBall(false);
                 // Show question every qFreq points
-                // console.log("Checking freq in game", qFreq,player1.score % qFreq );
+
                 if (player1.score % qFreq === 0) {
-                    setTimeout(showQuestion, 100);
+                    console.log("Checking freq in game for p1", qFreq, player1.score % qFreq);
+                    // setTimeout(showQuestion, 100);
+                    showQuestion();
                 }
             }
 
@@ -530,16 +535,36 @@ const Pong = () => {
         ctx.shadowBlur = 0;
     }, [gameState, gameSize]);
 
+    const loadSubjectQuestions = async (subject) => {
+        const subjectSlug = subject.replace(/\s+/g, '').replace(/[^\w]/g, '');
+        const module = await import(`../../question-files/${subjectSlug}.js`);
+        return module.default || [];
+    };
 
 
-    const startGame = () => {
+    const startGame = async () => {
         // console.log("Checking freq ",qFreq, typeof qFreq);
+        let questions = [];
+        try {
+            questions = await loadSubjectQuestions(selectedSubject);
+        }
+        catch (error) {
+            console.error("Error loading questions:", error);
+            toast({
+                title: "Error loading questions",
+                description: "Please try a different subject.",
+                status: "error",
+                duration: 1000,
+                isClosable: true,
+            });
+        }
         const value = parseInt(document.getElementById('qFreq_3425').value, 10);
         setGameState(prev => ({
             ...prev,
             gameRunning: true,
             gameStarted: true,
-            qFreq: isNaN(value) ? 5 : value // Default to 5 if invalid input
+            qFreq: isNaN(value) ? 5 : value, // Default to 5 if invalid input
+            currentQuestions: questions || [],
         }));
         // Reset ball for first serve
         resetBall(true);
@@ -557,7 +582,8 @@ const Pong = () => {
             player2: { x: gameSize.width - 35, y: (gameSize.height - paddleHeight) / 2, width: paddleWidth, height: paddleHeight, score: 0 },
             gameRunning: false,
             gameStarted: false,
-            qFreq: 5 // Reset question frequency
+            qFreq: 5,// Reset question frequency
+            currentQuestions: [],
         });
     };
 
