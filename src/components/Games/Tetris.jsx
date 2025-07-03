@@ -23,6 +23,7 @@ import subjectsList from '../../config/subjectsList';
 
 import SidebarAdRight from '../SidebarAd/SidebarAdRight';
 import SidebarAdLeft from '../SidebarAd/SidebarAdLeft';
+import { usePageMeta } from '../../hooks/usePageMeta';
 
 // Tetris pieces
 const TETROMINOS = {
@@ -67,6 +68,10 @@ const BOARD_WIDTH = 10;
 const BOARD_HEIGHT = 20;
 
 const SpaceTetris = () => {
+  usePageMeta(
+    "Tetris Game",
+    "Play Tetris, the classic puzzle game, in your browser. Solve Engineering Problems to score points and level up your knowledge. Perfect for Engineering students looking to combine fun and learning.",
+  );
   const [board, setBoard] = useState(() =>
     Array(BOARD_HEIGHT).fill().map(() => Array(BOARD_WIDTH).fill(0))
   );

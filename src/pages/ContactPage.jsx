@@ -1,4 +1,4 @@
-import { useState,useEffect } from 'react';
+import { useState} from 'react';
 import {
   Box,
   VStack,
@@ -21,6 +21,7 @@ import app from '../config/firebaseConfig'
 import { InfoIcon } from "@chakra-ui/icons"
 import emailjs from '@emailjs/browser';
 import axios from 'axios';
+import { usePageMeta } from '../hooks/usePageMeta';
 
 import SidebarAdLeft from '../components/SidebarAd/SidebarAdLeft';
 import SidebarAdRight from '../components/SidebarAd/SidebarAdRight';
@@ -65,10 +66,10 @@ const ContactPage = () => {
   // const [name, setName] = useState('');
   // const [email, setEmail] = useState('');
   // const [message, setMessage] = useState('');
-  useEffect(() => {
-    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
-    document.title = "Sangrah | Contact Us";
-  }, []);
+  usePageMeta(
+    "Contact Us",
+    "Reach out to the NotesGalaxy team. Whether it's feedback, support, or collaboration, we're here to connect across the stars."
+  );
 
   const [subjects, setSubjects] = useState([]);
   const [loading, setLoading] = useState(false);

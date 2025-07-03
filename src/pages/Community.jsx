@@ -38,6 +38,8 @@ import {
 import { keyframes } from '@emotion/react';
 import FingerprintJS from '@fingerprintjs/fingerprintjs';
 
+import { usePageMeta } from '../hooks/usePageMeta';
+
 import app from '../config/firebaseConfig'
 import {
   getFirestore,
@@ -794,9 +796,12 @@ export default function SpaceCommunityPage() {
     totalLikes: 0
   });
 
+  usePageMeta(
+    "Community",
+    "Join the Notes-Galaxy community—where contributors share engineering notes, earn likes, and rise through rankings. Discover top users, popular posts, and a growing hub of 2000+ learners."
+  );
+
   useEffect(() => {
-    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
-    document.title = "NotesGalaxy | Community";
     incrementVisitorCount();
     fetchUsers();
     fetchStats();

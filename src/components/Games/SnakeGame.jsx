@@ -29,6 +29,8 @@ import SidebarAdLeft from '../SidebarAd/SidebarAdLeft';
 
 import subjectsList from '../../config/subjectsList';
 
+import { usePageMeta } from '../../hooks/usePageMeta';
+
 const GRID_SIZE = 20;
 const INITIAL_SNAKE = [{ x: 10, y: 10 }];
 const INITIAL_DIRECTION = { x: 0, y: -1 };
@@ -36,6 +38,10 @@ const GAME_SPEED = 300;
 
 
 export default function EnhancedEducationalSnakeGame() {
+  usePageMeta(
+    "Snake Game",
+    "Play the Snake Game with an educational twist! Answer questions to grow your snake and score points. Perfect for B.Tech students to test their knowledge while having fun.",
+  );
   const [snake, setSnake] = useState(INITIAL_SNAKE);
   const [direction, setDirection] = useState(INITIAL_DIRECTION);
   const [food, setFood] = useState({ x: 15, y: 15 });

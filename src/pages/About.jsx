@@ -24,6 +24,8 @@ import SidebarAdLeft from '../components/SidebarAd/SidebarAdLeft';
 import SidebarAdRight from '../components/SidebarAd/SidebarAdRight';
 
 import { keyframes } from '@emotion/react';
+import { usePageMeta } from '../hooks/usePageMeta';
+
 
 // Keyframe animations
 // const float = keyframes`
@@ -128,9 +130,12 @@ const AboutUs = () => {
     100% { transform: rotate(360deg) translateX(${orbitSize}) rotate(-360deg); }
   `;
 
+  usePageMeta(
+    "About Us",
+    "Discover Notes-Galaxy: your complete destination for engineering notes with subject-wise organization, instant downloads, updated content, powerful search, and community engagement. Built by Adwait Purao from S.P.I.T Mumbai, blending innovation, leadership, and problem-solving to deliver a smarter learning experience."
+  );
+
   useEffect(() => {
-    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
-    document.title = "NotesGalaxy | About Us";
     setIsVisible(true);
   }, []);
 

@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo} from 'react';
 import {
   Box,
   VStack,
@@ -21,6 +21,7 @@ import { ExternalLinkIcon, SearchIcon } from '@chakra-ui/icons';
 
 import SidebarAdLeft from '../components/SidebarAd/SidebarAdLeft';
 import SidebarAdRight from '../components/SidebarAd/SidebarAdRight';
+import { usePageMeta } from '../hooks/usePageMeta';
 
 const subjectsData = {
   "Semester 1": [
@@ -483,10 +484,10 @@ const SemesterSection = ({ semester, subjects }) => (
 );
 
 export default function YouTubeChannelsPage() {
-  useEffect(() => {
-      window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
-      document.title = "NotesGalaxy | Engineering Youtube Playlists";
-    }, []);
+  usePageMeta(
+    "YouTube Playlists for Engineering",
+    "Discover the best YouTube playlists for B.Tech CSE students. Find curated channels and playlists for all semesters, covering subjects like Data Structures, Algorithms, Operating Systems, and more. Enhance your learning with top-notch content from experts.",
+  );
   const [searchTerm, setSearchTerm] = useState('');
 
   // Filter subjects based on search term

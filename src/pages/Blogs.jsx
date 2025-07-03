@@ -46,6 +46,7 @@ import SidebarAdLeft from '../components/SidebarAd/SidebarAdLeft';
 import SidebarAdRight from '../components/SidebarAd/SidebarAdRight';
 import { blogContent } from '../config/blogContent';
 import { SearchIcon } from '@chakra-ui/icons';
+import { usePageMeta } from '../hooks/usePageMeta';
 
 import { keyframes } from '@emotion/react';
 
@@ -592,8 +593,10 @@ const Blogs = () => {
     const blogId = searchParams.get('blogid');
 
     useEffect(() => {
-        window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
-        document.title = "NotesGalaxy | Blogs";
+        usePageMeta(
+            "Blogs",
+            "Explore insightful blogs on engineering subjects and related innovations. From core concepts to emerging trends, NotesGalaxy brings clarity, creativity, and continuous learning to every post."
+          );
         const handleRouteChange = async () => {
             if (blogId) {
                 setCurrentView(blogId);

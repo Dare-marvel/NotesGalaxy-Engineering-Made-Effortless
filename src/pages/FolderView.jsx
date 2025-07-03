@@ -1,4 +1,4 @@
-import React, { useState, useRef,useEffect, Suspense, lazy } from 'react';
+import React, { useState, useRef, Suspense, lazy } from 'react';
 import {
   Box,
   Table,
@@ -40,16 +40,18 @@ import SidebarAdRight from '../components/SidebarAd/SidebarAdRight';
 
 import { keyframes } from '@emotion/react';
 
+import { usePageMeta } from '../hooks/usePageMeta';
+
 const slideInUp = keyframes`
   from { transform: translateY(50px); opacity: 0; }
   to { transform: translateY(0); opacity: 1; }
 `;
 
 const FolderView = () => {
-  useEffect(() => {
-    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
-    document.title = "NotesGalaxy | All Engineering Notes at One Place";
-  }, []);
+  usePageMeta(
+    "All Engineering Notes at one Place",
+    "Access subject-wise engineering notes with instant download support and neatly formatted explanations. Browse, search, and filter through updated content for a seamless learning experience on NotesGalaxy."
+  );
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedFile, setSelectedFile] = useState(null);
   const [hoveredItem, setHoveredItem] = useState(null);

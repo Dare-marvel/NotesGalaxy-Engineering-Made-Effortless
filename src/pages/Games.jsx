@@ -1,4 +1,4 @@
-import {useState,useEffect} from 'react';
+import {useState} from 'react';
 import {
   Box,
   Container,
@@ -17,6 +17,8 @@ import { useNavigate } from 'react-router-dom';
 
 import SidebarAdLeft from '../components/SidebarAd/SidebarAdLeft';
 import SidebarAdRight from '../components/SidebarAd/SidebarAdRight';
+
+import { usePageMeta } from '../hooks/usePageMeta';
 
 const float = keyframes`
   0%, 100% { transform: translateY(0px) rotate(0deg); }
@@ -86,10 +88,10 @@ const PongIcon = () => (
 // );
 
 const GameCard = ({ game, index }) => {
-  useEffect(() => {
-    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
-    document.title = "NotesGalaxy | Games";
-  }, []);
+  usePageMeta(
+      "Gamified Learning Experience",
+      "Level up your engineering skills with Notes-Galaxy’s gamified learning experience! Play Snake, Tetris, and Pong with an educational twist—where mastering concepts is just one move away."
+    );
   const [isHovered, setIsHovered] = useState(false);
   const navigate = useNavigate();
 

@@ -29,7 +29,15 @@ import SidebarAdLeft from '../SidebarAd/SidebarAdLeft';
 import subjectsList from '../../config/subjectsList';
 import QUESTIONS from './constants/QuestionsList';
 
+import { usePageMeta } from '../../hooks/usePageMeta';
+
 const Pong = () => {
+
+    usePageMeta(
+        "Pong Game",
+        "Play Pong, the classic arcade game, in your browser. Solve Engineering Problems to score points and level up your knowledge. Perfect for B.Tech students looking to combine fun and learning."
+    );
+
     // Game state
     const canvasRef = useRef(null);
     const gameLoopRef = useRef(null);
