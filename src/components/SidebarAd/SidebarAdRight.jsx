@@ -1,19 +1,15 @@
-import { useEffect, useRef, useState, useCallback } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Box, useColorModeValue, VStack } from '@chakra-ui/react';
 import { useWindowSize } from '../../hooks/useWindowSize';
 
-const SidebarAdRight = ({ 
-  position = 'right', 
-}) => {
+const SidebarAdRight = ({ position = 'right' }) => {
   const width = useWindowSize();
   const bgColor = useColorModeValue('gray.50', 'gray.700');
   const borderColor = useColorModeValue('gray.200', 'gray.600');
   const [headerHeight, setHeaderHeight] = useState(0);
-  const [adsLoaded, setAdsLoaded] = useState(false);
-  const componentRef = useRef(null);
-  const initializationRef = useRef(false);
-  const adElementsRef = useRef([]);
-  const retryTimeoutRef = useRef(null);
+  const [adsLoaded, setAdsLoaded] = useState([false, false, false]);
+  const retryCounts = useRef([0, 0, 0]);
+  const maxRetries = 3;
 
   // Define breakpoint for medium screens
   const isMobile = width < 768;
@@ -55,151 +51,110 @@ const SidebarAdRight = ({
     return () => window.removeEventListener('resize', detectHeaderHeight);
   }, []);
 
-  // Clean up function to remove ads properly
-  const cleanupAds = useCallback(() => {
-    if (componentRef.current) {
-      const adElements = componentRef.current.querySelectorAll('.adsbygoogle');
-      adElements.forEach(ad => {
-        // Remove any existing ad content
-        ad.innerHTML = '';
-        // Remove status attributes
-        ad.removeAttribute('data-adsbygoogle-status');
-        ad.removeAttribute('data-ad-status');
-      });
-    }
-    setAdsLoaded(false);
-    initializationRef.current = false;
+  const retryAdLoad = (adIndex) => {
+    if (retryCounts.current[adIndex] >= maxRetries) return;
     
-    if (retryTimeoutRef.current) {
-      clearTimeout(retryTimeoutRef.current);
-      retryTimeoutRef.current = null;
-    }
-  }, []);
-
-  // Initialize ads with proper checks
-  const initializeAds = useCallback(async () => {
-    if (isMobile || initializationRef.current || !componentRef.current) {
-      return;
-    }
-
-    try {
-      // Wait for AdSense to be available
-      if (!window.adsbygoogle) {
-        console.log('AdSense not loaded yet, waiting...');
-        retryTimeoutRef.current = setTimeout(initializeAds, 1000);
-        return;
-      }
-
-      // Get fresh ad elements from the current component
-      const adElements = componentRef.current.querySelectorAll('.adsbygoogle');
-      
-      if (adElements.length === 0) {
-        console.log('No ad elements found');
-        return;
-      }
-
-      // Check if any ads are already initialized
-      const uninitializedAds = Array.from(adElements).filter(ad => 
-        !ad.getAttribute('data-adsbygoogle-status') && 
-        ad.innerHTML.trim() === ''
-      );
-
-      if (uninitializedAds.length === 0) {
-        console.log('All ads already initialized');
-        setAdsLoaded(true);
-        return;
-      }
-
-      console.log(`Initializing ${uninitializedAds.length} ads`);
-      initializationRef.current = true;
-
-      // Initialize ads with individual error handling
-      let successCount = 0;
-      for (let i = 0; i < uninitializedAds.length; i++) {
-        const ad = uninitializedAds[i];
-        
+    retryCounts.current[adIndex]++;
+    
+    const adContainer = document.querySelector(`.ad-container-${adIndex + 1}`);
+    if (adContainer) {
+      const adElement = adContainer.querySelector('.adsbygoogle');
+      if (adElement && !adElement.getAttribute('data-adsbygoogle-status')) {
         try {
-          // Double-check this specific ad isn't already initialized
-          if (!ad.getAttribute('data-adsbygoogle-status') && ad.innerHTML.trim() === '') {
-            (window.adsbygoogle = window.adsbygoogle || []).push({});
-            successCount++;
-            console.log(`Ad ${i + 1} initialized successfully`);
-          }
+          (window.adsbygoogle = window.adsbygoogle || []).push({});
+          console.log(`Retrying ad ${adIndex + 1}, attempt ${retryCounts.current[adIndex]}`);
         } catch (error) {
-          console.error(`Error initializing ad ${i + 1}:`, error);
-          // Continue with other ads even if one fails
-        }
-        
-        // Small delay between ads
-        if (i < uninitializedAds.length - 1) {
-          await new Promise(resolve => setTimeout(resolve, 100));
+          console.error(`Retry failed for ad ${adIndex + 1}:`, error);
+          setTimeout(() => retryAdLoad(adIndex), 2000 * retryCounts.current[adIndex]);
         }
       }
+    }
+  };
 
-      if (successCount > 0) {
-        setAdsLoaded(true);
-        console.log(`Successfully initialized ${successCount} ads`);
-      }
+  // Initialize ads
+  useEffect(() => {
+    if (!isMobile) {
+      const initializeAds = () => {
+        if (window.adsbygoogle) {
+          try {
+            const adElements = document.querySelectorAll('.adsbygoogle');
+            
+            adElements.forEach((ad, index) => {
+              if (!ad.getAttribute('data-adsbygoogle-status') && ad.innerHTML.trim() === '') {
+                try {
+                  (window.adsbygoogle = window.adsbygoogle || []).push({});
+                  
+                  // Set up observer for this ad
+                  const observer = new MutationObserver((mutations) => {
+                    if (ad.getAttribute('data-adsbygoogle-status') === 'done') {
+                      setAdsLoaded(prev => {
+                        const newState = [...prev];
+                        newState[index] = true;
+                        return newState;
+                      });
+                      observer.disconnect();
+                    } else if (ad.getAttribute('data-adsbygoogle-status') === 'error') {
+                      retryAdLoad(index);
+                      observer.disconnect();
+                    }
+                  });
+                  
+                  observer.observe(ad, { attributes: true });
+                  
+                } catch (error) {
+                  console.error(`Error initializing ad ${index + 1}:`, error);
+                  retryAdLoad(index);
+                }
+              }
+            });
+          } catch (error) {
+            console.error('AdSense initialization error:', error);
+          }
+        } else {
+          // Load AdSense script if not present
+          if (!document.querySelector('script[src*="adsbygoogle.js"]')) {
+            const script = document.createElement('script');
+            script.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js';
+            script.async = true;
+            script.onerror = () => {
+              console.error('Failed to load AdSense script');
+              setTimeout(initializeAds, 2000);
+            };
+            document.head.appendChild(script);
+          }
+          setTimeout(initializeAds, 500);
+        }
+      };
 
-    } catch (error) {
-      console.error('Ad initialization failed:', error);
-      initializationRef.current = false;
+      // Initial attempt with delay to allow page to settle
+      const timer = setTimeout(initializeAds, 1000);
       
-      // Retry after delay
-      retryTimeoutRef.current = setTimeout(initializeAds, 3000);
+      // Set up periodic checks
+      const interval = setInterval(() => {
+        if (adsLoaded.some(loaded => !loaded)) {
+          initializeAds();
+        }
+      }, 10000);
+
+      return () => {
+        clearTimeout(timer);
+        clearInterval(interval);
+      };
+    }
+  }, [isMobile, adsLoaded]);
+
+  // Reset when switching between mobile/desktop
+  useEffect(() => {
+    if (isMobile) {
+      retryCounts.current = [0, 0, 0];
+      setAdsLoaded([false, false, false]);
     }
   }, [isMobile]);
 
-  // Main effect to handle ad initialization
-  useEffect(() => {
-    if (isMobile) {
-      cleanupAds();
-      return;
-    }
-
-    // Wait for component to be properly mounted
-    const timer = setTimeout(() => {
-      if (componentRef.current && !initializationRef.current) {
-        initializeAds();
-      }
-    }, 500);
-
-    return () => {
-      clearTimeout(timer);
-    };
-  }, [isMobile, initializeAds, cleanupAds]);
-
-  // Handle visibility change (when user switches tabs)
-  useEffect(() => {
-    const handleVisibilityChange = () => {
-      if (!document.hidden && !isMobile && !adsLoaded && componentRef.current) {
-        setTimeout(initializeAds, 1000);
-      }
-    };
-
-    document.addEventListener('visibilitychange', handleVisibilityChange);
-    return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
-  }, [isMobile, adsLoaded, initializeAds]);
-
-  // Cleanup on unmount
-  useEffect(() => {
-    return () => {
-      cleanupAds();
-    };
-  }, [cleanupAds]);
-
-  // If on mobile, don't render the component at all
   if (isMobile) return null;
-
-  const adConfigs = [
-    { slot: '3152616213', id: 'ad-1' },
-    { slot: '3253352242', id: 'ad-2' },
-    { slot: '7001025560', id: 'ad-3' }
-  ];
 
   return (
     <Box
-      ref={componentRef}
       position="fixed"
       top={`${headerHeight}px`}
       bottom="0"
@@ -222,31 +177,113 @@ const SidebarAdRight = ({
       }}
     >
       <VStack spacing={4} align="stretch">
-        {adConfigs.map((config, index) => (
-          <Box
-            key={`${config.id}-${index}`}
-            className={`ad-container-${index + 1}`}
-            width="100%"
-            minHeight="600px"
-            display="block"
-            textAlign="center"
-            border="1px dashed gray"
-            position="relative"
-          >
-            <ins
-              className="adsbygoogle"
-              style={{ 
-                display: "block",
-                width: "130px",
-                height: "600px"
-              }}
-              data-ad-client="ca-pub-8107450590774580"
-              data-ad-slot={config.slot}
-              data-ad-format="vertical"
-              data-full-width-responsive="true"
-            />
-          </Box>
-        ))}
+        {/* Ad 1 */}
+        <Box
+          className="ad-container-1"
+          width="100%"
+          minHeight="600px"
+          display="block"
+          textAlign="center"
+          border="1px dashed gray"
+          position="relative"
+        >
+          {!adsLoaded[0] && (
+            <Box 
+              width="130px" 
+              height="600px" 
+              bg="gray.100" 
+              display="flex" 
+              alignItems="center" 
+              justifyContent="center"
+            >
+              Loading ad...
+            </Box>
+          )}
+          <ins
+            className="adsbygoogle"
+            style={{ 
+              display: adsLoaded[0] ? "block" : "none",
+              width: "130px",
+              height: "600px"
+            }}
+            data-ad-client='ca-pub-8107450590774580'
+            data-ad-slot='3152616213'
+            data-ad-format="vertical"
+            data-full-width-responsive="true"
+          />
+        </Box>
+
+        {/* Ad 2 */}
+        <Box
+          className="ad-container-2"
+          width="100%"
+          minHeight="600px"
+          display="block"
+          textAlign="center"
+          border="1px dashed gray"
+          position="relative"
+        >
+          {!adsLoaded[1] && (
+            <Box 
+              width="130px" 
+              height="600px" 
+              bg="gray.100" 
+              display="flex" 
+              alignItems="center" 
+              justifyContent="center"
+            >
+              Loading ad...
+            </Box>
+          )}
+          <ins
+            className="adsbygoogle"
+            style={{ 
+              display: adsLoaded[1] ? "block" : "none",
+              width: "130px",
+              height: "600px"
+            }}
+            data-ad-client='ca-pub-8107450590774580'
+            data-ad-slot='3253352242'
+            data-ad-format="vertical"
+            data-full-width-responsive="true"
+          />
+        </Box>
+
+        {/* Ad 3 */}
+        <Box
+          className="ad-container-3"
+          width="100%"
+          minHeight="600px"
+          display="block"
+          textAlign="center"
+          border="1px dashed gray"
+          position="relative"
+        >
+          {!adsLoaded[2] && (
+            <Box 
+              width="130px" 
+              height="600px" 
+              bg="gray.100" 
+              display="flex" 
+              alignItems="center" 
+              justifyContent="center"
+            >
+              Loading ad...
+            </Box>
+          )}
+          <ins
+            className="adsbygoogle"
+            style={{ 
+              display: adsLoaded[2] ? "block" : "none",
+              width: "130px",
+              height: "600px"
+            }}
+            data-ad-client='ca-pub-8107450590774580'
+            data-ad-slot='7001025560'
+            data-ad-format="vertical"
+            data-full-width-responsive="true"
+          />
+        </Box>
       </VStack>
     </Box>
   );
