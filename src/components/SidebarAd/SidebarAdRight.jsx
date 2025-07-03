@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useCallback } from 'react';
 import { Box, useColorModeValue, VStack } from '@chakra-ui/react';
 import { useWindowSize } from '../../hooks/useWindowSize';
 
@@ -9,10 +9,11 @@ const SidebarAdRight = ({
   const bgColor = useColorModeValue('gray.50', 'gray.700');
   const borderColor = useColorModeValue('gray.200', 'gray.600');
   const [headerHeight, setHeaderHeight] = useState(0);
-  const adsInitialized = useRef(false);
-  const adContainerRefs = useRef([]);
-  const retryCount = useRef(0);
-  const maxRetries = 5;
+  const [adsLoaded, setAdsLoaded] = useState(false);
+  const componentRef = useRef(null);
+  const initializationRef = useRef(false);
+  const adElementsRef = useRef([]);
+  const retryTimeoutRef = useRef(null);
 
   // Define breakpoint for medium screens
   const isMobile = width < 768;
@@ -54,156 +55,138 @@ const SidebarAdRight = ({
     return () => window.removeEventListener('resize', detectHeaderHeight);
   }, []);
 
-  // Wait for AdSense script to load
-  const waitForAdSense = () => {
-    return new Promise((resolve) => {
-      if (window.adsbygoogle) {
-        resolve(true);
-        return;
-      }
-      
-      const checkAdSense = () => {
-        if (window.adsbygoogle) {
-          resolve(true);
-        } else {
-          setTimeout(checkAdSense, 100);
-        }
-      };
-      
-      checkAdSense();
-    });
-  };
+  // Clean up function to remove ads properly
+  const cleanupAds = useCallback(() => {
+    if (componentRef.current) {
+      const adElements = componentRef.current.querySelectorAll('.adsbygoogle');
+      adElements.forEach(ad => {
+        // Remove any existing ad content
+        ad.innerHTML = '';
+        // Remove status attributes
+        ad.removeAttribute('data-adsbygoogle-status');
+        ad.removeAttribute('data-ad-status');
+      });
+    }
+    setAdsLoaded(false);
+    initializationRef.current = false;
+    
+    if (retryTimeoutRef.current) {
+      clearTimeout(retryTimeoutRef.current);
+      retryTimeoutRef.current = null;
+    }
+  }, []);
 
-  // Check if ads are visible in viewport
-  const isElementInViewport = (element) => {
-    if (!element) return false;
-    const rect = element.getBoundingClientRect();
-    return (
-      rect.top >= 0 &&
-      rect.left >= 0 &&
-      rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
-      rect.right <= (window.innerWidth || document.documentElement.clientWidth)
-    );
-  };
-
-  // Initialize ads with better error handling and retry logic
-  const initializeAds = async () => {
-    if (isMobile || adsInitialized.current) return;
+  // Initialize ads with proper checks
+  const initializeAds = useCallback(async () => {
+    if (isMobile || initializationRef.current || !componentRef.current) {
+      return;
+    }
 
     try {
       // Wait for AdSense to be available
-      await waitForAdSense();
-      
-      // Wait a bit more for DOM to be ready
-      await new Promise(resolve => setTimeout(resolve, 500));
+      if (!window.adsbygoogle) {
+        console.log('AdSense not loaded yet, waiting...');
+        retryTimeoutRef.current = setTimeout(initializeAds, 1000);
+        return;
+      }
 
-      const adElements = document.querySelectorAll('.adsbygoogle');
+      // Get fresh ad elements from the current component
+      const adElements = componentRef.current.querySelectorAll('.adsbygoogle');
+      
+      if (adElements.length === 0) {
+        console.log('No ad elements found');
+        return;
+      }
+
+      // Check if any ads are already initialized
       const uninitializedAds = Array.from(adElements).filter(ad => 
         !ad.getAttribute('data-adsbygoogle-status') && 
         ad.innerHTML.trim() === ''
       );
 
-      if (uninitializedAds.length > 0) {
-        console.log(`Initializing ${uninitializedAds.length} ads (attempt ${retryCount.current + 1})`);
+      if (uninitializedAds.length === 0) {
+        console.log('All ads already initialized');
+        setAdsLoaded(true);
+        return;
+      }
+
+      console.log(`Initializing ${uninitializedAds.length} ads`);
+      initializationRef.current = true;
+
+      // Initialize ads with individual error handling
+      let successCount = 0;
+      for (let i = 0; i < uninitializedAds.length; i++) {
+        const ad = uninitializedAds[i];
         
-        // Initialize ads one by one with delay
-        for (let i = 0; i < uninitializedAds.length; i++) {
-          try {
+        try {
+          // Double-check this specific ad isn't already initialized
+          if (!ad.getAttribute('data-adsbygoogle-status') && ad.innerHTML.trim() === '') {
             (window.adsbygoogle = window.adsbygoogle || []).push({});
-            await new Promise(resolve => setTimeout(resolve, 200)); // Small delay between ads
-          } catch (error) {
-            console.error(`Error initializing ad ${i + 1}:`, error);
+            successCount++;
+            console.log(`Ad ${i + 1} initialized successfully`);
           }
+        } catch (error) {
+          console.error(`Error initializing ad ${i + 1}:`, error);
+          // Continue with other ads even if one fails
         }
         
-        adsInitialized.current = true;
-        console.log('Ads initialization completed');
-        
-        // Verify ads loaded after some time
-        setTimeout(() => {
-          verifyAdsLoaded();
-        }, 3000);
+        // Small delay between ads
+        if (i < uninitializedAds.length - 1) {
+          await new Promise(resolve => setTimeout(resolve, 100));
+        }
       }
+
+      if (successCount > 0) {
+        setAdsLoaded(true);
+        console.log(`Successfully initialized ${successCount} ads`);
+      }
+
     } catch (error) {
-      console.error('AdSense initialization error:', error);
+      console.error('Ad initialization failed:', error);
+      initializationRef.current = false;
       
-      // Retry logic
-      if (retryCount.current < maxRetries) {
-        retryCount.current++;
-        console.log(`Retrying ad initialization... (${retryCount.current}/${maxRetries})`);
-        setTimeout(initializeAds, 2000);
-      }
-    }
-  };
-
-  // Verify if ads loaded successfully and retry if needed
-  const verifyAdsLoaded = () => {
-    const adElements = document.querySelectorAll('.adsbygoogle');
-    const failedAds = Array.from(adElements).filter(ad => 
-      !ad.getAttribute('data-adsbygoogle-status') || 
-      ad.getAttribute('data-adsbygoogle-status') === 'error'
-    );
-
-    if (failedAds.length > 0 && retryCount.current < maxRetries) {
-      console.log(`${failedAds.length} ads failed to load, retrying...`);
-      adsInitialized.current = false;
-      retryCount.current++;
-      setTimeout(initializeAds, 2000);
-    }
-  };
-
-  // Initialize ads when component mounts and conditions are met
-  useEffect(() => {
-    if (!isMobile) {
-      // Use intersection observer to init ads when they become visible
-      const observer = new IntersectionObserver(
-        (entries) => {
-          const isAnyAdVisible = entries.some(entry => entry.isIntersecting);
-          if (isAnyAdVisible && !adsInitialized.current) {
-            initializeAds();
-          }
-        },
-        { threshold: 0.1 }
-      );
-
-      // Observe all ad containers
-      adContainerRefs.current.forEach(ref => {
-        if (ref) observer.observe(ref);
-      });
-
-      // Fallback: Initialize after delay even if not visible
-      const fallbackTimer = setTimeout(() => {
-        if (!adsInitialized.current) {
-          initializeAds();
-        }
-      }, 2000);
-
-      return () => {
-        observer.disconnect();
-        clearTimeout(fallbackTimer);
-      };
+      // Retry after delay
+      retryTimeoutRef.current = setTimeout(initializeAds, 3000);
     }
   }, [isMobile]);
 
-  // Reset when switching between mobile/desktop
+  // Main effect to handle ad initialization
   useEffect(() => {
     if (isMobile) {
-      adsInitialized.current = false;
-      retryCount.current = 0;
+      cleanupAds();
+      return;
     }
-  }, [isMobile]);
+
+    // Wait for component to be properly mounted
+    const timer = setTimeout(() => {
+      if (componentRef.current && !initializationRef.current) {
+        initializeAds();
+      }
+    }, 500);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [isMobile, initializeAds, cleanupAds]);
 
   // Handle visibility change (when user switches tabs)
   useEffect(() => {
     const handleVisibilityChange = () => {
-      if (!document.hidden && !isMobile && !adsInitialized.current) {
+      if (!document.hidden && !isMobile && !adsLoaded && componentRef.current) {
         setTimeout(initializeAds, 1000);
       }
     };
 
     document.addEventListener('visibilitychange', handleVisibilityChange);
     return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
-  }, [isMobile]);
+  }, [isMobile, adsLoaded, initializeAds]);
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      cleanupAds();
+    };
+  }, [cleanupAds]);
 
   // If on mobile, don't render the component at all
   if (isMobile) return null;
@@ -216,6 +199,7 @@ const SidebarAdRight = ({
 
   return (
     <Box
+      ref={componentRef}
       position="fixed"
       top={`${headerHeight}px`}
       bottom="0"
@@ -240,8 +224,7 @@ const SidebarAdRight = ({
       <VStack spacing={4} align="stretch">
         {adConfigs.map((config, index) => (
           <Box
-            key={config.id}
-            ref={(el) => (adContainerRefs.current[index] = el)}
+            key={`${config.id}-${index}`}
             className={`ad-container-${index + 1}`}
             width="100%"
             minHeight="600px"
