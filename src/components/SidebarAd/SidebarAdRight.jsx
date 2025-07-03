@@ -2,13 +2,46 @@ import { useEffect, useState } from 'react';
 import { Box, useColorModeValue, VStack } from '@chakra-ui/react';
 import { useWindowSize } from '../../hooks/useWindowSize';
 
+// Error Boundary for Ad Components
+class AdErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  static getDerivedStateFromError(error) {
+    return { hasError: true };
+  }
+
+  componentDidCatch(error, errorInfo) {
+    // Only log non-cross-origin errors
+    if (!error.message.includes('cross-origin') && !error.message.includes('SecurityError')) {
+      console.error('Ad Error:', error, errorInfo);
+    }
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return <div style={{ minHeight: '600px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#666' }}>Ad could not load</div>;
+    }
+
+    return this.props.children;
+  }
+}
+
 // Individual Google Ad Component
 const GoogleAd = ({ adSlot, width = "130px", height = "600px" }) => {
   useEffect(() => {
-    try {
-      (window.adsbygoogle = window.adsbygoogle || []).push({});
-    } catch (e) {
-      console.error("AdSense error:", e);
+    // Check if AdSense script is loaded
+    if (typeof window !== 'undefined' && window.adsbygoogle) {
+      try {
+        (window.adsbygoogle = window.adsbygoogle || []).push({});
+      } catch (e) {
+        // Filter out cross-origin frame errors (these are normal)
+        if (!e.message.includes('cross-origin') && !e.message.includes('SecurityError')) {
+          console.error("AdSense error:", e);
+        }
+      }
     }
   }, []);
 
@@ -37,7 +70,7 @@ const SidebarAdRight = ({
   const [headerHeight, setHeaderHeight] = useState(0);
 
   // Define breakpoint for medium screens
-  const isMobile = width < 530;
+  const isMobile = width < 768;
 
   // Detect header height dynamically
   useEffect(() => {
@@ -113,7 +146,9 @@ const SidebarAdRight = ({
           border="1px dashed gray"
           position="relative"
         >
-          <GoogleAd adSlot="3152616213" />
+          <AdErrorBoundary>
+            <GoogleAd adSlot="3152616213" />
+          </AdErrorBoundary>
         </Box>
 
         {/* Ad 2 */}
@@ -126,7 +161,9 @@ const SidebarAdRight = ({
           border="1px dashed gray"
           position="relative"
         >
-          <GoogleAd adSlot="3253352242" />
+          <AdErrorBoundary>
+            <GoogleAd adSlot="3253352242" />
+          </AdErrorBoundary>
         </Box>
 
         {/* Ad 3 */}
@@ -139,7 +176,9 @@ const SidebarAdRight = ({
           border="1px dashed gray"
           position="relative"
         >
-          <GoogleAd adSlot="7001025560" />
+          <AdErrorBoundary>
+            <GoogleAd adSlot="7001025560" />
+          </AdErrorBoundary>
         </Box>
       </VStack>
     </Box>
