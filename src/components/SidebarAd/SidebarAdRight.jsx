@@ -1,3 +1,4 @@
+import React from 'react';
 import { useEffect, useState } from 'react';
 import { Box, useColorModeValue, VStack } from '@chakra-ui/react';
 import { useWindowSize } from '../../hooks/useWindowSize';

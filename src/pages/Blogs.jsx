@@ -583,6 +583,10 @@ const BlogView = ({ blogId, onBack }) => {
 };
 
 const Blogs = () => {
+    usePageMeta(
+        "Blogs",
+        "Explore insightful blogs on engineering subjects and related innovations. From core concepts to emerging trends, NotesGalaxy brings clarity, creativity, and continuous learning to every post."
+    );
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
     const [currentView, setCurrentView] = useState('list');
@@ -593,10 +597,6 @@ const Blogs = () => {
     const blogId = searchParams.get('blogid');
 
     useEffect(() => {
-        usePageMeta(
-            "Blogs",
-            "Explore insightful blogs on engineering subjects and related innovations. From core concepts to emerging trends, NotesGalaxy brings clarity, creativity, and continuous learning to every post."
-          );
         const handleRouteChange = async () => {
             if (blogId) {
                 setCurrentView(blogId);
