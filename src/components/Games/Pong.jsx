@@ -50,6 +50,7 @@ const Pong = () => {
 
 
     // Game objects
+    // Game objects - Add winner and questionTriggeredBy to initial state
     const [gameState, setGameState] = useState({
         ball: { x: 400, y: 300, dx: 0, dy: 2, radius: 8, isFirstServe: true },
         player1: { x: 20, y: 250, width: 15, height: 100, score: 0 },
@@ -58,6 +59,8 @@ const Pong = () => {
         gameStarted: false,
         qFreq: 5,
         currentQuestions: [],
+        winner: null, // Add winner tracking
+        questionTriggeredBy: null, // Add question trigger tracking
     });
 
     // UI state
@@ -204,11 +207,10 @@ const Pong = () => {
     }, [gameState.gameStarted]);
 
     // Question system
-    const showQuestion = useCallback(() => {
+    const showQuestion = useCallback((triggeredByPlayer) => {
         // Access current questions directly from state updater
         setGameState(prev => {
             const questions = prev.currentQuestions;
-            // console.log("Showing question with currentQuestions", questions);
 
             if (questions && questions.length > 0) {
                 const randomQuestion = questions[Math.floor(Math.random() * questions.length)];
@@ -216,8 +218,12 @@ const Pong = () => {
                 setSelectedAnswer('');
                 onOpen();
 
-                // Stop the game while showing question
-                return { ...prev, gameRunning: false };
+                // Stop the game while showing question and track which player triggered it
+                return {
+                    ...prev,
+                    gameRunning: false,
+                    questionTriggeredBy: triggeredByPlayer // Track which player triggered the question
+                };
             }
 
             return prev;
@@ -237,14 +243,34 @@ const Pong = () => {
                     isClosable: true,
                     position: 'top',
                 });
-                // Bonus points for correct answer
+
+                // Bonus points for correct answer to the player who triggered the question
                 setGameState(prev => {
-                    const newScore = Math.max(prev.player1.score, prev.player2.score) + 5;
-                    return {
-                        ...prev,
-                        player1: { ...prev.player1, score: prev.player1.score >= prev.player2.score ? newScore : prev.player1.score },
-                        player2: { ...prev.player2, score: prev.player2.score > prev.player1.score ? newScore : prev.player2.score }
-                    };
+                    const newState = { ...prev };
+                    const bonusPoints = 5;
+
+                    // Give bonus points to the player who triggered the question
+                    if (prev.questionTriggeredBy === 'player1') {
+                        const newScore = prev.player1.score + bonusPoints;
+                        if (newScore >= 10) {
+                            newState.player1.score = 10;
+                            newState.winner = 'player1';
+                            newState.gameRunning = false;
+                        } else {
+                            newState.player1.score = newScore;
+                        }
+                    } else if (prev.questionTriggeredBy === 'player2') {
+                        const newScore = prev.player2.score + bonusPoints;
+                        if (newScore >= 10) {
+                            newState.player2.score = 10;
+                            newState.winner = 'player2';
+                            newState.gameRunning = false;
+                        } else {
+                            newState.player2.score = newScore;
+                        }
+                    }
+
+                    return newState;
                 });
             } else {
                 toast({
@@ -258,7 +284,12 @@ const Pong = () => {
             }
 
             onClose();
-            setGameState(prev => ({ ...prev, gameRunning: true }));
+
+            // Only resume game if no winner was declared
+            setGameState(prev => ({
+                ...prev,
+                gameRunning: prev.winner ? false : true
+            }));
         }
     };
 
@@ -269,8 +300,8 @@ const Pong = () => {
             ball: {
                 x: gameSize.width / 2,
                 y: gameSize.height / 2,
-                dx: isFirstServe ? 0 : (Math.random() > 0.5 ? 1 : -1) * 3,
-                dy: isFirstServe ? 2 : (Math.random() > 0.5 ? 1 : -1) * 2,
+                dx: isFirstServe ? (Math.random() > 0.5 ? 3 : -3) : (Math.random() > 0.5 ? 1 : -1) * 3,
+                dy: isFirstServe ? (Math.random() > 0.5 ? 2 : -2) : (Math.random() > 0.5 ? 1 : -1) * 2,
                 radius: 8,
                 isFirstServe: isFirstServe
             }
@@ -291,11 +322,7 @@ const Pong = () => {
             // Ball collision with top/bottom walls (90-degree rebound)
             if (ball.y - ball.radius <= 0 || ball.y + ball.radius >= gameSize.height) {
                 ball.dy = -ball.dy;
-                // If it's the first serve, start horizontal movement after hitting top/bottom
-                if (ball.isFirstServe) {
-                    ball.dx = Math.random() > 0.5 ? 3 : -3;
-                    ball.isFirstServe = false;
-                }
+                ball.isFirstServe = false;
             }
 
             // Ball collision with paddles (90-degree rebound)
@@ -323,22 +350,32 @@ const Pong = () => {
             if (ball.x < 0) {
                 player2.score++;
                 resetBall(false);
-                // Show question every qFreq points
 
-                if (player2.score % qFreq === 0) {
-                    // console.log("Showing question for player 2", player2.score, player2.score % qFreq);
-                    // setTimeout(showQuestion, 100);
-                    showQuestion();
+                // Check for winner
+                if (player2.score >= 10) {
+                    newState.winner = 'player2';
+                    newState.gameRunning = false;
+                    return newState;
+                }
+
+                // Show question every qFreq points
+                if (player2.score % qFreq === 0 && player2.score > 0) {
+                    showQuestion('player2');
                 }
             } else if (ball.x > gameSize.width) {
                 player1.score++;
                 resetBall(false);
-                // Show question every qFreq points
 
-                if (player1.score % qFreq === 0) {
-                    // console.log("Checking freq in game for p1", qFreq, player1.score % qFreq);
-                    // setTimeout(showQuestion, 100);
-                    showQuestion();
+                // Check for winner
+                if (player1.score >= 10) {
+                    newState.winner = 'player1';
+                    newState.gameRunning = false;
+                    return newState;
+                }
+
+                // Show question every qFreq points
+                if (player1.score % qFreq === 0 && player1.score > 0) {
+                    showQuestion('player1');
                 }
             }
 
@@ -591,8 +628,10 @@ const Pong = () => {
             player2: { x: gameSize.width - 35, y: (gameSize.height - paddleHeight) / 2, width: paddleWidth, height: paddleHeight, score: 0 },
             gameRunning: false,
             gameStarted: false,
-            qFreq: 5,// Reset question frequency
+            qFreq: 5,
             currentQuestions: [],
+            winner: null, // Reset winner
+            questionTriggeredBy: null, // Reset question trigger
         });
     };
 
@@ -768,6 +807,36 @@ const Pong = () => {
         );
     }
 
+    if (gameState.winner) {
+
+        const winnerName = gameState.winner === 'player1' ? 'Player 1' : 'Player 2';
+        const winnerColor = gameState.winner === 'player1' ? '#00d4ff' : '#ff006e';
+        return (
+            <Box
+                position="absolute"
+                top="50%"
+                left="50%"
+                transform="translate(-50%, -50%)"
+                bg="rgba(124, 45, 208, 0.9)"
+                color="white"
+                p={8}
+                borderRadius="lg"
+                textAlign="center"
+                zIndex={1000}
+            >
+                <Text fontSize="3xl" fontWeight="bold" color={winnerColor} mb={4}>
+                    🎉 {winnerName} Wins! 🎉
+                </Text>
+                <Text fontSize="xl" mb={4}>
+                    Final Score: {gameState.player1.score} - {gameState.player2.score}
+                </Text>
+                <Button colorScheme="purple" onClick={resetGame}>
+                    Go Back
+                </Button>
+            </Box>
+        );
+    }
+
     // Full-screen game view
     return (
         <Box
@@ -930,7 +999,7 @@ const Pong = () => {
                     pointerEvents="auto"
                 >
                     <ModalHeader bg="purple.500" color="white" borderRadius="md md 0 0">
-                        🧠 Quiz Time! - {currentQuestion?.category}
+                        🧠 {gameState.questionTriggeredBy === 'player1' ? 'Player 1' : 'Player 2'}'s Question
                     </ModalHeader>
                     <ModalBody p={6}>
                         {currentQuestion && (
