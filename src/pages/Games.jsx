@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import { useState } from 'react';
 import {
   Box,
   Container,
@@ -15,8 +15,7 @@ import {
 import { keyframes } from '@emotion/react';
 import { useNavigate } from 'react-router-dom';
 
-import SidebarAdLeft from '../components/SidebarAd/SidebarAdLeft';
-import SidebarAdRight from '../components/SidebarAd/SidebarAdRight';
+import SidebarAd from '../components/SidebarAd/SidebarAd';
 
 import { usePageMeta } from '../hooks/usePageMeta';
 
@@ -66,10 +65,10 @@ const PongIcon = () => (
   <svg width="60" height="60" viewBox="0 0 60 60" fill="none">
     {/* Left Paddle */}
     <rect x="5" y="20" width="4" height="20" fill="currentColor" />
-    
+
     {/* Right Paddle */}
     <rect x="51" y="25" width="4" height="20" fill="currentColor" />
-    
+
     {/* Ball */}
     <circle cx="30" cy="30" r="3" fill="currentColor" />
 
@@ -89,9 +88,9 @@ const PongIcon = () => (
 
 const GameCard = ({ game, index }) => {
   usePageMeta(
-      "Gamified Learning Experience",
-      "Level up your engineering skills with Notes-Galaxy’s gamified learning experience! Play Snake, Tetris, and Pong with an educational twist—where mastering concepts is just one move away."
-    );
+    "Gamified Learning Experience",
+    "Level up your engineering skills with Notes-Galaxy’s gamified learning experience! Play Snake, Tetris, and Pong with an educational twist—where mastering concepts is just one move away."
+  );
   const [isHovered, setIsHovered] = useState(false);
   const navigate = useNavigate();
 
@@ -271,7 +270,7 @@ const Games = () => {
       description: 'Classic paddle ball game',
       slug: 'pong-game'
     },
-    
+
   ];
 
   return (
@@ -281,8 +280,9 @@ const Games = () => {
       position="relative"
       overflow="hidden"
     >
-      <SidebarAdLeft
+      <SidebarAd
         position="left"
+        adSlot="4333835944"
       />
       {/* Animated background elements */}
       <Box
@@ -343,7 +343,7 @@ const Games = () => {
           <VStack spacing={4} textAlign="center" mt={{ base: 8, md: 6, lg: 8 }}>
             <Heading
               // size="2xl"
-              fontSize={{base: '2xl', sm: '3xl', md: '4xl', lg: '5xl' , xl: '5xl'}}
+              fontSize={{ base: '2xl', sm: '3xl', md: '4xl', lg: '5xl', xl: '5xl' }}
               bgGradient="linear(to-r, #8b5cf6, #06b6d4, #00ff88)"
               bgClip="text"
               fontWeight="extrabold"
@@ -380,8 +380,9 @@ const Games = () => {
           </Grid>
         </VStack>
       </Container>
-      <SidebarAdRight
+      <SidebarAd
         position="right"
+        adSlot="3152616213"
       />
     </Box>
   );

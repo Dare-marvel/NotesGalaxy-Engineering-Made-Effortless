@@ -62,7 +62,7 @@ const GoogleAd = ({ adSlot, width = "130px", height = "600px" }) => {
   );
 };
 
-const SidebarAdRight = ({ 
+const SidebarAd = ({ 
   position = 'right', 
   adSlot = "3152616213", 
 }) => {
@@ -157,4 +157,4 @@ const SidebarAdRight = ({
   );
 };
 
-export default SidebarAdRight;
+export default SidebarAd;

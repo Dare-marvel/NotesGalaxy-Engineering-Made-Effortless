@@ -1,4 +1,4 @@
-import { useState, useMemo} from 'react';
+import { useState, useMemo } from 'react';
 import {
   Box,
   VStack,
@@ -19,8 +19,7 @@ import {
 } from '@chakra-ui/react';
 import { ExternalLinkIcon, SearchIcon } from '@chakra-ui/icons';
 
-import SidebarAdLeft from '../components/SidebarAd/SidebarAdLeft';
-import SidebarAdRight from '../components/SidebarAd/SidebarAdRight';
+import SidebarAd from '../components/SidebarAd/SidebarAd';
 import { usePageMeta } from '../hooks/usePageMeta';
 
 const subjectsData = {
@@ -511,8 +510,9 @@ export default function YouTubeChannelsPage() {
   return (
     <Box bg="white" minH="100vh">
       {/* <SpaceBackground /> */}
-      <SidebarAdLeft
+      <SidebarAd
         position="left"
+        adSlot="4333835944"
       />
       <Container
         maxW={{ base: "full", sm: "container.sm", md: "container.md", lg: "6xl" }}
@@ -548,10 +548,10 @@ export default function YouTubeChannelsPage() {
               <InputGroup
                 px={{ base: 2, sm: 4, md: 4, lg: 6 }}
                 size={{ base: "md", md: "lg" }} >
-                <InputLeftElement 
-                pointerEvents="none" 
-                pl={{ sm: 6, md: 5 , lg: 9}}
-                h={{ base: "40px", md: "48px" }}>
+                <InputLeftElement
+                  pointerEvents="none"
+                  pl={{ sm: 6, md: 5, lg: 9 }}
+                  h={{ base: "40px", md: "48px" }}>
                   <SearchIcon
                     color="gray.400"
                     boxSize={{ base: "16px", md: "20px" }}
@@ -630,8 +630,9 @@ export default function YouTubeChannelsPage() {
           )}
         </VStack>
       </Container>
-      <SidebarAdRight
+      <SidebarAd
         position="right"
+        adSlot="3152616213"
       />
     </Box>
   );

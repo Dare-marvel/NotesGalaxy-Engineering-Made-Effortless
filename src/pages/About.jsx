@@ -16,12 +16,14 @@ import {
   GridItem,
   useBreakpointValue,
 } from '@chakra-ui/react';
-import logo from '../assets/logo.png';
+import logo from '/logo.png';
 
 import adwait from '../assets/adwait-purao.png';
 
 import SidebarAdLeft from '../components/SidebarAd/SidebarAdLeft';
 import SidebarAdRight from '../components/SidebarAd/SidebarAdRight';
+
+import SidebarAd from '../components/SidebarAd/SidebarAd';
 
 import { keyframes } from '@emotion/react';
 import { usePageMeta } from '../hooks/usePageMeta';
@@ -165,8 +167,9 @@ const AboutUs = () => {
   return (
     <Container maxW="container.xl" width={["100%", "85%", "85%"]} py={[3, 4, 5]} px={[2, 3, 5]}
     >
-      <SidebarAdLeft
+      <SidebarAd
         position="left"
+        adSlot="4333835944"
       />
       {/* Animated Background Elements */}
       {/* <Star size="3px" top="10%" left="15%" delay="0s" />
@@ -486,8 +489,9 @@ const AboutUs = () => {
           </Flex>
         </Box>
       </Container>
-      <SidebarAdRight
+      <SidebarAd
         position="right"
+        adSlot="3152616213"
       />
     </Container>
   );

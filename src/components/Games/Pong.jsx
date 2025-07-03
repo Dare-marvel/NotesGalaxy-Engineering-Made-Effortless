@@ -208,7 +208,7 @@ const Pong = () => {
         // Access current questions directly from state updater
         setGameState(prev => {
             const questions = prev.currentQuestions;
-            console.log("Showing question with currentQuestions", questions);
+            // console.log("Showing question with currentQuestions", questions);
 
             if (questions && questions.length > 0) {
                 const randomQuestion = questions[Math.floor(Math.random() * questions.length)];
@@ -326,7 +326,7 @@ const Pong = () => {
                 // Show question every qFreq points
 
                 if (player2.score % qFreq === 0) {
-                    console.log("Showing question for player 2", player2.score, player2.score % qFreq);
+                    // console.log("Showing question for player 2", player2.score, player2.score % qFreq);
                     // setTimeout(showQuestion, 100);
                     showQuestion();
                 }
@@ -336,7 +336,7 @@ const Pong = () => {
                 // Show question every qFreq points
 
                 if (player1.score % qFreq === 0) {
-                    console.log("Checking freq in game for p1", qFreq, player1.score % qFreq);
+                    // console.log("Checking freq in game for p1", qFreq, player1.score % qFreq);
                     // setTimeout(showQuestion, 100);
                     showQuestion();
                 }
@@ -556,7 +556,6 @@ const Pong = () => {
         let questions = [];
         try {
             questions = await loadSubjectQuestions(selectedSubject);
-            console.log("Loaded questions for subject:", selectedSubject, questions);
         }
         catch (error) {
             console.error("Error loading questions:", error);

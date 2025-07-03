@@ -1,4 +1,4 @@
-import { useState} from 'react';
+import { useState } from 'react';
 import {
   Box,
   VStack,
@@ -23,8 +23,7 @@ import emailjs from '@emailjs/browser';
 import axios from 'axios';
 import { usePageMeta } from '../hooks/usePageMeta';
 
-import SidebarAdLeft from '../components/SidebarAd/SidebarAdLeft';
-import SidebarAdRight from '../components/SidebarAd/SidebarAdRight';
+import SidebarAd from '../components/SidebarAd/SidebarAd';
 import subjectsList from '../config/subjectsList';
 // import { keyframes } from '@emotion/react';
 
@@ -281,8 +280,9 @@ const ContactPage = () => {
     <Flex direction="column" minH="100vh">
       <Container maxW="container.xl" py={[3, 4, 5]} px={[2, 3, 5]}
       >
-        <SidebarAdLeft
+        <SidebarAd
           position="left"
+          adSlot="4333835944"
         />
         {/* Floating elements */}
         <FloatingElement
@@ -509,8 +509,9 @@ const ContactPage = () => {
             </Button>
           </VStack>
         </Container>
-        <SidebarAdRight
+        <SidebarAd
           position="right"
+          adSlot="3152616213"
         />
       </Container>
 

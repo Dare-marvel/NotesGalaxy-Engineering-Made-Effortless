@@ -35,8 +35,7 @@ import axios from 'axios';
 import { FOLDER_STRUCTURE } from '../config/structure';
 import { FiGithub } from "react-icons/fi";
 
-import SidebarAdLeft from '../components/SidebarAd/SidebarAdLeft';
-import SidebarAdRight from '../components/SidebarAd/SidebarAdRight';
+import SidebarAd from '../components/SidebarAd/SidebarAd';
 
 import { keyframes } from '@emotion/react';
 
@@ -525,8 +524,9 @@ const FolderView = () => {
 
   return (
     <Box minH="100vh">
-      <SidebarAdLeft
+      <SidebarAd
         position="left"
+        adSlot="4333835944"
       />
       <Container maxW="container.xl"
         py={[3, 4, 5]}
@@ -690,8 +690,9 @@ const FolderView = () => {
           </Button>
         </Tooltip>
       </Box>
-      <SidebarAdRight
+      <SidebarAd
         position="right"
+        adSlot="3152616213"
       />
     </Box>
   );

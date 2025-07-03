@@ -57,8 +57,8 @@ import {
   // setDoc
 } from 'firebase/firestore';
 
-import SidebarAdLeft from '../components/SidebarAd/SidebarAdLeft';
-import SidebarAdRight from '../components/SidebarAd/SidebarAdRight';
+import SidebarAd from '../components/SidebarAd/SidebarAd';
+
 
 import {
   FaTrophy,
@@ -943,8 +943,9 @@ export default function SpaceCommunityPage() {
   return (
     <Container maxW="container.xl" py={[8, 9, 9]} mt={[2, 2, 3]} px={[2, 3, 5]}
     >
-      <SidebarAdLeft
+      <SidebarAd
         position="left"
+        adSlot="4333835944"
       />
       <FloatingStars />
 
@@ -1026,8 +1027,9 @@ export default function SpaceCommunityPage() {
 
         </VStack>
       </Container>
-      <SidebarAdRight
+      <SidebarAd
         position="right"
+        adSlot="3152616213"
       />
     </Container>
   );
