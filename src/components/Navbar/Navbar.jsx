@@ -65,7 +65,6 @@ const Navbar = () => {
               boxSize="40px"
               whileTap={{ rotate: 20, scale: 1.1 }}
               transition={{ type: 'spring', stiffness: 300 }}
-              loading="lazy"
             />
             <Text
               fontSize="xl"
@@ -79,7 +78,7 @@ const Navbar = () => {
           </HStack>
 
           {/* Desktop Navigation */}
-          <HStack spacing={8} display={{ base: 'none', md: 'flex' }}>
+          <HStack spacing={8} display={{ base: 'none', md: 'none', lg: 'flex' }}>
             {navItems.map((item) => (
               <NavItem key={item.name} item={item} />
             ))}
@@ -87,7 +86,7 @@ const Navbar = () => {
 
           {/* Mobile Menu Button */}
           <IconButton
-            display={{ base: 'flex', md: 'none' }}
+            display={{ base: 'flex', md: 'flex' , lg: 'none' }}
             onClick={onToggle}
             icon={isOpen ? <CloseIcon /> : <HamburgerIcon />}
             variant="ghost"
