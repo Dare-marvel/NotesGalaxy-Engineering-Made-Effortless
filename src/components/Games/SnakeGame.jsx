@@ -129,7 +129,8 @@ export default function EnhancedEducationalSnakeGame() {
 
     try {
       const fileSafeSubject = selectedSubject.replace(/\s+/g, '').replace(/[^\w]/g, '');
-      const module = await import(`../../question-files/${fileSafeSubject}.js`);
+      const questionSet = Math.floor(Math.random() * 4) + 1;
+      const module = await import(`../../question-files/${fileSafeSubject}-${questionSet}.js`);
       setSubjectQuestions(module.default);
       setGameStarted(true);
       setGameRunning(true);
@@ -365,7 +366,7 @@ export default function EnhancedEducationalSnakeGame() {
             onChange={(e) => setSelectedSubject(e.target.value)}
             disabled={gameStarted && gameRunning}
           >
-            {subjectsList.map((subject) => (
+            {subjectsList.slice(0, -1).map((subject) => (
               <option key={subject} value={subject}>
                 {subject}
               </option>

@@ -43,6 +43,7 @@ import { getFirestore, doc, getDoc, getDocs, collection, updateDoc, increment, a
 import app from '../config/firebaseConfig';
 import { useNavigate, useSearchParams } from "react-router-dom";
 import SidebarAd from '../components/GoogleAds/SidebarAd';
+import BottomAd from '../components/GoogleAds/BottomAd';
 import { blogContent } from '../config/blogContent';
 import { SearchIcon } from '@chakra-ui/icons';
 import { usePageMeta } from '../hooks/usePageMeta';
@@ -268,7 +269,7 @@ const BlogCard = ({ blog, onClick }) => {
 // Blog View Component
 const BlogView = ({ blogId, metaData, onBack }) => {
     const [blog, setBlog] = useState(null);
-    const [blogMeta, setBlogMeta] = useState(metaData ||null);
+    const [blogMeta, setBlogMeta] = useState(metaData || null);
     const [loading, setLoading] = useState(true);
     const [userId, setUserId] = useState(null);
     const toast = useToast();
@@ -289,7 +290,7 @@ const BlogView = ({ blogId, metaData, onBack }) => {
         const loadBlog = async () => {
             try {
                 const content = blogContent[blogId];
-                if(!metaData) {
+                if (!metaData) {
                     const meta = await getBlogMetadata(blogId);
                     setBlogMeta(meta);
                 }
@@ -817,6 +818,18 @@ const Blogs = () => {
                         >
                             🚀 Publish your blog here
                         </Button>
+
+
+                    </Box>
+
+                    <Box
+                        width={{ base: '90%', sm: "90%", md: '80%' }}
+                        textAlign="center"
+                        mx="auto"
+                        mt={6}
+                        mb={1}
+                        px={{ base: 4, md: 12, lg: 12 }}>
+                        <BottomAd />
                     </Box>
                 </Flex>
             ) : (

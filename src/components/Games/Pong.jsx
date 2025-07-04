@@ -584,7 +584,8 @@ const Pong = () => {
 
     const loadSubjectQuestions = async (subject) => {
         const subjectSlug = subject.replace(/\s+/g, '').replace(/[^\w]/g, '');
-        const module = await import(`../../question-files/${subjectSlug}.js`);
+        const questionSet = Math.floor(Math.random() * 4) + 1;
+        const module = await import(`../../question-files/${subjectSlug}-${questionSet}.js`);
         return module.default || [];
     };
 
@@ -661,7 +662,7 @@ const Pong = () => {
                             px={{ base: 4, md: 0 }}
                             size={{ base: "md", md: "md" }}
                         >
-                            {subjectsList.map((subject, index) => (
+                            {subjectsList.slice(0, -1).map((subject, index) => (
                                 <option key={index} value={subject}>
                                     {subject}
                                 </option>
@@ -689,8 +690,8 @@ const Pong = () => {
                                 // value={qFreq}
                                 // onChange={(valueString) => setqFreq(parseInt(valueString) || 0)}
                                 step={1}
-                                min={3}
-                                max={1000}
+                                min={2}
+                                max={29}
                                 size={{ base: "md", md: "md" }}
                                 width={{ base: "165px", sm: "165px", md: "170px", lg: "180px", xl: "200px" }}
                                 id='qFreq_3425'

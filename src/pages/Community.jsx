@@ -58,6 +58,7 @@ import {
 } from 'firebase/firestore';
 
 import SidebarAd from '../components/GoogleAds/SidebarAd';
+import BottomAd from '../components/GoogleAds/BottomAd';
 
 
 import {

@@ -226,11 +226,11 @@ const SpaceTetris = () => {
     if (currentQuestions.length === 0) {
       // Fallback to math questions if selected subject has no questions
       return {
-      question: "Fallback: What is 2 + 2?",
-      options: ["3", "4", "5", "6"],
-      correct: 1,
-      category: "Fallback"
-    };
+        question: "Fallback: What is 2 + 2?",
+        options: ["3", "4", "5", "6"],
+        correct: 1,
+        category: "Fallback"
+      };
     }
     return currentQuestions[Math.floor(Math.random() * currentQuestions.length)];
   };
@@ -391,7 +391,8 @@ const SpaceTetris = () => {
 
   const loadSubjectQuestions = async (subject) => {
     const subjectSlug = subject.replace(/\s+/g, '').replace(/[^\w]/g, '');
-    const module = await import(`../../question-files/${subjectSlug}.js`);
+    const questionSet = Math.floor(Math.random() * 4) + 1;
+    const module = await import(`../../question-files/${subjectSlug}-${questionSet}.js`);
     return module.default || [];
   };
 
@@ -518,11 +519,12 @@ const SpaceTetris = () => {
               disabled={gameRunning}
               size="sm"
             >
-              {subjectsList.map((subject) => (
+              {subjectsList.slice(0, -1).map((subject) => (
                 <option key={subject} value={subject}>
                   {subject}
                 </option>
               ))}
+
             </Select>
           </Box>
         </VStack>
@@ -740,7 +742,7 @@ const SpaceTetris = () => {
                 disabled={gameRunning}
                 size={{ base: "sm", md: "md" }}
               >
-                {subjectsList.map((subject) => (
+                {subjectsList.slice(0, -1).map((subject) => (
                   <option key={subject} value={subject}>
                     {subject}
                   </option>
