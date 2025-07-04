@@ -84,7 +84,7 @@ const SpaceTetris = () => {
   const [gameRunning, setGameRunning] = useState(false);
   const [gameOver, setGameOver] = useState(false);
   const [nextPiece, setNextPiece] = useState(null);
-  const [dropTime, setDropTime] = useState(1000);
+  const [dropTime, setDropTime] = useState(500);
   const [currentQuestions, setCurrentQuestions] = useState([]);
 
   // Puzzle state
@@ -178,6 +178,7 @@ const SpaceTetris = () => {
   }, [board, currentPiece, currentPosition]);
 
   // Clear completed lines
+  // Clear completed lines
   const clearLines = useCallback((boardState) => {
     let linesCleared = 0;
     const newBoard = boardState.filter(row => {
@@ -199,11 +200,20 @@ const SpaceTetris = () => {
         updateHighScore(newScore);
         return newScore;
       });
-      setLines(prev => prev + linesCleared);
-      setLevel(Math.floor(lines / 10) + 1);
 
-      // Trigger puzzle every 3 lines cleared
-      if ((lines + linesCleared) % 3 === 0) {
+      // Store the previous lines count before updating
+      const previousLines = lines;
+      const newTotalLines = lines + linesCleared;
+
+      setLines(newTotalLines);
+      setLevel(Math.floor(newTotalLines / 10) + 1);
+
+      // Check if we crossed a multiple of 3 threshold
+      // This handles cases where user clears multiple lines at once
+      const previousThreshold = Math.floor(previousLines / 3);
+      const newThreshold = Math.floor(newTotalLines / 3);
+
+      if (newThreshold > previousThreshold) {
         triggerPuzzle();
       }
 
@@ -423,7 +433,7 @@ const SpaceTetris = () => {
     setGameRunning(true);
     setGameOver(false);
     setPuzzlesSolved(0);
-    setDropTime(1000);
+    setDropTime(500);
   };
 
 
@@ -835,7 +845,7 @@ const SpaceTetris = () => {
       </VStack>
 
       {/* Puzzle Modal */}
-      <Modal isOpen={isOpen} onClose={() => { }} closeOnOverlayClick={false}>
+      <Modal isOpen={isOpen} onClose={onClose} closeOnOverlayClick={false} size="lg">
         <ModalOverlay />
         <ModalContent border="2px solid" borderColor="purple.300">
           <ModalHeader>
@@ -847,21 +857,28 @@ const SpaceTetris = () => {
           <ModalBody>
             {currentPuzzle && (
               <VStack spacing={4} align="stretch">
-                <Text fontSize={{ base: "md", md: "lg" }} fontWeight="medium" textAlign="center" >
+                <Text
+                  fontSize={{ base: "md", md: "lg" }}
+                  fontWeight="medium"
+                  whiteSpace="pre-wrap" // Ensures \n becomes a line break
+                  textAlign="center"
+                >
                   {currentPuzzle.question}
                 </Text>
+
                 <Grid templateColumns={{ base: "1fr", md: "repeat(2, 1fr)" }} gap={3} w="full">
                   {currentPuzzle.options.map((option, index) => (
                     <GridItem key={index}>
                       <Button
                         w="full"
-                        minH="12"
+                        py={4} // Adds more vertical padding
                         variant="outline"
                         colorScheme="teal"
                         onClick={() => handleAnswerQuestion(index)}
-                        whiteSpace="normal"
+                        whiteSpace="normal" // Allows wrapping
                         textAlign="center"
                         fontSize={{ base: "sm", md: "md" }}
+                        height="auto" // Allow button height to expand based on content
                       >
                         {option}
                       </Button>
