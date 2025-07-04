@@ -1138,7 +1138,10 @@ const Pong = () => {
                     <ModalBody p={6}>
                         {currentQuestion && (
                             <VStack spacing={4} align="stretch">
-                                <Text fontSize="lg" fontWeight="semibold">
+                                <Text
+                                    whiteSpace="pre-wrap"
+                                    fontSize="lg"
+                                    fontWeight="semibold">
                                     {currentQuestion.question}
                                 </Text>
                                 <RadioGroup value={selectedAnswer} onChange={setSelectedAnswer}>
