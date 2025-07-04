@@ -247,7 +247,7 @@ const Pong = () => {
                 // Bonus points for correct answer to the player who triggered the question
                 setGameState(prev => {
                     const newState = { ...prev };
-                    const bonusPoints = 5;
+                    const bonusPoints = 1;
 
                     // Give bonus points to the player who triggered the question
                     if (prev.questionTriggeredBy === 'player1') {
@@ -787,7 +787,8 @@ const Pong = () => {
                                     // display={{ base: "block", md: "block" }}
                                     textAlign="center"
                                 >
-                                    Play on desktop for best experience
+                                    Play on full screen for best experience.
+                                    Score 10 points to win
                                 </Text>
                             </VStack>
                         )}
