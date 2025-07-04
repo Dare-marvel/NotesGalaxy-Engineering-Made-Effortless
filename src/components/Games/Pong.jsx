@@ -297,7 +297,7 @@ const Pong = () => {
     const resetBall = useCallback((isFirstServe = false) => {
 
         const FIRST_SERVE_SPEED = 3;
-        const GAME_SPEED = 5;
+        const GAME_SPEED = 4;
 
         setGameState(prev => ({
             ...prev,
