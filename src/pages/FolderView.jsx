@@ -662,18 +662,19 @@ const FolderView = () => {
       <Box mt={12} />
 
       <Box textAlign="center" mb={4}>
-        <Tooltip label="For knowledge-hungry users, there's more on my GitHub! Click this link to explore my repositories." fontSize="md" hasArrow>
+        <Tooltip label="For knowledge-hungry users, there's more on my GitHub! Click this link to explore my repositories." fontSize="md" hasArrow placement="top">
           <Button
             as="a"
-            href="https://github.com/dare-marvel" // Replace with your GitHub URL
+            href="https://github.com/dare-marvel" 
             target="_blank"
             rel="noopener noreferrer"
             leftIcon={<FiGithub />}
             bgGradient="linear(to-r,blue.500,green.500)"
             color="white"
+            minW="250px"
             _hover={{
               bgGradient: "linear(to-r, #43e97b,blue.300)",
-              transform: "scale(1.05)",
+              // transform: "scale(1.05)",
               boxShadow: "0 0 25px rgba(56, 249, 215, 0.6)",
             }}
             _active={{
