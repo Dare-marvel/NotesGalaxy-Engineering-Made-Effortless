@@ -376,6 +376,7 @@ const NotesModal = ({ isOpen, onClose, user }) => {
                             size="sm"
                             variant="ghost"
                             colorScheme="blue"
+                            aria-label="View Note"
                             onClick={() => {
                               // window.open(note.link, '_blank', 'noopener,noreferrer');
                               handleNoteView(note.id);
@@ -642,6 +643,7 @@ const UserRow = ({ user, rank, index, sortBy }) => {
               onClick={onOpen}
               leftIcon={<Icon as={FaEye} boxSize={{ base: 3, md: 4 }} />}
               fontSize={{ base: "xs", md: "sm" }}
+              aria-label="View all notes of user"
               px={{ base: 2, md: 3 }}
             >
               {/* <Text display={{ base: "none", md: "inline" }}>View</Text> */}
