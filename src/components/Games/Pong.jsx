@@ -51,7 +51,6 @@ const Pong = () => {
 
 
     // Game objects
-    // Game objects - Add winner and questionTriggeredBy to initial state
     const [gameState, setGameState] = useState({
         ball: { x: 400, y: 300, dx: 0, dy: 2, radius: 8, isFirstServe: true },
         player1: { x: 20, y: 250, width: 15, height: 100, score: 0 },
@@ -296,13 +295,17 @@ const Pong = () => {
 
     // Game logic
     const resetBall = useCallback((isFirstServe = false) => {
+
+        const FIRST_SERVE_SPEED = 3;
+        const GAME_SPEED = 5;
+
         setGameState(prev => ({
             ...prev,
             ball: {
                 x: gameSize.width / 2,
                 y: gameSize.height / 2,
-                dx: isFirstServe ? (Math.random() > 0.5 ? 3 : -3) : (Math.random() > 0.5 ? 1 : -1) * 3,
-                dy: isFirstServe ? (Math.random() > 0.5 ? 2 : -2) : (Math.random() > 0.5 ? 1 : -1) * 2,
+                dx: (Math.random() > 0.5 ? 1 : -1) * (isFirstServe ? FIRST_SERVE_SPEED : GAME_SPEED),
+                dy: (Math.random() > 0.5 ? 0.8 : -0.8) * (isFirstServe ? FIRST_SERVE_SPEED : GAME_SPEED),
                 radius: 8,
                 isFirstServe: isFirstServe
             }
