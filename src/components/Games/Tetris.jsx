@@ -21,8 +21,8 @@ import {
 } from '@chakra-ui/react';
 import subjectsList from '../../config/subjectsList';
 
-import SidebarAdRight from '../SidebarAd/SidebarAdRight';
-import SidebarAdLeft from '../SidebarAd/SidebarAdLeft';
+import SidebarAdRight from '../GoogleAds/SidebarAdRight';
+import SidebarAdLeft from '../GoogleAds/SidebarAdLeft';
 import { usePageMeta } from '../../hooks/usePageMeta';
 
 // Tetris pieces

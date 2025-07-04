@@ -24,8 +24,8 @@ import {
 } from '@chakra-ui/react';
 import { ChevronUpIcon, ChevronDownIcon, ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
 
-import SidebarAdRight from '../SidebarAd/SidebarAdRight';
-import SidebarAdLeft from '../SidebarAd/SidebarAdLeft';
+import SidebarAdRight from '../GoogleAds/SidebarAdRight';
+import SidebarAdLeft from '../GoogleAds/SidebarAdLeft';
 
 import subjectsList from '../../config/subjectsList';
 

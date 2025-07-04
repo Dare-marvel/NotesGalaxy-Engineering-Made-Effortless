@@ -42,7 +42,7 @@ import { IoMdDownload } from "react-icons/io";
 import { getFirestore, doc, getDoc, getDocs, collection, updateDoc, increment, arrayUnion, arrayRemove } from 'firebase/firestore';
 import app from '../config/firebaseConfig';
 import { useNavigate, useSearchParams } from "react-router-dom";
-import SidebarAd from '../components/SidebarAd/SidebarAd';
+import SidebarAd from '../components/GoogleAds/SidebarAd';
 import { blogContent } from '../config/blogContent';
 import { SearchIcon } from '@chakra-ui/icons';
 import { usePageMeta } from '../hooks/usePageMeta';

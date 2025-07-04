@@ -23,7 +23,7 @@ import emailjs from '@emailjs/browser';
 import axios from 'axios';
 import { usePageMeta } from '../hooks/usePageMeta';
 
-import SidebarAd from '../components/SidebarAd/SidebarAd';
+import SidebarAd from '../components/GoogleAds/SidebarAd';
 import subjectsList from '../config/subjectsList';
 // import { keyframes } from '@emotion/react';
 

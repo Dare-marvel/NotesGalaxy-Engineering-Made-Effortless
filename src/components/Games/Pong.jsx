@@ -24,8 +24,8 @@ import {
 import { InfoIcon } from '@chakra-ui/icons';
 import './Pong.css'
 
-import SidebarAdRight from '../SidebarAd/SidebarAdRight';
-import SidebarAdLeft from '../SidebarAd/SidebarAdLeft';
+import SidebarAdRight from '../GoogleAds/SidebarAdRight';
+import SidebarAdLeft from '../GoogleAds/SidebarAdLeft';
 
 import subjectsList from '../../config/subjectsList';
 

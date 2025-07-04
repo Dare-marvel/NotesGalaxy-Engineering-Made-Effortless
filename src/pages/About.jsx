@@ -19,11 +19,9 @@ import {
 import logo from '/logo.png';
 
 import adwait from '../assets/adwait-purao.png';
+;
 
-import SidebarAdLeft from '../components/SidebarAd/SidebarAdLeft';
-import SidebarAdRight from '../components/SidebarAd/SidebarAdRight';
-
-import SidebarAd from '../components/SidebarAd/SidebarAd';
+import SidebarAd from '../components/GoogleAds/SidebarAd';
 
 import { keyframes } from '@emotion/react';
 import { usePageMeta } from '../hooks/usePageMeta';

@@ -15,7 +15,7 @@ import {
 import { keyframes } from '@emotion/react';
 import { useNavigate } from 'react-router-dom';
 
-import SidebarAd from '../components/SidebarAd/SidebarAd';
+import SidebarAd from '../components/GoogleAds/SidebarAd';
 
 import { usePageMeta } from '../hooks/usePageMeta';
 

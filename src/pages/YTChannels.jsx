@@ -19,7 +19,7 @@ import {
 } from '@chakra-ui/react';
 import { ExternalLinkIcon, SearchIcon } from '@chakra-ui/icons';
 
-import SidebarAd from '../components/SidebarAd/SidebarAd';
+import SidebarAd from '../components/GoogleAds/SidebarAd';
 import { usePageMeta } from '../hooks/usePageMeta';
 
 const subjectsData = {

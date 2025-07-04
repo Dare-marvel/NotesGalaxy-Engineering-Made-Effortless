@@ -57,7 +57,7 @@ import {
   // setDoc
 } from 'firebase/firestore';
 
-import SidebarAd from '../components/SidebarAd/SidebarAd';
+import SidebarAd from '../components/GoogleAds/SidebarAd';
 
 
 import {

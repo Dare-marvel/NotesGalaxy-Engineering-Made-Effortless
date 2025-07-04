@@ -35,7 +35,7 @@ import axios from 'axios';
 import { FOLDER_STRUCTURE } from '../config/structure';
 import { FiGithub } from "react-icons/fi";
 
-import SidebarAd from '../components/SidebarAd/SidebarAd';
+import SidebarAd from '../components/GoogleAds/SidebarAd';
 
 import { keyframes } from '@emotion/react';
 
