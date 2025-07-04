@@ -22,6 +22,7 @@ import adwait from '../assets/adwait-purao.png';
 ;
 
 import SidebarAd from '../components/GoogleAds/SidebarAd';
+import BottomAd from '../components/GoogleAds/BottomAd';
 
 import { keyframes } from '@emotion/react';
 import { usePageMeta } from '../hooks/usePageMeta';
@@ -486,7 +487,12 @@ const AboutUs = () => {
             </VStack>
           </Flex>
         </Box>
+
+        <BottomAd />
       </Container>
+
+
+
       <SidebarAd
         position="right"
         adSlot="3152616213"
