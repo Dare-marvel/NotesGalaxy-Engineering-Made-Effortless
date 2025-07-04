@@ -16,6 +16,7 @@ import { keyframes } from '@emotion/react';
 import { useNavigate } from 'react-router-dom';
 
 import SidebarAd from '../components/GoogleAds/SidebarAd';
+import BottomAd from '../components/GoogleAds/BottomAd'
 
 import { usePageMeta } from '../hooks/usePageMeta';
 
@@ -338,7 +339,7 @@ const Games = () => {
         />
       ))}
 
-      <Container maxW="7xl" py={{ base: 10, md: 12, lg: 12 }} position="relative" zIndex={1}>
+      <Container maxW="7xl" pt={{ base: 10, md: 12, lg: 12 }} position="relative" zIndex={1}>
         <VStack spacing={12} align="center">
           <VStack spacing={4} textAlign="center" mt={{ base: 8, md: 6, lg: 8 }}>
             <Heading
@@ -379,6 +380,16 @@ const Games = () => {
             ))}
           </Grid>
         </VStack>
+
+        <Box
+          width={{ base: '90%', sm: "90%", md: '80%' }}
+          textAlign="center"
+          mx="auto"
+          mt={12}
+          mb={1}
+          px={{ base: 4, md: 12, lg: 12 }}>
+          <BottomAd />
+        </Box>
       </Container>
       <SidebarAd
         position="right"

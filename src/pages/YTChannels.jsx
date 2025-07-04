@@ -20,6 +20,7 @@ import {
 import { ExternalLinkIcon, SearchIcon } from '@chakra-ui/icons';
 
 import SidebarAd from '../components/GoogleAds/SidebarAd';
+import BottomAd from '../components/GoogleAds/BottomAd'
 import { usePageMeta } from '../hooks/usePageMeta';
 
 const subjectsData = {
@@ -516,7 +517,7 @@ export default function YouTubeChannelsPage() {
       />
       <Container
         maxW={{ base: "full", sm: "container.sm", md: "container.md", lg: "6xl" }}
-        py={{ base: 4, sm: 6, md: 8, lg: 12 }}
+        pt={{ base: 4, sm: 6, md: 8, lg: 12 }}
         px={{ base: 3, sm: 4, md: 12, lg: 12 }}
         position="relative"
         zIndex="1"
@@ -629,6 +630,16 @@ export default function YouTubeChannelsPage() {
             </Box>
           )}
         </VStack>
+
+        <Box
+          width={{ base: '90%', sm: "90%", md: '80%' }}
+          textAlign="center"
+          mx="auto"
+          mt={12}
+          mb={1}
+          px={{ base: 4, md: 12, lg: 12 }}>
+          <BottomAd />
+        </Box>
       </Container>
       <SidebarAd
         position="right"

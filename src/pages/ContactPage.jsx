@@ -25,13 +25,7 @@ import { usePageMeta } from '../hooks/usePageMeta';
 
 import SidebarAd from '../components/GoogleAds/SidebarAd';
 import subjectsList from '../config/subjectsList';
-// import { keyframes } from '@emotion/react';
-
-// const colorChange = keyframes`
-//   0% { background-position: 0% 50%; }
-//   50% { background-position: 100% 50%; }
-//   100% { background-position: 0% 50%; }
-// `;
+import BottomAd from '../components/GoogleAds/BottomAd';
 
 const FloatingElement = ({ icon, top, left, right, duration = 5, size = "30px", delay = 0 }) => (
   <Box
@@ -332,7 +326,7 @@ const ContactPage = () => {
           position="relative"
           overflow={"auto"}
           zIndex={1}
-          mt={{ base: 200, sm: 20, md: 14, lg: 16 }}
+          mt={{ base: 20, sm: 20, md: 16, lg: 16 }}
         >
           <VStack spacing={{ base: 4, sm: 3, md: 4, lg: 5 }}>
             <Flex justify="center" align="center">
@@ -542,6 +536,16 @@ const ContactPage = () => {
           🚀 Feedback Form
         </Button>
 
+      </Box>
+
+      <Box
+        width={{ base: '90%', sm: "90%", md: '80%' }}
+        textAlign="center"
+        mx="auto"
+        mt={6}
+        mb={1}
+        px={{ base: 4, md: 12, lg: 12 }}>
+        <BottomAd />
       </Box>
 
     </Flex>

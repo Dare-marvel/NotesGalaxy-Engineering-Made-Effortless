@@ -36,6 +36,7 @@ import { FOLDER_STRUCTURE } from '../config/structure';
 import { FiGithub } from "react-icons/fi";
 
 import SidebarAd from '../components/GoogleAds/SidebarAd';
+import BottomAd from '../components/GoogleAds/BottomAd'
 
 import { keyframes } from '@emotion/react';
 
@@ -689,6 +690,16 @@ const FolderView = () => {
             Visit Github for more content
           </Button>
         </Tooltip>
+      </Box>
+
+      <Box
+        width={{ base: '90%', sm: "90%", md: '80%' }}
+        textAlign="center"
+        mx="auto"
+        mt={9}
+        mb={1}
+        px={{ base: 4, md: 12, lg: 12 }}>
+        <BottomAd />
       </Box>
       <SidebarAd
         position="right"

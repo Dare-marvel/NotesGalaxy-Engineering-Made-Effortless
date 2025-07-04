@@ -944,7 +944,7 @@ export default function SpaceCommunityPage() {
   ];
 
   return (
-    <Container maxW="container.xl" py={[8, 9, 9]} mt={[2, 2, 3]} px={[2, 3, 5]}
+    <Container maxW="container.xl" pt={[8, 9, 9]} mt={[2, 2, 3]} px={[2, 3, 5]}
     >
       <SidebarAd
         position="left"
@@ -1029,6 +1029,17 @@ export default function SpaceCommunityPage() {
           </VStack>
 
         </VStack>
+
+        <Box
+          width={{ base: '90%', sm: "90%", md: '80%' }}
+          textAlign="center"
+          mx="auto"
+          mt={12}
+          pt={6}
+          mb={1}
+          px={{ base: 4, md: 12, lg: 12 }}>
+          <BottomAd />
+        </Box>
       </Container>
       <SidebarAd
         position="right"
