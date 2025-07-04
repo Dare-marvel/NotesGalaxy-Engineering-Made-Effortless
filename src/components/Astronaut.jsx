@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { CloseIcon } from '@chakra-ui/icons';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/blur.css';
-import astronaut from '../assets/astronaut.png';
+import astronaut from '../assets/astronaut.webp';
 import './Astronaut.css';
 
 // Custom hook for preference storage

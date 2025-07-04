@@ -22,7 +22,7 @@ import {
   InputLeftElement,
   Center
 } from '@chakra-ui/react';
-import { FiArrowLeft, FiFolder, FiFile, FiSearch } from 'react-icons/fi';
+import { FiArrowLeft, FiFolder, FiFile, FiSearch, FiGithub } from 'react-icons/fi';
 import { FaDownload } from "react-icons/fa";
 import { getSimpleName, getActualName } from '../config/nameMapping';
 const FileViewer = lazy(() => import('../components/FileViewer/FileViewer'));
@@ -33,7 +33,6 @@ import { truncateByScreenSize } from '../utils/displayUtils';
 import Breadcrumbs from '../components/Breadcrumbs';
 import axios from 'axios';
 import { FOLDER_STRUCTURE } from '../config/structure';
-import { FiGithub } from "react-icons/fi";
 
 import SidebarAd from '../components/GoogleAds/SidebarAd';
 import BottomAd from '../components/GoogleAds/BottomAd'
