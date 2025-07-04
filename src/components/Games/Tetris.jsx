@@ -21,8 +21,8 @@ import {
 } from '@chakra-ui/react';
 import subjectsList from '../../config/subjectsList';
 
-import SidebarAdRight from '../GoogleAds/SidebarAdRight';
-import SidebarAdLeft from '../GoogleAds/SidebarAdLeft';
+import SidebarAd from '../GoogleAds/SidebarAd';
+import BottomAd from '../GoogleAds/BottomAd'
 import { usePageMeta } from '../../hooks/usePageMeta';
 
 // Tetris pieces
@@ -470,8 +470,9 @@ const SpaceTetris = () => {
       px={{ base: 2, md: 4, lg: 6 }}
       color="black"
     >
-      <SidebarAdLeft
+      <SidebarAd
         position="left"
+        adSlot="4333835944"
       />
       <VStack spacing={{ base: 2, md: 6, lg: 8 }} pt={{ base: 2, md: 6, lg: 8 }}>
         {/* Mobile Top Section - Stats and Subject */}
@@ -891,8 +892,19 @@ const SpaceTetris = () => {
         </ModalContent>
       </Modal>
 
-      <SidebarAdRight
+      <Box
+        width={{ base: '90%', sm: "90%", md: '80%' }}
+        textAlign="center"
+        mx="auto"
+        mt={8}
+        mb={1}
+        px={{ base: 4, md: 12, lg: 12 }}>
+        <BottomAd />
+      </Box>
+
+      <SidebarAd
         position="right"
+        adSlot="3152616213"
       />
     </Box>
   );

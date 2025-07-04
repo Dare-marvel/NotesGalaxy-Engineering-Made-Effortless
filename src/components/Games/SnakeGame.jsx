@@ -19,13 +19,14 @@ import {
   useToast,
   Select,
   IconButton,
-  SimpleGrid,
-  useBreakpointValue
+  // SimpleGrid,
+  useBreakpointValue,
+  Wrap, WrapItem,
 } from '@chakra-ui/react';
 import { ChevronUpIcon, ChevronDownIcon, ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
 
-import SidebarAdRight from '../GoogleAds/SidebarAdRight';
-import SidebarAdLeft from '../GoogleAds/SidebarAdLeft';
+import SidebarAd from '../GoogleAds/SidebarAd';
+import BottomAd from '../GoogleAds/BottomAd'
 
 import subjectsList from '../../config/subjectsList';
 
@@ -298,8 +299,9 @@ export default function EnhancedEducationalSnakeGame() {
 
   return (
     <Container maxW="4xl" py={containerPadding}>
-      <SidebarAdLeft
+      <SidebarAd
         position="left"
+        adSlot="4333835944"
       />
       <VStack spacing={6}>
         {/* <Heading
@@ -311,52 +313,28 @@ export default function EnhancedEducationalSnakeGame() {
         </Heading> */}
 
         {/* Stats Display */}
-        <SimpleGrid
-          columns={{ base: 2, md: 2, lg: 4, xl: 4 }}
-          spacing={4}
-          w="full"
-          pt={{ base: 12, md: 8, lg: 5 }}
-          px={{ base: 4, md: 6, lg: 8 }}
-          width={{ base: "full", md: "70%", lg: "80%" }} // Responsive width
-          mt={2}
-        >
-          <Badge
-            colorScheme="blue"
-            fontSize="md"
-            p={2}
-            textAlign="center"
-            w={{ base: "full", md: "auto" }} // Responsive width
-          >
-            Score: {score}
-          </Badge>
-          <Badge
-            colorScheme="orange"
-            fontSize="md"
-            p={2}
-            textAlign="center"
-            w={{ base: "full", md: "auto" }} // Responsive width
-          >
-            High Score: {highScore}
-          </Badge>
-          <Badge
-            colorScheme="green"
-            fontSize="md"
-            p={2}
-            textAlign="center"
-            w={{ base: "full", md: "auto" }} // Responsive width
-          >
-            Level: {level}
-          </Badge>
-          <Badge
-            colorScheme="purple"
-            fontSize="md"
-            p={2}
-            textAlign="center"
-            w={{ base: "full", md: "auto" }} // Responsive width
-          >
-            Questions: {questionsAnswered}
-          </Badge>
-        </SimpleGrid>
+        <Wrap spacing={4} justify="center" w="full" pt={{ base: 12, md: 8, lg: 5 }} px={{ base: 4, md: 6, lg: 8 }} mt={2}>
+          <WrapItem>
+            <Badge colorScheme="blue" fontSize="md" p={2} textAlign="center" minW="fit-content">
+              Score: {score}
+            </Badge>
+          </WrapItem>
+          <WrapItem>
+            <Badge colorScheme="orange" fontSize="md" p={2} textAlign="center" minW="fit-content">
+              H. Score: {highScore}
+            </Badge>
+          </WrapItem>
+          <WrapItem>
+            <Badge colorScheme="green" fontSize="md" p={2} textAlign="center" minW="fit-content">
+              Level: {level}
+            </Badge>
+          </WrapItem>
+          <WrapItem>
+            <Badge colorScheme="purple" fontSize="md" p={2} textAlign="center" minW="fit-content">
+              Questions: {questionsAnswered}
+            </Badge>
+          </WrapItem>
+        </Wrap>
 
         {/* Subject Selection */}
         <Box w={{ base: "full", md: "400px" }}>
@@ -561,8 +539,18 @@ export default function EnhancedEducationalSnakeGame() {
           </ModalContent>
         </Modal>
       </VStack>
-      <SidebarAdRight
+      <Box
+        width={{ base: '90%', sm: "90%", md: '80%' }}
+        textAlign="center"
+        mx="auto"
+        mt={8}
+        mb={1}
+        px={{ base: 4, md: 12, lg: 12 }}>
+        <BottomAd />
+      </Box>
+      <SidebarAd
         position="right"
+        adSlot="3152616213"
       />
     </Container>
   );

@@ -24,8 +24,8 @@ import {
 import { InfoIcon } from '@chakra-ui/icons';
 import './Pong.css'
 
-import SidebarAdRight from '../GoogleAds/SidebarAdRight';
-import SidebarAdLeft from '../GoogleAds/SidebarAdLeft';
+import BottomAd from '../GoogleAds/BottomAd'
+import SidebarAd from '../GoogleAds/SidebarAd';
 
 import subjectsList from '../../config/subjectsList';
 
@@ -644,8 +644,9 @@ const Pong = () => {
     if (!gameState.gameStarted) {
         return (
             <Box minH="100vh" bg="white" >
-                <SidebarAdLeft
+                <SidebarAd
                     position="left"
+                    adSlot="4333835944"
                 />
                 <VStack spacing={4} maxW="900px" mx="auto">
 
@@ -806,8 +807,20 @@ const Pong = () => {
                     </Button>
 
                 </VStack>
-                <SidebarAdRight
+
+                <Box
+                    width={{ base: '90%', sm: "90%", md: '80%' }}
+                    textAlign="center"
+                    mx="auto"
+                    mt={7}
+                    pt={6}
+                    mb={1}
+                    px={{ base: 4, md: 12, lg: 12 }}>
+                    <BottomAd />
+                </Box>
+                <SidebarAd
                     position="right"
+                    adSlot="3152616213"
                 />
             </Box>
         );
