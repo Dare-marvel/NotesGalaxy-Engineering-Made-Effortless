@@ -1,4 +1,3 @@
-import React from 'react';
 import { Box, Icon, Text, Button, Link } from '@chakra-ui/react';
 import { FiFile } from 'react-icons/fi';
 
