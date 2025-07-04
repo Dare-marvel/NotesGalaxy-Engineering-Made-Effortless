@@ -16,9 +16,9 @@ import {
   GridItem,
   useBreakpointValue,
 } from '@chakra-ui/react';
-import logo from '/logo.png';
+import logo from '/logo.webp';
 
-import adwait from '../assets/adwait-purao.png';
+import adwait from '../assets/adwait-purao.webp';
 ;
 
 import SidebarAd from '../components/GoogleAds/SidebarAd';
@@ -26,13 +26,6 @@ import BottomAd from '../components/GoogleAds/BottomAd';
 
 import { keyframes } from '@emotion/react';
 import { usePageMeta } from '../hooks/usePageMeta';
-
-
-// Keyframe animations
-// const float = keyframes`
-//   0%, 100% { transform: translateY(0px) rotate(0deg); }
-//   50% { transform: translateY(-20px) rotate(180deg); }
-// `;
 
 const twinkle = keyframes`
   0%, 100% { opacity: 0.3; transform: scale(1); }

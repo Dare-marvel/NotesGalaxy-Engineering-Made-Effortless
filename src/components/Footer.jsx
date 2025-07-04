@@ -1,9 +1,30 @@
 import { Box, Flex, Link, Text, Icon } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
-import { FaGithub, FaTwitter, FaLinkedin, FaInstagram, FaEnvelope, FaLaptopCode,FaMedium } from 'react-icons/fa';
+import { FaGithub, FaTwitter, FaLinkedin, FaInstagram, FaEnvelope, FaLaptopCode, FaMedium } from 'react-icons/fa';
 
 // Animated icon component
 const AnimatedIcon = ({ icon, href }) => {
+
+  const getAriaLabelFromHref = (href) => {
+    try {
+      const url = new URL(href);
+      const host = url.hostname;
+
+      if (host.includes("linkedin.com")) return "Visit Adwait's LinkedIn Profile";
+      if (host.includes("github.com")) return "View Adwait's GitHub Repository";
+      if (host.includes("x.com") || host.includes("twitter.com")) return "Follow Adwait on Twitter (X)";
+      if (host.includes("instagram.com")) return "Check out Adwait's Instagram";
+      if (host.includes("medium.com")) return "Read Adwait's articles on Medium";
+      if (host.includes("netlify.app")) return "Visit Adwait's personal website";
+      if (host.includes("buymeacoffee.com")) return "Support Adwait via Buy Me A Coffee";
+      if (href.startsWith("mailto:")) return "Send an email to Adwait";
+
+      return `Visit ${host}`;
+    } catch {
+      return "External link";
+    }
+  };
+
   return (
     <motion.div
       whileHover={{
@@ -23,6 +44,7 @@ const AnimatedIcon = ({ icon, href }) => {
         rel="noopener noreferrer"
         display="inline-flex"
         _hover={{ textDecoration: 'none' }}
+        aria-label={getAriaLabelFromHref(href)}
       >
         <Icon
           as={icon}
@@ -138,7 +160,7 @@ const Footer = () => {
               <img
                 src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png"
                 alt="Buy Me A Coffee"
-                style={{ height: '36px', borderRadius: '6px' }}
+                style={{ height: '36px', width: '144px', borderRadius: '6px' }}
               />
             )}
             href="https://buymeacoffee.com/aspurao038"

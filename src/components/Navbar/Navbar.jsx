@@ -16,7 +16,7 @@ import {
 import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
 import { motion } from 'framer-motion';
 import NavItem from './NavItem';
-import logo from '../../../public/logo.png';
+import logo from '/logo.webp';
 import { keyframes } from "@emotion/react";
 
 const MotionImage = motion(Image);
