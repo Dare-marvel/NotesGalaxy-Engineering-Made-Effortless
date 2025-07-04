@@ -4,7 +4,7 @@
 <div align="center">
   <!-- Logo and Title Side by Side -->
   <div align="center" style="display: flex; align-items: center; justify-content: center;">
-    <img src="https://raw.githubusercontent.com/Dare-marvel/ENGINEERING-NOTES-MACHINE/refs/heads/master/src/assets/favicon.webp" width="80" alt="NotesGalaxy Logo" />
+    <img src="src/assets/favicon.webp" width="80" alt="NotesGalaxy Logo" />
     <a href="https://git.io/typing-svg" style="margin-left: 30px;">
       <img src="https://readme-typing-svg.herokuapp.com?font=Quantico&size=42&duration=1&pause=1000000&width=300&height=70&lines=NotesGalaxy" alt="NotesGalaxy Title" />
     </a>
