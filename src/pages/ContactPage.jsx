@@ -15,7 +15,17 @@ import {
   Tooltip
 } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
-import { FaPaperPlane, FaRocket, FaSatellite, FaSpaceShuttle, FaStar, FaPlus, FaTrash } from 'react-icons/fa';
+
+import {
+  Rocket,
+  Star,
+  Plus,
+  Send,
+  Satellite,
+  Trash2,
+  Orbit
+} from 'lucide-react';
+
 import { getFirestore, doc, setDoc } from 'firebase/firestore';
 import app from '../config/firebaseConfig'
 import { InfoIcon } from "@chakra-ui/icons"
@@ -280,27 +290,27 @@ const ContactPage = () => {
         />
         {/* Floating elements */}
         <FloatingElement
-          icon={FaRocket}
+          icon={Rocket}
           top="15%"
           left="15%"
           delay={0}
           size={{ base: "25px", sm: "25px", md: "35px", lg: "40px" }}
         />
         <FloatingElement
-          icon={FaSatellite}
+          icon={Satellite}
           top={{ base: "15%", sm: "15%", md: "20%", lg: "20%" }}
           right="15%"
           delay={1}
           size={{ base: "22px", sm: "25px", md: "30px", lg: "35px" }}
         />
-        <FloatingElement icon={FaSpaceShuttle}
+        <FloatingElement icon={Orbit}
           top={{ base: "85%", sm: "85%", md: "75%", lg: "75%" }}
           left="13%"
           delay={2}
           size={{ base: "22px", sm: "22px", md: "25px", lg: "30px" }}
         />
         <FloatingElement
-          icon={FaStar}
+          icon={Star}
           top={{ base: "85%", sm: "85%", md: "75%", lg: "75%" }}
           right="15%"
           delay={3}
@@ -308,7 +318,7 @@ const ContactPage = () => {
         />
 
         <FloatingElement
-          icon={FaStar}
+          icon={Star}
           top="40%"
           left="20%"
           delay={4}
@@ -426,7 +436,7 @@ const ContactPage = () => {
                   <IconButton
                     size="sm"
                     colorScheme="red"
-                    icon={<FaTrash />}
+                    icon={<Trash2 />}
                     onClick={() => handleRemoveSubject(index)}
                     isDisabled={loading}
                     _hover={{ bg: 'red.800' }}
@@ -466,7 +476,7 @@ const ContactPage = () => {
 
             <Button
               isDisabled={loading}
-              leftIcon={<FaPlus />}
+              leftIcon={<Plus />}
               colorScheme="purple"
               onClick={handleAddSubject}
               size={{ base: "sm", sm: "sm", md: "sm", lg: "md", xl: "md" }}
@@ -494,7 +504,7 @@ const ContactPage = () => {
               bgGradient="linear(to-r, purple.500, blue.500)"
               isLoading={loading}
               color="white"
-              rightIcon={<FaPaperPlane />}
+              rightIcon={<Send />}
               _hover={{ transform: "scale(1.05)", bgGradient: "linear(to-r, purple.600, blue.600)" }}
               size={{ base: "sm", sm: "sm", md: "sm", lg: "md", xl: "md" }}
               w="full"

@@ -62,20 +62,20 @@ import BottomAd from '../components/GoogleAds/BottomAd';
 
 
 import {
-  FaTrophy,
-  FaStar,
-  FaHeart,
-  FaPlus,
-  FaExternalLinkAlt,
-  FaMedal,
-  FaCrown,
-  FaUsers,
-  FaFileAlt,
-  FaThumbsUp,
-  FaEye,
-  FaGlobe,
-  FaRegHeart
-} from 'react-icons/fa';
+  Heart,
+  Eye,
+  Star,
+  Trophy,
+  Plus,
+  ExternalLink,
+  Medal,
+  Crown,
+  Users,
+  File,
+  ThumbsUp,
+  Globe,
+  Rocket
+} from 'lucide-react';
 
 import { incrementVisitorCount } from "../utils/visitorTracker";
 
@@ -140,28 +140,28 @@ const BadgeComponent = ({ rank, isAnimated = false }) => {
         return {
           color: 'yellow.400',
           bg: 'linear-gradient(135deg, #FFD700, #FFA500)',
-          icon: FaCrown,
+          icon: Crown,
           label: 'Gold'
         };
       case 2:
         return {
           color: 'gray.300',
           bg: 'linear-gradient(135deg, #C0C0C0, #A8A8A8)',
-          icon: FaMedal,
+          icon: Medal,
           label: 'Silver'
         };
       case 3:
         return {
           color: 'orange.400',
           bg: 'linear-gradient(135deg, #CD7F32, #B8860B)',
-          icon: FaMedal,
+          icon: Medal,
           label: 'Bronze'
         };
       default:
         return {
           color: 'purple.300',
           bg: 'linear-gradient(135deg, #9333EA, #7C3AED)',
-          icon: FaStar,
+          icon: Star,
           label: `#${rank}`
         };
     }
@@ -383,7 +383,7 @@ const NotesModal = ({ isOpen, onClose, user }) => {
                               handleNoteView(note.id);
                             }}
                           >
-                            <Icon as={FaExternalLinkAlt} mr={1} />
+                            <Icon as={ExternalLink} mr={1} />
                             View
                           </Button>
 
@@ -403,7 +403,7 @@ const NotesModal = ({ isOpen, onClose, user }) => {
                             variant="ghost"
                             colorScheme={note.likedBy?.includes(userId) ? "red" : "gray"}
                             onClick={() => handleNoteLike(note.id, note.likes, note.likedBy)}
-                            leftIcon={<Icon as={note.likedBy?.includes(userId) ? FaHeart : FaRegHeart} />}
+                            leftIcon={<Icon as={note.likedBy?.includes(userId) ? Heart : Heart} />}
                             disabled={note.likedBy?.includes(userId)}
                             _hover={{
                               animation: !note.likedBy?.includes(userId) ? `${pulse} 0.5s ease-in-out` : 'none'
@@ -413,7 +413,7 @@ const NotesModal = ({ isOpen, onClose, user }) => {
                           </Button>
 
                           <HStack spacing={1}>
-                            <Icon as={FaEye} color="gray.400" size="sm" />
+                            <Icon as={Eye} color="gray.400" size="sm" />
                             <Text fontSize="sm" color="gray.500">
                               {note.views || 0}
                             </Text>
@@ -599,7 +599,7 @@ const UserRow = ({ user, rank, index, sortBy }) => {
           display={{ base: "none", sm: "table-cell" }}
         >
           <HStack spacing={{ base: 1, md: 2 }}>
-            <Icon as={FaPlus} color="blue.500" />
+            <Icon as={Plus} color="blue.500" />
             <Text
               fontWeight="bold"
               color="blue.600"
@@ -621,7 +621,7 @@ const UserRow = ({ user, rank, index, sortBy }) => {
               size={{ base: "xs", md: "sm" }}
               variant="ghost"
               colorScheme="red"
-              leftIcon={<Icon as={FaHeart} boxSize={{ base: 3, md: 4 }} />}
+              leftIcon={<Icon as={Heart} boxSize={{ base: 3, md: 4 }} />}
               fontSize={{ base: "xs", md: "sm" }}
               px={{ base: 2, md: 3 }}
               _hover={{
@@ -642,7 +642,7 @@ const UserRow = ({ user, rank, index, sortBy }) => {
               variant="ghost"
               colorScheme="purple"
               onClick={onOpen}
-              leftIcon={<Icon as={FaEye} boxSize={{ base: 3, md: 4 }} />}
+              leftIcon={<Icon as={Eye} boxSize={{ base: 3, md: 4 }} />}
               fontSize={{ base: "xs", md: "sm" }}
               aria-label="View all notes of user"
               px={{ base: 2, md: 3 }}
@@ -897,10 +897,20 @@ export default function SpaceCommunityPage() {
   if (loading) {
     return (
       <Box minH="100vh" display="flex" alignItems="center" justifyContent="center">
-        <VStack spacing={4}>
-          <Spinner size="xl" color="purple.500" />
-          <Text>Loading community data...</Text>
-        </VStack>
+        <Flex justify="center" align="center" minH="50vh" direction="column" >
+          <Box animation={`${float} 3s ease-in-out infinite`} mb={4}>
+            <Icon as={Rocket} w={12} h={12} color="purple.400" />
+          </Box>
+          <Spinner
+            size="xl"
+            color="purple.500"
+            thickness="4px"
+            speed="0.8s"
+          />
+          <Text mt={4} color="gray.600" fontWeight="medium">
+            Navigating through the cosmos...
+          </Text>
+        </Flex>
       </Box>
     );
   }
@@ -918,25 +928,25 @@ export default function SpaceCommunityPage() {
 
   const cards = [
     {
-      icon: FaUsers,
+      icon: Users,
       value: stats.totalUsers,
       label: "Total Contributors",
       bg: "linear-gradient(135deg, #2b5876 0%, #4e4376 100%)",
     },
     {
-      icon: FaFileAlt,
+      icon: File,
       value: stats.totalNotes,
       label: "Notes Contributed",
       bg: "linear-gradient(135deg, #1e3c72 0%, #2a5298 100%)",
     },
     {
-      icon: FaThumbsUp,
+      icon: ThumbsUp,
       value: stats.totalLikes,
       label: "Total Likes",
       bg: "linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%)",
     },
     {
-      icon: FaGlobe,
+      icon: Globe,
       value: stats.totalVisitors,
       label: "Total Users",
       bg: "linear-gradient(135deg, #000000 0%, #434343 100%)",
@@ -1017,14 +1027,14 @@ export default function SpaceCommunityPage() {
               title="🏆 Top Contributors"
               users={users}
               sortBy="contributions"
-              icon={FaTrophy}
+              icon={Trophy}
             />
 
             <RankingTable
               title="⭐ Most Popular Users"
               users={users}
               sortBy="totalLikes"
-              icon={FaStar}
+              icon={Star}
             />
           </VStack>
 

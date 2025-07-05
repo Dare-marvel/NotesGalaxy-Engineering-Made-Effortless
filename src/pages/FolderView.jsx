@@ -20,10 +20,23 @@ import {
   InputGroup,
   useToast,
   InputLeftElement,
+  Image,
   Center
 } from '@chakra-ui/react';
-import { FiArrowLeft, FiFolder, FiFile, FiSearch, FiGithub } from 'react-icons/fi';
-import { FaDownload } from "react-icons/fa";
+
+import GithubLogo from '../assets/Icons/github.svg'
+
+import {
+  FileText,
+  ArrowLeft,
+  ArrowDownToLine, 
+  Download,
+  File,
+  Search,
+  Folder,
+} from 'lucide-react';
+
+
 import { getSimpleName, getActualName } from '../config/nameMapping';
 const FileViewer = lazy(() => import('../components/FileViewer/FileViewer'));
 import { useFolderContents } from '../hooks/useFolderContents';
@@ -277,7 +290,7 @@ const FolderView = () => {
               transform: ['none', 'none', 'translateX(5px)']
             }}
           >
-            <Icon as={FiFolder} mr={[1, 1, 2]} color="blue.500" boxSize={[4, 4, 5]} />
+            <Icon as={Folder} mr={[1, 1, 2]} color="blue.500" boxSize={[4, 4, 5]} />
             <Text
               fontWeight="medium"
               fontSize={["sm", "md", "md"]}
@@ -298,7 +311,7 @@ const FolderView = () => {
         >
           <Flex justify="center" align="center" height="100%">
             <IconButton
-              icon={<FaDownload />}
+              icon={<ArrowDownToLine />}
               aria-label="Download repository"
               colorScheme="blue"
               variant="outline"
@@ -455,7 +468,7 @@ const FolderView = () => {
         <Td width={isDirectory ? ["60%", "65%", "70%"] : ["50%", "55%", "60%"]}>
           <Flex align="center" gap={[1, 2, 3]}>
             <Icon
-              as={isDirectory ? FiFolder : FiFile}
+              as={isDirectory ? Folder : File}
               color={isDirectory ? 'blue.500' : 'gray.500'}
               boxSize={[4, 4, 5]}
             />
@@ -481,7 +494,7 @@ const FolderView = () => {
         {isDirectory && (
           <Td width={["10%", "20%", "20%"]}>
             <IconButton
-              icon={<FaDownload />}
+              icon={<ArrowDownToLine />}
               aria-label="Download directory"
               colorScheme="blue"
               variant="outline"
@@ -500,7 +513,7 @@ const FolderView = () => {
         {!isDirectory && item?.download_url && (
           <Td width={["10%", "20%", "20%"]}>
             <IconButton
-              icon={<FaDownload />}
+              icon={<ArrowDownToLine />}
               aria-label="Download file"
               colorScheme="blue"
               variant="outline"
@@ -544,7 +557,7 @@ const FolderView = () => {
           >
             <InputGroup px={{ base: 0, sm: 4, md: 2 }}>
               <InputLeftElement pointerEvents="none" pl={{ sm: 6, md: 3 }}>
-                <Icon as={FiSearch} color="gray.400" />
+                <Icon as={Search} color="gray.400" />
               </InputLeftElement>
               <Input
                 placeholder="Search repositories..."
@@ -610,7 +623,7 @@ const FolderView = () => {
                         bg: 'blue.50'
                       }}
                     >
-                      <Icon as={FiArrowLeft} />
+                      <Icon as={ArrowLeft} />
                       <Text>Back</Text>
                     </Flex>
                   </Td>
@@ -667,7 +680,7 @@ const FolderView = () => {
             href="https://github.com/dare-marvel" 
             target="_blank"
             rel="noopener noreferrer"
-            leftIcon={<FiGithub />}
+            leftIcon={<Image src={GithubLogo} boxSize="1.4em" />}
             bgGradient="linear(to-r,blue.500,green.500)"
             color="white"
             minW="250px"

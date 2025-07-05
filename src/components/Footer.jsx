@@ -1,6 +1,16 @@
-import { Box, Flex, Link, Text, Icon } from '@chakra-ui/react';
+import { Box, Flex, Text, IconButton, Image, Icon } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
-import { FaGithub, FaTwitter, FaLinkedin, FaInstagram, FaEnvelope, FaLaptopCode, FaMedium } from 'react-icons/fa';
+
+import MediumLogo from '../assets/Icons/medium.svg'
+import InstagramLogo from '../assets/Icons/instagram.svg'
+import GithubLogo from '../assets/Icons/github.svg'
+import TwitterLogo from '../assets/Icons/twitter.svg'
+import LinkedinLogo from '../assets/Icons/linkedin.svg'
+
+import {
+  AtSign,
+  ShipWheel,
+} from 'lucide-react';
 
 // Animated icon component
 const AnimatedIcon = ({ icon, href }) => {
@@ -25,6 +35,8 @@ const AnimatedIcon = ({ icon, href }) => {
     }
   };
 
+  const isUrl = typeof icon === "string";
+
   return (
     <motion.div
       whileHover={{
@@ -38,7 +50,7 @@ const AnimatedIcon = ({ icon, href }) => {
         transition: { duration: 0.1 }
       }}
     >
-      <Link
+      {/* <Link
         href={href}
         target="_blank"
         rel="noopener noreferrer"
@@ -56,7 +68,45 @@ const AnimatedIcon = ({ icon, href }) => {
             filter: "drop-shadow(0 0 12px #9F7AEA) drop-shadow(0 0 18px #805AD5) drop-shadow(0 0 24px #4299E1)"
           }}
         />
-      </Link>
+      </Link> */}
+
+      <IconButton
+        as="a"
+        href={href}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label={getAriaLabelFromHref(href)}
+        icon={
+          isUrl ? (
+            <Image src={icon} alt="" boxSize="100%" />
+          ) : (
+            <Icon
+              as={icon}
+              boxSize={{ base: 5, sm: 6 , lg: 7}}
+              color="whiteAlpha.900"
+              // filter="drop-shadow(0 0 8px #9F7AEA) drop-shadow(0 0 12px #805AD5)"
+              // transition="filter 0.3s ease"
+              // _hover={{
+              //   filter: "drop-shadow(0 0 12px #9F7AEA) drop-shadow(0 0 18px #805AD5) drop-shadow(0 0 24px #4299E1)"
+              // }}
+            />
+          )
+        }
+        variant="ghost"
+        size="md"
+        isRound
+        boxSize={{ base: 5, sm: 6, lg: 8 }}
+        filter="drop-shadow(0 0 8px #9F7AEA) drop-shadow(0 0 12px #805AD5)"
+        transition="all 0.3s ease"
+        _hover={{
+          filter:
+            "drop-shadow(0 0 12px #9F7AEA) drop-shadow(0 0 18px #805AD5) drop-shadow(0 0 24px #4299E1)",
+          transform: "scale(1.1) rotate(5deg)",
+        }}
+        _active={{
+          transform: "scale(0.95) rotate(-5deg)",
+        }}
+      />
     </motion.div>
   );
 };
@@ -148,14 +198,14 @@ const Footer = () => {
           justify="center"
           flexWrap="wrap" // Allow wrapping if needed on very small screens
         >
-          <AnimatedIcon icon={FaGithub} href="https://github.com/Dare-marvel/" />
-          <AnimatedIcon icon={FaTwitter} href="https://x.com/PuraoAdwait" />
-          <AnimatedIcon icon={FaLinkedin} href="https://www.linkedin.com/in/adwait-p-04a4a222a/" />
-          <AnimatedIcon icon={FaInstagram} href="https://www.instagram.com/adwaitpurao/" />
-          <AnimatedIcon icon={FaLaptopCode} href="https://adwaitpurao.netlify.app/" />
-          <AnimatedIcon icon={FaMedium} href="https://medium.com/@adwait.purao" />
-          <AnimatedIcon icon={FaEnvelope} href="mailto:puraosadwait@gmail.com" />
-          <AnimatedIcon
+          <AnimatedIcon icon={GithubLogo} href="https://github.com/Dare-marvel/" />
+          <AnimatedIcon icon={TwitterLogo} href="https://x.com/PuraoAdwait" />
+          <AnimatedIcon icon={LinkedinLogo} href="https://www.linkedin.com/in/adwait-p-04a4a222a/" />
+          <AnimatedIcon icon={InstagramLogo} href="https://www.instagram.com/adwaitpurao/" />
+          <AnimatedIcon icon={ShipWheel} href="https://adwaitpurao.netlify.app/" />
+          <AnimatedIcon icon={MediumLogo} href="https://medium.com/@adwait.purao" />
+          <AnimatedIcon icon={AtSign} href="mailto:puraosadwait@gmail.com" />
+          {/* <AnimatedIcon
             icon={() => (
               <img
                 src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png"
@@ -164,7 +214,7 @@ const Footer = () => {
               />
             )}
             href="https://buymeacoffee.com/aspurao038"
-          />
+          /> */}
         </Flex>
       </Flex>
     </Box>

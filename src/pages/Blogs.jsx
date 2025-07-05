@@ -7,7 +7,7 @@ import {
     Card,
     CardBody,
     CardHeader,
-    Center,
+    // Center,
     Button,
     Flex,
     Icon,
@@ -21,24 +21,28 @@ import {
     Spacer,
     Input,
     Divider,
+    Image,
     InputGroup,
     InputLeftElement,
     useBreakpointValue
 } from '@chakra-ui/react';
+
+import MediumLogo from '../assets/Icons/medium.svg'
+import InstagramLogo from '../assets/Icons/instagram.svg'
+import FacebookLogo from '../assets/Icons/facebook.svg'
+
 import {
-    IoArrowBack,
-    IoHeart,
-    IoEye,
-    IoTime,
-    IoShareSocial,
-    IoLogoFacebook,
-    IoLogoInstagram,
-    IoLogoMedium,
-    IoCalendar,
-    IoRocket,
-    IoStarOutline
-} from 'react-icons/io5';
-import { IoMdDownload } from "react-icons/io";
+    ArrowLeft,
+    Heart,
+    Eye,
+    Clock,
+    ArrowDownToLine,
+    Calendar,
+    Rocket,
+    Star,
+    Share2
+} from 'lucide-react';
+
 import { getFirestore, doc, getDoc, getDocs, collection, updateDoc, increment, arrayUnion, arrayRemove } from 'firebase/firestore';
 import app from '../config/firebaseConfig';
 import { useNavigate, useSearchParams } from "react-router-dom";
@@ -207,14 +211,14 @@ const BlogCard = ({ blog, onClick }) => {
                     </Heading>
 
                     <HStack spacing={2}>
-                        <Icon as={IoStarOutline} w={4} h={4} color="purple.500" />
+                        <Icon as={Star} w={4} h={4} color="purple.500" />
                         <Text fontSize="sm" color="purple.600" fontWeight="medium">
                             By {blogContentData?.author}
                         </Text>
                     </HStack>
 
                     <HStack spacing={2}>
-                        <Icon as={IoCalendar} w={4} h={4} color="blue.500" />
+                        <Icon as={Calendar} w={4} h={4} color="blue.500" />
                         <Text fontSize="sm" color="gray.600">
                             {new Date(blogContentData?.date).toLocaleDateString('en-US', {
                                 month: 'short',
@@ -231,14 +235,14 @@ const BlogCard = ({ blog, onClick }) => {
                 <HStack spacing={3} justify="space-between" flexWrap="wrap">
 
                     <HStack spacing={1}>
-                        <Icon as={IoTime} w={4} h={4} color="blue.500" />
+                        <Icon as={Clock} w={4} h={4} color="blue.500" />
                         <Text fontSize="sm" color="blue.500" fontWeight="medium">
                             {readingTime} min read
                         </Text>
                     </HStack>
 
                     {/* <HStack spacing={1}>
-                        <Icon as={IoEye} w={4} h={4} color="gray.500" />
+                        <Icon as={Eye} w={4} h={4} color="gray.500" />
                         <Text fontSize="sm" color="gray.500">
                             {blog.views || 0}
                         </Text>
@@ -246,7 +250,7 @@ const BlogCard = ({ blog, onClick }) => {
 
                     <HStack spacing={3}>
                         <HStack spacing={1}>
-                            <Icon as={IoHeart} w={4} h={4} color="red.400" />
+                            <Icon as={Heart} w={4} h={4} color="red.400" />
                             <Text fontSize="sm" color="red.500" fontWeight="medium">
                                 {likesCount}
                             </Text>
@@ -254,7 +258,7 @@ const BlogCard = ({ blog, onClick }) => {
 
 
                         <HStack spacing={1}>
-                            <Icon as={IoEye} w={4} h={4} color="gray.500" />
+                            <Icon as={Eye} w={4} h={4} color="gray.500" />
                             <Text fontSize="sm" color="gray.500">
                                 {blog.views || 0}
                             </Text>
@@ -369,10 +373,10 @@ const BlogView = ({ blogId, metaData, onBack }) => {
 
     if (loading) {
         return (
-            <Center mt={20}>
+            <Box minH="100vh" display="flex" alignItems="center" justifyContent="center">
                 <Flex justify="center" align="center" minH="50vh" direction="column" >
                     <Box animation={`${float} 3s ease-in-out infinite`} mb={4}>
-                        <Icon as={IoRocket} w={12} h={12} color="purple.400" />
+                        <Icon as={Rocket} w={12} h={12} color="purple.400" />
                     </Box>
                     <Spinner
                         size="xl"
@@ -384,21 +388,21 @@ const BlogView = ({ blogId, metaData, onBack }) => {
                         Navigating through the cosmos...
                     </Text>
                 </Flex>
-            </Center>
+            </Box>
         );
     }
 
     if (!blog || !blogMeta) {
         return (
             <VStack spacing={4} align="center" mt={20}>
-                <Icon as={IoRocket} w={16} h={16} color="purple.400" />
+                <Icon as={Rocket} w={16} h={16} color="purple.400" />
                 <Heading color="purple.600">Lost in Space</Heading>
                 <Text color="gray.600" textAlign="center" maxW="md">
                     This cosmic adventure seems to have drifted into a black hole.
                 </Text>
                 <Button
                     onClick={onBack}
-                    leftIcon={<IoArrowBack />}
+                    leftIcon={<ArrowLeft />}
                     bg="linear-gradient(135deg, #667eea 0%, #764ba2 100%)"
                     color="white"
                     _hover={{ transform: 'scale(1.05)' }}
@@ -442,7 +446,7 @@ const BlogView = ({ blogId, metaData, onBack }) => {
                 <Container maxW={containerMaxW} px={{ base: 4, md: 8, lg: 6 }}>
                     <HStack justify="space-between" align="center" mb={4} flexWrap="wrap" gap={4}>
                         <Button
-                            leftIcon={<IoArrowBack />}
+                            leftIcon={<ArrowLeft />}
                             onClick={onBack}
                             variant="outline"
                             borderColor="purple.300"
@@ -460,7 +464,7 @@ const BlogView = ({ blogId, metaData, onBack }) => {
                         </Button>
                         <HStack spacing={2} flexWrap="wrap">
                             <IconButton
-                                icon={<IoLogoFacebook />}
+                                icon={<Image src={FacebookLogo} boxSize="100%" />}
                                 aria-label="Facebook"
                                 size="sm"
                                 bg="blue.500"
@@ -473,7 +477,7 @@ const BlogView = ({ blogId, metaData, onBack }) => {
                                 target="_blank"
                             />
                             <IconButton
-                                icon={<IoLogoInstagram />}
+                                icon={<Image src={InstagramLogo} boxSize="90%" />}
                                 aria-label="Instagram"
                                 size="sm"
                                 bg="pink.500"
@@ -486,7 +490,7 @@ const BlogView = ({ blogId, metaData, onBack }) => {
                                 target="_blank"
                             />
                             <IconButton
-                                icon={<IoLogoMedium />}
+                                icon={<Image src={MediumLogo} boxSize="90%" />}
                                 aria-label="Medium"
                                 size="sm"
                                 bg="gray.700"
@@ -499,7 +503,7 @@ const BlogView = ({ blogId, metaData, onBack }) => {
                                 target="_blank"
                             />
                             <IconButton
-                                icon={<IoMdDownload />}
+                                icon={<ArrowDownToLine />}
                                 aria-label="Download Markdown"
                                 size="sm"
                                 bg="blue.500"
@@ -510,7 +514,7 @@ const BlogView = ({ blogId, metaData, onBack }) => {
                                 onClick={() => downloadMarkdown(blog.content, "blog-post.md")}
                             />
                             <Button
-                                leftIcon={<IoShareSocial />}
+                                leftIcon={<Share2 />}
                                 onClick={handleShare}
                                 size="sm"
                                 bg="linear-gradient(135deg, #667eea 0%, #764ba2 100%)"
@@ -549,7 +553,7 @@ const BlogView = ({ blogId, metaData, onBack }) => {
 
                             <HStack spacing={4} flexWrap="wrap">
                                 <Button
-                                    leftIcon={<IoHeart />}
+                                    leftIcon={<Heart />}
                                     onClick={handleLike}
                                     bg={isLiked ? "linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%)" : "transparent"}
                                     color={isLiked ? "white" : "gray.600"}
@@ -567,7 +571,7 @@ const BlogView = ({ blogId, metaData, onBack }) => {
                                     {likesCount} Likes
                                 </Button>
                                 <HStack spacing={1}>
-                                    <Icon as={IoEye} color="gray.500" />
+                                    <Icon as={Eye} color="gray.500" />
                                     <Text color="gray.500">{blogMeta.views || 0} views</Text>
                                 </HStack>
                             </HStack>
@@ -657,10 +661,10 @@ const Blogs = () => {
 
     if (loading) {
         return (
-            <Center mt={20}>
+            <Box minH="100vh" display="flex" alignItems="center" justifyContent="center">
                 <Flex justify="center" align="center" minH="50vh" direction="column" >
                     <Box animation={`${float} 3s ease-in-out infinite`} mb={4}>
-                        <Icon as={IoRocket} w={12} h={12} color="purple.400" />
+                        <Icon as={Rocket} w={12} h={12} color="purple.400" />
                     </Box>
                     <Spinner
                         size="xl"
@@ -672,7 +676,7 @@ const Blogs = () => {
                         Navigating through the cosmos...
                     </Text>
                 </Flex>
-            </Center>
+            </Box>
         );
     }
 
