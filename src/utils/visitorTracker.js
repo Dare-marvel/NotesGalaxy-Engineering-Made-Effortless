@@ -1,4 +1,3 @@
-
 import app from '../config/firebaseConfig'
 
 import { doc, getDoc, setDoc, updateDoc, increment,getFirestore } from "firebase/firestore";
