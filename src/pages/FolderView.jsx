@@ -27,10 +27,8 @@ import {
 import GithubLogo from '../assets/Icons/github.svg'
 
 import {
-  FileText,
   ArrowLeft,
   ArrowDownToLine, 
-  Download,
   File,
   Search,
   Folder,

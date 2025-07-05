@@ -1,33 +1,117 @@
-// import React from 'react';
 import { Routes, Route } from 'react-router-dom';
-// import Home from '../pages/Home';
-import Community from '../pages/Community';
-import ContactPage from '../pages/ContactPage';
+import { lazy, Suspense } from 'react';
+
+// Keep FolderView as regular import since it's the home page
 import FolderView from '../pages/FolderView';
-import AboutUs from '../pages/About';
-import YouTubeChannelsPage from '../pages/YTChannels';
-import Blogs from '../pages/Blogs';
-import EducationalSnakeGame from '../components/Games/SnakeGame';
-import Tetris from '../components/Games/Tetris'
-import Games from '../pages/Games'
-import Pong from '../components/Games/Pong';
 
+// Lazy load all other components
+const Community = lazy(() => import('../pages/Community'));
+const ContactPage = lazy(() => import('../pages/ContactPage'));
+const AboutUs = lazy(() => import('../pages/About'));
+const YouTubeChannelsPage = lazy(() => import('../pages/YTChannels'));
+const Blogs = lazy(() => import('../pages/Blogs'));
+const EducationalSnakeGame = lazy(() => import('../components/Games/SnakeGame'));
+const Tetris = lazy(() => import('../components/Games/Tetris'));
+const Games = lazy(() => import('../pages/Games'));
+const Pong = lazy(() => import('../components/Games/Pong'));
 
+// Loading component for better UX
+const LoadingSpinner = () => (
+  <div className="flex items-center justify-center min-h-screen">
+    <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-500"></div>
+  </div>
+);
+
+// Wrapper component for Suspense
+const LazyRoute = ({ children }) => (
+  <Suspense fallback={<LoadingSpinner />}>
+    {children}
+  </Suspense>
+);
 
 const AppRoutes = () => {
   return (
     <Routes>
-      <Route path="/" element={<FolderView />} />
-      <Route path="/contact" element={<ContactPage />} />
-      <Route path="/about" element={<AboutUs />} />
-      <Route path="/:repoName/*" element={<FolderView />} />
-      <Route path="/ytchannels" element={<YouTubeChannelsPage />} />
-      <Route path="/community" element={<Community />} />
-      <Route path="/blogs" element={<Blogs />} />
-      <Route path="/tetris-game" element={<Tetris />} />
-      <Route path="/games" element={<Games />} />
-      <Route path="/snake-game" element={<EducationalSnakeGame />} />
-      <Route path="/pong-game" element={<Pong />} />
+      <Route 
+        path="/" 
+        element={<FolderView />} 
+      />
+      <Route 
+        path="/contact" 
+        element={
+          <LazyRoute>
+            <ContactPage />
+          </LazyRoute>
+        } 
+      />
+      <Route 
+        path="/about" 
+        element={
+          <LazyRoute>
+            <AboutUs />
+          </LazyRoute>
+        } 
+      />
+      <Route 
+        path="/:repoName/*" 
+        element={<FolderView />} 
+      />
+      <Route 
+        path="/ytchannels" 
+        element={
+          <LazyRoute>
+            <YouTubeChannelsPage />
+          </LazyRoute>
+        } 
+      />
+      <Route 
+        path="/community" 
+        element={
+          <LazyRoute>
+            <Community />
+          </LazyRoute>
+        } 
+      />
+      <Route 
+        path="/blogs" 
+        element={
+          <LazyRoute>
+            <Blogs />
+          </LazyRoute>
+        } 
+      />
+      <Route 
+        path="/tetris-game" 
+        element={
+          <LazyRoute>
+            <Tetris />
+          </LazyRoute>
+        } 
+      />
+      <Route 
+        path="/games" 
+        element={
+          <LazyRoute>
+            <Games />
+          </LazyRoute>
+        } 
+      />
+      <Route 
+        path="/snake-game" 
+        element={
+          <LazyRoute>
+            <EducationalSnakeGame />
+          </LazyRoute>
+        } 
+      />
+      <Route 
+        path="/pong-game" 
+        element={
+          <LazyRoute>
+            <Pong />
+          </LazyRoute>
+        } 
+      />
     </Routes>
   );
 };

@@ -25,7 +25,7 @@ import remarkGfm from 'remark-gfm';
 import rehypeKatex from 'rehype-katex';
 import 'katex/dist/katex.min.css'; // Import KaTeX CSS
 
-export const MarkdownRenderer = ({ 
+const MarkdownRenderer = ({ 
   content,
   maxWidth = "4xl",
 }) => {
@@ -220,3 +220,5 @@ export const MarkdownRenderer = ({
     </Box>
   );
 };
+
+export default MarkdownRenderer;

@@ -1,13 +1,13 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense, lazy } from 'react';
 import {
     Box,
     Container,
     Heading,
+    Center,
     Text,
     Card,
     CardBody,
     CardHeader,
-    // Center,
     Button,
     Flex,
     Icon,
@@ -54,7 +54,7 @@ import { usePageMeta } from '../hooks/usePageMeta';
 
 import { keyframes } from '@emotion/react';
 
-import { MarkdownRenderer } from '../components/MarkdownRenderer';
+const MarkdownRenderer = lazy(() => import('../components/MarkdownRenderer'));
 
 const db = getFirestore(app);
 
@@ -581,8 +581,17 @@ const BlogView = ({ blogId, metaData, onBack }) => {
             </Box>
 
             <Container maxW={containerMaxW} py={2} px={{ base: 4, md: 12, lg: 12 }} mt={0}>
-                <MarkdownRenderer
-                    content={blog.content} />
+                {/* <MarkdownRenderer
+                    content={blog.content} /> */}
+
+                <Suspense fallback={
+                    <Center h="200px">
+                        <Spinner size="xl" color="blue.500" />
+                    </Center>
+                }>
+                    <MarkdownRenderer
+                        content={blog.content} />
+                </Suspense>
             </Container>
         </Box>
     );
