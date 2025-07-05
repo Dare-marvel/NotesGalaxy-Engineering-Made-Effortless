@@ -54,6 +54,7 @@ const GoogleAdsComponent = () => {
             width={{ base: '90%',sm:"90%", md: '80%' }}
             mx="auto"
             bottom={0}
+            height="90px"
         //   zIndex={10}
         >
             <Container
@@ -73,7 +74,7 @@ const GoogleAdsComponent = () => {
                         style={{
                             display: 'block',
                             width: '100%',
-                            height: 'auto',
+                            height: '90px',
                             minHeight: '90px',
                             maxHeight: '250px'
                         }}
