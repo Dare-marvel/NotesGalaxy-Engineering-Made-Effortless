@@ -28,7 +28,7 @@ import GithubLogo from '../assets/Icons/github.svg'
 
 import {
   ArrowLeft,
-  ArrowDownToLine, 
+  ArrowDownToLine,
   File,
   Search,
   Folder,
@@ -489,44 +489,32 @@ const FolderView = () => {
         </Td> */}
 
         {/* Third column - download button for directories */}
-        {isDirectory && (
-          <Td width={["10%", "20%", "20%"]}>
+        <Td width={["10%", "20%", "20%"]}>
+          {(isDirectory || item?.download_url) ? (
             <IconButton
               icon={<ArrowDownToLine />}
-              aria-label="Download directory"
-              colorScheme="blue"
-              variant="outline"
-              size={["xs", "sm", "sm"]}
-              onClick={downloadDirectory}
-              isLoading={isDownloading}
-              _hover={{
-                transform: ['none', 'scale(1.1)', 'scale(1.1)'],
-                bg: 'blue.50'
-              }}
-            />
-          </Td>
-        )}
-
-
-        {!isDirectory && item?.download_url && (
-          <Td width={["10%", "20%", "20%"]}>
-            <IconButton
-              icon={<ArrowDownToLine />}
-              aria-label="Download file"
+              aria-label="Download"
               colorScheme="blue"
               variant="outline"
               size={["xs", "sm", "sm"]}
               onClick={(e) => {
                 e.stopPropagation();
-                window.open(item.download_url, '_blank');
+                if (isDirectory) {
+                  downloadDirectory(e);
+                } else {
+                  window.open(item.download_url, '_blank');
+                }
               }}
+
+              isLoading={isDownloading}
               _hover={{
-                transform: ['none', 'scale(1.1)', 'scale(1.1)'],
                 bg: 'blue.50'
               }}
             />
-          </Td>
-        )}
+          ) : (
+            <Box height="32px" /> // reserve space
+          )}
+        </Td>
       </Tr>
     );
   };
@@ -675,7 +663,7 @@ const FolderView = () => {
         <Tooltip label="For knowledge-hungry users, there's more on my GitHub! Click this link to explore my repositories." fontSize="md" hasArrow placement="top">
           <Button
             as="a"
-            href="https://github.com/dare-marvel" 
+            href="https://github.com/dare-marvel"
             target="_blank"
             rel="noopener noreferrer"
             leftIcon={<Image src={GithubLogo} boxSize="1.4em" />}
