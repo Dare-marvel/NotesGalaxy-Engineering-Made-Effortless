@@ -10,20 +10,6 @@ const BottomAd = () => {
             try {
                 if (window.adsbygoogle && adRef.current) {
                     window.adsbygoogle.push({});
-                    
-                    // Force dimensions after ad loads
-                    setTimeout(() => {
-                        if (adRef.current) {
-                            const adElement = adRef.current;
-                            const adDiv = adElement.querySelector('div');
-                            if (adDiv) {
-                                adDiv.style.setProperty('height', '120px', 'important');
-                                adDiv.style.setProperty('max-height', '120px', 'important');
-                                adDiv.style.setProperty('min-height', '120px', 'important');
-                                adDiv.style.setProperty('overflow', 'hidden', 'important');
-                            }
-                        }
-                    }, 100);
                 }
             } catch (e) {
                 console.error('AdSense error:', e);
@@ -88,14 +74,13 @@ const BottomAd = () => {
                         ref={adRef}
                         className="adsbygoogle"
                         style={{
-                            display: 'block !important',
-                            width: '100% !important',
-                            height: '120px !important',
-                            minHeight: '120px !important',
-                            maxHeight: '120px !important',
-                            minWidth: '100% !important',
-                            maxWidth: '728px !important',
-                            overflow: 'hidden !important'
+                            display: 'block',
+                            width: '100%',
+                            height: '100%',
+                            minHeight: '105px',
+                            maxHeight: '105px',
+                            minWidth: '100%',
+                            maxWidth: '100%'
                         }}
                         data-ad-client="ca-pub-8107450590774580"
                         data-ad-slot="4429475183"
