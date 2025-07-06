@@ -699,15 +699,23 @@ const Pong = () => {
                         spacing={2}
                         pt={{ base: 12, md: 12, lg: 12, xl: 12 }}
                         mt={4}
+                        px={{ base: 4, sm: 6, md: 8 }}
+                        w="full"
+                        maxW="100vw"
+                        overflow="hidden"
                     >
-                        <Text fontSize={{ base: "md", md: "lg" }} color="purple.600">Select Subject for Quiz Questions:</Text>
+                        <Text
+                            fontSize={{ base: "md", md: "lg" }}
+                            textAlign="center"
+                            px={2}
+                            color="purple.600">Select Subject for Quiz Questions:</Text>
                         <Select
                             value={selectedSubject}
                             onChange={(e) => setSelectedSubject(e.target.value)}
-                            maxW="400px"
+                            w="full"
+                            maxW={{ base: "100%", sm: "400px" }}
                             borderColor="purple.300"
                             focusBorderColor="purple.500"
-                            px={{ base: 4, md: 0 }}
                             size={{ base: "md", md: "md" }}
                         >
                             {subjectsList.slice(0, -1).map((subject, index) => (
@@ -716,9 +724,24 @@ const Pong = () => {
                                 </option>
                             ))}
                         </Select>
-                        <HStack align="center" w="full" px={{ base: 4, md: 0 }} justify="space-between">
-                            <HStack px={{ base: 5, sm: 0 }} spacing={1}>
-                                <Text color="purple.600" size={{ base: "md", md: "md" }} fontWeight="semibold">
+                        <VStack
+                            align="center"
+                            w="full"
+                            spacing={3}
+                            px={2}
+                        >
+                            <HStack
+                                spacing={1}
+                                align="center"
+                                justify="center"
+                                flexWrap="wrap"
+                            >
+                                <Text
+                                    color="purple.600"
+                                    fontSize={{ base: "sm", md: "md" }}
+                                    fontWeight="semibold"
+                                    textAlign="center"
+                                >
                                     Points/Question
                                 </Text>
                                 <Tooltip
@@ -735,13 +758,12 @@ const Pong = () => {
                             </HStack>
 
                             <NumberInput
-                                // value={qFreq}
-                                // onChange={(valueString) => setqFreq(parseInt(valueString) || 0)}
                                 step={1}
                                 min={2}
                                 max={29}
                                 size={{ base: "md", md: "md" }}
-                                width={{ base: "165px", sm: "165px", md: "170px", lg: "180px", xl: "200px" }}
+                                w="full"
+                                maxW={{ base: "200px", sm: "250px", md: "300px" }}
                                 id='qFreq_3425'
                             >
                                 <NumberInputField
@@ -757,7 +779,7 @@ const Pong = () => {
                                     <NumberDecrementStepper color="purple.300" />
                                 </NumberInputStepper>
                             </NumberInput>
-                        </HStack>
+                        </VStack>
                     </VStack>
 
                     {/* Controls Info */}
