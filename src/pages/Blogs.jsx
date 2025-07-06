@@ -839,6 +839,7 @@ const Blogs = () => {
                         width={{ base: '90%', sm: "90%", md: '80%' }}
                         textAlign="center"
                         mx="auto"
+                        height="120px"
                         mt={6}
                         mb={1}
                         px={{ base: 4, md: 12, lg: 12 }}>
