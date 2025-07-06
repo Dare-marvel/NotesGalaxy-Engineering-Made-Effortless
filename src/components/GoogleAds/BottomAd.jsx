@@ -84,7 +84,7 @@ const BottomAd = () => {
                         }}
                         data-ad-client="ca-pub-8107450590774580"
                         data-ad-slot="4429475183"
-                        data-ad-format="auto"
+                        data-ad-format="horizontal"
                         data-full-width-responsive="true"
                     />
                 </Box>
