@@ -592,9 +592,37 @@ const Pong = () => {
         return module.default || [];
     };
 
+    async function enableFullscreenAndLandscape() {
+        const elem = document.documentElement; // or any specific element like a game container
+
+        try {
+            // Request fullscreen
+            if (elem.requestFullscreen) {
+                await elem.requestFullscreen();
+            } else if (elem.webkitRequestFullscreen) { // Safari
+                await elem.webkitRequestFullscreen();
+            } else if (elem.msRequestFullscreen) { // IE11
+                await elem.msRequestFullscreen();
+            }
+
+            // Lock orientation to landscape (only works in fullscreen on supported devices)
+            if (screen.orientation && screen.orientation.lock) {
+                await screen.orientation.lock('landscape');
+            } else if (screen.lockOrientation) {
+                screen.lockOrientation('landscape');
+            } else {
+                console.warn("Screen orientation locking not supported on this device.");
+            }
+        } catch (err) {
+            console.error("Failed to enter fullscreen or lock orientation:", err);
+        }
+    }
+
+
 
     const startGame = async () => {
         // console.log("Checking freq ",qFreq, typeof qFreq);
+
         let questions = [];
         try {
             questions = await loadSubjectQuestions(selectedSubject);
@@ -610,17 +638,33 @@ const Pong = () => {
             });
         }
         const value = parseInt(document.getElementById('qFreq_3425').value, 10);
-        setGameState(prev => ({
-            ...prev,
-            gameRunning: true,
-            gameStarted: true,
-            qFreq: isNaN(value) ? 5 : value, // Default to 5 if invalid input
-            currentQuestions: questions || [],
-        }));
+        // setGameState(prev => ({
+        //     ...prev,
+        //     gameRunning: true,
+        //     gameStarted: true,
+        //     qFreq: isNaN(value) ? 5 : value, // Default to 5 if invalid input
+        //     currentQuestions: questions || [],
+        // }));
         // Reset ball for first serve
-        resetBall(true);
+        // resetBall(true);
 
-        if (deviceType === 'mobile') requestFullScreen();
+        if (deviceType === 'mobile') {
+            enableFullscreenAndLandscape()
+        }
+
+        setTimeout(() => {
+
+            setGameState(prev => ({
+                ...prev,
+                gameRunning: true,
+                gameStarted: true,
+                qFreq: isNaN(value) ? 5 : value,
+                currentQuestions: questions || [],
+            }));
+
+            resetBall(true);
+        }, 2000);
+
     };
 
     const resetGame = () => {
