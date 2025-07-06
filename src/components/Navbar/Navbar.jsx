@@ -31,6 +31,12 @@ const glitter = keyframes`
   100% { opacity: 1; transform: scale(1.2); }
 `;
 
+const coffeeHover = keyframes`
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-2px); }
+  100% { transform: translateY(0px); }
+`;
+
 const Navbar = () => {
   const { isOpen, onToggle } = useDisclosure();
   const location = useLocation();
@@ -41,10 +47,15 @@ const Navbar = () => {
     { name: 'Youtube', path: '/ytchannels' },
     { name: 'Community', path: '/community' },
     { name: 'Blogs', path: '/blogs' },
-    // { name: 'Games', path: '/games' },
+    { name: 'Games', path: '/games' },
     { name: 'Contact', path: '/contact' },
     { name: 'About', path: '/about' },
   ];
+
+  const handleCoffeeClick = () => {
+    // Replace with your Buy Me a Coffee URL
+    window.open('https://buymeacoffee.com/aspurao038', '_blank');
+  };
 
   return (
     <Box
@@ -78,10 +89,27 @@ const Navbar = () => {
           </HStack>
 
           {/* Desktop Navigation */}
-          <HStack spacing={8} display={{ base: 'none', md: 'none', lg: 'flex' }}>
+          <HStack spacing={{lg : 6 , xl : 8}} display={{ base: 'none', md: 'none', lg: 'flex' }}>
             {navItems.map((item) => (
               <NavItem key={item.name} item={item} />
             ))}
+            
+            {/* Buy Me a Coffee Button - Desktop */}
+            <Button
+              size="sm"
+              colorScheme="purple"
+              variant="solid"
+              onClick={handleCoffeeClick}
+              leftIcon={<Text fontSize="16px">👽</Text>}
+              _hover={{
+                transform: 'translateY(-2px)',
+                boxShadow: '0 4px 12px rgba(255, 165, 0, 0.4)',
+                animation: `${coffeeHover} 0.6s ease-in-out infinite`,
+              }}
+              transition="all 0.2s"
+            >
+              Buy Me a Coffee
+            </Button>
           </HStack>
 
           {/* Mobile Menu Button */}
@@ -111,6 +139,23 @@ const Navbar = () => {
                 </Button>
               </Link>
             ))}
+            
+            {/* Buy Me a Coffee Button - Mobile */}
+            <Button
+              w="full"
+              size="md"
+              colorScheme="purple"
+              variant="solid"
+              onClick={handleCoffeeClick}
+              leftIcon={<Text fontSize="18px">👽</Text>}
+              _hover={{
+                transform: 'translateY(-2px)',
+                boxShadow: '0 4px 12px rgba(146, 21, 205, 0.4)',
+              }}
+              transition="all 0.2s"
+            >
+              Buy Me a Coffee
+            </Button>
           </VStack>
         </Collapse>
       </Container>

@@ -11,7 +11,7 @@ const NavItem = ({ item }) => {
     <Link to={item.path}>
       <MotionBox whileHover={{ y: -2 }} position="relative">
         <Text
-          px={2}
+          px={1}
           py={1}
           rounded="md"
           _hover={{

@@ -28,7 +28,7 @@ import GithubLogo from '../assets/Icons/github.svg'
 
 import {
   ArrowLeft,
-  ArrowDownToLine,
+  ArrowDown,
   File,
   Search,
   Folder,
@@ -309,7 +309,7 @@ const FolderView = () => {
         >
           <Flex justify="center" align="center" height="100%">
             <IconButton
-              icon={<ArrowDownToLine />}
+              icon={<ArrowDown />}
               aria-label="Download repository"
               colorScheme="blue"
               variant="outline"
@@ -492,7 +492,7 @@ const FolderView = () => {
         <Td width={["10%", "20%", "20%"]}>
           {(isDirectory || item?.download_url) ? (
             <IconButton
-              icon={<ArrowDownToLine />}
+              icon={<ArrowDown />}
               aria-label="Download"
               colorScheme="blue"
               variant="outline"
