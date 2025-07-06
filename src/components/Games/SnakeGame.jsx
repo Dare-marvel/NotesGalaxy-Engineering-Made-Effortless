@@ -247,8 +247,11 @@ export default function EnhancedEducationalSnakeGame() {
     }
 
     setCurrentQuestion(null);
-    setGameRunning(true);
     onClose();
+    setTimeout(() => {
+      setGameRunning(true);
+    }, 300);
+    
   };
 
   useEffect(() => {
@@ -517,6 +520,7 @@ export default function EnhancedEducationalSnakeGame() {
                       <Button
                         w="full"
                         minH="12"
+                        height="auto" 
                         variant="outline"
                         colorScheme="teal"
                         onClick={() => handleAnswerQuestion(index)}

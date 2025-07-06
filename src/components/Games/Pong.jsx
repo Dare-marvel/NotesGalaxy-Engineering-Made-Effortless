@@ -12,8 +12,10 @@ import {
     ModalHeader,
     ModalBody,
     ModalFooter,
-    RadioGroup,
-    Radio,
+    Grid,
+    GridItem,
+    // RadioGroup,
+    // Radio,
     useDisclosure,
     Tooltip,
     NumberInput, NumberInputField, NumberInputStepper, NumberIncrementStepper, NumberDecrementStepper,
@@ -230,9 +232,9 @@ const Pong = () => {
         });
     }, [onOpen]);
 
-    const handleAnswerSubmit = () => {
-        if (currentQuestion && selectedAnswer !== '') {
-            const isCorrect = parseInt(selectedAnswer) === currentQuestion.correct;
+    const handleAnswerSubmit = (selectedIndex) => {
+        if (currentQuestion && selectedIndex !== '') {
+            const isCorrect = selectedIndex === currentQuestion.correct;
 
             if (isCorrect) {
                 toast({
@@ -652,7 +654,7 @@ const Pong = () => {
             enableFullscreenAndLandscape()
         }
 
-        setTimeout(() => {
+        // setTimeout(() => {
 
             setGameState(prev => ({
                 ...prev,
@@ -663,7 +665,7 @@ const Pong = () => {
             }));
 
             resetBall(true);
-        }, 2000);
+        // }, 1000);
 
     };
 
@@ -1227,7 +1229,7 @@ const Pong = () => {
                                     fontWeight="semibold">
                                     {currentQuestion.question}
                                 </Text>
-                                <RadioGroup value={selectedAnswer} onChange={setSelectedAnswer}>
+                                {/* <RadioGroup value={selectedAnswer} onChange={setSelectedAnswer}>
                                     <VStack align="stretch" spacing={2}>
                                         {currentQuestion.options.map((option, index) => (
                                             <Radio
@@ -1240,11 +1242,31 @@ const Pong = () => {
                                             </Radio>
                                         ))}
                                     </VStack>
-                                </RadioGroup>
+                                </RadioGroup> */}
+
+                                <Grid templateColumns={{ base: "1fr", md: "repeat(2, 1fr)" }} gap={3} w="full">
+                                    {currentQuestion.options.map((option, index) => (
+                                        <GridItem key={index}>
+                                            <Button
+                                                w="full"
+                                                py={4} // Adds more vertical padding
+                                                variant="outline"
+                                                colorScheme="teal"
+                                                onClick={() => handleAnswerSubmit(index)}
+                                                whiteSpace="normal" // Allows wrapping
+                                                textAlign="center"
+                                                fontSize={{ base: "sm", md: "md" }}
+                                                height="auto" // Allow button height to expand based on content
+                                            >
+                                                {option}
+                                            </Button>
+                                        </GridItem>
+                                    ))}
+                                </Grid>
                             </VStack>
                         )}
                     </ModalBody>
-                    <ModalFooter>
+                    {/* <ModalFooter>
                         <Button
                             colorScheme="purple"
                             onClick={handleAnswerSubmit}
@@ -1253,7 +1275,7 @@ const Pong = () => {
                         >
                             Submit Answer
                         </Button>
-                    </ModalFooter>
+                    </ModalFooter> */}
                 </ModalContent>
             </Modal>
         </Box>
