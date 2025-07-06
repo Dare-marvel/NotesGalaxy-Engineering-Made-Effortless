@@ -77,14 +77,14 @@ const BottomAd = () => {
                             display: 'block',
                             width: '100%',
                             height: '100%',
-                            minHeight: '105px',
-                            maxHeight: '105px',
+                            minHeight: '120px',
+                            maxHeight: '120px',
                             minWidth: '100%',
                             maxWidth: '100%'
                         }}
                         data-ad-client="ca-pub-8107450590774580"
                         data-ad-slot="4429475183"
-                        data-ad-format="horizontal"
+                        data-ad-format="auto"
                         data-full-width-responsive="true"
                     />
                 </Box>
