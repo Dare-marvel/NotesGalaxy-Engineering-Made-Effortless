@@ -54,7 +54,7 @@ const GoogleAdsComponent = () => {
             width={{ base: '90%',sm:"90%", md: '80%' }}
             mx="auto"
             bottom={0}
-            height="90px"
+            height="120px"
         //   zIndex={10}
         >
             <Container
@@ -74,13 +74,13 @@ const GoogleAdsComponent = () => {
                         style={{
                             display: 'block',
                             width: '100%',
-                            height: '90px',
-                            minHeight: '90px',
+                            height: '120px',
+                            minHeight: '120px',
                             maxHeight: '250px'
                         }}
                         data-ad-client="ca-pub-8107450590774580"
                         data-ad-slot="4429475183"
-                        data-ad-format="horizontal"
+                        data-ad-format="auto"
                         data-full-width-responsive="true"
                     />
                 </Box>
