@@ -12,8 +12,19 @@ import {
   VStack,
   Collapse,
   Image,
+  Tooltip,
 } from '@chakra-ui/react';
 import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
+import { 
+  ScrollText,
+  BookOpen,
+  Users, 
+  Gamepad2, 
+  Phone, 
+  Info,
+  Coffee, 
+  TvMinimalPlay
+} from 'lucide-react';
 import { motion } from 'framer-motion';
 import NavItem from './NavItem';
 import logo from '/logo.webp';
@@ -43,13 +54,13 @@ const Navbar = () => {
   const navigate = useNavigate();
 
   const navItems = [
-    { name: 'Notes', path: '/' },
-    { name: 'Youtube', path: '/ytchannels' },
-    { name: 'Community', path: '/community' },
-    { name: 'Blogs', path: '/blogs' },
-    { name: 'Games', path: '/games' },
-    { name: 'Contact', path: '/contact' },
-    { name: 'About', path: '/about' },
+    { name: 'Notes', path: '/', icon: BookOpen },
+    { name: 'Youtube', path: '/ytchannels', icon: TvMinimalPlay },
+    { name: 'Community', path: '/community', icon: Users },
+    { name: 'Blogs', path: '/blogs', icon: ScrollText },
+    { name: 'Games', path: '/games', icon: Gamepad2 },
+    { name: 'Contact', path: '/contact', icon: Phone },
+    { name: 'About', path: '/about', icon: Info },
   ];
 
   const handleCoffeeClick = () => {
@@ -81,14 +92,13 @@ const Navbar = () => {
               fontSize="xl"
               fontWeight="bold"
               bgGradient="linear(to-r, cyan.400, blue.500, purple.600)"
-              // animation={`${spaceGlow} 3s infinite alternate`}
               bgClip="text"
             >
               NotesGalaxy
             </Text>
           </HStack>
 
-          {/* Desktop Navigation */}
+          {/* Desktop Navigation - Full text */}
           <HStack spacing={{lg : 6 , xl : 8}} display={{ base: 'none', md: 'none', lg: 'flex' }}>
             {navItems.map((item) => (
               <NavItem key={item.name} item={item} />
@@ -100,7 +110,7 @@ const Navbar = () => {
               colorScheme="purple"
               variant="solid"
               onClick={handleCoffeeClick}
-              leftIcon={<Text fontSize="16px">👽</Text>}
+              leftIcon={<Coffee size={16} />}
               _hover={{
                 transform: 'translateY(-2px)',
                 boxShadow: '0 4px 12px rgba(255, 165, 0, 0.4)',
@@ -112,9 +122,53 @@ const Navbar = () => {
             </Button>
           </HStack>
 
-          {/* Mobile Menu Button */}
+          {/* Medium Screen Navigation - Icons only */}
+          <HStack spacing={3} display={{ base: 'none', md: 'flex', lg: 'none' }}>
+            {navItems.map((item) => {
+              const IconComponent = item.icon;
+              return (
+                <Tooltip key={item.name} label={item.name} placement="bottom">
+                  <IconButton
+                    as={Link}
+                    to={item.path}
+                    icon={<IconComponent size={20} />}
+                    variant="ghost"
+                    size="md"
+                    aria-label={item.name}
+                    color={location.pathname === item.path ? 'blue.500' : ''}
+                    bg={location.pathname === item.path ? useColorModeValue('blue.50', 'blue.900') : 'transparent'}
+                    _hover={{
+                      bg: useColorModeValue('blue.50', 'blue.900'),
+                      transform: 'translateY(-1px)',
+                      color: 'blue.500',
+                    }}
+                    transition="all 0.2s"
+                  />
+                </Tooltip>
+              );
+            })}
+            
+            {/* Buy Me a Coffee Button - Medium Screen */}
+            <Tooltip label="Buy Me a Coffee" placement="bottom">
+              <IconButton
+                icon={<Coffee size={20} />}
+                colorScheme="purple"
+                variant="solid"
+                size="md"
+                onClick={handleCoffeeClick}
+                aria-label="Buy Me a Coffee"
+                _hover={{
+                  transform: 'translateY(-2px)',
+                  boxShadow: '0 4px 12px rgba(146, 21, 205, 0.4)',
+                }}
+                transition="all 0.2s"
+              />
+            </Tooltip>
+          </HStack>
+
+          {/* Mobile Menu Button - Only for small screens */}
           <IconButton
-            display={{ base: 'flex', md: 'flex' , lg: 'none' }}
+            display={{ base: 'flex', md: 'none' }}
             onClick={onToggle}
             icon={isOpen ? <CloseIcon /> : <HamburgerIcon />}
             variant="ghost"
@@ -122,23 +176,27 @@ const Navbar = () => {
           />
         </Flex>
 
-        {/* Mobile Menu */}
+        {/* Mobile Menu - Only for small screens */}
         <Collapse in={isOpen} animateOpacity>
           <VStack display={{ base: 'flex', md: 'none' }} pb={4} spacing={4}>
-            {navItems.map((item) => (
-              <Link key={item.name} to={item.path} style={{ width: '100%' }}>
-                <Button
-                  w="full"
-                  variant="ghost"
-                  justifyContent="start"
-                  aria-label={item.name}
-                  color={location.pathname === item.path ? 'blue.500' : ''}
-                  fontWeight={location.pathname === item.path ? 'semibold' : 'normal'}
-                >
-                  {item.name}
-                </Button>
-              </Link>
-            ))}
+            {navItems.map((item) => {
+              const IconComponent = item.icon;
+              return (
+                <Link key={item.name} to={item.path} style={{ width: '100%' }}>
+                  <Button
+                    w="full"
+                    variant="ghost"
+                    justifyContent="start"
+                    aria-label={item.name}
+                    color={location.pathname === item.path ? 'blue.500' : ''}
+                    fontWeight={location.pathname === item.path ? 'semibold' : 'normal'}
+                    leftIcon={<IconComponent size={18} />}
+                  >
+                    {item.name}
+                  </Button>
+                </Link>
+              );
+            })}
             
             {/* Buy Me a Coffee Button - Mobile */}
             <Button
@@ -147,7 +205,7 @@ const Navbar = () => {
               colorScheme="purple"
               variant="solid"
               onClick={handleCoffeeClick}
-              leftIcon={<Text fontSize="18px">👽</Text>}
+              leftIcon={<Coffee size={18} />}
               _hover={{
                 transform: 'translateY(-2px)',
                 boxShadow: '0 4px 12px rgba(146, 21, 205, 0.4)',
