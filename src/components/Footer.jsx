@@ -7,7 +7,7 @@ import GithubLogo from '../assets/Icons/github.svg';
 import TwitterLogo from '../assets/Icons/twitter.svg';
 import LinkedinLogo from '../assets/Icons/linkedin.svg';
 
-import { AtSign, ShipWheel } from 'lucide-react';
+import { AtSign, ShipWheel,Coffee } from 'lucide-react';
 
 // Animated icon component
 const AnimatedIcon = ({ icon, href }) => {
@@ -158,6 +158,7 @@ const Footer = () => {
           <AnimatedIcon icon={ShipWheel} href="https://adwaitpurao.netlify.app/" />
           <AnimatedIcon icon={MediumLogo} href="https://medium.com/@adwait.purao" />
           <AnimatedIcon icon={AtSign} href="mailto:puraosadwait@gmail.com" />
+          <AnimatedIcon icon={Coffee} href="https://buymeacoffee.com/aspurao038" />
         </Flex>
       </Flex>
     </Box>

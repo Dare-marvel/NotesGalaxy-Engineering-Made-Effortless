@@ -11,11 +11,8 @@ import {
     ModalContent,
     ModalHeader,
     ModalBody,
-    ModalFooter,
     Grid,
     GridItem,
-    // RadioGroup,
-    // Radio,
     useDisclosure,
     Tooltip,
     NumberInput, NumberInputField, NumberInputStepper, NumberIncrementStepper, NumberDecrementStepper,
@@ -68,7 +65,6 @@ const Pong = () => {
     // UI state
     const [selectedSubject, setSelectedSubject] = useState(subjectsList[0]);
     const [currentQuestion, setCurrentQuestion] = useState(null);
-    const [selectedAnswer, setSelectedAnswer] = useState('');
 
     const { isOpen, onOpen, onClose } = useDisclosure();
     const toast = useToast();
@@ -217,7 +213,6 @@ const Pong = () => {
             if (questions && questions.length > 0) {
                 const randomQuestion = questions[Math.floor(Math.random() * questions.length)];
                 setCurrentQuestion(randomQuestion);
-                setSelectedAnswer('');
                 onOpen();
 
                 // Stop the game while showing question and track which player triggered it
@@ -299,7 +294,7 @@ const Pong = () => {
     const resetBall = useCallback((isFirstServe = false) => {
 
         const FIRST_SERVE_SPEED = 4;
-        const GAME_SPEED = 5;
+        const GAME_SPEED = 6;
 
         setGameState(prev => ({
             ...prev,
@@ -1229,20 +1224,6 @@ const Pong = () => {
                                     fontWeight="semibold">
                                     {currentQuestion.question}
                                 </Text>
-                                {/* <RadioGroup value={selectedAnswer} onChange={setSelectedAnswer}>
-                                    <VStack align="stretch" spacing={2}>
-                                        {currentQuestion.options.map((option, index) => (
-                                            <Radio
-                                                key={index}
-                                                value={index.toString()}
-                                                colorScheme="purple"
-                                                size="lg"
-                                            >
-                                                {option}
-                                            </Radio>
-                                        ))}
-                                    </VStack>
-                                </RadioGroup> */}
 
                                 <Grid templateColumns={{ base: "1fr", md: "repeat(2, 1fr)" }} gap={3} w="full">
                                     {currentQuestion.options.map((option, index) => (
@@ -1266,16 +1247,6 @@ const Pong = () => {
                             </VStack>
                         )}
                     </ModalBody>
-                    {/* <ModalFooter>
-                        <Button
-                            colorScheme="purple"
-                            onClick={handleAnswerSubmit}
-                            disabled={selectedAnswer === ''}
-                            _hover={{ transform: 'scale(1.05)' }}
-                        >
-                            Submit Answer
-                        </Button>
-                    </ModalFooter> */}
                 </ModalContent>
             </Modal>
         </Box>

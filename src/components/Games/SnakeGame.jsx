@@ -19,7 +19,6 @@ import {
   useToast,
   Select,
   IconButton,
-  // SimpleGrid,
   useBreakpointValue,
   Wrap, WrapItem,
 } from '@chakra-ui/react';
