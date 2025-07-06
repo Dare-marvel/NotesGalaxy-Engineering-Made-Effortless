@@ -25,7 +25,7 @@ const Breadcrumbs = () => {
     <Breadcrumb
       spacing={{ base: "4px", sm: "6px", md: "8px", lg: "10px", xl: "12px" }}
       separator={<Icon as={ChevronRightIcon} color="gray.500" />}
-      fontSize={{ base: "xs", sm: "sm", md: "md", lg: "lg", xl: "xl" }}
+      fontSize={{ base: "sm", sm: "md", md: "md", lg: "lg", xl: "xl" }}
       // left={{ base: 1, sm: 2, md: 15, lg: 12 }}
       // right={{ base: 1, sm: 2, md: 5, lg: 12 }}
       pl={{ base: 1, sm: 2, md: 12, lg: 12 }}
