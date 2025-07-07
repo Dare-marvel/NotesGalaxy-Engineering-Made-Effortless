@@ -69,6 +69,32 @@ const Pong = () => {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const toast = useToast();
 
+    useEffect(() => {
+        const fixHeight = () => {
+            const el = document.getElementsByClassName('pong-game-container')[0];
+            if (el) {
+                el.style.setProperty('height', '100vh', 'important');
+                el.style.setProperty('min-height', '100vh', 'important');
+            }
+        };
+
+        // Apply height fix immediately
+        fixHeight();
+
+        // Setup interval to re-apply height every 500ms (aggressive fallback)
+        const intervalId = setInterval(fixHeight, 500);
+
+        // Also listen to fullscreen changes
+        document.addEventListener('fullscreenchange', fixHeight);
+        document.addEventListener('webkitfullscreenchange', fixHeight); // Safari
+
+        return () => {
+            clearInterval(intervalId);
+            document.removeEventListener('fullscreenchange', fixHeight);
+            document.removeEventListener('webkitfullscreenchange', fixHeight);
+        };
+    }, []);
+
     // Device detection and game size calculation
     useEffect(() => {
         const updateGameSize = () => {
@@ -283,10 +309,12 @@ const Pong = () => {
             onClose();
 
             // Only resume game if no winner was declared
-            setGameState(prev => ({
-                ...prev,
-                gameRunning: prev.winner ? false : true
-            }));
+            setTimeout(() => {
+                setGameState(prev => ({
+                    ...prev,
+                    gameRunning: prev.winner ? false : true
+                }));
+            }, 400);
         }
     };
 
@@ -294,7 +322,7 @@ const Pong = () => {
     const resetBall = useCallback((isFirstServe = false) => {
 
         const FIRST_SERVE_SPEED = 4;
-        const GAME_SPEED = 6;
+        const GAME_SPEED = 7;
 
         setGameState(prev => ({
             ...prev,
@@ -517,16 +545,37 @@ const Pong = () => {
             return;
         }
 
-        if (elem.requestFullscreen) {
-            elem.requestFullscreen().catch(err => {
-                console.error("Error attempting to enable fullscreen:", err);
-            });
-        } else if (elem.webkitRequestFullscreen) { /* Safari */
-            elem.webkitRequestFullscreen();
-        } else if (elem.msRequestFullscreen) { /* IE11 */
-            elem.msRequestFullscreen();
+        const isFullscreen =
+            document.fullscreenElement ||
+            document.webkitFullscreenElement ||
+            document.msFullscreenElement;
+
+        if (isFullscreen) {
+            // Exit fullscreen
+            if (document.exitFullscreen) {
+                document.exitFullscreen().catch(err => {
+                    console.error("Error attempting to exit fullscreen:", err);
+                });
+            } else if (document.webkitExitFullscreen) {
+                document.webkitExitFullscreen();
+            } else if (document.msExitFullscreen) {
+                document.msExitFullscreen();
+            }
+        } else {
+            // Enter fullscreen
+            if (elem.requestFullscreen) {
+                elem.requestFullscreen().catch(err => {
+                    console.error("Error attempting to enable fullscreen:", err);
+                });
+            } else if (elem.webkitRequestFullscreen) {
+                elem.webkitRequestFullscreen();
+            } else if (elem.msRequestFullscreen) {
+                elem.msRequestFullscreen();
+            }
         }
     };
+
+
     // Canvas rendering
     useEffect(() => {
         const canvas = canvasRef.current;
@@ -651,15 +700,15 @@ const Pong = () => {
 
         // setTimeout(() => {
 
-            setGameState(prev => ({
-                ...prev,
-                gameRunning: true,
-                gameStarted: true,
-                qFreq: isNaN(value) ? 5 : value,
-                currentQuestions: questions || [],
-            }));
+        setGameState(prev => ({
+            ...prev,
+            gameRunning: false,
+            gameStarted: true,
+            qFreq: isNaN(value) ? 5 : value,
+            currentQuestions: questions || [],
+        }));
 
-            resetBall(true);
+        resetBall(true);
         // }, 1000);
 
     };
@@ -1060,6 +1109,7 @@ const Pong = () => {
             width="100vw"
             height="100vh"
             bg="black"
+            className="pong-game-container"
             overflow="hidden"
             ref={gameContainerRef}
             zIndex={3}
@@ -1125,22 +1175,24 @@ const Pong = () => {
                             setGameState((prev) => ({ ...prev, gameRunning: !prev.gameRunning }))
                         }
                         size={{ base: "xs", md: "sm" }}
+                        variant="outline"
+                        bg="white"
                     >
-                        {gameState.gameRunning ? "Pause" : "Resume"}
+                        {gameState.gameRunning ? "⏸️ Pause" : "▶️ Start"}
                     </Button>
                     <Button
                         colorScheme="orange"
                         onClick={resetGame}
                         size={{ base: "xs", md: "sm" }}
                     >
-                        Reset Game
+                        ↺ Reset Game
                     </Button>
                     <Button
                         colorScheme="purple"
                         onClick={requestFullScreen}
                         size={{ base: "xs", md: "sm" }}
                     >
-                        Go Full Screen
+                        ⛶  Full Screen
                     </Button>
                 </HStack>
             </Flex>
