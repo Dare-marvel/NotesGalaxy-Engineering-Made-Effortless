@@ -1175,10 +1175,10 @@ const Pong = () => {
                             setGameState((prev) => ({ ...prev, gameRunning: !prev.gameRunning }))
                         }
                         size={{ base: "xs", md: "sm" }}
-                        variant="outline"
-                        bg="white"
+                        // variant="outline"
+                        // bg="white"
                     >
-                        {gameState.gameRunning ? "⏸️ Pause" : "▶️ Start"}
+                        {gameState.gameRunning ? "⏸ Pause" : "▶ Start"}
                     </Button>
                     <Button
                         colorScheme="orange"

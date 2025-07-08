@@ -3,6 +3,7 @@ import {
   Box,
   Container,
   Heading,
+  Badge,
   Grid,
   GridItem,
   Card,
@@ -198,20 +199,20 @@ const GameCard = ({ game, index }) => {
               {game.name}
             </Heading>
 
-            {/* {game.status && (
+            {game.nofPlayers && (
               <Badge
-                colorScheme={game.status === 'Available' ? 'green' : 'orange'}
+                colorScheme={game.nofPlayers === 'Available' ? 'green' : 'orange'}
                 variant="subtle"
                 borderRadius="full"
                 px={3}
                 py={1}
                 fontSize="xs"
-                bg={game.status === 'Available' ? 'green.100' : 'orange.100'}
-                color={game.status === 'Available' ? 'green.800' : 'orange.800'}
+                bg={game.nofPlayers === '2 players' ? 'green.100' : 'orange.100'}
+                color={game.nofPlayers === '2 players' ? 'green.800' : 'orange.800'}
               >
-                {game.status}
+                {game.nofPlayers}
               </Badge>
-            )} */}
+            )}
 
             {isHovered && game.description && (
               <Text
@@ -243,7 +244,7 @@ const Games = () => {
       accentColor: '#88ffbb',
       glowColor: '#00ff88',
       borderColor: 'rgba(0, 255, 136, 0.3)',
-      status: 'Available',
+      nofPlayers: '1 players',
       description: 'Classic snake game with modern twist',
       slug: 'snake-game'
     },
@@ -255,7 +256,7 @@ const Games = () => {
       accentColor: '#c4b5fd',
       glowColor: '#8b5cf6',
       borderColor: 'rgba(139, 92, 246, 0.3)',
-      status: 'Available',
+      nofPlayers: '1 players',
       description: 'Stack blocks and clear lines',
       slug: 'tetris-game'
     },
@@ -267,7 +268,7 @@ const Games = () => {
       accentColor: '#f9a8d4',
       glowColor: '#ec4899',
       borderColor: 'rgba(236, 72, 153, 0.3)',
-      status: 'Available',
+      nofPlayers: '2 players',
       description: 'Classic paddle ball game',
       slug: 'pong-game'
     },
