@@ -322,7 +322,7 @@ const Pong = () => {
     const resetBall = useCallback((isFirstServe = false) => {
 
         const FIRST_SERVE_SPEED = 4;
-        const GAME_SPEED = 7;
+        const GAME_SPEED = 8;
 
         setGameState(prev => ({
             ...prev,
@@ -350,6 +350,14 @@ const Pong = () => {
 
             // Ball collision with top/bottom walls (90-degree rebound)
             if (ball.y - ball.radius <= 0 || ball.y + ball.radius >= gameSize.height) {
+                if (ball.isFirstServe) {
+                    const GAME_SPEED = 8;
+                    const FIRST_SERVE_SPEED = 4;
+                    const speedIncrease = GAME_SPEED / FIRST_SERVE_SPEED; 
+                    ball.dx *= speedIncrease;
+                    ball.dy *= speedIncrease;
+                }
+
                 ball.dy = -ball.dy;
                 ball.isFirstServe = false;
             }
@@ -1175,8 +1183,8 @@ const Pong = () => {
                             setGameState((prev) => ({ ...prev, gameRunning: !prev.gameRunning }))
                         }
                         size={{ base: "xs", md: "sm" }}
-                        // variant="outline"
-                        // bg="white"
+                    // variant="outline"
+                    // bg="white"
                     >
                         {gameState.gameRunning ? "⏸ Pause" : "▶ Start"}
                     </Button>
