@@ -58,7 +58,7 @@ const Navbar = () => {
     { name: 'Youtube', path: '/ytchannels', icon: TvMinimalPlay },
     { name: 'Community', path: '/community', icon: Users },
     { name: 'Blogs', path: '/blogs', icon: ScrollText },
-    // { name: 'Games', path: '/games', icon: Gamepad2 },
+    { name: 'Games', path: '/games', icon: Gamepad2 },
     { name: 'Contact', path: '/contact', icon: Phone },
     { name: 'About', path: '/about', icon: Info },
   ];

@@ -346,13 +346,14 @@ const Games = () => {
             <Heading
               // size="2xl"
               fontSize={{ base: '2xl', sm: '3xl', md: '4xl', lg: '5xl', xl: '5xl' }}
-              bgGradient="linear(to-r, #8b5cf6, #06b6d4, #00ff88)"
-              bgClip="text"
+              // bgGradient="linear(to-r, #8b5cf6, #06b6d4, #00ff88)"
+              color="purple.500"
+              // bgClip="text"
               fontWeight="extrabold"
               textShadow="0 0 40px rgba(139, 92, 246, 0.3)"
-              animation={`${pulse} 3s ease-in-out infinite`}
+              // animation={`${pulse} 3s ease-in-out infinite`}
             >
-              🚀 Cosmic Games Hub
+              Gamified Learning Platform
             </Heading>
           </VStack>
 

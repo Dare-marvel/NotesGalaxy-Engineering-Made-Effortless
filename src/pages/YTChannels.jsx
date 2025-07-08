@@ -517,7 +517,7 @@ export default function YouTubeChannelsPage() {
       />
       <Container
         maxW={{ base: "full", sm: "container.sm", md: "container.md", lg: "6xl" }}
-        pt={{ base: 4, sm: 6, md: 8, lg: 12 }}
+        pt={{ base: 4, sm: 6, md: 8, lg: 10 }}
         px={{ base: 3, sm: 4, md: 12, lg: 12 }}
         position="relative"
         zIndex="1"
@@ -527,17 +527,18 @@ export default function YouTubeChannelsPage() {
           <Box textAlign="center" mb={{ base: 4, md: 8 }} >
             <Heading
               size={{ base: "lg", sm: "xl", md: "xl", lg: "2xl", xl: "2xl" }}
-              bgGradient="linear(to-r, blue.600, purple.600)"
-              bgClip="text"
+              // bgGradient="linear(to-r, blue.600, purple.600)"
+              color="purple.500"
+              // bgClip="text"
               fontWeight="extrabold"
               mt={{ base: 7, md: 7 }}
               py={{ base: 5, md: 7 }}
               mb={{ base: 3, md: 4 }}
               px={{ base: 2, sm: 4, md: 6, lg: 12 }}
-              textShadow="0 4px 8px rgba(0,0,0,0.1)"
+              // textShadow="0 4px 8px rgba(0,0,0,0.1)"
               lineHeight={{ base: "shorter", md: "short" }}
             >
-              🚀 Best Youtube Playlists
+              Best Youtube Playlists
             </Heading>
 
             {/* Search Bar */}

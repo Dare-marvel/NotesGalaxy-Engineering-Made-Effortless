@@ -713,9 +713,10 @@ const Blogs = () => {
                                 textAlign="center"
                                 fontWeight="bold"
                                 mt={2}
-                                background="linear-gradient(135deg, #667eea 0%, #764ba2 100%)"
+                                bg="purple.500"
+                                // background="linear-gradient(135deg, #667eea 0%, #764ba2 100%)"
                                 backgroundClip="text"
-                                animation={`${shimmer} 2s infinite linear`}
+                                // animation={`${shimmer} 2s infinite linear`}
                                 backgroundSize="200px 100%"
                             >
                                 🚀 Blogs

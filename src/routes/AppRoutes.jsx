@@ -1,5 +1,7 @@
 import { Routes, Route } from 'react-router-dom';
 import { lazy, Suspense } from 'react';
+import { Flex, Spinner } from "@chakra-ui/react";
+
 
 // Keep FolderView as regular import since it's the home page
 import FolderView from '../pages/FolderView';
@@ -15,11 +17,16 @@ const Tetris = lazy(() => import('../components/Games/Tetris'));
 const Games = lazy(() => import('../pages/Games'));
 const Pong = lazy(() => import('../components/Games/Pong'));
 
-// Loading component for better UX
 const LoadingSpinner = () => (
-  <div className="flex items-center justify-center min-h-screen">
-    <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-500"></div>
-  </div>
+  <Flex align="center" justify="center" minH="100vh">
+    <Spinner
+      thickness="4px"
+      speed="0.65s"
+      emptyColor="gray.200"
+      color="blue.500"
+      size="xl"
+    />
+  </Flex>
 );
 
 // Wrapper component for Suspense

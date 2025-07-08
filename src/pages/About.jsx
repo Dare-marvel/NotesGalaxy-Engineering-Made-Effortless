@@ -204,7 +204,7 @@ const AboutUs = () => {
                 backgroundClip="text"
                 color="transparent"
                 mb={4}
-                animation={`${pulse} 3s ease-in-out infinite`}
+                // animation={`${pulse} 3s ease-in-out infinite`}
               >
                 NotesGalaxy
               </Heading>

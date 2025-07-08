@@ -972,12 +972,13 @@ export default function SpaceCommunityPage() {
           <Box textAlign="center" position="relative">
             <Heading
               size={{ base: "lg", sm: "xl", md: "xl", lg: "2xl", xl: "3xl" }}
-              bgGradient="linear(to-r, #667eea, #764ba2)"
-              bgClip="text"
+              // bgGradient="linear(to-r, #667eea, #764ba2)"
+              // bgClip="text"
+              color="purple.500"
               mb={2}
             // animation={`${float} 4s ease-in-out infinite`}
             >
-              🚀 Community Rankings
+               Community Rankings
             </Heading>
           </Box>
 
