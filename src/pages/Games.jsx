@@ -244,7 +244,7 @@ const Games = () => {
       accentColor: '#88ffbb',
       glowColor: '#00ff88',
       borderColor: 'rgba(0, 255, 136, 0.3)',
-      nofPlayers: '1 players',
+      nofPlayers: '1 player',
       description: 'Classic snake game with modern twist',
       slug: 'snake-game'
     },
@@ -256,7 +256,7 @@ const Games = () => {
       accentColor: '#c4b5fd',
       glowColor: '#8b5cf6',
       borderColor: 'rgba(139, 92, 246, 0.3)',
-      nofPlayers: '1 players',
+      nofPlayers: '1 player',
       description: 'Stack blocks and clear lines',
       slug: 'tetris-game'
     },
