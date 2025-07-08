@@ -744,7 +744,7 @@ const Pong = () => {
                     <VStack
                         spacing={2}
                         pt={{ base: 12, md: 12, lg: 12, xl: 12 }}
-                        mt={4}
+                        mt={8}
                         px={{ base: 4, sm: 6, md: 8 }}
                         w="full"
                         maxW="100vw"
