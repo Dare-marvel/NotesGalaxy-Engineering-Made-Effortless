@@ -6,6 +6,7 @@ import Astronaut from './components/Astronaut'
 import Footer from './components/Footer';
 import { Analytics } from "@vercel/analytics/react"
 import { SpeedInsights } from '@vercel/speed-insights/react'
+import AdBlockerDetector from './components/AdBlockerDetector';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         </Box>
         <Footer /> 
       </Box>
+      <AdBlockerDetector/>
       <Analytics />
       <SpeedInsights />
     </BrowserRouter>

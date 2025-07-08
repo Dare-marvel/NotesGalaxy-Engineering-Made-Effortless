@@ -9,7 +9,6 @@ import {
   Card,
   CardBody,
   Text,
-  useColorModeValue,
   VStack,
 } from '@chakra-ui/react';
 
@@ -96,8 +95,8 @@ const GameCard = ({ game, index }) => {
   const [isHovered, setIsHovered] = useState(false);
   const navigate = useNavigate();
 
-  const cardBg = useColorModeValue('rgba(255, 255, 255, 0.1)', 'rgba(255, 255, 255, 0.05)');
-  const hoverBg = useColorModeValue('rgba(255, 255, 255, 0.2)', 'rgba(255, 255, 255, 0.1)');
+  const cardBg = 'rgba(255, 255, 255, 0.1)';
+  const hoverBg = 'rgba(255, 255, 255, 0.2)';
 
   const handleClick = () => {
     if (game.slug) { // Assuming `game.slug` is the unique identifier (e.g., "chess", "sudoku")

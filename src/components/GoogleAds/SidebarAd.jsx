@@ -1,6 +1,6 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
-import { Box, useColorModeValue, VStack } from '@chakra-ui/react';
+import { Box, VStack } from '@chakra-ui/react';
 import { useWindowSize } from '../../hooks/useWindowSize';
 
 // Error Boundary for Ad Components
@@ -67,8 +67,6 @@ const SidebarAd = ({
   adSlot = "3152616213", 
 }) => {
   const width = useWindowSize();
-  const bgColor = useColorModeValue('gray.50', 'gray.700');
-  const borderColor = useColorModeValue('gray.200', 'gray.600');
   const [headerHeight, setHeaderHeight] = useState(0);
 
   // Define breakpoint for medium screens
@@ -123,10 +121,10 @@ const SidebarAd = ({
       right={position === 'right' ? "0" : "auto"}
       width="160px"
       height={`calc(100vh - ${headerHeight}px)`}
-      bg={bgColor}
+      bg='gray.50'
       borderLeft={position === 'right' ? '1px solid' : 'none'}
       borderRight={position === 'left' ? '1px solid' : 'none'}
-      borderColor={borderColor}
+      borderColor='gray.200'
       p={2}
       overflowY="auto"
       css={{

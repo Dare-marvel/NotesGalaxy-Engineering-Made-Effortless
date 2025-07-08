@@ -12,7 +12,6 @@ import {
   Container,
   Spinner,
   IconButton,
-  useColorModeValue,
   Icon,
   Text,
   Flex,
@@ -70,12 +69,6 @@ const FolderView = () => {
   const { repoName, '*': path } = useParams();
   const navigate = useNavigate();
   const { contents = [], loading } = useFolderContents(repoName, path);
-
-  const bgHover = useColorModeValue('gray.100', 'gray.700');
-  const hoverTextColor = useColorModeValue('blue.600', 'blue.300');
-  const borderColor = useColorModeValue('purple.200', 'purple.700');
-  const headerBg = useColorModeValue('gray.50', 'gray.800');
-  const inputBg = useColorModeValue('white', 'gray.800');
 
   const filteredContents = !repoName && Array.isArray(contents)
     ? contents.filter(repo => {
@@ -283,8 +276,8 @@ const FolderView = () => {
             transition="all 0.2s"
             borderRadius="md"
             _hover={{
-              backgroundColor: bgHover,
-              color: hoverTextColor,
+              backgroundColor: 'gray.100',
+              color: 'blue.600',
               transform: ['none', 'none', 'translateX(5px)']
             }}
           >
@@ -450,7 +443,7 @@ const FolderView = () => {
         cursor="pointer"
         transition="all 0.2s"
         _hover={{
-          backgroundColor: bgHover,
+          backgroundColor: 'gray.100',
           transform: ['none', 'none', 'translateX(5px)']
         }}
         onMouseEnter={() => setHoveredItem(name)}
@@ -549,7 +542,7 @@ const FolderView = () => {
                 placeholder="Search repositories..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                bg={inputBg}
+                bg='white'
                 borderRadius="full"
                 borderColor="blue.200"
                 // border="2px solid"
@@ -567,7 +560,7 @@ const FolderView = () => {
 
         <Box
           borderWidth="3px"
-          borderColor={borderColor}
+          borderColor='purple.200'
           borderRadius={["lg", "xl", "xl"]}
           overflow={["auto", "hidden", "hidden"]}
           boxShadow={["md", "lg", "lg"]}
@@ -585,7 +578,7 @@ const FolderView = () => {
             size={["sm", "md", "md"]}
           >
             <Thead>
-              <Tr bg={headerBg}>
+              <Tr bg='gray.50'>
                 <Th fontSize={["sm", "md", "md"]} sx={{ px: '0 !important' }}>Name</Th>
                 {/* <Th fontSize={["sm", "md", "md"]}>Type</Th> */}
                 <Th fontSize={["sm", "md", "md"]} sx={{ px: '0 !important' }}>Action</Th>

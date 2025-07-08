@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
-import { Box, Text, useColorModeValue } from '@chakra-ui/react';
+import { Box, Text} from '@chakra-ui/react';
 import { motion } from 'framer-motion';
 
 const MotionBox = motion(Box);
@@ -16,7 +16,7 @@ const NavItem = ({ item }) => {
           rounded="md"
           _hover={{
             textDecoration: 'none',
-            bg: useColorModeValue('gray.100', 'gray.700'),
+            bg: 'gray.100',
           }}
           color={location.pathname === item.path ? 'blue.500' : ''}
           fontWeight={location.pathname === item.path ? 'semibold' : 'normal'}

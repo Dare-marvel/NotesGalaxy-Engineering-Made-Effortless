@@ -4,7 +4,6 @@ import {
   Flex,
   HStack,
   Text,
-  useColorModeValue,
   Container,
   Button,
   useDisclosure,
@@ -74,7 +73,7 @@ const Navbar = () => {
       top="0"
       width="100%"
       zIndex={2}
-      bg={useColorModeValue('white', 'gray.800')}
+      bg='white'
       boxShadow="sm"
     >
       <Container maxW="container.xl">
@@ -136,9 +135,9 @@ const Navbar = () => {
                     size="md"
                     aria-label={item.name}
                     color={location.pathname === item.path ? 'blue.500' : ''}
-                    bg={location.pathname === item.path ? useColorModeValue('blue.50', 'blue.900') : 'transparent'}
+                    bg={location.pathname === item.path ? 'blue.50' : 'transparent'}
                     _hover={{
-                      bg: useColorModeValue('blue.50', 'blue.900'),
+                      bg: 'blue.50',
                       transform: 'translateY(-1px)',
                       color: 'blue.500',
                     }}
