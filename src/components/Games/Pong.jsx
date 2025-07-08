@@ -314,7 +314,7 @@ const Pong = () => {
                     ...prev,
                     gameRunning: prev.winner ? false : true
                 }));
-            }, 400);
+            }, 600);
         }
     };
 
@@ -322,7 +322,7 @@ const Pong = () => {
     const resetBall = useCallback((isFirstServe = false) => {
 
         const FIRST_SERVE_SPEED = 4;
-        const GAME_SPEED = 9;
+        const GAME_SPEED = 8.5;
 
         setGameState(prev => ({
             ...prev,
