@@ -77,7 +77,7 @@ import {
   Rocket
 } from 'lucide-react';
 
-import { incrementVisitorCount } from "../utils/visitorTracker";
+import { incrementVisitorCount, incrementTotalLikeCount } from "../utils/visitorTracker";
 
 const float = keyframes`
   0% { transform: translateY(0px) rotate(0deg); }
@@ -305,6 +305,8 @@ const NotesModal = ({ isOpen, onClose, user }) => {
         likes: increment(1),
         likedBy: arrayUnion(userId)
       });
+
+      incrementTotalLikeCount()
 
       // Update local state
       setNotes(prev => prev.map(note =>
@@ -803,19 +805,26 @@ export default function SpaceCommunityPage() {
   const fetchStats = async () => {
     try {
       // Get total users
-      const usersSnapshot = await getDocs(collection(db, 'users'));
-      const totalUsers = usersSnapshot.size;
+      // const usersSnapshot = await getDocs(collection(db, 'users'));
+      // const totalUsers = usersSnapshot.size;
+      const totalContributorsDoc = await getDoc(doc(db, "stats", "totalContributors"));
+      const totalUsers = totalContributorsDoc.exists() ? totalContributorsDoc.data().count : 0;
 
       // Get total notes
-      const notesSnapshot = await getDocs(collection(db, 'notes'));
-      const totalNotes = notesSnapshot.size;
+      // const notesSnapshot = await getDocs(collection(db, 'notes'));
+      // const totalNotes = notesSnapshot.size;
+      const totalNotesContributedDoc = await getDoc(doc(db, "stats", "totalNotesContributed"));
+      const totalNotes = totalNotesContributedDoc.exists() ? totalNotesContributedDoc.data().count : 0;
 
       // Calculate total likes
-      let totalLikes = 0;
-      notesSnapshot.forEach((doc) => {
-        const noteData = doc.data();
-        totalLikes += noteData.likes || 0;
-      });
+      // let totalLikes = 0;
+      // notesSnapshot.forEach((doc) => {
+      //   const noteData = doc.data();
+      //   totalLikes += noteData.likes || 0;
+      // });
+
+      const totalLikesDoc = await getDoc(doc(db, "stats", "totalLikes"));
+      const totalLikes = totalLikesDoc.exists() ? totalLikesDoc.data().count : 0;
 
       const visitorsDoc = await getDoc(doc(db, "stats", "visitors"));
       const totalVisitors = visitorsDoc.exists() ? visitorsDoc.data().count : 0;
