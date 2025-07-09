@@ -26,7 +26,7 @@ import './Pong.css'
 import BottomAd from '../GoogleAds/BottomAd'
 import SidebarAd from '../GoogleAds/SidebarAd';
 
-import subjectsList from '../../config/subjectsList';
+import subjectsList from '../../constants/subjectsList';
 
 import { usePageMeta } from '../../hooks/usePageMeta';
 

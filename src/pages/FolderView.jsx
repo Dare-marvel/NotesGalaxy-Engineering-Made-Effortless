@@ -34,7 +34,7 @@ import {
 } from 'lucide-react';
 
 
-import { getSimpleName, getActualName } from '../config/nameMapping';
+import { getSimpleName, getActualName } from '../constants/nameMapping';
 const FileViewer = lazy(() => import('../components/FileViewer/FileViewer'));
 import { useFolderContents } from '../hooks/useFolderContents';
 import { useParams, useNavigate } from 'react-router-dom';
@@ -42,7 +42,7 @@ import { useWindowSize } from '../hooks/useWindowSize';
 import { truncateByScreenSize } from '../utils/displayUtils';
 import Breadcrumbs from '../components/Breadcrumbs';
 import axios from 'axios';
-import { FOLDER_STRUCTURE } from '../config/structure';
+import { FOLDER_STRUCTURE } from '../constants/structure';
 
 import SidebarAd from '../components/GoogleAds/SidebarAd';
 import BottomAd from '../components/GoogleAds/BottomAd'

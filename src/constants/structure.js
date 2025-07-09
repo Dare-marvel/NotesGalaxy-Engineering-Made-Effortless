@@ -1,4 +1,3 @@
-// src/config/structure.js
 export const FOLDER_STRUCTURE = {
   // "" : {
   //   directories : ["",""]

@@ -48,7 +48,7 @@ import app from '../config/firebaseConfig';
 import { useNavigate, useSearchParams } from "react-router-dom";
 import SidebarAd from '../components/GoogleAds/SidebarAd';
 import BottomAd from '../components/GoogleAds/BottomAd';
-import { blogContent } from '../config/blogContent';
+import { blogContent } from '../constants/blogContent';
 import { SearchIcon } from '@chakra-ui/icons';
 import { usePageMeta } from '../hooks/usePageMeta';
 

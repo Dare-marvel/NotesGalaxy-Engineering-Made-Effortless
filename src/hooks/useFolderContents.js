@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { fetchContents } from '../services/github';
-import { FOLDER_STRUCTURE } from '../config/structure';
-import { getActualName } from '../config/nameMapping';
+import { FOLDER_STRUCTURE } from '../constants/structure';
+import { getActualName } from '../constants/nameMapping';
 
 export const useFolderContents = (repoName, path) => {
   const [contents, setContents] = useState([]);

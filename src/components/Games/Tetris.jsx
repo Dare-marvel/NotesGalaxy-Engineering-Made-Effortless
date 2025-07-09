@@ -19,7 +19,7 @@ import {
   Spacer,
   Select,
 } from '@chakra-ui/react';
-import subjectsList from '../../config/subjectsList';
+import subjectsList from '../../constants/subjectsList';
 
 import SidebarAd from '../GoogleAds/SidebarAd';
 import BottomAd from '../GoogleAds/BottomAd'

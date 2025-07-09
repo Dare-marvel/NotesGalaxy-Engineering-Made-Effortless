@@ -34,7 +34,7 @@ import axios from 'axios';
 import { usePageMeta } from '../hooks/usePageMeta';
 
 import SidebarAd from '../components/GoogleAds/SidebarAd';
-import subjectsList from '../config/subjectsList';
+import subjectsList from '../constants/subjectsList';
 import BottomAd from '../components/GoogleAds/BottomAd';
 
 const FloatingElement = ({ icon, top, left, right, duration = 5, size = "30px", delay = 0 }) => (

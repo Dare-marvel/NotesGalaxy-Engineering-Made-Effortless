@@ -1,4 +1,3 @@
-// config/nameMapping.js
 export const NAME_MAPPINGS = {
   // Semester - 1
   // C Programming
