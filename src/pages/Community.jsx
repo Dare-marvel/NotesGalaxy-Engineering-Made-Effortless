@@ -36,7 +36,7 @@ import {
 } from '@chakra-ui/react';
 
 import { keyframes } from '@emotion/react';
-import FingerprintJS from '@fingerprintjs/fingerprintjs';
+// import FingerprintJS from '@fingerprintjs/fingerprintjs';
 
 import { usePageMeta } from '../hooks/usePageMeta';
 
@@ -118,6 +118,7 @@ const getUserId = async () => {
 
   // Step 2: Try to use FingerprintJS
   try {
+    const FingerprintJS = await import('@fingerprintjs/fingerprintjs');
     const fp = await FingerprintJS.load();
     const result = await fp.get();
     const visitorId = result.visitorId;
@@ -413,7 +414,9 @@ const NotesModal = ({ isOpen, onClose, user }) => {
                           </Button>
 
                           <HStack spacing={1}>
-                            <Icon as={Eye} color="gray.400" size="sm" />
+                            <Icon color="gray.400" size="sm" >
+                              <Eye />
+                            </Icon>
                             <Text fontSize="sm" color="gray.500">
                               {note.views || 0}
                             </Text>
@@ -438,153 +441,153 @@ const NotesModal = ({ isOpen, onClose, user }) => {
             </Alert>
           )}
         </ModalBody>
-        {/* <ModalFooter>
-          <Button colorScheme="purple" mr={3} onClick={onClose}>
-            Close
-          </Button>
-        </ModalFooter> */}
       </ModalContent>
     </Modal>
   );
 };
 
-const UserRow = ({ user, rank, index, sortBy }) => {
+const UserRow = ({ user, rank, index, sortBy, onViewNotes }) => {
   const [userId, setUserId] = useState(null);
-  const { isOpen, onOpen, onClose } = useDisclosure();
 
   useEffect(() => {
     getUserId().then(setUserId);
   }, []);
 
   return (
-    <>
-      <Tr
-        _hover={{
-          bg: 'rgba(138, 43, 226, 0.05)',
-          transform: 'translateX(4px)',
-          transition: 'all 0.3s ease'
-        }}
-        animation={`${slideInUp} 0.5s ease-out ${index * 0.1}s both`}
-      >
-        {/* Rank Column */}
-        <Td px={{ base: 2, md: 3, lg: 4 }} py={{ base: 2, md: 3 }}>
-          <BadgeComponent rank={rank} isAnimated={rank <= 3} />
-        </Td>
+    <Tr
+      _hover={{
+        bg: 'rgba(138, 43, 226, 0.05)',
+        transform: 'translateX(4px)',
+        transition: 'all 0.3s ease'
+      }}
+      animation={`${slideInUp} 0.5s ease-out ${index * 0.1}s both`}
+    >
+      {/* Rank Column */}
+      <Td px={{ base: 2, md: 3, lg: 4 }} py={{ base: 2, md: 3 }}>
+        <BadgeComponent rank={rank} isAnimated={rank <= 3} />
+      </Td>
 
-        {/* User Column */}
-        <Td px={{ base: 2, md: 3, lg: 4 }} py={{ base: 2, md: 3 }}>
-          <HStack spacing={{ base: 2, md: 3 }}>
-            <Box
-              fontSize={{ base: "lg", md: "xl", lg: "2xl" }}
-              animation={rank <= 3 ? `${float} 4s ease-in-out infinite` : 'none'}
-              // animationDelay={`${index * 0.5}s`}
-              sx={{
-                animationDelay: `${index * 0.5}s`,
-              }}
-              flexShrink={0}
-            >
-              {user.avatar}
-            </Box>
-            <VStack align="start" spacing={0} overflow="hidden" flex={1}>
-              <Text
-                fontWeight="bold"
-                color="purple.700"
-                fontSize={{ base: "xs", md: "sm", lg: "md" }}
-                // noOfLines={1}
-                isTruncated
-                maxW={{ base: "100%", md: "100px", lg: "200px" }}
-              >
-                {user.username}
-              </Text>
-              <Text
-                fontSize={{ base: "2xs", md: "xs" }}
-                color="gray.500"
-                display={{ base: "none", md: "block" }}
-                noOfLines={1}
-              >
-                From {user.createdAt}
-              </Text>
-              {/* Mobile-only compact info */}
-              <HStack
-                spacing={2}
-                display={{ base: "flex", sm: "none" }}
-                fontSize="2xs"
-                color="gray.600"
-              >
-                <Text>{user.contributions}</Text>
-                <Text>•</Text>
-                <Text>{user.totalLikes} ♥</Text>
-              </HStack>
-            </VStack>
-          </HStack>
-        </Td>
-
-        {/* Contributions Column - Hidden on mobile */}
-        <Td
-          px={{ base: 2, md: 3, lg: 4 }}
-          py={{ base: 2, md: 3 }}
-          display={{ base: "none", sm: "table-cell" }}
-        >
-          <HStack spacing={{ base: 1, md: 2 }}>
-            <Icon as={Plus} color="blue.500" />
+      {/* User Column */}
+      <Td px={{ base: 2, md: 3, lg: 4 }} py={{ base: 2, md: 3 }}>
+        <HStack spacing={{ base: 2, md: 3 }}>
+          <Box
+            fontSize={{ base: "lg", md: "xl", lg: "2xl" }}
+            animation={rank <= 3 ? `${float} 4s ease-in-out infinite` : 'none'}
+            // animationDelay={`${index * 0.5}s`}
+            sx={{
+              animationDelay: `${index * 0.5}s`,
+            }}
+            flexShrink={0}
+          >
+            {user.avatar}
+          </Box>
+          <VStack align="start" spacing={0} overflow="hidden" flex={1}>
             <Text
               fontWeight="bold"
-              color="blue.600"
+              color="purple.700"
               fontSize={{ base: "xs", md: "sm", lg: "md" }}
+              // noOfLines={1}
+              isTruncated
+              maxW={{ base: "100%", md: "100px", lg: "200px" }}
             >
-              {user.contributions}
+              {user.username}
             </Text>
-          </HStack>
-        </Td>
-
-        {/* Likes Column - Hidden on mobile */}
-        <Td
-          px={{ base: 2, md: 3, lg: 4 }}
-          py={{ base: 2, md: 3 }}
-          display={{ base: "none", sm: "table-cell" }}
-        >
-          <Tooltip label="Total likes">
-            <Button
-              size={{ base: "xs", md: "sm" }}
-              variant="ghost"
-              colorScheme="red"
-              leftIcon={<Icon as={Heart} boxSize={{ base: 3, md: 4 }} />}
-              fontSize={{ base: "xs", md: "sm" }}
-              px={{ base: 2, md: 3 }}
-              _hover={{
-                transform: 'scale(1.1)',
-                animation: `${glow} 1s ease-in-out`
-              }}
+            <Text
+              fontSize={{ base: "2xs", md: "xs" }}
+              color="gray.500"
+              display={{ base: "none", md: "block" }}
+              noOfLines={1}
             >
-              {user.totalLikes}
-            </Button>
-          </Tooltip>
-        </Td>
-
-        {/* View Column */}
-        <Td px={{ base: 2, md: 3, lg: 4 }} py={{ base: 2, md: 3 }}>
-          <Tooltip label="View all notes">
-            <Button
-              size={{ base: "xs", md: "sm" }}
-              variant="ghost"
-              colorScheme="purple"
-              onClick={onOpen}
-              leftIcon={<Icon as={Eye} boxSize={{ base: 3, md: 4 }} />}
-              fontSize={{ base: "xs", md: "sm" }}
-              aria-label="View all notes of user"
-              px={{ base: 2, md: 3 }}
+              From {user.createdAt}
+            </Text>
+            {/* Mobile-only compact info */}
+            <HStack
+              spacing={2}
+              display={{ base: "flex", sm: "none" }}
+              fontSize="2xs"
+              color="gray.600"
             >
-              {/* <Text display={{ base: "none", md: "inline" }}>View</Text> */}
-            </Button>
-          </Tooltip>
-        </Td>
-      </Tr>
-      <NotesModal isOpen={isOpen} onClose={onClose} user={user} />
-    </>
+              <Text>{user.contributions}</Text>
+              <Text>•</Text>
+              <Text>{user.totalLikes} ♥</Text>
+            </HStack>
+          </VStack>
+        </HStack>
+      </Td>
+
+      {/* Contributions Column - Hidden on mobile */}
+      <Td
+        px={{ base: 2, md: 3, lg: 4 }}
+        py={{ base: 2, md: 3 }}
+        display={{ base: "none", sm: "table-cell" }}
+      >
+        <HStack spacing={{ base: 1, md: 2 }}>
+          <Icon as={Plus} color="blue.500" />
+          <Text
+            fontWeight="bold"
+            color="blue.600"
+            fontSize={{ base: "xs", md: "sm", lg: "md" }}
+          >
+            {user.contributions}
+          </Text>
+        </HStack>
+      </Td>
+
+      {/* Likes Column - Hidden on mobile */}
+      <Td
+        px={{ base: 2, md: 3, lg: 4 }}
+        py={{ base: 2, md: 3 }}
+        display={{ base: "none", sm: "table-cell" }}
+      >
+        <Tooltip label="Total likes">
+          <Button
+            size={{ base: "xs", md: "sm" }}
+            variant="ghost"
+            colorScheme="red"
+            leftIcon={<Icon as={Heart} boxSize={{ base: 3, md: 4 }} />}
+            fontSize={{ base: "xs", md: "sm" }}
+            px={{ base: 2, md: 3 }}
+            _hover={{
+              transform: 'scale(1.1)',
+              animation: `${glow} 1s ease-in-out`
+            }}
+          >
+            {user.totalLikes}
+          </Button>
+        </Tooltip>
+      </Td>
+
+      {/* View Column */}
+      <Td px={{ base: 2, md: 3, lg: 4 }} py={{ base: 2, md: 3 }}>
+        <Tooltip label="View all notes">
+          <Button
+            size={{ base: "xs", md: "sm" }}
+            variant="ghost"
+            colorScheme="purple"
+            onClick={onViewNotes}
+            leftIcon={<Icon boxSize={{ base: 3, md: 4 }} ><Eye /> </Icon>}
+            fontSize={{ base: "xs", md: "sm" }}
+            aria-label="View all notes of user"
+            px={{ base: 2, md: 3 }}
+          >
+            {/* <Text display={{ base: "none", md: "inline" }}>View</Text> */}
+          </Button>
+        </Tooltip>
+      </Td>
+    </Tr>
   );
 };
 
 const RankingTable = ({ title, users, sortBy, icon }) => {
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [selectedUser, setSelectedUser] = useState(null);
+
+  const handleOpenNotes = (user) => {
+    setSelectedUser(user);
+    onOpen();
+  };
+
   const sortedUsers = [...users].sort((a, b) => {
     if (sortBy === 'contributions') {
       return b.contributions - a.contributions;
@@ -672,12 +675,19 @@ const RankingTable = ({ title, users, sortBy, icon }) => {
                   key={user.id}
                   user={user}
                   rank={index + 1}
+                  onViewNotes={() => handleOpenNotes(user)}
                   index={index}
                   sortBy={sortBy}
                 />
               ))}
             </Tbody>
           </Table>
+
+          <NotesModal
+            isOpen={isOpen}
+            onClose={onClose}
+            user={selectedUser}
+          />
         </Box>
       </CardBody>
     </Card>
@@ -905,7 +915,7 @@ export default function SpaceCommunityPage() {
               mb={2}
             // animation={`${float} 4s ease-in-out infinite`}
             >
-               Community Rankings
+              Community Rankings
             </Heading>
           </Box>
 
