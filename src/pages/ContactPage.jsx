@@ -66,9 +66,6 @@ const FloatingElement = ({ icon, top, left, right, duration = 5, size = "30px", 
 const db = getFirestore(app);
 
 const ContactPage = () => {
-  // const [name, setName] = useState('');
-  // const [email, setEmail] = useState('');
-  // const [message, setMessage] = useState('');
   usePageMeta(
     "Contact Us",
     "Reach out to the NotesGalaxy team. Whether it's feedback, support, or collaboration, we're here to connect across the stars."
@@ -243,8 +240,6 @@ const ContactPage = () => {
 
       await sendConfirmationEmail(email, name);
 
-      // console.log("Checking ",response.data)
-
       if (response.data.ok) {
 
 
@@ -256,9 +251,6 @@ const ContactPage = () => {
           duration: 5000,
           isClosable: true,
         });
-        // setName("");
-        // setEmail("");
-        //setMessage("");
 
         setSubjects([]);
       } else {
@@ -366,9 +358,7 @@ const ContactPage = () => {
             <Input
               placeholder="Your Name"
               id="name"
-              //value={name}
               isDisabled={loading}
-              //onChange={(e) => setName(e.target.value)}
               variant="filled"
               bg="purple.50"
               borderColor="purple.300"
@@ -381,9 +371,7 @@ const ContactPage = () => {
               placeholder="Your Email"
               type="email"
               id="email"
-              // value={email}
               isDisabled={loading}
-              //  onChange={(e) => setEmail(e.target.value)}
               variant="filled"
               bg="purple.50"
               borderColor="purple.300"
@@ -401,19 +389,6 @@ const ContactPage = () => {
                 bg="purple.50"
                 borderRadius="md">
                 <Flex align="center">
-                  {/* <Input
-                    placeholder="Subject Name"
-                    value={subject.name}
-                    isDisabled={loading}
-                    onChange={(e) => handleSubjectChange(index, e.target.value)}
-                    mr={2}
-                    variant="filled"
-                    bg="purple.50"
-                    borderColor="purple.300"
-                    borderRadius="md"
-                    _hover={{ borderColor: "blue.400" }}
-                    size={{ base: "sm", sm: "sm", md: "sm", lg: "md", xl: "md" }}
-                  /> */}
                   <Select
                     placeholder="Select Subject"
                     value={subject.showCustomInput ? "Other" : subject.name}
@@ -486,9 +461,7 @@ const ContactPage = () => {
 
             <Textarea
               placeholder="Your Message"
-              // value={message}
               id="message"
-              // onChange={(e) => setMessage(e.target.value)}
               variant="filled"
               bg="purple.50"
               borderColor="purple.300"

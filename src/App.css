@@ -5,7 +5,6 @@
   text-align: center;
 }
 
-/* Add this to your global styles or as an inline style */
 body.game-active {
   overflow: hidden !important;
   position: fixed !important;

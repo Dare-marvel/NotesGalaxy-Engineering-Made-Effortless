@@ -1,9 +1,6 @@
 import { Routes, Route } from 'react-router-dom';
 import { lazy, Suspense } from 'react';
 import { Flex, Spinner } from "@chakra-ui/react";
-
-
-// Keep FolderView as regular import since it's the home page
 import FolderView from '../pages/FolderView';
 
 // Lazy load all other components

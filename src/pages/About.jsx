@@ -42,80 +42,8 @@ const pulse = keyframes`
   50% { transform: scale(1.05); }
 `;
 
-// Star component
-// const Star = ({ size = "2px", top, left, delay = "0s" }) => (
-//   <Box
-//     position="absolute"
-//     width={size}
-//     height={size}
-//     backgroundColor="purple.300"
-//     borderRadius="50%"
-//     top={top}
-//     left={left}
-//     animation={`${twinkle} 2s ease-in-out ${delay} infinite`}
-//   />
-// );
-
-// Enhanced floating planet component
-// const FloatingPlanet = ({ size, type, top, left, right = "0%", duration = "20s" }) => {
-//   const planetStyles = {
-//     jupiter: {
-//       background: `radial-gradient(circle at 30% 30%, #FFD700, #FF8C00, #8B4513, #654321)`,
-//       boxShadow: `
-//         0 0 40px rgba(255, 215, 0, 0.4),
-//         inset -20px -20px 40px rgba(0, 0, 0, 0.3),
-//         inset 20px 20px 40px rgba(255, 255, 255, 0.1)
-//       `
-//     },
-//     neptune: {
-//       background: `radial-gradient(circle at 30% 30%, #4169E1, #0000CD, #191970, #000080)`,
-//       boxShadow: `
-//         0 0 40px rgba(65, 105, 225, 0.5),
-//         inset -15px -15px 30px rgba(0, 0, 0, 0.4),
-//         inset 15px 15px 30px rgba(255, 255, 255, 0.1)
-//       `
-//     },
-//     saturn: {
-//       background: `radial-gradient(circle at 30% 30%, #FAD5A5, #DEB887, #CD853F, #8B7355)`,
-//       boxShadow: `
-//         0 0 35px rgba(250, 213, 165, 0.4),
-//         inset -18px -18px 35px rgba(0, 0, 0, 0.3),
-//         inset 18px 18px 35px rgba(255, 255, 255, 0.15)
-//       `
-//     }
-//   };
-
-//   return (
-//     <Box
-//       position="absolute"
-//       width={size}
-//       height={size}
-//       borderRadius="50%"
-//       background={planetStyles[type].background}
-//       boxShadow={planetStyles[type].boxShadow}
-//       top={top}
-//       left={left}
-//       right={right}
-//       animation={`${float} ${duration} ease-in-out infinite`}
-//       _before={{
-//         content: '""',
-//         position: 'absolute',
-//         top: '20%',
-//         left: '25%',
-//         width: '30%',
-//         height: '25%',
-//         borderRadius: '50%',
-//         background: 'rgba(255, 255, 255, 0.3)',
-//         filter: 'blur(8px)'
-//       }}
-//     />
-//   );
-// };
-
 const AboutUs = () => {
   const [isVisible, setIsVisible] = useState(false);
-  // const isMobile = useBreakpointValue({ base: true, md: false });
-  // const containerPadding = useBreakpointValue({ base: 4, md: 8, lg: 12 });
 
   const orbitSize = useBreakpointValue({ base: "100px", md: "125px", lg: "127px" });
 
@@ -163,30 +91,6 @@ const AboutUs = () => {
         position="left"
         adSlot="4333835944"
       />
-      {/* Animated Background Elements */}
-      {/* <Star size="3px" top="10%" left="15%" delay="0s" />
-      <Star size="2px" top="25%" left="85%" delay="1s" />
-      <Star size="4px" top="40%" left="10%" delay="2s" />
-      <Star size="2px" top="60%" left="90%" delay="0.5s" />
-      <Star size="3px" top="80%" left="20%" delay="1.5s" />
-      <Star size="2px" top="15%" left="70%" delay="2.5s" />
-      <Star size="3px" top="35%" left="60%" delay="0.8s" />
-      <Star size="2px" top="75%" left="75%" delay="1.8s" /> */}
-
-      {/* <FloatingPlanet size="80px" type="jupiter" top="8%" left="85%" duration="25s" />
-      <FloatingPlanet 
-      size={{ base: "20px", md: "40px", lg: "60px" }} 
-      type="neptune" 
-      top={{ base: "5%", md: "32%", lg: "31%" }} 
-      left={{ base: "70%", md: "16%", lg: "28%" }} 
-      duration="30s" 
-      />
-      <FloatingPlanet 
-      size={{ base: "20px", md: "40px", lg: "60px" }}
-      type="saturn" 
-      top={{ base: "5%", md: "56%", lg: "59%" }} 
-      left={{ base: "70%", md: "25%", lg: "32%" }} 
-      duration="35s" /> */}
 
       <Container maxWidth="1200px" px={{ base: 4, md: 10, lg: 12 }}>
         {/* Header Section */}
