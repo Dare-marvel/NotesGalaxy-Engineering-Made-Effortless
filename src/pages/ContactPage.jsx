@@ -26,7 +26,7 @@ import {
   Orbit
 } from 'lucide-react';
 
-import { getFirestore, doc, setDoc } from 'firebase/firestore';
+import { getFirestore, doc, setDoc, arrayUnion } from 'firebase/firestore';
 import app from '../config/firebaseConfig'
 import { InfoIcon } from "@chakra-ui/icons"
 import emailjs from '@emailjs/browser';
@@ -205,15 +205,14 @@ const ContactPage = () => {
           // console.log("File Links:", fileLinks);
           await setDoc(doc(db, 'subjects', subject.name), {
             name: subject.name,
-            users: [{
+            users: arrayUnion({
               name: name,
               email: email,
               message: message,
               files: fileLinks
-            }]
-          },
-            { merge: true }
-          );
+            })
+          }, { merge: true });
+
         }
       }
     }
