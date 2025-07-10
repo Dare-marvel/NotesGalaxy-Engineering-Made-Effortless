@@ -36,10 +36,7 @@ import {
 } from '@chakra-ui/react';
 
 import { keyframes } from '@emotion/react';
-// import FingerprintJS from '@fingerprintjs/fingerprintjs';
-
 import { usePageMeta } from '../hooks/usePageMeta';
-
 import app from '../config/firebaseConfig'
 import {
   getFirestore,
