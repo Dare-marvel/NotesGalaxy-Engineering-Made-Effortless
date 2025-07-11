@@ -202,14 +202,18 @@ const ContactPage = () => {
       for (const subject of subjects) {
         if (subject.files.length > 0) {
           const fileLinks = await uploadFiles(subject.files);
+          const formattedFiles = fileLinks.map(link => ({
+            link,
+            approved: 0 // default not approved
+          }));
           // console.log("File Links:", fileLinks);
-          await setDoc(doc(db, 'subjects', subject.name), {
+          setDoc(doc(db, 'subjects', subject.name), {
             name: subject.name,
             users: arrayUnion({
               name: name,
               email: email,
               message: message,
-              files: fileLinks
+              files: formattedFiles
             })
           }, { merge: true });
 
