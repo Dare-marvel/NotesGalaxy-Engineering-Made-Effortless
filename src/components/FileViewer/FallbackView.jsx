@@ -1,6 +1,8 @@
-import React from 'react';
 import { Box, Icon, Text, Button, Link } from '@chakra-ui/react';
-import { FiFile } from 'react-icons/fi';
+
+import {
+  File
+} from 'lucide-react';
 
 const FallbackView = ({ onRetry, fileUrl }) => (
   <Box 
@@ -12,7 +14,7 @@ const FallbackView = ({ onRetry, fileUrl }) => (
     borderWidth="1px" 
     borderRadius="lg"
   >
-    <Icon as={FiFile} boxSize="6" mb="4" />
+    <Icon as={File} boxSize="6" mb="4" />
     <Text mb="4">Unable to load preview. Please try again or download the file.</Text>
     <Box>
       <Button colorScheme="blue" onClick={onRetry}>

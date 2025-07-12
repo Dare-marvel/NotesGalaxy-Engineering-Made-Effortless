@@ -4,13 +4,14 @@ import {
   Table,
   Thead,
   Tbody,
+  Tooltip,
+  Button,
   Td,
   Tr,
   Th,
   Container,
   Spinner,
   IconButton,
-  useColorModeValue,
   Icon,
   Text,
   Flex,
@@ -18,12 +19,22 @@ import {
   InputGroup,
   useToast,
   InputLeftElement,
+  Image,
   Center
 } from '@chakra-ui/react';
-import { FiArrowLeft, FiFolder, FiFile, FiSearch } from 'react-icons/fi';
-import { FaDownload } from "react-icons/fa";
-import { getSimpleName, getActualName } from '../config/nameMapping';
-// import FileViewer from '../components/FileViewer/FileViewer';
+
+import GithubLogo from '../assets/Icons/github.svg'
+
+import {
+  ArrowLeft,
+  ArrowDown,
+  File,
+  Search,
+  Folder,
+} from 'lucide-react';
+
+
+import { getSimpleName, getActualName } from '../constants/nameMapping';
 const FileViewer = lazy(() => import('../components/FileViewer/FileViewer'));
 import { useFolderContents } from '../hooks/useFolderContents';
 import { useParams, useNavigate } from 'react-router-dom';
@@ -31,9 +42,25 @@ import { useWindowSize } from '../hooks/useWindowSize';
 import { truncateByScreenSize } from '../utils/displayUtils';
 import Breadcrumbs from '../components/Breadcrumbs';
 import axios from 'axios';
-import { FOLDER_STRUCTURE } from '../config/structure';
+import { FOLDER_STRUCTURE } from '../constants/structure';
+
+import SidebarAd from '../components/GoogleAds/SidebarAd';
+import BottomAd from '../components/GoogleAds/BottomAd'
+
+import { keyframes } from '@emotion/react';
+
+import { usePageMeta } from '../hooks/usePageMeta';
+
+const slideInUp = keyframes`
+  from { transform: translateY(50px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+`;
 
 const FolderView = () => {
+  usePageMeta(
+    "All Engineering Notes at one Place",
+    "Access subject-wise engineering notes with instant download support and neatly formatted explanations. Browse, search, and filter through updated content for a seamless learning experience on NotesGalaxy."
+  );
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedFile, setSelectedFile] = useState(null);
   const [hoveredItem, setHoveredItem] = useState(null);
@@ -43,14 +70,6 @@ const FolderView = () => {
   const navigate = useNavigate();
   const { contents = [], loading } = useFolderContents(repoName, path);
 
-  // Chakra UI color modes
-  const bgHover = useColorModeValue('gray.100', 'gray.700');
-  const hoverTextColor = useColorModeValue('blue.600', 'blue.300');
-  const borderColor = useColorModeValue('gray.200', 'gray.700');
-  const headerBg = useColorModeValue('gray.50', 'gray.800');
-  const inputBg = useColorModeValue('white', 'gray.800');
-
-  // Safe filter function with type checking
   const filteredContents = !repoName && Array.isArray(contents)
     ? contents.filter(repo => {
       try {
@@ -88,15 +107,15 @@ const FolderView = () => {
   // };
 
   const TRUNCATE_CONFIG = {
-    sm: 480,  // mobile breakpoint in pixels
-    md: 768,  // tablet breakpoint in pixels
+    sm: 558,  // mobile breakpoint in pixels
+    md: 935,  // tablet breakpoint in pixels
     mobileChars: 12,
-    tabletChars: 35,
+    tabletChars: 30,
     desktopChars: 50
   };
 
 
-  const RepositoryRow = ({ repo }) => {
+  const RepositoryRow = ({ repo, index }) => {
     const [isDownloading, setIsDownloading] = useState(false);
     const toast = useToast();
     const mappedName = getSimpleName(repo);
@@ -139,10 +158,10 @@ const FolderView = () => {
 
     const downloadRepository = async (e) => {
       e.stopPropagation();
-    
+
       try {
         setIsDownloading(true);
-        
+
         // Initial notification
         toast({
           title: "Starting Download",
@@ -151,14 +170,14 @@ const FolderView = () => {
           duration: 2000,
           isClosable: true,
         });
-    
+
         let allFiles = [];
         const repoStructure = FOLDER_STRUCTURE[repo];
-    
+
         if (!repoStructure || !repoStructure.directories) {
           throw new Error('No directory structure defined for this repository');
         }
-    
+
         // Notify about fetching files
         toast({
           title: "Fetching Files",
@@ -167,16 +186,16 @@ const FolderView = () => {
           duration: 3000,
           isClosable: true,
         });
-    
+
         for (const dirPath of repoStructure.directories) {
           const files = await fetchDirectoryContents(dirPath);
           allFiles.push(...files);
         }
-    
+
         if (allFiles.length === 0) {
           throw new Error('No files found in the specified directories');
         }
-    
+
         // Notify about compression starting
         toast({
           title: "Creating ZIP File",
@@ -185,14 +204,14 @@ const FolderView = () => {
           duration: 4000,
           isClosable: true,
         });
-    
+
         const JSZip = await import('jszip');
         const zip = new JSZip.default();
-    
+
         allFiles.forEach(file => {
           zip.file(file.path, file.content);
         });
-    
+
         // Notify about generating the final zip
         toast({
           title: "Generating Download",
@@ -201,9 +220,9 @@ const FolderView = () => {
           duration: 3000,
           isClosable: true,
         });
-    
+
         const zipContent = await zip.generateAsync({ type: 'blob' });
-    
+
         const url = window.URL.createObjectURL(zipContent);
         const link = document.createElement('a');
         link.href = url;
@@ -212,7 +231,7 @@ const FolderView = () => {
         link.click();
         link.remove();
         window.URL.revokeObjectURL(url);
-    
+
         // Success notification
         toast({
           title: "Download Complete",
@@ -221,7 +240,7 @@ const FolderView = () => {
           duration: 3000,
           isClosable: true,
         });
-    
+
       } catch (error) {
         toast({
           title: "Download Failed",
@@ -230,7 +249,7 @@ const FolderView = () => {
           duration: 5000,
           isClosable: true,
         });
-    
+
         console.error('Error downloading repository:', error);
       } finally {
         setIsDownloading(false);
@@ -243,24 +262,26 @@ const FolderView = () => {
     );
 
     return (
-      <Tr>
-        <Td width={["60%", "65%", "70%"]}>
+      <Tr
+        animation={`${slideInUp} 0.5s ease-out ${index * 0.1}s both`}
+      >
+        <Td width={["60%", "60% !important", "70%"]} sx={{ px: '0 !important' }}>
           <Box
             ref={hoverRef}
             onClick={() => handleNavigation(repo, true)}
             display="flex"
             alignItems="center"
             cursor="pointer"
-            p={[1, 1, 2]}
+            // p={[1, 1, 1]}
             transition="all 0.2s"
             borderRadius="md"
             _hover={{
-              backgroundColor: bgHover,
-              color: hoverTextColor,
+              backgroundColor: 'gray.100',
+              color: 'blue.600',
               transform: ['none', 'none', 'translateX(5px)']
             }}
           >
-            <Icon as={FiFolder} mr={[1, 1, 2]} color="blue.500" boxSize={[4, 4, 5]} />
+            <Icon as={Folder} mr={[1, 1, 2]} color="blue.500" boxSize={[4, 4, 5]} />
             <Text
               fontWeight="medium"
               fontSize={["sm", "md", "md"]}
@@ -272,27 +293,32 @@ const FolderView = () => {
             </Text>
           </Box>
         </Td>
-        <Td width={["40%", "35%", "30%"]}>
-          <Text fontSize={["sm", "md", "md"]}>Repository</Text>
-        </Td>
-        <Td width={["10%", "10%", "10%"]}>
-          <IconButton
-            icon={<FaDownload />}
-            aria-label="Download repository"
-            colorScheme="blue"
-            variant="outline"
-            size={["xs", "sm", "sm"]}
-            isLoading={isDownloading}
-            onClick={downloadRepository}
-            _hover={{
-              transform: ['none', 'scale(1.1)', 'scale(1.1)'],
-              bg: 'blue.50'
-            }}
-          />
+        {/* <Td width={["40%", "35%", "30%"]}>
+          <Text fontSize={["sm", "md", "md"]}>Repo</Text>
+        </Td> */}
+        <Td
+          width={["5%", "5%", "5%", "5%"]}
+          sx={{ px: '0 !important', py: '0 !important' }}
+        >
+          <Flex justify="center" align="center" height="100%">
+            <IconButton
+              icon={<ArrowDown />}
+              aria-label="Download repository"
+              colorScheme="blue"
+              variant="outline"
+              size={["xs", "sm", "sm"]}
+              isLoading={isDownloading}
+              onClick={downloadRepository}
+              _hover={{
+                transform: ['none', 'scale(1.1)', 'scale(1.1)'],
+                bg: 'blue.50'
+              }}
+            />
+          </Flex>
         </Td>
       </Tr>
     );
-};
+  };
 
 
   const ContentRow = ({ item }) => {
@@ -314,7 +340,7 @@ const FolderView = () => {
       // console.log("Checking dir path",dirPath, "Actual Path",getActualName(path));
       const files = [];
       const actualPath = path ? `${getActualName(path)}/${dirPath}` : dirPath;
-    const apiUrl = `https://api.github.com/repos/dare-marvel/${getActualName(repoName)}/contents/${actualPath}`;
+      const apiUrl = `https://api.github.com/repos/dare-marvel/${getActualName(repoName)}/contents/${actualPath}`;
 
       try {
         const response = await axios.get(apiUrl, {
@@ -406,7 +432,7 @@ const FolderView = () => {
       truncateByScreenSize(mappedName, {
         ...TRUNCATE_CONFIG,
         mobileChars: 12,   // smaller limits for content rows
-        tabletChars: 35,
+        tabletChars: 30,
         desktopChars: 50
       }),
       [mappedName, windowWidth]
@@ -417,7 +443,7 @@ const FolderView = () => {
         cursor="pointer"
         transition="all 0.2s"
         _hover={{
-          backgroundColor: bgHover,
+          backgroundColor: 'gray.100',
           transform: ['none', 'none', 'translateX(5px)']
         }}
         onMouseEnter={() => setHoveredItem(name)}
@@ -433,7 +459,7 @@ const FolderView = () => {
         <Td width={isDirectory ? ["60%", "65%", "70%"] : ["50%", "55%", "60%"]}>
           <Flex align="center" gap={[1, 2, 3]}>
             <Icon
-              as={isDirectory ? FiFolder : FiFile}
+              as={isDirectory ? Folder : File}
               color={isDirectory ? 'blue.500' : 'gray.500'}
               boxSize={[4, 4, 5]}
             />
@@ -446,54 +472,42 @@ const FolderView = () => {
             </Text>
           </Flex>
         </Td>
-        <Td width={isDirectory ? ["40%", "35%", "30%"] : ["30%", "25%", "20%"]}>
+        {/* <Td width={isDirectory ? ["40%", "35%", "30%"] : ["30%", "25%", "20%"]}>
           <Text
             fontSize={["sm", "md", "md"]}
             isTruncated
             maxWidth={["80px", "120px", "200px"]}
             title={isDirectory ? 'Folder' : name.split('.').pop().toUpperCase()}
           >{isDirectory ? 'Folder' : name.split('.').pop().toUpperCase()}</Text>
-        </Td>
+        </Td> */}
 
         {/* Third column - download button for directories */}
-        {isDirectory && (
-          <Td width={["10%", "20%", "20%"]}>
+        <Td width={["10%", "20%", "20%"]}>
+          {(isDirectory || item?.download_url) ? (
             <IconButton
-              icon={<FaDownload />}
-              aria-label="Download directory"
-              colorScheme="blue"
-              variant="outline"
-              size={["xs", "sm", "sm"]}
-              onClick={downloadDirectory}
-              isLoading={isDownloading}
-              _hover={{
-                transform: ['none', 'scale(1.1)', 'scale(1.1)'],
-                bg: 'blue.50'
-              }}
-            />
-          </Td>
-        )}
-
-
-        {!isDirectory && item?.download_url && (
-          <Td width={["10%", "20%", "20%"]}>
-            <IconButton
-              icon={<FaDownload />}
-              aria-label="Download file"
+              icon={<ArrowDown />}
+              aria-label="Download"
               colorScheme="blue"
               variant="outline"
               size={["xs", "sm", "sm"]}
               onClick={(e) => {
                 e.stopPropagation();
-                window.open(item.download_url, '_blank');
+                if (isDirectory) {
+                  downloadDirectory(e);
+                } else {
+                  window.open(item.download_url, '_blank');
+                }
               }}
+
+              isLoading={isDownloading}
               _hover={{
-                transform: ['none', 'scale(1.1)', 'scale(1.1)'],
                 bg: 'blue.50'
               }}
             />
-          </Td>
-        )}
+          ) : (
+            <Box height="32px" /> // reserve space
+          )}
+        </Td>
       </Tr>
     );
   };
@@ -501,115 +515,189 @@ const FolderView = () => {
   // const showActionsColumn = (repoName && contents.some(item => typeof item !== 'string' && item.type === 'file'));
 
   return (
-    <Container maxW="container.xl" py={[3, 4, 5]} px={[2, 3, 5]}>
-      <Breadcrumbs />
-      {!repoName && (
-        <Box mb={[4, 5, 6]}>
-          <InputGroup>
-            <InputLeftElement pointerEvents="none">
-              <Icon as={FiSearch} color="gray.400" />
-            </InputLeftElement>
-            <Input
-              placeholder="Search repositories..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              bg={inputBg}
-              borderRadius="full"
-              size={["sm", "md", "md"]}
-              boxShadow="md"
-              _focus={{
-                borderColor: 'teal.500',
-                boxShadow: 'lg'
-              }}
-            />
-          </InputGroup>
+    <Box minH="100vh">
+      <SidebarAd
+        position="left"
+        adSlot="4333835944"
+      />
+      <Container maxW="container.xl"
+        py={[3, 4, 5]}
+        px={{ base: 4, md: 12, lg: 10 }}
+      >
+        <Box px={{ base: 2, sm: 4, md: 12, lg: 10 }}>
+          <Breadcrumbs />
+        </Box>
+        {!repoName && (
+          <Box
+            mb={[4, 5, 6]}
+            width={["100%", "80%", "85%"]}
+            mx={["0", "auto", "auto", "auto"]}
+            px={{ base: 0, sm: 4, md: 12, lg: 12 }}
+          >
+            <InputGroup px={{ base: 0, sm: 4, md: 2 }}>
+              <InputLeftElement pointerEvents="none" pl={{ sm: 6, md: 3 }}>
+                <Icon as={Search} color="gray.400" />
+              </InputLeftElement>
+              <Input
+                placeholder="Search repositories..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                bg='white'
+                borderRadius="full"
+                borderColor="blue.200"
+                // border="2px solid"
+                size={["sm", "md", "md"]}
+                boxShadow="md"
+                _focus={{
+                  borderColor: 'blue.500',
+                  boxShadow: 'lg'
+                }}
+              />
+            </InputGroup>
+          </Box>
+
+        )}
+
+        <Box
+          borderWidth="3px"
+          borderColor='purple.200'
+          borderRadius={["lg", "xl", "xl"]}
+          overflow={["auto", "hidden", "hidden"]}
+          boxShadow={["md", "lg", "lg"]}
+          transition="all 0.2s"
+          _hover={{
+            boxShadow: ["lg", "xl", "xl"]
+          }}
+          width={["100%", "75%", "70%", "75%"]}
+          mx={["0", "auto", "auto"]}
+          px={{ base: 4, md: 5, lg: 8 }}
+        // mx={{ base: 0, sm: 0, md: 12, lg: 12 }}
+        >
+          <Table
+            variant="outline"
+            size={["sm", "md", "md"]}
+          >
+            <Thead>
+              <Tr bg='gray.50'>
+                <Th fontSize={["sm", "md", "md"]} sx={{ px: '0 !important' }}>Name</Th>
+                {/* <Th fontSize={["sm", "md", "md"]}>Type</Th> */}
+                <Th fontSize={["sm", "md", "md"]} sx={{ px: '0 !important' }}>Action</Th>
+              </Tr>
+            </Thead>
+            <Tbody>
+              {repoName && path && (
+                <Tr>
+                  <Td colSpan={3}>
+                    <Flex
+                      align="center"
+                      gap={2}
+                      cursor="pointer"
+                      color="blue.500"
+                      onClick={() => navigate(-1)}
+                      p={2}
+                      borderRadius="md"
+                      width="fit-content"
+                      _hover={{
+                        color: 'blue.600',
+                        bg: 'blue.50'
+                      }}
+                    >
+                      <Icon as={ArrowLeft} />
+                      <Text>Back</Text>
+                    </Flex>
+                  </Td>
+                </Tr>
+              )}
+              {loading ? (
+                <Tr>
+                  <Td colSpan={3}>
+                    <Flex justify="center" py={8}>
+                      <Spinner size="lg" color="blue.500" />
+                    </Flex>
+                  </Td>
+                </Tr>
+              ) : (
+                <>
+                  {!repoName
+                    ? filteredContents.map((repo, index) => (
+                      <RepositoryRow key={`repo-${index}`} repo={repo} index={index} />
+                    ))
+                    : contents.map((item, index) => (
+                      <ContentRow
+                        key={`content-${typeof item === 'string' ? item : item?.name}-${index}`}
+                        item={item}
+                      />
+                    ))}
+                </>
+              )}
+            </Tbody>
+          </Table>
         </Box>
 
-      )}
+        <Suspense fallback={
+          <Center h="200px">
+            <Spinner size="xl" color="blue.500" />
+          </Center>
+        }>
+          {selectedFile && (
+            <FileViewer
+              file={selectedFile}
+              isOpen={!!selectedFile}
+              onClose={() => setSelectedFile(null)}
+            />
+          )}
+        </Suspense>
 
-      <Box
-        borderWidth="1px"
-        borderColor={borderColor}
-        borderRadius={["lg", "xl", "xl"]}
-        overflow={["auto", "hidden", "hidden"]}
-        boxShadow={["md", "lg", "lg"]}
-        transition="all 0.2s"
-        _hover={{
-          boxShadow: ["lg", "xl", "xl"]
-        }}
-      >
-        <Table variant="simple" size={["sm", "md", "md"]}>
-          <Thead>
-            <Tr bg={headerBg}>
-              <Th fontSize={["sm", "md", "md"]}>Name</Th>
-              <Th fontSize={["sm", "md", "md"]}>Type</Th>
-              <Th fontSize={["sm", "md", "md"]}>Actions</Th>
-            </Tr>
-          </Thead>
-          <Tbody>
-            {repoName && path && (
-              <Tr>
-                <Td colSpan={3}>
-                  <Flex
-                    align="center"
-                    gap={2}
-                    cursor="pointer"
-                    color="blue.500"
-                    onClick={() => navigate(-1)}
-                    p={2}
-                    borderRadius="md"
-                    width="fit-content"
-                    _hover={{
-                      color: 'blue.600',
-                      bg: 'blue.50'
-                    }}
-                  >
-                    <Icon as={FiArrowLeft} />
-                    <Text>Back</Text>
-                  </Flex>
-                </Td>
-              </Tr>
-            )}
-            {loading ? (
-              <Tr>
-                <Td colSpan={3}>
-                  <Flex justify="center" py={8}>
-                    <Spinner size="lg" color="blue.500" />
-                  </Flex>
-                </Td>
-              </Tr>
-            ) : (
-              <>
-                {!repoName
-                  ? filteredContents.map((repo, index) => (
-                    <RepositoryRow key={`repo-${index}`} repo={repo} />
-                  ))
-                  : contents.map((item, index) => (
-                    <ContentRow
-                      key={`content-${typeof item === 'string' ? item : item?.name}-${index}`}
-                      item={item}
-                    />
-                  ))}
-              </>
-            )}
-          </Tbody>
-        </Table>
+      </Container>
+
+      <Box mt={12} />
+
+      <Box textAlign="center" mb={4}>
+        <Tooltip label="For knowledge-hungry users, there's more on my GitHub! Click this link to explore my repositories." fontSize="md" hasArrow placement="top">
+          <Button
+            as="a"
+            href="https://github.com/dare-marvel"
+            target="_blank"
+            rel="noopener noreferrer"
+            leftIcon={<Image src={GithubLogo} boxSize="1.4em" />}
+            bgGradient="linear(to-r,blue.500,green.500)"
+            color="white"
+            minW="250px"
+            _hover={{
+              bgGradient: "linear(to-r, #43e97b,blue.300)",
+              // transform: "scale(1.05)",
+              boxShadow: "0 0 25px rgba(56, 249, 215, 0.6)",
+            }}
+            _active={{
+              boxShadow: "0 0 10px rgba(0, 255, 200, 0.4)",
+              transform: "scale(0.98)",
+            }}
+            transition="all 0.3s ease-in-out"
+            px={{ base: 2, md: 8, lg: 10 }}
+            borderRadius="xl"
+            fontWeight="semibold"
+            fontSize={["sm", "md", "lg"]}
+            boxShadow="lg"
+          >
+            Visit Github for more content
+          </Button>
+        </Tooltip>
       </Box>
 
-      <Suspense fallback={
-  <Center h="200px">
-    <Spinner size="xl" color="blue.500" />
-  </Center>
-}>
-  {selectedFile && (
-    <FileViewer 
-      file={selectedFile} 
-      isOpen={!!selectedFile} 
-      onClose={() => setSelectedFile(null)} 
-    />
-  )}
-</Suspense>
-    </Container>
+      <Box
+        width={{ base: '90%', sm: "90%", md: '80%' }}
+        textAlign="center"
+        mx="auto"
+        mt={9}
+        mb={1}
+        px={{ base: 4, md: 12, lg: 12 }}>
+        <BottomAd />
+      </Box>
+      <SidebarAd
+        position="right"
+        adSlot="3152616213"
+      />
+    </Box>
   );
 };
 

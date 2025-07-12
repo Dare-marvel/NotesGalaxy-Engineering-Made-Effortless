@@ -1,0 +1,865 @@
+import { useState, useEffect, Suspense, lazy } from 'react';
+import {
+    Box,
+    Container,
+    Heading,
+    Center,
+    Text,
+    Card,
+    CardBody,
+    CardHeader,
+    Button,
+    Flex,
+    Icon,
+    HStack,
+    VStack,
+    useToast,
+    Spinner,
+    IconButton,
+    Grid,
+    GridItem,
+    Spacer,
+    Input,
+    Divider,
+    Image,
+    InputGroup,
+    InputLeftElement,
+    useBreakpointValue
+} from '@chakra-ui/react';
+
+import MediumLogo from '../assets/Icons/medium.svg'
+import InstagramLogo from '../assets/Icons/instagram.svg'
+import FacebookLogo from '../assets/Icons/facebook.svg'
+
+import {
+    ArrowLeft,
+    Heart,
+    Eye,
+    Clock,
+    ArrowDownToLine,
+    Calendar,
+    Rocket,
+    Star,
+    Share2
+} from 'lucide-react';
+
+import { getFirestore, doc, getDoc, getDocs, collection, updateDoc, increment, arrayUnion, arrayRemove } from 'firebase/firestore';
+import app from '../config/firebaseConfig';
+import { useNavigate, useSearchParams } from "react-router-dom";
+import SidebarAd from '../components/GoogleAds/SidebarAd';
+import BottomAd from '../components/GoogleAds/BottomAd';
+import { blogContent } from '../constants/blogContent';
+import { SearchIcon } from '@chakra-ui/icons';
+import { usePageMeta } from '../hooks/usePageMeta';
+
+import { keyframes } from '@emotion/react';
+
+const MarkdownRenderer = lazy(() => import('../components/MarkdownRenderer'));
+
+const db = getFirestore(app);
+
+// Animation keyframes
+const float = keyframes`
+  0% { transform: translatey(0px); }
+  50% { transform: translatey(-10px); }
+  100% { transform: translatey(0px); }
+`;
+
+const shimmer = keyframes`
+  0% { background-position: -200px 0; }
+  100% { background-position: calc(200px + 100%) 0; }
+`;
+
+const slideIn = keyframes`
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+`;
+
+const pulse = keyframes`
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+`;
+
+// Firebase functions
+const getBlogMetadata = async (blogId) => {
+    try {
+        const docRef = doc(db, 'blogs', blogId);
+        const docSnap = await getDoc(docRef);
+        return docSnap.exists() ? { id: blogId, ...docSnap.data() } : null;
+    } catch (error) {
+        console.error('Error fetching blog metadata:', error);
+        return null;
+    }
+};
+
+const getAllBlogsMetadata = async () => {
+    try {
+        const querySnapshot = await getDocs(collection(db, 'blogs'));
+        const blogs = [];
+        querySnapshot.forEach((doc) => {
+            blogs.push({ id: doc.id, ...doc.data() });
+        });
+        return blogs;
+    } catch (error) {
+        console.error('Error fetching blogs:', error);
+        return [];
+    }
+};
+
+const incrementViews = async (blogId) => {
+    try {
+        const docRef = doc(db, 'blogs', blogId);
+        await updateDoc(docRef, {
+            views: increment(1)
+        });
+    } catch (error) {
+        console.error('Error incrementing views:', error);
+    }
+};
+
+const toggleLike = async (blogId, userId, isLiked) => {
+    try {
+        const docRef = doc(db, 'blogs', blogId);
+        if (isLiked) {
+            // Remove user from likes array
+            await updateDoc(docRef, {
+                likedBy: arrayRemove(userId)
+            });
+        } else {
+            // Add user to likes array
+            await updateDoc(docRef, {
+                likedBy: arrayUnion(userId)
+            });
+        }
+    } catch (error) {
+        console.error('Error toggling like:', error);
+    }
+};
+
+// User ID function
+const getUserId = async () => {
+    const localKey = 'user_id';
+    const cached = localStorage.getItem(localKey);
+    if (cached) return cached;
+
+    try {
+        const fp = await FingerprintJS.load();
+        const result = await fp.get();
+        const visitorId = result.visitorId;
+        localStorage.setItem(localKey, visitorId);
+        return visitorId;
+    } catch (e) {
+        const fallbackId = `user_${crypto.randomUUID()}`;
+        localStorage.setItem(localKey, fallbackId);
+        return fallbackId;
+    }
+};
+
+// Calculate reading time
+const calculateReadingTime = (content) => {
+    const wordsPerMinute = 200;
+    const words = content.split(' ').length;
+    return Math.ceil(words / wordsPerMinute);
+};
+
+// Blog Card Component
+const BlogCard = ({ blog, onClick }) => {
+    const blogContentData = blogContent[blog.id];
+    const readingTime = calculateReadingTime(blogContentData?.content || '');
+    const likesCount = blog.likedBy ? blog.likedBy.length : 0;
+    // const cardSize = useBreakpointValue({ base: 'sm', md: 'md', lg: 'lg' });
+
+    return (
+        <Card
+            cursor="pointer"
+            onClick={onClick}
+            transition="all 0.4s cubic-bezier(0.4, 0, 0.2, 1)"
+            _hover={{
+                transform: { base: 'translateY(-4px)', md: 'translateY(-8px)' },
+                boxShadow: '0 20px 40px rgba(139, 92, 246, 0.3)',
+                borderColor: 'purple.400'
+            }}
+            border="2px solid"
+            borderColor="transparent"
+            bg="white"
+            borderRadius="xl"
+            overflow="hidden"
+            position="relative"
+            animation={`${slideIn} 0.6s ease-out`}
+            _before={{
+                content: '""',
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                right: 0,
+                height: '4px',
+                background: 'linear-gradient(90deg, #667eea 0%, #764ba2 100%)',
+            }}
+            h="full"
+        >
+            <CardHeader pb={2} pt={5}>
+                <VStack align="start" spacing={3}>
+                    <Heading
+                        size={{ base: 'sm', md: 'sm', lg: 'md' }}
+                        color="gray.800"
+                        noOfLines={2}
+                        lineHeight="1.3"
+                        fontWeight="bold"
+                    >
+                        {blogContentData?.title}
+                    </Heading>
+
+                    <HStack spacing={2}>
+                        <Icon as={Star} w={4} h={4} color="purple.500" />
+                        <Text fontSize="sm" color="purple.600" fontWeight="medium">
+                            By {blogContentData?.author}
+                        </Text>
+                    </HStack>
+
+                    <HStack spacing={2}>
+                        <Icon as={Calendar} w={4} h={4} color="blue.500" />
+                        <Text fontSize="sm" color="gray.600">
+                            {new Date(blogContentData?.date).toLocaleDateString('en-US', {
+                                month: 'short',
+                                day: 'numeric',
+                                year: 'numeric'
+                            })}
+                        </Text>
+                    </HStack>
+                </VStack>
+            </CardHeader>
+
+            <CardBody pt={0}>
+                <Divider mb={3} borderColor="purple.100" />
+                <HStack spacing={3} justify="space-between" flexWrap="wrap">
+
+                    <HStack spacing={1}>
+                        <Icon as={Clock} w={4} h={4} color="blue.500" />
+                        <Text fontSize="sm" color="blue.500" fontWeight="medium">
+                            {readingTime} min read
+                        </Text>
+                    </HStack>
+
+                    {/* <HStack spacing={1}>
+                        <Icon as={Eye} w={4} h={4} color="gray.500" />
+                        <Text fontSize="sm" color="gray.500">
+                            {blog.views || 0}
+                        </Text>
+                    </HStack> */}
+
+                    <HStack spacing={3}>
+                        <HStack spacing={1}>
+                            <Icon as={Heart} w={4} h={4} color="red.400" />
+                            <Text fontSize="sm" color="red.500" fontWeight="medium">
+                                {likesCount}
+                            </Text>
+                        </HStack>
+
+
+                        <HStack spacing={1}>
+                            <Icon as={Eye} w={4} h={4} color="gray.500" />
+                            <Text fontSize="sm" color="gray.500">
+                                {blog.views || 0}
+                            </Text>
+                        </HStack>
+                    </HStack>
+                </HStack>
+            </CardBody>
+        </Card>
+    );
+};
+
+// Blog View Component
+const BlogView = ({ blogId, metaData, onBack }) => {
+    const [blog, setBlog] = useState(null);
+    const [blogMeta, setBlogMeta] = useState(metaData || null);
+    const [loading, setLoading] = useState(true);
+    const [userId, setUserId] = useState(null);
+    const toast = useToast();
+
+    // const titleSize = useBreakpointValue({ base: 'xl', md: '2xl', lg: '3xl' });
+    const containerMaxW = useBreakpointValue({ base: 'full', md: '4xl', lg: '5xl' });
+    const buttonSize = useBreakpointValue({ base: 'sm', md: 'md' });
+
+    useEffect(() => {
+        const initializeUser = async () => {
+            const id = await getUserId();
+            setUserId(id);
+        };
+        initializeUser();
+    }, []);
+
+    useEffect(() => {
+        const loadBlog = async () => {
+            try {
+                const content = blogContent[blogId];
+                if (!metaData) {
+                    const meta = await getBlogMetadata(blogId);
+                    setBlogMeta(meta);
+                }
+                const contentModule = await import(`../blog-files/${blogId}.js`);
+
+                if (content && contentModule) {
+                    setBlog({ ...content, content: contentModule.default });
+                    await incrementViews(blogId);
+                    setBlogMeta(prev => ({ ...prev, views: (prev.views || 0) + 1 }));
+                }
+            } catch (error) {
+                console.error('Error loading blog:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        if (blogId) {
+            loadBlog();
+        }
+    }, [blogId]);
+
+    const handleShare = async () => {
+        const url = `${window.location.origin}/blogs?blogid=${blogId}`;
+        try {
+            await navigator.share({
+                title: blog?.title,
+                url: url
+            });
+        } catch (error) {
+            navigator.clipboard.writeText(url);
+            toast({
+                title: "🚀 Link copied to clipboard!",
+                status: "success",
+                duration: 2000,
+                isClosable: true,
+                position: "top"
+            });
+        }
+    };
+
+    const handleLike = async () => {
+        if (!userId || !blogMeta) return;
+
+        const likedBy = blogMeta.likedBy || [];
+        const isLiked = likedBy.includes(userId);
+
+        try {
+            await toggleLike(blogId, userId, isLiked);
+
+            setBlogMeta(prev => {
+                const currentLikedBy = prev.likedBy || [];
+                const newLikedBy = isLiked
+                    ? currentLikedBy.filter(id => id !== userId)
+                    : [...currentLikedBy, userId];
+
+                return { ...prev, likedBy: newLikedBy };
+            });
+
+            toast({
+                title: isLiked ? "💫 Like removed!" : "⭐ Blog liked!",
+                status: "success",
+                duration: 2000,
+                isClosable: true,
+                position: "top"
+            });
+        } catch (error) {
+            toast({
+                title: "Error updating like",
+                status: "error",
+                duration: 2000,
+                isClosable: true,
+            });
+        }
+    };
+
+    if (loading) {
+        return (
+            <Box minH="100vh" display="flex" alignItems="center" justifyContent="center">
+                <Flex justify="center" align="center" minH="50vh" direction="column" >
+                    <Box animation={`${float} 3s ease-in-out infinite`} mb={4}>
+                        <Icon as={Rocket} w={12} h={12} color="purple.400" />
+                    </Box>
+                    <Spinner
+                        size="xl"
+                        color="purple.500"
+                        thickness="4px"
+                        speed="0.8s"
+                    />
+                    <Text mt={4} color="gray.600" fontWeight="medium">
+                        Navigating through the cosmos...
+                    </Text>
+                </Flex>
+            </Box>
+        );
+    }
+
+    if (!blog || !blogMeta) {
+        return (
+            <VStack spacing={4} align="center" mt={20}>
+                <Icon as={Rocket} w={16} h={16} color="purple.400" />
+                <Heading color="purple.600">Lost in Space</Heading>
+                <Text color="gray.600" textAlign="center" maxW="md">
+                    This cosmic adventure seems to have drifted into a black hole.
+                </Text>
+                <Button
+                    onClick={onBack}
+                    leftIcon={<ArrowLeft />}
+                    bg="linear-gradient(135deg, #667eea 0%, #764ba2 100%)"
+                    color="white"
+                    _hover={{ transform: 'scale(1.05)' }}
+                    borderRadius="full"
+                    size={buttonSize}
+                >
+                    Return to Base
+                </Button>
+            </VStack>
+        );
+    }
+
+    const downloadMarkdown = (content, filename = "blog.md") => {
+        const blob = new Blob([content], { type: "text/markdown" });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+
+        link.href = url;
+        link.download = filename;
+        document.body.appendChild(link);
+        link.click();
+
+        // Clean up
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+    };
+
+
+    const likedBy = blogMeta.likedBy || [];
+    const isLiked = userId && likedBy.includes(userId);
+    const likesCount = likedBy.length;
+
+    return (
+        <Box bg="white" minH="100vh" pt={{ base: 6, md: 3, lg: 7 }} mt={{ base: 10, md: 12, lg: 8 }} px={{ base: 0, sm: 0, md: 12, lg: 12 }} >
+            <Box
+                bg="linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%)"
+                py={2}
+                borderBottom="1px solid"
+                borderColor="purple.100"
+            >
+                <Container maxW={containerMaxW} px={{ base: 4, md: 8, lg: 6 }}>
+                    <HStack justify="space-between" align="center" mb={4} flexWrap="wrap" gap={4}>
+                        <Button
+                            leftIcon={<ArrowLeft />}
+                            onClick={onBack}
+                            variant="outline"
+                            borderColor="purple.300"
+                            color="purple.600"
+                            _hover={{
+                                bg: 'purple.50',
+                                borderColor: 'purple.400',
+                                transform: 'translateX(-5px)'
+                            }}
+                            transition="all 0.3s"
+                            borderRadius="full"
+                            size={buttonSize}
+                        >
+                            Back
+                        </Button>
+                        <HStack spacing={2} flexWrap="wrap">
+                            <IconButton
+                                icon={<Image src={FacebookLogo} boxSize="100%" />}
+                                aria-label="Facebook"
+                                size="sm"
+                                bg="blue.500"
+                                color="white"
+                                _hover={{ bg: 'blue.600', transform: 'scale(1.1)' }}
+                                transition="all 0.2s"
+                                borderRadius="full"
+                                as="a"
+                                href={blog.facebook}
+                                target="_blank"
+                            />
+                            <IconButton
+                                icon={<Image src={InstagramLogo} boxSize="90%" />}
+                                aria-label="Instagram"
+                                size="sm"
+                                bg="pink.500"
+                                color="white"
+                                _hover={{ bg: 'pink.600', transform: 'scale(1.1)' }}
+                                transition="all 0.2s"
+                                borderRadius="full"
+                                as="a"
+                                href={blog.insta}
+                                target="_blank"
+                            />
+                            <IconButton
+                                icon={<Image src={MediumLogo} boxSize="90%" />}
+                                aria-label="Medium"
+                                size="sm"
+                                bg="gray.700"
+                                color="white"
+                                _hover={{ bg: 'gray.800', transform: 'scale(1.1)' }}
+                                transition="all 0.2s"
+                                borderRadius="full"
+                                as="a"
+                                href={blog.medium}
+                                target="_blank"
+                            />
+                            <IconButton
+                                icon={<ArrowDownToLine />}
+                                aria-label="Download Markdown"
+                                size="sm"
+                                bg="blue.500"
+                                color="white"
+                                _hover={{ bg: 'blue.600', transform: 'scale(1.1)' }}
+                                transition="all 0.2s"
+                                borderRadius="full"
+                                onClick={() => downloadMarkdown(blog.content, "blog-post.md")}
+                            />
+                            <Button
+                                leftIcon={<Share2 />}
+                                onClick={handleShare}
+                                size="sm"
+                                bg="linear-gradient(135deg, #667eea 0%, #764ba2 100%)"
+                                color="white"
+                                _hover={{
+                                    transform: 'scale(1.05)',
+                                    boxShadow: '0 8px 25px rgba(139, 92, 246, 0.4)'
+                                }}
+                                transition="all 0.2s"
+                                borderRadius="full"
+                                fontWeight="bold"
+                            >
+                                Share
+                            </Button>
+                        </HStack>
+                    </HStack>
+
+                    <VStack align="start" spacing={4}>
+                        <Heading
+                            fontSize={{ base: "md", sm: "xl", md: "3xl", lg: "3xl", xl: "4xl" }}
+                            color="gray.800"
+                            lineHeight="1.2"
+                            fontWeight="bold"
+                        >
+                            {blog.title}
+                        </Heading>
+
+                        <HStack justify="space-between" align="center" w="full" spacing={6} >
+                            <HStack spacing={4} flexWrap="wrap">
+                                <Text color="purple.600" fontWeight="medium">By {blog.author}</Text>
+                                <Text color="gray.400">•</Text>
+                                <Text color="gray.600">{new Date(blog.date).toLocaleDateString()}</Text>
+                                <Text color="gray.400">•</Text>
+                                <Text color="gray.600">{calculateReadingTime(blog.content)} min read</Text>
+                            </HStack>
+
+                            <HStack spacing={4} flexWrap="wrap">
+                                <Button
+                                    leftIcon={<Heart />}
+                                    onClick={handleLike}
+                                    bg={isLiked ? "linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%)" : "transparent"}
+                                    color={isLiked ? "white" : "gray.600"}
+                                    border="2px solid"
+                                    borderColor={isLiked ? "transparent" : "gray.300"}
+                                    _hover={{
+                                        transform: 'scale(1.05)',
+                                        boxShadow: isLiked ? '0 8px 25px rgba(255, 107, 107, 0.4)' : '0 8px 25px rgba(0,0,0,0.1)'
+                                    }}
+                                    transition="all 0.2s"
+                                    size="sm"
+                                    borderRadius="full"
+                                    animation={isLiked ? `${pulse} 0.6s ease-out` : 'none'}
+                                >
+                                    {likesCount} Likes
+                                </Button>
+                                <HStack spacing={1}>
+                                    <Icon as={Eye} color="gray.500" />
+                                    <Text color="gray.500">{blogMeta.views || 0} views</Text>
+                                </HStack>
+                            </HStack>
+                        </HStack>
+                    </VStack>
+                </Container>
+            </Box>
+
+            <Container maxW={containerMaxW} py={2} px={{ base: 4, md: 12, lg: 12 }} mt={0}>
+                {/* <MarkdownRenderer
+                    content={blog.content} /> */}
+
+                <Suspense fallback={
+                    <Center h="200px">
+                        <Spinner size="xl" color="blue.500" />
+                    </Center>
+                }>
+                    <MarkdownRenderer
+                        content={blog.content} />
+                </Suspense>
+            </Container>
+        </Box>
+    );
+};
+
+const Blogs = () => {
+    usePageMeta(
+        "Blogs",
+        "Explore insightful blogs on engineering subjects and related innovations. From core concepts to emerging trends, NotesGalaxy brings clarity, creativity, and continuous learning to every post."
+    );
+    const navigate = useNavigate();
+    const [searchParams] = useSearchParams();
+    const [currentView, setCurrentView] = useState('list');
+    const [blogs, setBlogs] = useState([]);
+    const [searchQuery, setSearchQuery] = useState('');
+    const [loading, setLoading] = useState(true);
+    const [allBlogsLoaded, setAllBlogsLoaded] = useState(false);
+    const blogId = searchParams.get('blogid');
+
+    useEffect(() => {
+        const handleRouteChange = async () => {
+            if (blogId) {
+                setCurrentView(blogId);
+
+                // Check if we already have this blog's metadata
+                const existingBlog = blogs.find(b => b.id === blogId);
+
+                if (!existingBlog) {
+                    setLoading(true);
+                    const blogMeta = await getBlogMetadata(blogId);
+                    if (blogMeta) {
+                        setBlogs(prev => [...prev, blogMeta]);
+                    }
+                    setLoading(false);
+                } else {
+                    // We already have the blog metadata, no need to load
+                    setLoading(false);
+                }
+            } else {
+                setCurrentView('list');
+
+                // Only fetch all blogs if we haven't loaded them before
+                if (!allBlogsLoaded) {
+                    setLoading(true);
+                    const allBlogs = await getAllBlogsMetadata();
+                    // console.log('All blogs metadata:', allBlogs);
+                    setBlogs(allBlogs);
+                    setAllBlogsLoaded(true);
+                    setLoading(false);
+                } else {
+                    // We already have all blogs metadata, no need to load
+                    setLoading(false);
+                }
+            }
+        };
+
+        handleRouteChange();
+    }, [blogId, allBlogsLoaded, blogs]);
+
+    const handleBlogClick = (blogId) => {
+        setCurrentView(blogId);
+        navigate(`/blogs?blogid=${blogId}`);
+    };
+
+    const handleBackToList = () => {
+        setCurrentView('list');
+        navigate(`/blogs`);
+    };
+
+    const filteredBlogs = blogs.filter(blog => {
+        const title = blogContent[blog.id].title || '';
+        const author = blog.author || '';
+        const query = searchQuery.toLowerCase();
+        return title.toLowerCase().includes(query) || author.toLowerCase().includes(query);
+    });
+
+    if (loading) {
+        return (
+            <Box minH="100vh" display="flex" alignItems="center" justifyContent="center">
+                <Flex justify="center" align="center" minH="50vh" direction="column" >
+                    <Box animation={`${float} 3s ease-in-out infinite`} mb={4}>
+                        <Icon as={Rocket} w={12} h={12} color="purple.400" />
+                    </Box>
+                    <Spinner
+                        size="xl"
+                        color="purple.500"
+                        thickness="4px"
+                        speed="0.8s"
+                    />
+                    <Text mt={4} color="gray.600" fontWeight="medium">
+                        Navigating through the cosmos...
+                    </Text>
+                </Flex>
+            </Box>
+        );
+    }
+
+    return (
+        <Box bg="white" minH="100vh" >
+            <SidebarAd
+                position="left"
+                adSlot="4333835944"
+            />
+            {currentView === 'list' ? (
+                <Flex direction="column" minH="100vh">
+                    <Container
+                        maxW="6xl"
+                        pt={{ base: 7, md: 8, lg: 8 }}
+                        mt={{ base: 9, md: 9, lg: 10 }}
+                        px={{ base: 2, md: 12, lg: 12 }}
+                    >
+                        <VStack
+                            spacing={{ base: 6, md: 8 }}
+                            align="center" mb={{ base: 8, md: 12 }}
+                        >
+                            <Heading
+                                size={{ base: "lg", sm: "xl", md: "xl", lg: "2xl", xl: "2xl" }}
+                                color="gray.800"
+                                textAlign="center"
+                                fontWeight="bold"
+                                mt={2}
+                                bg="purple.500"
+                                // background="linear-gradient(135deg, #667eea 0%, #764ba2 100%)"
+                                backgroundClip="text"
+                                // animation={`${shimmer} 2s infinite linear`}
+                                backgroundSize="200px 100%"
+                            >
+                                🚀 Blogs
+                            </Heading>
+
+                            <Box
+                                mb={[4, 5, 6]}
+                                width={["80%", "80%", "85%"]}
+                                mx={["0", "auto", "auto", "auto"]}
+                                px={{ base: 2, sm: 4, md: 12, lg: 12 }}
+                            >
+                                <InputGroup
+                                    size={{ base: "md", md: "lg" }}
+                                    px={{ base: 4, md: 12, lg: 12 }}
+                                >
+                                    <InputLeftElement
+                                        pointerEvents="none"
+                                        h={{ base: "45px", md: "48px" }}
+                                        px={{ base: 6, md: 12, lg: 12 }}
+                                        mx={{ base: 3, md: 5, lg: 5 }}
+                                    >
+                                        <SearchIcon
+                                            color="gray.400"
+                                            boxSize={{ base: "20px", md: "20px" }}
+                                        />
+                                    </InputLeftElement>
+                                    <Input
+                                        placeholder="Search blogs by title or author..."
+                                        value={searchQuery}
+                                        onChange={(e) => setSearchQuery(e.target.value)}
+                                        fontSize={{ base: "sm", sm: "md", md: "lg" }}
+                                        borderRadius={{ base: "full", md: "full" }}
+                                        h={{ base: "10px", md: "48px" }}
+                                        px={6}
+                                        py={6}
+                                        boxShadow="0 0 10px rgba(102, 126, 234, 0.6)"
+                                        border="2px solid"
+                                        borderColor="purple.300"
+                                        bg="whiteAlpha.900"
+                                        backdropFilter="blur(10px)"
+                                        _hover={{
+                                            borderColor: "purple.400"
+                                        }}
+                                        _focus={{
+                                            borderColor: "purple.500",
+                                            boxShadow: {
+                                                base: "0 0 0 2px rgba(128, 90, 213, 0.1)",
+                                                md: "0 0 0 3px rgba(128, 90, 213, 0.1)"
+                                            }
+                                        }}
+                                        _placeholder={{
+                                            fontSize: { base: "sm", md: "md" },
+                                            color: "gray.500"
+                                        }}
+                                    />
+                                </InputGroup>
+                            </Box>
+
+                        </VStack>
+
+                        <Box w="full" px={{ base: 4, md: 12, lg: 12 }} >
+                            <Grid
+                                templateColumns={{
+                                    base: "1fr",
+                                    md: "repeat(2, 220px)",
+                                    lg: "repeat(3, 210px)",
+                                    xl: "repeat(3, 1fr)",
+                                }}
+                                gap={6}
+                                justifyContent="center"
+                                w="full">
+                                {filteredBlogs.map((blog, index) => (
+                                    <GridItem key={index}>
+                                        <Box
+                                            key={blog.id}
+                                            style={{
+                                                animationDelay: `${index * 0.1}s`
+                                            }}
+                                        >
+                                            <BlogCard
+                                                blog={blog}
+                                                onClick={() => handleBlogClick(blog.id)}
+                                            />
+                                        </Box>
+                                    </GridItem>
+                                ))}
+                            </Grid>
+                        </Box>
+                    </Container>
+
+                    <Spacer />
+
+                    <Box textAlign="center" mt={16} mb={1}>
+                        <Button
+                            as="a"
+                            href="https://docs.google.com/forms/d/e/1FAIpQLScZ_AeyPEWBOFszZLkZqsmv5m0qWh3do5wTHEhwCHNifTgzeA/viewform?usp=header"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            bgGradient="linear(to-r, blue.400, purple.500)"
+                            color="white"
+                            _hover={{
+                                bgGradient: "linear(to-r, purple.600, blue.700)",
+                                boxShadow: "0 0 20px rgba(173, 216, 230, 0.8)",
+                            }}
+                            _active={{
+                                bgGradient: "linear(to-r, purple.800, blue.800)",
+                            }}
+                            padding="1.5rem"
+                            borderRadius="lg"
+                            fontWeight="bold"
+                            fontSize={["sm", "md", "lg"]}
+                            boxShadow="0 0 10px rgba(173, 216, 230, 0.5)"
+                        >
+                            🚀 Publish your blog here
+                        </Button>
+
+
+                    </Box>
+
+                    <Box
+                        width={{ base: '90%', sm: "90%", md: '80%' }}
+                        textAlign="center"
+                        mx="auto"
+                        height="120px"
+                        mt={6}
+                        mb={1}
+                        px={{ base: 4, md: 12, lg: 12 }}>
+                        <BottomAd />
+                    </Box>
+                </Flex>
+            ) : (
+                <BlogView
+                    blogId={currentView}
+                    metaData={blogs.find(blog => blog.id === currentView)}
+                    onBack={handleBackToList}
+                />
+            )}
+            <SidebarAd
+                position="right"
+                adSlot="3152616213"
+            />
+        </Box>
+    );
+};
+
+export default Blogs;

@@ -5,4 +5,11 @@
   text-align: center;
 }
 
+body.game-active {
+  overflow: hidden !important;
+  position: fixed !important;
+  touch-action: none;
+  -webkit-overflow-scrolling: touch;
+}
+
 

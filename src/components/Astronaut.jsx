@@ -1,10 +1,8 @@
-import { useState, useEffect, memo } from 'react';
+import { useState, useEffect, memo, useRef } from 'react';
 import { Box, Button, Text, SlideFade, useDisclosure, IconButton } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import { CloseIcon } from '@chakra-ui/icons';
-import { LazyLoadImage } from 'react-lazy-load-image-component';
-import 'react-lazy-load-image-component/src/effects/blur.css';
-import astronaut from '../assets/astronaut.png';
+import astronaut from '../assets/astronaut.webp';
 import './Astronaut.css';
 
 // Custom hook for preference storage
@@ -29,6 +27,45 @@ const usePreferenceStorage = (key, initialValue) => {
   return [value, setValue];
 };
 
+// Custom lazy loading hook
+const useLazyImage = (src) => {
+  const [imageSrc, setImageSrc] = useState(null);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [isInView, setIsInView] = useState(false);
+  const imgRef = useRef();
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsInView(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (imgRef.current) {
+      observer.observe(imgRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (isInView && src) {
+      const img = new Image();
+      img.onload = () => {
+        setImageSrc(src);
+        setIsLoaded(true);
+      };
+      img.src = src;
+    }
+  }, [isInView, src]);
+
+  return { imageSrc, isLoaded, imgRef };
+};
+
 const Astronaut = () => {
   const { isOpen, onClose } = useDisclosure({ defaultIsOpen: true });
   const navigate = useNavigate();
@@ -40,6 +77,9 @@ const Astronaut = () => {
   // Color animation with reduced resources
   const [buttonColorIndex, setButtonColorIndex] = useState(0);
   const buttonColors = ['#00ff88', '#4d4dff', '#ff00ff', '#00ffff'];
+
+  // Custom lazy loading
+  const { imageSrc, isLoaded, imgRef } = useLazyImage(astronaut);
 
   useEffect(() => {
     if (!shouldRender) return;
@@ -166,37 +206,62 @@ const Astronaut = () => {
           </Button>
         </Box>
 
-        {/* Astronaut Image with Lazy Loading */}
+        {/* Astronaut Image with Custom Lazy Loading */}
         <Box
           width="200px"
           height="auto"
           position="relative"
           top={10}
           left={12}
+          ref={imgRef}
         >
-          <LazyLoadImage
-            alt="Astronaut"
-            src={astronaut}
-            effect="blur"
-            width={200}
-            height={200}
-            style={{
-              cursor: "pointer",
-              filter: "drop-shadow(0 0 10px rgba(88, 86, 214, 0.5))",
-              transition: "transform 0.3s ease"
-            }}
-            wrapperProps={{
-              style: {
-                width: '100%',
-                height: '100%'
-              }
-            }}
-          />
+          <Box
+            width="200px"
+            height="200px"
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            bg={!isLoaded ? "rgba(88, 86, 214, 0.1)" : "transparent"}
+            borderRadius="md"
+            transition="all 0.3s ease"
+          >
+            {imageSrc && (
+              <img
+                src={imageSrc}
+                alt="Astronaut"
+                width={200}
+                height={200}
+                style={{
+                  cursor: "pointer",
+                  filter: "drop-shadow(0 0 10px rgba(88, 86, 214, 0.5))",
+                  transition: "transform 0.3s ease, opacity 0.3s ease",
+                  opacity: isLoaded ? 1 : 0,
+                  transform: isLoaded ? "scale(1)" : "scale(0.9)"
+                }}
+                onLoad={() => setIsLoaded(true)}
+              />
+            )}
+            {!isLoaded && (
+              <Box
+                width="60px"
+                height="60px"
+                border="4px solid rgba(88, 86, 214, 0.3)"
+                borderTop="4px solid #5856d6"
+                borderRadius="50%"
+                animation="spin 1s linear infinite"
+                sx={{
+                  '@keyframes spin': {
+                    '0%': { transform: 'rotate(0deg)' },
+                    '100%': { transform: 'rotate(360deg)' }
+                  }
+                }}
+              />
+            )}
+          </Box>
         </Box>
       </Box>
     </SlideFade>
   );
 };
 
-// Memoize component to prevent unnecessary re-renders
 export default memo(Astronaut);

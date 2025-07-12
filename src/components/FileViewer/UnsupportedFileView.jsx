@@ -1,6 +1,8 @@
-import React from 'react';
 import { Box, Icon, Text, Link, Button } from '@chakra-ui/react';
-import { FiFile } from 'react-icons/fi';
+
+import {
+  File
+} from 'lucide-react';
 
 const UnsupportedFileView = ({ fileUrl }) => (
   <Box 
@@ -12,7 +14,7 @@ const UnsupportedFileView = ({ fileUrl }) => (
     borderWidth="1px" 
     borderRadius="lg"
   >
-    <Icon as={FiFile} boxSize="6" mb="4" />
+    <Icon as={File} boxSize="6" mb="4" />
     <Text mb="4">Preview not available for this file type.</Text>
     <Link href={fileUrl} isExternal>
       <Button colorScheme="blue">
