@@ -7,28 +7,39 @@ import GithubLogo from '../assets/Icons/github.svg';
 import TwitterLogo from '../assets/Icons/twitter.svg';
 import LinkedinLogo from '../assets/Icons/linkedin.svg';
 
-import { AtSign, ShipWheel,Coffee } from 'lucide-react';
+import { AtSign, ShipWheel, Coffee } from 'lucide-react';
 
 // Animated icon component
 const AnimatedIcon = ({ icon, href }) => {
   const getAriaLabelFromHref = (href) => {
     try {
       const url = new URL(href);
-      const host = url.hostname;
+      const host = url.hostname.toLowerCase();
 
-      if (host.includes("linkedin.com")) return "Visit Adwait's LinkedIn Profile";
-      if (host.includes("github.com")) return "View Adwait's GitHub Repository";
-      if (host.includes("x.com") || host.includes("twitter.com")) return "Follow Adwait on Twitter (X)";
-      if (host.includes("instagram.com")) return "Check out Adwait's Instagram";
-      if (host.includes("medium.com")) return "Read Adwait's articles on Medium";
-      if (host.includes("netlify.app")) return "Visit Adwait's personal website";
-      if (href.startsWith("mailto:")) return "Send an email to Adwait";
+      if (host === "linkedin.com" || host === "www.linkedin.com")
+        return "Visit Adwait's LinkedIn Profile";
+      if (host === "github.com" || host === "www.github.com")
+        return "View Adwait's GitHub Repository";
+      if (
+        host === "x.com" || host === "www.x.com" ||
+        host === "twitter.com" || host === "www.twitter.com"
+      )
+        return "Follow Adwait on Twitter (X)";
+      if (host === "instagram.com" || host === "www.instagram.com")
+        return "Check out Adwait's Instagram";
+      if (host === "medium.com" || host === "www.medium.com")
+        return "Read Adwait's articles on Medium";
+      if (host === "netlify.app" || host.endsWith(".netlify.app"))
+        return "Visit Adwait's personal website";
+      if (href.startsWith("mailto:"))
+        return "Send an email to Adwait";
 
       return `Visit ${host}`;
     } catch {
       return "External link";
     }
   };
+
 
   const isUrl = typeof icon === "string";
 
@@ -53,9 +64,9 @@ const AnimatedIcon = ({ icon, href }) => {
         aria-label={getAriaLabelFromHref(href)}
         icon={
           isUrl ? (
-            <Image 
-              src={icon} 
-              alt="" 
+            <Image
+              src={icon}
+              alt=""
               boxSize={{ base: "20px", sm: "24px", md: "28px" }}
               objectFit="contain"
             />
